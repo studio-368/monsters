@@ -24,18 +24,6 @@
       <modules><module>java</module></modules>
     </profile>
     <profile>
-      <id>android</id>
-      <modules><module>android</module></modules>
-    </profile>
-    <profile>
-      <id>robosim</id>
-      <modules><module>robovm</module></modules>
-    </profile>
-    <profile>
-      <id>robodev</id>
-      <modules><module>robovm</module></modules>
-    </profile>
-    <profile>
       <id>html</id>
       <modules><module>html</module></modules>
     </profile>
