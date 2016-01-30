@@ -1,0 +1,11 @@
+<module rename-to='monsters'>
+  <inherits name='playn.Scene'/>
+  <inherits name='MonsterGameAssets'/>
+
+  <source path='core'/>
+  <source path='html'/>
+
+  <public path="resources" />
+
+  <entry-point class='edu.bsu.storygame.html.MonsterGameHtml'/>
+</module>
