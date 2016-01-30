@@ -4,17 +4,15 @@ import playn.core.Image;
 import playn.core.Platform;
 import playn.scene.ImageLayer;
 import playn.scene.SceneGame;
+import tripleplay.game.ScreenStack;
 
 public class MonsterGame extends SceneGame {
 
-  public MonsterGame (Platform plat) {
-    super(plat, 33); // update our "simulation" 33ms (30 times per second)
+    private static final int UPDATE_RATE_MS = 33; // 30 times per second
 
-    // create and add background image layer
-    Image bgImage = plat.assets().getImage("images/bg.png");
-    ImageLayer bgLayer = new ImageLayer(bgImage);
-    // scale the background to fill the screen
-    bgLayer.setSize(plat.graphics().viewSize);
-    rootLayer.add(bgLayer);
-  }
+    public MonsterGame(Platform plat) {
+        super(plat, UPDATE_RATE_MS);
+        ScreenStack screenStack = new ScreenStack(this, rootLayer);
+        screenStack.push(new SampleGameScreen(this));
+    }
 }

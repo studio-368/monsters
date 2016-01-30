@@ -1,11 +1,13 @@
 <module rename-to='monsters'>
-  <inherits name='playn.Scene'/>
-  <inherits name='MonsterGameAssets'/>
+    <inherits name='playn.Scene'/>
+    <inherits name='MonsterGameAssets'/>
+    <inherits name="tripleplay.TriplePlay"/>
+    <inherits name="com.google.common.collect.Collect"/>
 
-  <source path='core'/>
-  <source path='html'/>
+    <source path='core'/>
+    <source path='html'/>
 
-  <public path="resources" />
+    <public path="resources"/>
 
-  <entry-point class='edu.bsu.storygame.html.MonsterGameHtml'/>
+    <entry-point class='edu.bsu.storygame.html.MonsterGameHtml'/>
 </module>
