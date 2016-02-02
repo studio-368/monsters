@@ -18,7 +18,7 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
     public SampleGameScreen(MonsterGame game) {
         super(checkNotNull(game).plat);
         this.game = game;
-        this.context = new GameContext(game);
+        this.context = new GameContext(game, new Player("Abigail"), new Player("Bruce"));
         configurePointerInput();
         createUI();
     }
@@ -32,7 +32,22 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
         iface.createRoot(AxisLayout.vertical().offStretch(), SimpleStyles.newSheet(game.plat.graphics()), layer)
                 .setSize(size())
                 .setStyles(Style.BACKGROUND.is(Background.image(game.plat.assets().getImage("images/bg.png"))))
-                .add(new Label(context.phase.get().name()) {
+                .add(new Label() {
+                    {
+                        updateText();
+                        context.currentPlayer.connect(new Slot<Player>() {
+                            @Override
+                            public void onEmit(Player player) {
+                                updateText();
+                            }
+
+                        });
+                    }
+                    private void updateText() {
+                        text.update(context.currentPlayer.get().name + "\'s turn");
+                    }
+                })
+                .add(new Label() {
                          {
                              updateText();
                              SampleGameScreen.this.context.phase.connect(new Slot<Phase>() {
