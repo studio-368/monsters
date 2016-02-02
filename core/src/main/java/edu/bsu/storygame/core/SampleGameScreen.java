@@ -13,11 +13,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class SampleGameScreen extends ScreenStack.UIScreen {
 
     private final MonsterGame game;
-    private final GameContext context = new GameContext();
+    private final GameContext context;
 
     public SampleGameScreen(MonsterGame game) {
         super(checkNotNull(game).plat);
         this.game = game;
+        this.context = new GameContext(game);
         configurePointerInput();
         createUI();
     }

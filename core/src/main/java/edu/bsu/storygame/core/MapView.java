@@ -1,10 +1,8 @@
 package edu.bsu.storygame.core;
 
-import react.SignalView;
-import react.Slot;
-import tripleplay.ui.Button;
-import tripleplay.ui.Group;
-import tripleplay.ui.Label;
+import playn.scene.Pointer;
+import react.*;
+import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -12,38 +10,32 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class MapView extends Group {
 
     private final GameContext context;
+    private final UnitSignal onLeftHemisphere = new UnitSignal();
+    private final UnitSignal onRightHemisphere = new UnitSignal();
 
     public MapView(GameContext gameContext) {
-        super(AxisLayout.vertical());
+        super(AxisLayout.horizontal());
         this.context = checkNotNull(gameContext);
-        add(new Label("Game Map"),
-                new Group(AxisLayout.horizontal())
-                        .add(new RegionButton("Region 0"),
-                                new RegionButton("Region 1")));
+        add(new RegionButton("images/map-left.png"),
+                new RegionButton("images/map-right.png"));
     }
 
     private final class RegionButton extends Button {
-
-        public RegionButton(String text) {
-            super(text);
-            updateEnabledStatus();
+        RegionButton(String imagePath) {
+            this.icon.update(Icons.image(context.game.plat.assets().getImage(imagePath)));
             context.phase.connect(new Slot<Phase>() {
                 @Override
                 public void onEmit(Phase phase) {
-                    updateEnabledStatus();
+                    setEnabled(phase.equals(Phase.MOVEMENT));
                 }
             });
             onClick(new SignalView.Listener<Button>() {
                 @Override
                 public void onEmit(Button button) {
-                    context.phase.update(context.phase.get().next());
+                    context.phase.update(Phase.ENCOUNTER);
                 }
             });
         }
-
-
-        private void updateEnabledStatus() {
-            setEnabled(context.phase.get().equals(Phase.MOVEMENT));
-        }
     }
+
 }
