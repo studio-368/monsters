@@ -7,6 +7,7 @@ import react.Slot;
 import tripleplay.game.ScreenStack;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
+import tripleplay.util.Colors;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -15,12 +16,46 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
     private final MonsterGame game;
     private final GameContext context;
 
-    public SampleGameScreen(MonsterGame game) {
+    public SampleGameScreen(final MonsterGame game) {
         super(checkNotNull(game).plat);
         this.game = game;
         this.context = new GameContext(game, new Player("Abigail"), new Player("Bruce"));
         configurePointerInput();
         createUI();
+        context.phase.connect(new Slot<Phase>() {
+            @Override
+            public void onEmit(Phase phase) {
+                if (phase.equals(Phase.ENCOUNTER)) {
+                    popupEncounterDialog();
+                }
+            }
+
+            private void popupEncounterDialog() {
+                final Root dialog = iface.createRoot(AxisLayout.vertical(), SimpleStyles.newSheet(game.plat.graphics()), layer);
+                dialog.setStyles(Style.BACKGROUND.is(Background.solid(Colors.LIGHT_GRAY)));
+                dialog.setSize(size().width() * 0.8f, size().height() * 0.8f)
+                        .setLocation(size().width() * 0.1f, size().height() * 0.1f);
+                dialog.add(new Label("Encounter Time"));
+                dialog.add(new Button("This encounter is done").onClick(new Slot<Button>() {
+                    @Override
+                    public void onEmit(Button button) {
+                       iface.removeRoot(dialog);
+                        advancePlayer();
+                        context.phase.update(Phase.MOVEMENT);
+                    }
+
+                    private void advancePlayer() {
+                        for (int i=0, limit=context.players.size(); i<limit; i++) {
+                            if (context.currentPlayer.get().equals(context.players.get(i))) {
+                                context.currentPlayer.update(context.players.get( (i+1) % context.players.size()));
+                                return;
+                            }
+                        }
+                        throw new IllegalStateException("Cannot advance player");
+                    }
+                }));
+            }
+        });
     }
 
     private void configurePointerInput() {
