@@ -3,6 +3,7 @@ package edu.bsu.storygame.core;
 import playn.core.Game;
 import playn.scene.Mouse;
 import playn.scene.Pointer;
+import react.Connection;
 import react.Slot;
 import tripleplay.game.ScreenStack;
 import tripleplay.ui.*;
@@ -23,6 +24,8 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
         configurePointerInput();
         createUI();
         context.phase.connect(new Slot<Phase>() {
+            private Connection connection;
+
             @Override
             public void onEmit(Phase phase) {
                 if (phase.equals(Phase.ENCOUNTER)) {
@@ -34,32 +37,25 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
                 final Root dialog = iface.createRoot(AxisLayout.vertical(), SimpleStyles.newSheet(game.plat.graphics()), layer);
                 dialog.setStyles(Style.BACKGROUND.is(Background.solid(Colors.LIGHT_GRAY)));
                 dialog.setSize(size().width() * 0.8f, size().height() * 0.8f)
-                        .setLocation(size().width()*0.1f, size().height());
+                        .setLocation(size().width() * 0.1f, size().height());
                 iface.anim.tweenY(dialog.layer)
-                        .to(size().height()*0.1f)
+                        .to(size().height() * 0.1f)
                         .in(200f)
                         .easeIn();
-                dialog.add(new Label("Encounter Time"));
-                dialog.add(new Button("This encounter is done").onClick(new Slot<Button>() {
-                    @Override
-                    public void onEmit(Button button) {
-                       iface.removeRoot(dialog);
-                        advancePlayer();
-                        context.phase.update(Phase.MOVEMENT);
-                    }
+                dialog.add(new EncounterView(context, new Encounter(context)));
 
-                    private void advancePlayer() {
-                        for (int i=0, limit=context.players.size(); i<limit; i++) {
-                            if (context.currentPlayer.get().equals(context.players.get(i))) {
-                                context.currentPlayer.update(context.players.get( (i+1) % context.players.size()));
-                                return;
-                            }
+                connection = context.phase.connect(new Slot<Phase>() {
+                    @Override
+                    public void onEmit(Phase phase) {
+                        if (phase.equals(Phase.END_OF_ROUND)) {
+                            iface.removeRoot(dialog);
+                            connection.close();
                         }
-                        throw new IllegalStateException("Cannot advance player");
                     }
-                }));
+                });
             }
         });
+        configurePlayerAdvancementAtEndOfRound();
     }
 
     private void configurePointerInput() {
@@ -82,6 +78,7 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
 
                         });
                     }
+
                     private void updateText() {
                         text.update(context.currentPlayer.get().name + "\'s turn");
                     }
@@ -96,12 +93,36 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
                                  }
                              });
                          }
+
                          private void updateText() {
                              text.update("Current phase: " + context.phase.get().name());
                          }
                      },
                         new MapView(context));
     }
+
+    private void configurePlayerAdvancementAtEndOfRound() {
+        context.phase.connect(new Slot<Phase>() {
+            @Override
+            public void onEmit(Phase phase) {
+                if (phase.equals(Phase.END_OF_ROUND)) {
+                    advancePlayer();
+                    context.phase.update(Phase.MOVEMENT);
+                }
+            }
+
+            private void advancePlayer() {
+                for (int i = 0, limit = context.players.size(); i < limit; i++) {
+                    if (context.currentPlayer.get().equals(context.players.get(i))) {
+                        context.currentPlayer.update(context.players.get((i + 1) % context.players.size()));
+                        return;
+                    }
+                }
+                throw new IllegalStateException("Cannot advance player");
+            }
+        });
+    }
+
 
     @Override
     public Game game() {
