@@ -34,7 +34,11 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
                 final Root dialog = iface.createRoot(AxisLayout.vertical(), SimpleStyles.newSheet(game.plat.graphics()), layer);
                 dialog.setStyles(Style.BACKGROUND.is(Background.solid(Colors.LIGHT_GRAY)));
                 dialog.setSize(size().width() * 0.8f, size().height() * 0.8f)
-                        .setLocation(size().width() * 0.1f, size().height() * 0.1f);
+                        .setLocation(size().width()*0.1f, size().height());
+                iface.anim.tweenY(dialog.layer)
+                        .to(size().height()*0.1f)
+                        .in(200f)
+                        .easeIn();
                 dialog.add(new Label("Encounter Time"));
                 dialog.add(new Button("This encounter is done").onClick(new Slot<Button>() {
                     @Override
