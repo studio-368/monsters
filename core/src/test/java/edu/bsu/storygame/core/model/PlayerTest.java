@@ -1,4 +1,4 @@
-package edu.bsu.storygame.core;
+package edu.bsu.storygame.core.model;
 
 import com.google.common.testing.EqualsTester;
 import edu.bsu.storygame.core.model.Player;

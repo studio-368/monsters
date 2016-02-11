@@ -1,4 +1,4 @@
-package edu.bsu.storygame.core;
+package edu.bsu.storygame.core.model;
 
 import edu.bsu.storygame.core.model.Phase;
 import org.junit.Test;
