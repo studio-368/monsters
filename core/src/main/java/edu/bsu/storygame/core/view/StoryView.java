@@ -1,10 +1,7 @@
 package edu.bsu.storygame.core.view;
 
 import com.google.common.collect.Lists;
-import edu.bsu.storygame.core.model.GameContext;
-import edu.bsu.storygame.core.model.Phase;
-import edu.bsu.storygame.core.model.Reaction;
-import edu.bsu.storygame.core.model.SkillTrigger;
+import edu.bsu.storygame.core.model.*;
 import react.Slot;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
@@ -12,14 +9,14 @@ import tripleplay.ui.layout.AxisLayout;
 import java.util.List;
 
 public class StoryView extends Group {
-    public StoryView(final GameContext context, Reaction reaction) {
+    public StoryView(final GameContext context, Story story) {
         super(AxisLayout.vertical());
-        add(new Label(reaction.story)
+        add(new Label(story.text)
                 .addStyles(Style.TEXT_WRAP.on));
         Group triggerBox = new Group(AxisLayout.horizontal());
 
         final List<Button> buttons = Lists.newArrayList();
-        for (final SkillTrigger trigger : reaction.triggers) {
+        for (final SkillTrigger trigger : story.triggers) {
             Button button = new Button(trigger.skill.text)
                     .onClick(new Slot<Button>() {
                         @Override

@@ -25,7 +25,7 @@ public class EncounterView extends Group {
                         @Override
                         public void onEmit(Button button) {
                             context.phase.update(Phase.STORY);
-                            add(new StoryView(context, reaction));
+                            add(new StoryView(context, reaction.story));
                         }
                     }));
         }
