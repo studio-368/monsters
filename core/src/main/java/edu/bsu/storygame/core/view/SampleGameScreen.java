@@ -1,5 +1,6 @@
 package edu.bsu.storygame.core.view;
 
+import edu.bsu.storygame.core.assets.TileCache;
 import edu.bsu.storygame.core.model.GameContext;
 import edu.bsu.storygame.core.MonsterGame;
 import edu.bsu.storygame.core.model.Encounter;
@@ -71,7 +72,7 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
     private void createUI() {
         iface.createRoot(AxisLayout.vertical().offStretch(), SimpleStyles.newSheet(game.plat.graphics()), layer)
                 .setSize(size())
-                .setStyles(Style.BACKGROUND.is(Background.image(game.plat.assets().getImage("images/bg.png"))))
+                .setStyles(Style.BACKGROUND.is(Background.image(game.tileCache.tile(TileCache.Key.BACKGROUND))))
                 .add(new Label() {
                     {
                         updateText();

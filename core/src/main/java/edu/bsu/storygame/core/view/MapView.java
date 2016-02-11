@@ -1,5 +1,6 @@
 package edu.bsu.storygame.core.view;
 
+import edu.bsu.storygame.core.assets.ImageCache;
 import edu.bsu.storygame.core.model.GameContext;
 import edu.bsu.storygame.core.model.Phase;
 import react.*;
@@ -17,13 +18,13 @@ public class MapView extends Group {
     public MapView(GameContext gameContext) {
         super(AxisLayout.horizontal());
         this.context = checkNotNull(gameContext);
-        add(new RegionButton("images/map-left.png"),
-                new RegionButton("images/map-right.png"));
+        add(new RegionButton(ImageCache.Key.MAP_LEFT),
+                new RegionButton(ImageCache.Key.MAP_RIGHT));
     }
 
     private final class RegionButton extends Button {
-        RegionButton(String imagePath) {
-            this.icon.update(Icons.image(context.game.plat.assets().getImage(imagePath)));
+        RegionButton(ImageCache.Key key) {
+            this.icon.update(Icons.image(context.game.imageCache.image(key)));
             context.phase.connect(new Slot<Phase>() {
                 @Override
                 public void onEmit(Phase phase) {
