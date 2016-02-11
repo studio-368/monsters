@@ -1,20 +1,35 @@
 package edu.bsu.storygame.core;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 import static org.junit.Assert.assertEquals;
 
-
+@RunWith(Parameterized.class)
 public class PhaseTest {
+
+    @Parameterized.Parameter
+    public Phase initial;
+
+    @Parameterized.Parameter(value = 1)
+    public Phase next;
+
+    @Parameterized.Parameters
+    public static Collection<Object[]> data() {
+        return Arrays.asList(new Object[][] {
+                { Phase.MOVEMENT, Phase.ENCOUNTER },
+                { Phase.ENCOUNTER, Phase.STORY },
+                { Phase.STORY, Phase.END_OF_ROUND }
+        });
+    }
+
     @Test
     public void testNext() {
-        Phase p = Phase.values()[0];
-        assertEquals(Phase.values()[1], p.next());
+        assertEquals(next, initial.next());
     }
 
-    @Test
-    public void testNext_nextOfLast() {
-        Phase p = Phase.values()[Phase.values().length-1];
-        assertEquals(Phase.values()[0], p.next());
-    }
 }
