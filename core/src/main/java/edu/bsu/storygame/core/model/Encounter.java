@@ -1,4 +1,4 @@
-package edu.bsu.storygame.core;
+package edu.bsu.storygame.core.model;
 
 import com.google.common.collect.ImmutableList;
 import playn.core.Image;

@@ -1,4 +1,4 @@
-package edu.bsu.storygame.core;
+package edu.bsu.storygame.core.model;
 
 public enum Skill {
     WEAPON_USE("Weapon Use"),

@@ -1,5 +1,6 @@
 package edu.bsu.storygame.core;
 
+import edu.bsu.storygame.core.model.Phase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;

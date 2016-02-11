@@ -1,6 +1,10 @@
-package edu.bsu.storygame.core;
+package edu.bsu.storygame.core.view;
 
 import com.google.common.collect.Lists;
+import edu.bsu.storygame.core.model.GameContext;
+import edu.bsu.storygame.core.model.Phase;
+import edu.bsu.storygame.core.model.Reaction;
+import edu.bsu.storygame.core.model.SkillTrigger;
 import react.Slot;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;

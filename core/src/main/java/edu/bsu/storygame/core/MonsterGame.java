@@ -1,8 +1,7 @@
 package edu.bsu.storygame.core;
 
-import playn.core.Image;
+import edu.bsu.storygame.core.view.SampleGameScreen;
 import playn.core.Platform;
-import playn.scene.ImageLayer;
 import playn.scene.SceneGame;
 import tripleplay.game.ScreenStack;
 

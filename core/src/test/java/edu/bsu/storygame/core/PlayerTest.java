@@ -1,6 +1,7 @@
 package edu.bsu.storygame.core;
 
 import com.google.common.testing.EqualsTester;
+import edu.bsu.storygame.core.model.Player;
 import org.junit.Test;
 
 public class PlayerTest {

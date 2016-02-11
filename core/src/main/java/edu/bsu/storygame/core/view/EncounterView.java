@@ -1,5 +1,9 @@
-package edu.bsu.storygame.core;
+package edu.bsu.storygame.core.view;
 
+import edu.bsu.storygame.core.model.GameContext;
+import edu.bsu.storygame.core.model.Encounter;
+import edu.bsu.storygame.core.model.Phase;
+import edu.bsu.storygame.core.model.Reaction;
 import react.Slot;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;

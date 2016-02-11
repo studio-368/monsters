@@ -1,6 +1,7 @@
-package edu.bsu.storygame.core;
+package edu.bsu.storygame.core.view;
 
-import playn.scene.Pointer;
+import edu.bsu.storygame.core.model.GameContext;
+import edu.bsu.storygame.core.model.Phase;
 import react.*;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;

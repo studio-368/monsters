@@ -1,6 +1,9 @@
-package edu.bsu.storygame.core;
+package edu.bsu.storygame.core.model;
 
 import com.google.common.collect.ImmutableList;
+import edu.bsu.storygame.core.MonsterGame;
+import edu.bsu.storygame.core.model.Phase;
+import edu.bsu.storygame.core.model.Player;
 import react.Value;
 
 import static com.google.common.base.Preconditions.checkArgument;

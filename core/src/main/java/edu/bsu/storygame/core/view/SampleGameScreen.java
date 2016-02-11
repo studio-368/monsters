@@ -1,5 +1,10 @@
-package edu.bsu.storygame.core;
+package edu.bsu.storygame.core.view;
 
+import edu.bsu.storygame.core.model.GameContext;
+import edu.bsu.storygame.core.MonsterGame;
+import edu.bsu.storygame.core.model.Encounter;
+import edu.bsu.storygame.core.model.Phase;
+import edu.bsu.storygame.core.model.Player;
 import playn.core.Game;
 import playn.scene.Mouse;
 import playn.scene.Pointer;
