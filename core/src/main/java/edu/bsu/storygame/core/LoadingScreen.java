@@ -13,7 +13,9 @@ import tripleplay.game.ScreenStack;
 import tripleplay.ui.Label;
 import tripleplay.ui.Root;
 import tripleplay.ui.SimpleStyles;
+import tripleplay.ui.Style;
 import tripleplay.ui.layout.AxisLayout;
+import tripleplay.util.Colors;
 
 import java.util.Collection;
 import java.util.List;
@@ -50,7 +52,8 @@ public class LoadingScreen extends ScreenStack.UIScreen {
                         if (collectionTry.isSuccess()) {
                             screenStack.push(new SampleGameScreen(game), screenStack.slide().left());
                         } else {
-                            root.add(new Label("Failure caching resources; see log for details."));
+                            root.add(new Label("Failure caching resources; see log for details.")
+                                    .setStyles(Style.COLOR.is(Colors.WHITE)));
                             // IDEA is confused about the fact that we are actually handling this Throwable. Suppress it.
                             //noinspection ThrowableResultOfMethodCallIgnored
                             game.plat.log().error(collectionTry.getFailure().getMessage());
@@ -60,7 +63,8 @@ public class LoadingScreen extends ScreenStack.UIScreen {
 
         root = iface.createRoot(AxisLayout.vertical(), SimpleStyles.newSheet(game.plat.graphics()), layer)
                 .setSize(size())
-                .add(new Label("Loading..."));
+                .add(new Label("Loading...")
+                        .addStyles(Style.COLOR.is(Colors.WHITE)));
     }
 
     @Override
