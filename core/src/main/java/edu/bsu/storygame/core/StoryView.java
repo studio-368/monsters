@@ -16,7 +16,7 @@ public class StoryView extends Group {
 
         final List<Button> buttons = Lists.newArrayList();
         for (final SkillTrigger trigger : reaction.triggers) {
-            Button button = new Button(trigger.skill.name)
+            Button button = new Button(trigger.skill.text)
                     .onClick(new Slot<Button>() {
                         @Override
                         public void onEmit(Button button) {

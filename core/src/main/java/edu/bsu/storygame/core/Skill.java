@@ -3,9 +3,9 @@ package edu.bsu.storygame.core;
 public enum Skill {
     WEAPON_USE("Weapon Use"),
     WISDOM("Wisdom");
-    public final String name;
+    public final String text;
 
-    Skill(String name) {
-        this.name = name;
+    Skill(String text) {
+        this.text = text;
     }
 }
