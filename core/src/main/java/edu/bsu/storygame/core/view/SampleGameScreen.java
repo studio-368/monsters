@@ -7,8 +7,10 @@ import edu.bsu.storygame.core.model.Encounter;
 import edu.bsu.storygame.core.model.Phase;
 import edu.bsu.storygame.core.model.Player;
 import playn.core.Game;
+import playn.scene.GroupLayer;
 import playn.scene.Mouse;
 import playn.scene.Pointer;
+import pythagoras.f.Dimension;
 import react.Connection;
 import react.Slot;
 import tripleplay.game.ScreenStack;
@@ -22,15 +24,22 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
 
     private final MonsterGame game;
     private final GameContext context;
+    private final GroupLayer boundedLayer;
 
     public SampleGameScreen(final MonsterGame game) {
         super(checkNotNull(game).plat);
         this.game = game;
         this.context = new GameContext(game, new Player("Abigail"), new Player("Bruce"));
+        this.boundedLayer = new GroupLayer(game.bounds.width(), game.bounds.height());
+        layer.addAt(boundedLayer,
+                (game.plat.graphics().viewSize.width() - game.bounds.width()) / 2,
+                (game.plat.graphics().viewSize.height() - game.bounds.height()) / 2);
+
         configurePointerInput();
         createUI();
         context.phase.connect(new Slot<Phase>() {
             private Connection connection;
+            private final float SIZE_PERCENT = 0.9f;
 
             @Override
             public void onEmit(Phase phase) {
@@ -40,12 +49,12 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
             }
 
             private void popupEncounterDialog() {
-                final Root dialog = iface.createRoot(AxisLayout.vertical(), SimpleStyles.newSheet(game.plat.graphics()), layer);
+                final Root dialog = iface.createRoot(AxisLayout.vertical(), SimpleStyles.newSheet(game.plat.graphics()), boundedLayer);
                 dialog.setStyles(Style.BACKGROUND.is(Background.solid(Colors.LIGHT_GRAY)));
-                dialog.setSize(size().width() * 0.8f, size().height() * 0.8f)
-                        .setLocation(size().width() * 0.1f, size().height());
+                dialog.setSize(boundedLayer.width() * SIZE_PERCENT, boundedLayer.height() * SIZE_PERCENT)
+                        .setLocation(boundedLayer.width() * (1-SIZE_PERCENT)/2, boundedLayer.height());
                 iface.anim.tweenY(dialog.layer)
-                        .to(size().height() * 0.1f)
+                        .to(boundedLayer.height() * (1-SIZE_PERCENT)/2)
                         .in(200f)
                         .easeIn();
                 dialog.add(new EncounterView(context, new Encounter(context)));
@@ -70,8 +79,8 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
     }
 
     private void createUI() {
-        iface.createRoot(AxisLayout.vertical().offStretch(), SimpleStyles.newSheet(game.plat.graphics()), layer)
-                .setSize(size())
+        iface.createRoot(AxisLayout.vertical().offStretch(), SimpleStyles.newSheet(game.plat.graphics()), boundedLayer)
+                .setSize(boundedLayer.width(), boundedLayer.height())
                 .setStyles(Style.BACKGROUND.is(Background.image(game.tileCache.tile(TileCache.Key.BACKGROUND))))
                 .add(new Label() {
                     {
@@ -104,7 +113,7 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
                              text.update("Current phase: " + context.phase.get().name());
                          }
                      },
-                        new MapView(context));
+                        new MapView(context, new Dimension(boundedLayer.width(), boundedLayer.height())));
     }
 
     private void configurePlayerAdvancementAtEndOfRound() {

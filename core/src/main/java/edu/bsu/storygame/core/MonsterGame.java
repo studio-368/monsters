@@ -12,7 +12,7 @@ import tripleplay.game.ScreenStack;
 
 public class MonsterGame extends SceneGame {
 
-    private static final float IPHONE5_VERTICAL_ASPECT_RATIO = 9f / 16f;
+    private static final float ASPECT_RATIO = 16f/10f;
 
     private static final int UPDATE_RATE_MS = 33; // 30 times per second
 
@@ -25,7 +25,7 @@ public class MonsterGame extends SceneGame {
         imageCache = new ImageCache(plat.assets());
         tileCache = new TileCache(plat.assets());
 
-        IRectangle aspectRatioBox = new AspectRatioTool(IPHONE5_VERTICAL_ASPECT_RATIO)
+        IRectangle aspectRatioBox = new AspectRatioTool(ASPECT_RATIO)
                 .createBoundingBoxWithin(plat.graphics().viewSize);
         this.bounds = new GameBounds(aspectRatioBox);
 
