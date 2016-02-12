@@ -1,6 +1,7 @@
 package edu.bsu.storygame.core.model;
 
 import com.google.common.collect.ImmutableList;
+import edu.bsu.storygame.core.assets.ImageCache;
 import playn.core.Image;
 
 public class Encounter {
@@ -20,6 +21,6 @@ public class Encounter {
                                     new SkillTrigger(Skill.WISDOM, "You relish the mustard of this dinner time.")))));
 
     public Encounter(GameContext context) {
-        this.image = context.game.plat.assets().getImage("images/cockatrice.png");
+        this.image = context.game.imageCache.image(ImageCache.Key.COCKATRICE);
     }
 }
