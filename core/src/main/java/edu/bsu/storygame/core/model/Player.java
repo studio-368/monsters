@@ -13,6 +13,7 @@ public final class Player {
     private final int playerColor;
     public final RList<Skill>  playerSkills = new RList<>(new ArrayList<Skill>());
     public final Value<Integer> playerPoints = Value.create(0);
+    private Region playerRegion = Region.Europe;
 
     public Player(String name, int color) {
         checkNotNull(name, "Name may not be null");
@@ -21,7 +22,9 @@ public final class Player {
         this.playerColor = color;
     }
 
-    public void setRegion(){}
+    public void setRegion(Region region){playerRegion = region;}
+
+    public Region getPlayerRegion(){return  playerRegion;}
 
     public String getPlayerName(){return playerName;}
 
