@@ -15,6 +15,7 @@ import react.Connection;
 import react.Slot;
 import tripleplay.game.ScreenStack;
 import tripleplay.ui.*;
+import tripleplay.ui.Label;
 import tripleplay.ui.layout.AxisLayout;
 import tripleplay.util.Colors;
 
@@ -29,7 +30,7 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
     public SampleGameScreen(final MonsterGame game) {
         super(checkNotNull(game).plat);
         this.game = game;
-        this.context = new GameContext(game, new Player("Abigail"), new Player("Bruce"));
+        this.context = new GameContext(game, new Player("Abigail", Colors.BLUE), new Player("Bruce", Colors.CYAN));
         this.boundedLayer = new GroupLayer(game.bounds.width(), game.bounds.height());
         layer.addAt(boundedLayer,
                 (game.plat.graphics().viewSize.width() - game.bounds.width()) / 2,
@@ -95,7 +96,7 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
                     }
 
                     private void updateText() {
-                        text.update(context.currentPlayer.get().name + "\'s turn");
+                        text.update(context.currentPlayer.get().getPlayerName() + "\'s turn");
                     }
                 })
                 .add(new Label() {
