@@ -5,6 +5,6 @@ package edu.bsu.storygame.core.model;
  */
 public enum Region {
 
-    Europe
+    AFRICA, ASAIA, OCEANIA, NORTHERN_EUROPE, SOUTHERN_EUROPE, AMERICAS
 
 }
