@@ -3,6 +3,7 @@ package edu.bsu.storygame.core;
 import com.google.common.collect.Lists;
 import edu.bsu.storygame.core.assets.ImageCache;
 import edu.bsu.storygame.core.assets.TileCache;
+import edu.bsu.storygame.core.view.PlayerCreationScreen;
 import edu.bsu.storygame.core.view.SampleGameScreen;
 import playn.core.Game;
 import react.Function;
@@ -50,7 +51,7 @@ public class LoadingScreen extends ScreenStack.UIScreen {
                     @Override
                     public void onEmit(Try<Collection<Boolean>> collectionTry) {
                         if (collectionTry.isSuccess()) {
-                            screenStack.push(new SampleGameScreen(game), screenStack.slide().left());
+                            screenStack.push(new PlayerCreationScreen(game), screenStack.slide().left());
                         } else {
                             root.add(new Label("Failure caching resources; see log for details.")
                                     .setStyles(Style.COLOR.is(Colors.WHITE)));
