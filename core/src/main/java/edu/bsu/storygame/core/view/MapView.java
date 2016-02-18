@@ -19,7 +19,8 @@ public class MapView extends Group {
         super(AxisLayout.horizontal());
         this.context = checkNotNull(gameContext);
         this.size = new Dimension(size);
-        add(new RegionButton(ImageCache.Key.TRANSPARENT));
+        add(new RegionButton(ImageCache.Key.TRANSPARENT),
+        new RegionButton(ImageCache.Key.TRANSPARENT));
     }
 
     private final class RegionButton extends Button {
