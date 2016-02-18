@@ -2,12 +2,12 @@ package edu.bsu.storygame.core.view;
 
 import edu.bsu.storygame.core.model.GameContext;
 import edu.bsu.storygame.core.model.Phase;
-import playn.core.Image;
-import pythagoras.f.Dimension;
 import pythagoras.f.IDimension;
 import react.SignalView;
 import react.Slot;
-import tripleplay.ui.*;
+import tripleplay.ui.Button;
+import tripleplay.ui.Constraints;
+import tripleplay.ui.Group;
 import tripleplay.ui.layout.AxisLayout;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -15,14 +15,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class MapView extends Group {
 
     private final GameContext context;
-    private final IDimension size;
 
     public MapView(GameContext gameContext, IDimension size) {
         super(AxisLayout.horizontal());
         this.context = checkNotNull(gameContext);
-        this.size = new Dimension(size);
+        setConstraint(Constraints.fixedSize(size.width(), size.height()));
         add(new RegionButton(),
-        new RegionButton());
+                new RegionButton());
     }
 
     private final class RegionButton extends Button {
