@@ -8,7 +8,6 @@ import pythagoras.f.IDimension;
 import react.*;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
-
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class MapView extends Group {
@@ -20,8 +19,7 @@ public class MapView extends Group {
         super(AxisLayout.horizontal());
         this.context = checkNotNull(gameContext);
         this.size = new Dimension(size);
-        add(new RegionButton(ImageCache.Key.TRANSPARENT),
-                new RegionButton(ImageCache.Key.TRANSPARENT));
+        add(new RegionButton(ImageCache.Key.TRANSPARENT));
     }
 
     private final class RegionButton extends Button {
