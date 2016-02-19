@@ -6,6 +6,7 @@ import edu.bsu.storygame.core.model.Encounter;
 import edu.bsu.storygame.core.model.GameContext;
 import edu.bsu.storygame.core.model.Phase;
 import edu.bsu.storygame.core.model.Player;
+import playn.core.Color;
 import playn.core.Game;
 import playn.scene.GroupLayer;
 import pythagoras.f.Dimension;
@@ -75,6 +76,7 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
         iface.createRoot(AxisLayout.vertical().offStretch(), SimpleStyles.newSheet(game.plat.graphics()), boundedLayer)
                 .setSize(boundedLayer.width(), boundedLayer.height())
                 .setStyles(Style.BACKGROUND.is(Background.image(game.tileCache.tile(TileCache.Key.BACKGROUND))))
+                .add(new Shim(0, 80))
                 .add(new Label() {
                     {
                         updateText();
