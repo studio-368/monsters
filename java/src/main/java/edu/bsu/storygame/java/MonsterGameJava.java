@@ -1,11 +1,15 @@
 package edu.bsu.storygame.java;
 
 import org.apache.commons.cli.*;
+
+import playn.java.JavaPlatform;
 import playn.java.LWJGLPlatform;
 
 import edu.bsu.storygame.core.MonsterGame;
 import pythagoras.i.Dimension;
 import pythagoras.i.IDimension;
+
+import java.awt.*;
 
 public class MonsterGameJava {
 
@@ -22,6 +26,19 @@ public class MonsterGameJava {
         LWJGLPlatform plat = new LWJGLPlatform(config);
         new MonsterGame(plat);
         plat.start();
+    }
+
+    private static void registerFont(JavaPlatform plat) {
+        try {
+            Font oxygenLight = plat.assets().getFont("fonts/Oxygen-Light.ttf");
+            plat.graphics().registerFont("Oxygen Light", oxygenLight);
+            Font oxygen = plat.assets().getFont("fonts/Oxygen.ttf");
+            plat.graphics().registerFont("Oxygen", oxygen);
+            Font passion = plat.assets().getFont("fonts/PassionOne-Regular.ttf");
+            plat.graphics().registerFont("Passion One", passion);
+        } catch (Exception e) {
+            plat.log().error("Failed to load font", e);
+        }
     }
 
     private static final class CommandLineParser extends BasicParser {
