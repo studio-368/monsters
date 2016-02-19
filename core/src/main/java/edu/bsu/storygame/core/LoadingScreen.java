@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import edu.bsu.storygame.core.assets.ImageCache;
 import edu.bsu.storygame.core.assets.TileCache;
 import edu.bsu.storygame.core.view.PlayerCreationScreen;
-import edu.bsu.storygame.core.view.SampleGameScreen;
 import playn.core.Game;
 import react.Function;
 import react.RFuture;
