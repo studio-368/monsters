@@ -1,5 +1,8 @@
 package edu.bsu.storygame.core.view;
 
+import edu.bsu.storygame.core.MonsterGame;
+import edu.bsu.storygame.core.assets.Typeface;
+import playn.core.Font;
 import playn.core.Graphics;
 import tripleplay.ui.*;
 
@@ -15,22 +18,20 @@ public final class GameStyle {
     private GameStyle() {
     }
 
-    /**
-     * Creates and returns a simple default stylesheet.
-     */
-    public static Stylesheet newSheet(Graphics gfx) {
-        return newSheetBuilder(gfx).create();
+    public static Stylesheet newSheet(MonsterGame game) {
+        return newSheetBuilder(game).create();
     }
 
-    /**
-     * Creates and returns a stylesheet builder configured with some useful default styles. The
-     * caller can augment the sheet with additional styles and call {@code create}.
-     */
-    public static Stylesheet.Builder newSheetBuilder(Graphics gfx) {
+    public static Stylesheet.Builder newSheetBuilder(MonsterGame game) {
+        final Graphics gfx = game.plat.graphics();
+        final Font font = Typeface.OXYGEN.in(game).atSize(0.05f);
+
         int bgColor = 0xFFCCCCCC, ulColor = 0xFFEEEEEE, brColor = 0xFFAAAAAA;
         Background butBg = Background.roundRect(gfx, bgColor, 5, ulColor, 2).inset(5, 6, 2, 6);
         Background butSelBg = Background.roundRect(gfx, bgColor, 5, brColor, 2).inset(6, 5, 1, 7);
         return Stylesheet.builder().
+                add(Label.class,
+                        Style.FONT.is(font)).
                 add(Button.class,
                         Style.BACKGROUND.is(butBg)).
                 add(Button.class, Style.Mode.SELECTED,

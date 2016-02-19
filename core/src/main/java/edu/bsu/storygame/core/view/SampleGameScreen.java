@@ -72,7 +72,7 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
 
 
     private void createUI() {
-        iface.createRoot(AxisLayout.vertical().offStretch(), GameStyle.newSheet(game.plat.graphics()), boundedLayer)
+        iface.createRoot(AxisLayout.vertical().offStretch(), GameStyle.newSheet(game), boundedLayer)
                 .setSize(boundedLayer.width(), boundedLayer.height())
                 .setStyles(Style.BACKGROUND.is(Background.image(game.tileCache.tile(TileCache.Key.BACKGROUND))))
                 .add(new Shim(0, 80))

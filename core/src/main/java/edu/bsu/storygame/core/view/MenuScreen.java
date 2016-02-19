@@ -22,7 +22,7 @@ public class MenuScreen extends ScreenStack.UIScreen {
     }
 
     private void initRoot() {
-        root = iface.createRoot(AxisLayout.vertical().gap(50), GameStyle.newSheet(game.plat.graphics()), layer);
+        root = iface.createRoot(AxisLayout.vertical().gap(50), GameStyle.newSheet(game), layer);
         root.setSize(game.bounds.width(), game.bounds.height());
         root.addStyles(Style.BACKGROUND.is(Background.solid(Colors.WHITE)));
     }

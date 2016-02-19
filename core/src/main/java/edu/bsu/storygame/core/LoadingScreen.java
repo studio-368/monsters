@@ -62,7 +62,7 @@ public class LoadingScreen extends ScreenStack.UIScreen {
                     }
                 });
 
-        root = iface.createRoot(AxisLayout.vertical(), GameStyle.newSheet(game.plat.graphics()), layer)
+        root = iface.createRoot(AxisLayout.vertical(), GameStyle.newSheet(game), layer)
                 .setSize(size())
                 .add(new Label("Loading...")
                         .addStyles(Style.COLOR.is(Colors.WHITE)));

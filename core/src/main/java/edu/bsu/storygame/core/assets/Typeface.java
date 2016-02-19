@@ -1,10 +1,9 @@
 package edu.bsu.storygame.core.assets;
 
 import edu.bsu.storygame.core.MonsterGame;
-import javafx.scene.text.FontBuilder;
 import playn.core.Font;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 public enum Typeface {
 
