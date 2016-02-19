@@ -13,12 +13,12 @@ public class Encounter {
                     new Story("You encounter an angry beast and charge forward to fight it like a silly English person.",
                             ImmutableList.of(
                                     new SkillTrigger(Skill.WEAPON_USE, "You pound the tar out of that chicken thing."),
-                                    new SkillTrigger(Skill.WISDOM, "You make peace with the ugly bird lizard.")))),
+                                    new SkillTrigger(Skill.LOGIC, "You make peace with the ugly bird lizard.")))),
             new Reaction("Hide",
                     new Story("You hear a terrifying sound and hide like a girly man",
                             ImmutableList.of(
                                     new SkillTrigger(Skill.WEAPON_USE, "You spend the rest of the day sharpening your sword, not that you have the guts to use it."),
-                                    new SkillTrigger(Skill.WISDOM, "You relish the mustard of this dinner time.")))));
+                                    new SkillTrigger(Skill.LOGIC, "You relish the mustard of this dinner time.")))));
 
     public Encounter(GameContext context) {
         this.image = context.game.imageCache.image(ImageCache.Key.COCKATRICE);
