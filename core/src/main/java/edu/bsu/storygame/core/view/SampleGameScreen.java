@@ -113,6 +113,22 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
                          private void updateText() {
                              text.update("Current phase: " + context.phase.get().name());
                          }
+                     })
+
+                .add(new Label() {
+                         {
+                             updateText();
+                             SampleGameScreen.this.context.phase.connect(new Slot<Phase>() {
+                                 @Override
+                                 public void onEmit(Phase phase) {
+                                     updateText();
+                                 }
+                             });
+                         }
+
+                         private void updateText() {
+                             text.update("Current Location: " + context.currentPlayer.get().location.get().toString());
+                         }
                      },
                         new MapView(context, new Dimension(boundedLayer.width(), boundedLayer.height())));
     }
