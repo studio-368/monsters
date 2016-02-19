@@ -1,7 +1,7 @@
 package edu.bsu.storygame.core.view;
 
 import edu.bsu.storygame.core.MonsterGame;
-import playn.core.Font;
+import edu.bsu.storygame.core.assets.Typeface;
 import playn.core.Game;
 import react.Slot;
 import tripleplay.game.ScreenStack;
@@ -29,11 +29,11 @@ public class MenuScreen extends ScreenStack.UIScreen {
 
     private void initUIVariables() {
         root.add(new Label("Nightmare Defenders")
-                .addStyles(Style.FONT.is(new Font("Times New Roman", 108)),
+                .addStyles(Style.FONT.is(Typeface.PASSION_ONE.in(game).atSize(0.18f)),
                         Style.HALIGN.center,
                         Style.TEXT_EFFECT.shadow));
         root.add(new Button("Begin Game")
-                .addStyles(Style.FONT.is(new Font("Times New Roman", 50)),
+                .addStyles(Style.FONT.is(Typeface.OXYGEN.in(game).atSize(0.18f)),
                         Style.HALIGN.center)
                 .onClick(new Slot<Button>() {
                     @Override
