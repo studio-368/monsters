@@ -1,21 +1,18 @@
 package edu.bsu.storygame.core.view;
 
-import edu.bsu.storygame.core.assets.TileCache;
-import edu.bsu.storygame.core.model.GameContext;
 import edu.bsu.storygame.core.MonsterGame;
+import edu.bsu.storygame.core.assets.TileCache;
 import edu.bsu.storygame.core.model.Encounter;
+import edu.bsu.storygame.core.model.GameContext;
 import edu.bsu.storygame.core.model.Phase;
 import edu.bsu.storygame.core.model.Player;
 import playn.core.Game;
 import playn.scene.GroupLayer;
-import playn.scene.Mouse;
-import playn.scene.Pointer;
 import pythagoras.f.Dimension;
 import react.Connection;
 import react.Slot;
 import tripleplay.game.ScreenStack;
 import tripleplay.ui.*;
-import tripleplay.ui.Label;
 import tripleplay.ui.layout.AxisLayout;
 import tripleplay.util.Colors;
 
@@ -36,7 +33,6 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
                 (game.plat.graphics().viewSize.width() - game.bounds.width()) / 2,
                 (game.plat.graphics().viewSize.height() - game.bounds.height()) / 2);
 
-        configurePointerInput();
         createUI();
         context.phase.connect(new Slot<Phase>() {
             private Connection connection;
@@ -74,10 +70,6 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
         configurePlayerAdvancementAtEndOfRound();
     }
 
-    private void configurePointerInput() {
-        new Pointer(game().plat, layer, true);
-        game().plat.input().mouseEvents.connect(new Mouse.Dispatcher(layer, true));
-    }
 
     private void createUI() {
         iface.createRoot(AxisLayout.vertical().offStretch(), SimpleStyles.newSheet(game.plat.graphics()), boundedLayer)
