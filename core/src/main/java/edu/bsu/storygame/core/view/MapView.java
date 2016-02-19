@@ -18,20 +18,20 @@ public class MapView extends Group {
     private final GameContext context;
 
     public MapView(GameContext gameContext, IDimension size) {
-        super(AxisLayout.horizontal());
+        super(AxisLayout.vertical());
         this.context = checkNotNull(gameContext);
         setConstraint(Constraints.fixedSize(size.width(), size.height()));
         add(new RegionButton(Region.AFRICA),
                 new RegionButton(Region.AMERICAS),
-                new RegionButton(Region.ASAIA),
+                new RegionButton(Region.ASIA),
                 new RegionButton(Region.NORTHERN_EUROPE),
                 new RegionButton(Region.OCEANIA),
                 new RegionButton(Region.SOUTHERN_EUROPE));
     }
 
     private final class RegionButton extends Button {
-        private static final float PERCENT_OF_HEIGHT = 0.2f;
-        private static final float PERCENT_OF_WIDTH = 0.1f;
+        private static final float PERCENT_OF_HEIGHT = 0.1f;
+        private static final float PERCENT_OF_WIDTH = 0.2f;
 
         RegionButton(final Region region) {
             super(region.toString());
