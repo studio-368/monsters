@@ -96,7 +96,7 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
                     }
 
                     private void updateText() {
-                        text.update(context.currentPlayer.get().getPlayerName() + "\'s turn");
+                        text.update(context.currentPlayer.get().getName() + "\'s turn");
                     }
                 })
                 .add(new Label() {

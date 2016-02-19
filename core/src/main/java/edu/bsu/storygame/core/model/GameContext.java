@@ -2,13 +2,7 @@ package edu.bsu.storygame.core.model;
 
 import com.google.common.collect.ImmutableList;
 import edu.bsu.storygame.core.MonsterGame;
-import edu.bsu.storygame.core.model.Phase;
-import edu.bsu.storygame.core.model.Player;
-import playn.core.Font;
 import react.Value;
-import tripleplay.game.ScreenStack;
-import tripleplay.ui.Style;
-import tripleplay.ui.Styles;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;

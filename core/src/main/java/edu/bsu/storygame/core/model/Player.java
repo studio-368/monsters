@@ -9,24 +9,25 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class Player {
-    private final String playerName;
-    private final int playerColor;
-    public final RList<Skill>  playerSkills = new RList<>(new ArrayList<Skill>());
-    public final Value<Integer> playerPoints = Value.create(0);
-    private Region playerRegion = Region.AMERICAS;
+    private final String name;
+    private final int color;
+    public final RList<Skill> skills = new RList<>(new ArrayList<Skill>());
+    public final Value<Integer> points = Value.create(0);
+    private Region region = Region.AMERICAS;
 
     public Player(String name, int color) {
         checkNotNull(name, "Name may not be null");
         checkArgument(!name.trim().isEmpty(), "Name must have non-whitespace characters");
-        this.playerName = name;
-        this.playerColor = color;
+        this.name = name;
+        this.color = color;
     }
 
-    public void setRegion(Region region){playerRegion = region;}
+    public void setRegion(Region region){
+        this.region = region;}
 
-    public Region getPlayerRegion(){return  playerRegion;}
+    public Region getRegion(){return region;}
 
-    public String getPlayerName(){return playerName;}
+    public String getName(){return name;}
 
-    public int getPlayerColor() {return  playerColor;}
+    public int getColor() {return color;}
 }
