@@ -38,7 +38,7 @@ public class MenuScreen extends ScreenStack.UIScreen {
                 .onClick(new Slot<Button>() {
                     @Override
                     public void onEmit(Button button) {
-                        game.screenStack.push(new SampleGameScreen(game), game.screenStack.slide());
+                        game.screenStack.push(new PlayerCreationScreen(game), game.screenStack.slide());
                     }
                 }));
     }

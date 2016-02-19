@@ -2,7 +2,12 @@ package edu.bsu.storygame.core.model;
 
 public enum Skill {
     WEAPON_USE("Weapon Use"),
-    WISDOM("Wisdom");
+    ATHLETICISM("Athleticism"),
+    LOGIC("Logic"),
+    MAGIC("Magic"),
+    PERSUASION("Persuasion"),
+    STEALTH("Stealth");
+
     public final String text;
 
     Skill(String text) {
