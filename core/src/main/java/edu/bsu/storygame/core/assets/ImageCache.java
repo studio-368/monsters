@@ -18,8 +18,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class ImageCache {
 
     public enum Key {
-        MAP_LEFT("map-left.png"),
-        MAP_RIGHT("map-right.png"),
         COCKATRICE("cockatrice.png");
         private final String path;
 
