@@ -16,7 +16,7 @@ public class PlayerCreationScreen extends ScreenStack.UIScreen {
     public PlayerCreationScreen(final MonsterGame game) {
         super(game.plat);
         this.game = game;
-        Root root = iface.createRoot(AxisLayout.vertical(), SimpleStyles.newSheet(game.plat.graphics()), layer);
+        Root root = iface.createRoot(AxisLayout.vertical(), GameStyle.newSheet(game.plat.graphics()), layer);
         root.setSize(game.bounds.width(), game.bounds.height());
         root.addStyles(Style.BACKGROUND.is(Background.solid(Colors.ORANGE)));
         root.add(new Group(AxisLayout.vertical()).add(
