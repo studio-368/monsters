@@ -11,8 +11,6 @@ import playn.scene.SceneGame;
 import pythagoras.f.IRectangle;
 import tripleplay.game.ScreenStack;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 public class MonsterGame extends SceneGame {
 
     private static final float ASPECT_RATIO = 16f / 10f;
@@ -23,11 +21,9 @@ public class MonsterGame extends SceneGame {
     public final TileCache tileCache;
     public final GameBounds bounds;
     public final ScreenStack screenStack;
-    public final EncounterConfiguration encounters;
 
-    public MonsterGame(Platform plat, EncounterConfiguration encounterConfiguration) {
+    public MonsterGame(Platform plat) {
         super(plat, UPDATE_RATE_MS);
-        this.encounters = checkNotNull(encounterConfiguration);
         imageCache = new ImageCache(plat.assets());
         tileCache = new TileCache(plat.assets());
         initInput();

@@ -2,9 +2,7 @@ package edu.bsu.storygame.core.view;
 
 import edu.bsu.storygame.core.MonsterGame;
 import edu.bsu.storygame.core.assets.TileCache;
-import edu.bsu.storygame.core.model.GameContext;
-import edu.bsu.storygame.core.model.Phase;
-import edu.bsu.storygame.core.model.Player;
+import edu.bsu.storygame.core.model.*;
 import playn.core.Game;
 import playn.scene.GroupLayer;
 import pythagoras.f.Dimension;
@@ -22,9 +20,25 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
     private final MonsterGame game;
     private final GameContext context;
     private final GroupLayer boundedLayer;
+    private Encounter encounter;
 
     public SampleGameScreen(final MonsterGame game) {
         super(checkNotNull(game).plat);
+
+        game.plat.assets().getText("encounters/cockatrice.json").onSuccess(new Slot<String>() {
+            @Override
+            public void onEmit(String s) {
+                EncounterParser parser = new EncounterParser(game.plat);
+                encounter = parser.parse(s);
+            }
+        }).onFailure(new Slot<Throwable>() {
+            @Override
+            public void onEmit(Throwable throwable) {
+                game.plat.log().error("Could not load encounter: " + throwable.getMessage());
+                throw new IllegalStateException(throwable);
+            }
+        });
+
         this.game = game;
         this.context = new GameContext(game, new Player("Abigail", Colors.BLUE), new Player("Bruce", Colors.CYAN));
         this.boundedLayer = new GroupLayer(game.bounds.width(), game.bounds.height());
@@ -53,7 +67,8 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
                         .to(boundedLayer.height() * (1 - SIZE_PERCENT) / 2)
                         .in(200f)
                         .easeIn();
-                dialog.add(new EncounterView(context, game.encounters.encountersFor(null).get(0)));
+
+                dialog.add(new EncounterView(context, encounter));
 
                 connection = context.phase.connect(new Slot<Phase>() {
                     @Override

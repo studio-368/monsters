@@ -11,13 +11,4 @@
 
     <artifactId>editor</artifactId>
 
-    <dependencies>
-        <dependency>
-            <groupId>edu.bsu.storygame</groupId>
-            <artifactId>test-assets</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-
 </project>

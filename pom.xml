@@ -41,17 +41,10 @@
                 <module>editor</module>
             </modules>
         </profile>
-        <profile>
-            <id>test-assets</id>
-            <modules>
-                <module>test-assets</module>
-            </modules>
-        </profile>
     </profiles>
     <modules>
         <module>assets</module>
         <module>core</module>
         <module>editor</module>
-        <module>test-assets</module>
     </modules>
 </project>

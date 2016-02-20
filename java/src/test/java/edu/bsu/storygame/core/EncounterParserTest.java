@@ -1,9 +1,8 @@
-package edu.bsu.storygame.java;
+package edu.bsu.storygame.core;
 
 import edu.bsu.storygame.core.model.*;
 import org.junit.Test;
-
-import java.io.InputStream;
+import playn.java.JavaPlatform;
 
 import static org.junit.Assert.assertEquals;
 
@@ -29,10 +28,11 @@ public class EncounterParserTest {
                     .build();
 
     @Test
-    public void testParse() {
-        EncounterParser parser = new EncounterParser();
-        InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream("test-encounters/cockatrice.json");
-        Encounter encounter = parser.parse(in);
+    public void testParse() throws Exception {
+        JavaPlatform.Headless plat = new JavaPlatform.Headless(new JavaPlatform.Config());
+        EncounterParser parser = new EncounterParser(plat);
+        String jsonString = plat.assets().getTextSync("test-encounters/cockatrice.json");
+        Encounter encounter = parser.parse(jsonString);
         assertEquals(expected, encounter);
     }
 }
