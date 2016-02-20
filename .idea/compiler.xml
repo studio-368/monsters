@@ -45,8 +45,16 @@
         <processorPath useClasspath="true" />
         <module name="monsters-java" />
       </profile>
+      <profile default="false" name="Annotation profile for editor" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="editor" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="editor" target="1.7" />
       <module name="monsters" target="1.5" />
       <module name="monsters-assets" target="1.7" />
       <module name="monsters-core" target="1.7" />

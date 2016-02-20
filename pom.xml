@@ -35,9 +35,16 @@
                 <module>html</module>
             </modules>
         </profile>
+        <profile>
+            <id>editor</id>
+            <modules>
+                <module>editor</module>
+            </modules>
+        </profile>
     </profiles>
     <modules>
         <module>assets</module>
         <module>core</module>
+        <module>editor</module>
     </modules>
 </project>
