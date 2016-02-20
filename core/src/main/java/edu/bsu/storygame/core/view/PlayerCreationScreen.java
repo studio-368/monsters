@@ -1,6 +1,7 @@
 package edu.bsu.storygame.core.view;
 
 import edu.bsu.storygame.core.MonsterGame;
+import edu.bsu.storygame.core.assets.Typeface;
 import playn.core.Font;
 import playn.core.Game;
 import react.Slot;
@@ -23,7 +24,7 @@ public class PlayerCreationScreen extends ScreenStack.UIScreen {
                 new Label("Nightmare Defenders!")
         ));
         root.add(new Button("Start")
-                .addStyles(Style.FONT.is(new Font("Times New Roman", 50)),
+                .addStyles(Style.FONT.is(Typeface.OXYGEN.in(game).atSize(0.05f)),
                         Style.HALIGN.center)
                 .onClick(new Slot<Button>() {
                     @Override
