@@ -16,7 +16,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class TileCache {
 
     public enum Key {
-        BACKGROUND("bg.png");
+        BACKGROUND("worldMap.jpg");
         private final String path;
 
         Key(String relativePath) {

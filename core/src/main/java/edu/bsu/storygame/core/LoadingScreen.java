@@ -3,7 +3,8 @@ package edu.bsu.storygame.core;
 import com.google.common.collect.Lists;
 import edu.bsu.storygame.core.assets.ImageCache;
 import edu.bsu.storygame.core.assets.TileCache;
-import edu.bsu.storygame.core.view.SampleGameScreen;
+import edu.bsu.storygame.core.view.GameStyle;
+import edu.bsu.storygame.core.view.MenuScreen;
 import playn.core.Game;
 import react.Function;
 import react.RFuture;
@@ -12,7 +13,6 @@ import react.Try;
 import tripleplay.game.ScreenStack;
 import tripleplay.ui.Label;
 import tripleplay.ui.Root;
-import tripleplay.ui.SimpleStyles;
 import tripleplay.ui.Style;
 import tripleplay.ui.layout.AxisLayout;
 import tripleplay.util.Colors;
@@ -20,12 +20,13 @@ import tripleplay.util.Colors;
 import java.util.Collection;
 import java.util.List;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 public class LoadingScreen extends ScreenStack.UIScreen {
 
     private final MonsterGame game;
     private Root root;
+
 
     public LoadingScreen(final MonsterGame game, final ScreenStack screenStack) {
         super(game.plat);
@@ -50,7 +51,7 @@ public class LoadingScreen extends ScreenStack.UIScreen {
                     @Override
                     public void onEmit(Try<Collection<Boolean>> collectionTry) {
                         if (collectionTry.isSuccess()) {
-                            screenStack.push(new SampleGameScreen(game), screenStack.slide().left());
+                            screenStack.push(new MenuScreen(game), screenStack.slide().left());
                         } else {
                             root.add(new Label("Failure caching resources; see log for details.")
                                     .setStyles(Style.COLOR.is(Colors.WHITE)));
@@ -61,7 +62,7 @@ public class LoadingScreen extends ScreenStack.UIScreen {
                     }
                 });
 
-        root = iface.createRoot(AxisLayout.vertical(), SimpleStyles.newSheet(game.plat.graphics()), layer)
+        root = iface.createRoot(AxisLayout.vertical(), GameStyle.newSheet(game), layer)
                 .setSize(size())
                 .add(new Label("Loading...")
                         .addStyles(Style.COLOR.is(Colors.WHITE)));

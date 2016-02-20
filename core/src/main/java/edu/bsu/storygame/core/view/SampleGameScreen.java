@@ -1,25 +1,22 @@
 package edu.bsu.storygame.core.view;
 
-import edu.bsu.storygame.core.assets.TileCache;
-import edu.bsu.storygame.core.model.GameContext;
 import edu.bsu.storygame.core.MonsterGame;
+import edu.bsu.storygame.core.assets.TileCache;
 import edu.bsu.storygame.core.model.Encounter;
+import edu.bsu.storygame.core.model.GameContext;
 import edu.bsu.storygame.core.model.Phase;
 import edu.bsu.storygame.core.model.Player;
 import playn.core.Game;
 import playn.scene.GroupLayer;
-import playn.scene.Mouse;
-import playn.scene.Pointer;
 import pythagoras.f.Dimension;
 import react.Connection;
 import react.Slot;
 import tripleplay.game.ScreenStack;
 import tripleplay.ui.*;
-import tripleplay.ui.Label;
 import tripleplay.ui.layout.AxisLayout;
 import tripleplay.util.Colors;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 public class SampleGameScreen extends ScreenStack.UIScreen {
 
@@ -36,7 +33,6 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
                 (game.plat.graphics().viewSize.width() - game.bounds.width()) / 2,
                 (game.plat.graphics().viewSize.height() - game.bounds.height()) / 2);
 
-        configurePointerInput();
         createUI();
         context.phase.connect(new Slot<Phase>() {
             private Connection connection;
@@ -74,15 +70,12 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
         configurePlayerAdvancementAtEndOfRound();
     }
 
-    private void configurePointerInput() {
-        new Pointer(game().plat, layer, true);
-        game().plat.input().mouseEvents.connect(new Mouse.Dispatcher(layer, true));
-    }
 
     private void createUI() {
-        iface.createRoot(AxisLayout.vertical().offStretch(), SimpleStyles.newSheet(game.plat.graphics()), boundedLayer)
+        iface.createRoot(AxisLayout.vertical().offStretch(), GameStyle.newSheet(game), boundedLayer)
                 .setSize(boundedLayer.width(), boundedLayer.height())
                 .setStyles(Style.BACKGROUND.is(Background.image(game.tileCache.tile(TileCache.Key.BACKGROUND))))
+                .add(new Shim(0, 80))
                 .add(new Label() {
                     {
                         updateText();
@@ -96,7 +89,7 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
                     }
 
                     private void updateText() {
-                        text.update(context.currentPlayer.get().getPlayerName() + "\'s turn");
+                        text.update(context.currentPlayer.get().getName() + "\'s turn");
                     }
                 })
                 .add(new Label() {
@@ -112,6 +105,22 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
 
                          private void updateText() {
                              text.update("Current phase: " + context.phase.get().name());
+                         }
+                     })
+
+                .add(new Label() {
+                         {
+                             updateText();
+                             SampleGameScreen.this.context.phase.connect(new Slot<Phase>() {
+                                 @Override
+                                 public void onEmit(Phase phase) {
+                                     updateText();
+                                 }
+                             });
+                         }
+
+                         private void updateText() {
+                             text.update("Current Location: " + context.currentPlayer.get().location.get().toString());
                          }
                      },
                         new MapView(context, new Dimension(boundedLayer.width(), boundedLayer.height())));
