@@ -1,7 +1,7 @@
 package edu.bsu.storygame.core.view;
 
 import edu.bsu.storygame.core.MonsterGame;
-import playn.core.Font;
+import edu.bsu.storygame.core.assets.Typeface;
 import playn.core.Game;
 import react.Slot;
 import tripleplay.game.ScreenStack;
@@ -22,18 +22,18 @@ public class MenuScreen extends ScreenStack.UIScreen {
     }
 
     private void initRoot() {
-        root = iface.createRoot(AxisLayout.vertical().gap(50), SimpleStyles.newSheet(game.plat.graphics()), layer);
+        root = iface.createRoot(AxisLayout.vertical().gap(50), GameStyle.newSheet(game), layer);
         root.setSize(game.bounds.width(), game.bounds.height());
         root.addStyles(Style.BACKGROUND.is(Background.solid(Colors.WHITE)));
     }
 
     private void initUIVariables() {
         root.add(new Label("Nightmare Defenders")
-                .addStyles(Style.FONT.is(new Font("Times New Roman", 108)),
+                .addStyles(Style.FONT.is(Typeface.PASSION_ONE.in(game).atSize(0.18f)),
                         Style.HALIGN.center,
                         Style.TEXT_EFFECT.shadow));
         root.add(new Button("Begin Game")
-                .addStyles(Style.FONT.is(new Font("Times New Roman", 50)),
+                .addStyles(Style.FONT.is(Typeface.OXYGEN.in(game).atSize(0.18f)),
                         Style.HALIGN.center)
                 .onClick(new Slot<Button>() {
                     @Override

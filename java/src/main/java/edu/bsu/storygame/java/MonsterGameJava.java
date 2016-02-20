@@ -1,5 +1,6 @@
 package edu.bsu.storygame.java;
 
+import edu.bsu.storygame.core.assets.FontConstants;
 import org.apache.commons.cli.*;
 
 import playn.java.JavaPlatform;
@@ -9,9 +10,13 @@ import edu.bsu.storygame.core.MonsterGame;
 import pythagoras.i.Dimension;
 import pythagoras.i.IDimension;
 
-import java.awt.*;
-
 public class MonsterGameJava {
+
+    private static final String[] FONT_SPECS = {
+            "fonts/Oxygen-Light.ttf", FontConstants.OXYGEN_LIGHT_NAME,
+            "fonts/Oxygen-Regular.ttf", FontConstants.OXYGEN_NAME,
+            "fonts/PassionOne-Regular.ttf", FontConstants.PASSION_ONE_NAME
+    };
 
     private static final IDimension DEFAULT_SIZE = new Dimension(960, 640);
     private static Dimension size = new Dimension(DEFAULT_SIZE.width(), DEFAULT_SIZE.height());
@@ -24,18 +29,19 @@ public class MonsterGameJava {
         config.height = size.height;
 
         LWJGLPlatform plat = new LWJGLPlatform(config);
+        registerFonts(plat);
         new MonsterGame(plat);
         plat.start();
     }
 
-    private static void registerFont(JavaPlatform plat) {
+    private static void registerFonts(JavaPlatform plat) {
         try {
-            Font oxygenLight = plat.assets().getFont("fonts/Oxygen-Light.ttf");
-            plat.graphics().registerFont("Oxygen Light", oxygenLight);
-            Font oxygen = plat.assets().getFont("fonts/Oxygen.ttf");
-            plat.graphics().registerFont("Oxygen", oxygen);
-            Font passion = plat.assets().getFont("fonts/PassionOne-Regular.ttf");
-            plat.graphics().registerFont("Passion One", passion);
+            for (int i=0; i<FONT_SPECS.length; i+=2) {
+                plat.graphics().registerFont(
+                        FONT_SPECS[i+1],
+                        plat.assets().getFont(FONT_SPECS[i])
+                );
+            }
         } catch (Exception e) {
             plat.log().error("Failed to load font", e);
         }

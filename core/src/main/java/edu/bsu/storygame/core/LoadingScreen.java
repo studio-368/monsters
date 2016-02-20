@@ -3,6 +3,7 @@ package edu.bsu.storygame.core;
 import com.google.common.collect.Lists;
 import edu.bsu.storygame.core.assets.ImageCache;
 import edu.bsu.storygame.core.assets.TileCache;
+import edu.bsu.storygame.core.view.GameStyle;
 import edu.bsu.storygame.core.view.MenuScreen;
 import playn.core.Game;
 import react.Function;
@@ -12,7 +13,6 @@ import react.Try;
 import tripleplay.game.ScreenStack;
 import tripleplay.ui.Label;
 import tripleplay.ui.Root;
-import tripleplay.ui.SimpleStyles;
 import tripleplay.ui.Style;
 import tripleplay.ui.layout.AxisLayout;
 import tripleplay.util.Colors;
@@ -20,7 +20,7 @@ import tripleplay.util.Colors;
 import java.util.Collection;
 import java.util.List;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 public class LoadingScreen extends ScreenStack.UIScreen {
 
@@ -62,7 +62,7 @@ public class LoadingScreen extends ScreenStack.UIScreen {
                     }
                 });
 
-        root = iface.createRoot(AxisLayout.vertical(), SimpleStyles.newSheet(game.plat.graphics()), layer)
+        root = iface.createRoot(AxisLayout.vertical(), GameStyle.newSheet(game), layer)
                 .setSize(size())
                 .add(new Label("Loading...")
                         .addStyles(Style.COLOR.is(Colors.WHITE)));
