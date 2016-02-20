@@ -1,14 +1,15 @@
 package edu.bsu.storygame.core.view;
 
-import edu.bsu.storygame.core.model.GameContext;
+import edu.bsu.storygame.core.assets.ImageCache;
 import edu.bsu.storygame.core.model.Encounter;
+import edu.bsu.storygame.core.model.GameContext;
 import edu.bsu.storygame.core.model.Phase;
 import edu.bsu.storygame.core.model.Reaction;
 import react.Slot;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 public class EncounterView extends Group {
     private final GameContext context;
@@ -16,7 +17,8 @@ public class EncounterView extends Group {
     public EncounterView(final GameContext context, Encounter encounter) {
         super(AxisLayout.vertical());
         this.context = checkNotNull(context);
-        add(new Label(encounter.name, Icons.scaled(Icons.image(encounter.image), 0.25f))
+        add(new Label(encounter.name,
+                Icons.scaled(Icons.image(context.game.imageCache.image(ImageCache.Key.valueOf(encounter.imageKey.toUpperCase()))), 0.25f))
                 .setStyles(Style.ICON_POS.above));
         Group reactionBox = new Group(AxisLayout.horizontal());
         for (final Reaction reaction : encounter.reactions) {
@@ -43,6 +45,7 @@ public class EncounterView extends Group {
             });
             updateEnabledStatusBasedOn(context.phase.get());
         }
+
         private void updateEnabledStatusBasedOn(Phase phase) {
             setEnabled(phase.equals(Phase.ENCOUNTER));
         }

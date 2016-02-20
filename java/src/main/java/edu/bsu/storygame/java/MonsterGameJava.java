@@ -1,14 +1,19 @@
 package edu.bsu.storygame.java;
 
+import com.google.common.collect.ImmutableList;
+import edu.bsu.storygame.core.EncounterConfiguration;
+import edu.bsu.storygame.core.MonsterGame;
 import edu.bsu.storygame.core.assets.FontConstants;
+import edu.bsu.storygame.core.model.Encounter;
+import edu.bsu.storygame.core.model.Region;
 import org.apache.commons.cli.*;
-
 import playn.java.JavaPlatform;
 import playn.java.LWJGLPlatform;
-
-import edu.bsu.storygame.core.MonsterGame;
 import pythagoras.i.Dimension;
 import pythagoras.i.IDimension;
+
+import java.io.InputStream;
+import java.util.List;
 
 public class MonsterGameJava {
 
@@ -30,7 +35,7 @@ public class MonsterGameJava {
 
         LWJGLPlatform plat = new LWJGLPlatform(config);
         registerFonts(plat);
-        new MonsterGame(plat);
+        new MonsterGame(plat, createEncounterConfiguration());
         plat.start();
     }
 
@@ -45,6 +50,18 @@ public class MonsterGameJava {
         } catch (Exception e) {
             plat.log().error("Failed to load font", e);
         }
+    }
+
+    private static EncounterConfiguration createEncounterConfiguration() {
+        return new EncounterConfiguration() {
+            @Override
+            public List<Encounter> encountersFor(Region region) {
+                EncounterParser parser = new EncounterParser();
+                InputStream source = Thread.currentThread().getContextClassLoader().getResourceAsStream("assets/encounters/cockatrice.json");
+                Encounter encounter = parser.parse(source);
+                return ImmutableList.of(encounter);
+            }
+        };
     }
 
     private static final class CommandLineParser extends BasicParser {

@@ -1,9 +1,15 @@
 package edu.bsu.storygame.core.view;
 
 import com.google.common.collect.Lists;
-import edu.bsu.storygame.core.model.*;
+import edu.bsu.storygame.core.model.GameContext;
+import edu.bsu.storygame.core.model.Phase;
+import edu.bsu.storygame.core.model.SkillTrigger;
+import edu.bsu.storygame.core.model.Story;
 import react.Slot;
-import tripleplay.ui.*;
+import tripleplay.ui.Button;
+import tripleplay.ui.Group;
+import tripleplay.ui.Label;
+import tripleplay.ui.Style;
 import tripleplay.ui.layout.AxisLayout;
 
 import java.util.List;
@@ -24,7 +30,7 @@ public class StoryView extends Group {
                             for (Button b : buttons) {
                                 b.setEnabled(false);
                             }
-                            add(new Label(trigger.story)
+                            add(new Label(trigger.conclusion)
                                     .addStyles(Style.TEXT_WRAP.on));
                             add(new Button("OK")
                                     .onClick(new Slot<Button>() {

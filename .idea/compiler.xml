@@ -52,6 +52,13 @@
         <processorPath useClasspath="true" />
         <module name="editor" />
       </profile>
+      <profile default="false" name="Annotation profile for test-assets" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="test-assets" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="editor" target="1.7" />
@@ -60,6 +67,7 @@
       <module name="monsters-core" target="1.7" />
       <module name="monsters-html" target="1.7" />
       <module name="monsters-java" target="1.7" />
+      <module name="test-assets" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>

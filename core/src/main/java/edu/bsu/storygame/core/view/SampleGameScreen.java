@@ -2,7 +2,6 @@ package edu.bsu.storygame.core.view;
 
 import edu.bsu.storygame.core.MonsterGame;
 import edu.bsu.storygame.core.assets.TileCache;
-import edu.bsu.storygame.core.model.Encounter;
 import edu.bsu.storygame.core.model.GameContext;
 import edu.bsu.storygame.core.model.Phase;
 import edu.bsu.storygame.core.model.Player;
@@ -16,7 +15,7 @@ import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
 import tripleplay.util.Colors;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class SampleGameScreen extends ScreenStack.UIScreen {
 
@@ -49,12 +48,12 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
                 final Root dialog = iface.createRoot(AxisLayout.vertical(), SimpleStyles.newSheet(game.plat.graphics()), boundedLayer);
                 dialog.setStyles(Style.BACKGROUND.is(Background.solid(Colors.LIGHT_GRAY)));
                 dialog.setSize(boundedLayer.width() * SIZE_PERCENT, boundedLayer.height() * SIZE_PERCENT)
-                        .setLocation(boundedLayer.width() * (1-SIZE_PERCENT)/2, boundedLayer.height());
+                        .setLocation(boundedLayer.width() * (1 - SIZE_PERCENT) / 2, boundedLayer.height());
                 iface.anim.tweenY(dialog.layer)
-                        .to(boundedLayer.height() * (1-SIZE_PERCENT)/2)
+                        .to(boundedLayer.height() * (1 - SIZE_PERCENT) / 2)
                         .in(200f)
                         .easeIn();
-                dialog.add(new EncounterView(context, new Encounter(context)));
+                dialog.add(new EncounterView(context, game.encounters.encountersFor(null).get(0)));
 
                 connection = context.phase.connect(new Slot<Phase>() {
                     @Override
@@ -93,20 +92,20 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
                     }
                 })
                 .add(new Label() {
-                         {
-                             updateText();
-                             SampleGameScreen.this.context.phase.connect(new Slot<Phase>() {
-                                 @Override
-                                 public void onEmit(Phase phase) {
-                                     updateText();
-                                 }
-                             });
-                         }
+                    {
+                        updateText();
+                        SampleGameScreen.this.context.phase.connect(new Slot<Phase>() {
+                            @Override
+                            public void onEmit(Phase phase) {
+                                updateText();
+                            }
+                        });
+                    }
 
-                         private void updateText() {
-                             text.update("Current phase: " + context.phase.get().name());
-                         }
-                     })
+                    private void updateText() {
+                        text.update("Current phase: " + context.phase.get().name());
+                    }
+                })
 
                 .add(new Label() {
                          {
