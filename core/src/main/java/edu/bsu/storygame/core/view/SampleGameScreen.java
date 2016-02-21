@@ -2,10 +2,7 @@ package edu.bsu.storygame.core.view;
 
 import edu.bsu.storygame.core.MonsterGame;
 import edu.bsu.storygame.core.assets.TileCache;
-import edu.bsu.storygame.core.model.Encounter;
-import edu.bsu.storygame.core.model.GameContext;
-import edu.bsu.storygame.core.model.Phase;
-import edu.bsu.storygame.core.model.Player;
+import edu.bsu.storygame.core.model.*;
 import playn.core.Game;
 import playn.scene.GroupLayer;
 import pythagoras.f.Dimension;
@@ -17,7 +14,6 @@ import tripleplay.ui.layout.AxisLayout;
 import tripleplay.util.Colors;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
 
 public class SampleGameScreen extends ScreenStack.UIScreen {
 
@@ -57,8 +53,8 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
                         .in(200f)
                         .easeIn();
 
-                checkState(game.narrative.isCompleteNow(), "Narrative is not yet loaded and I cannot deal with that.");
-                Encounter encounter = game.narrative.result().get().forRegion(context.currentPlayer.get().location.get()).chooseOne();
+                Narrative narrative = game.narrativeCache.state.result().get();
+                Encounter encounter = narrative.forRegion(context.currentPlayer.get().location.get()).chooseOne();
                 dialog.add(new EncounterView(context, encounter));
 
                 connection = context.phase.connect(new Slot<Phase>() {
