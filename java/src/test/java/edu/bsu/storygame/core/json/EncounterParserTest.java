@@ -1,6 +1,5 @@
-package edu.bsu.storygame.core;
+package edu.bsu.storygame.core.json;
 
-import edu.bsu.storygame.core.json.EncounterParser;
 import edu.bsu.storygame.core.model.Encounter;
 import edu.bsu.storygame.core.util.EncounterMatchingTestJson;
 import org.junit.Test;

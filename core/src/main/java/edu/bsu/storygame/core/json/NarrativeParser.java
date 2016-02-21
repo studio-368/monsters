@@ -4,6 +4,7 @@ import edu.bsu.storygame.core.model.Encounter;
 import edu.bsu.storygame.core.model.EncounterDeck;
 import edu.bsu.storygame.core.model.Narrative;
 import edu.bsu.storygame.core.model.Region;
+import edu.bsu.storygame.core.util.ScreamingCapitalizer;
 import playn.core.Json;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -24,7 +25,7 @@ public final class NarrativeParser {
         for (int i = 0, limit = array.length(); i < limit; i++) {
             Json.Object obj = array.getObject(i);
             String regionName = obj.getString("region");
-            Region region = Region.valueOf(regionName.toUpperCase());
+            Region region = Region.valueOf(ScreamingCapitalizer.convert(regionName));
             Json.Array encounters = obj.getArray("encounters");
             EncounterDeck deck = parseEncounterDeck(encounters);
             narrativeBuilder.put(region, deck);

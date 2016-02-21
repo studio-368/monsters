@@ -36,4 +36,8 @@ public final class EncounterDeck {
     public int size() {
         return encounters.size();
     }
+
+    public Encounter chooseOne() {
+        return encounters.get((int) (encounters.size() * Math.random()));
+    }
 }

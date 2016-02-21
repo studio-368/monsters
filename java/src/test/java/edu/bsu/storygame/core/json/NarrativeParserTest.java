@@ -1,6 +1,5 @@
-package edu.bsu.storygame.core;
+package edu.bsu.storygame.core.json;
 
-import edu.bsu.storygame.core.json.NarrativeParser;
 import edu.bsu.storygame.core.model.Narrative;
 import edu.bsu.storygame.core.model.Region;
 import org.junit.Test;
