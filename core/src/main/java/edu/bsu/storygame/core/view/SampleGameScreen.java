@@ -2,8 +2,10 @@ package edu.bsu.storygame.core.view;
 
 import edu.bsu.storygame.core.MonsterGame;
 import edu.bsu.storygame.core.assets.TileCache;
-import edu.bsu.storygame.core.json.NarrativeParser;
-import edu.bsu.storygame.core.model.*;
+import edu.bsu.storygame.core.model.Encounter;
+import edu.bsu.storygame.core.model.GameContext;
+import edu.bsu.storygame.core.model.Phase;
+import edu.bsu.storygame.core.model.Player;
 import playn.core.Game;
 import playn.scene.GroupLayer;
 import pythagoras.f.Dimension;
@@ -15,30 +17,16 @@ import tripleplay.ui.layout.AxisLayout;
 import tripleplay.util.Colors;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 public class SampleGameScreen extends ScreenStack.UIScreen {
 
     private final MonsterGame game;
     private final GameContext context;
     private final GroupLayer boundedLayer;
-    private Narrative narrative;
 
     public SampleGameScreen(final MonsterGame game) {
         super(checkNotNull(game).plat);
-
-        game.plat.assets().getText("encounters/narrative.json").onSuccess(new Slot<String>() {
-            @Override
-            public void onEmit(String s) {
-                NarrativeParser parser = new NarrativeParser(game.plat.json());
-                narrative = parser.parse(s);
-            }
-        }).onFailure(new Slot<Throwable>() {
-            @Override
-            public void onEmit(Throwable throwable) {
-                game.plat.log().error("Could not load narrative: " + throwable.getMessage());
-                throw new IllegalStateException(throwable);
-            }
-        });
 
         this.game = game;
         this.context = new GameContext(game, new Player("Abigail", Colors.BLUE), new Player("Bruce", Colors.CYAN));
@@ -69,7 +57,8 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
                         .in(200f)
                         .easeIn();
 
-                Encounter encounter = narrative.forRegion(context.currentPlayer.get().location.get()).chooseOne();
+                checkState(game.narrative.isCompleteNow(), "Narrative is not yet loaded and I cannot deal with that.");
+                Encounter encounter = game.narrative.result().get().forRegion(context.currentPlayer.get().location.get()).chooseOne();
                 dialog.add(new EncounterView(context, encounter));
 
                 connection = context.phase.connect(new Slot<Phase>() {

@@ -2,8 +2,10 @@ package edu.bsu.storygame.core.model;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 
 import java.util.Map;
+import java.util.Set;
 
 public final class Narrative {
 
@@ -34,5 +36,19 @@ public final class Narrative {
             throw new IllegalArgumentException("No deck for region " + region);
         }
         return map.get(region);
+    }
+
+    public Set<String> skills() {
+        Set<String> result = Sets.newTreeSet();
+        for (EncounterDeck deck : map.values()) {
+            for (Encounter encounter : deck) {
+                for (Reaction reaction : encounter.reactions) {
+                    for (SkillTrigger trigger : reaction.story.triggers) {
+                        result.add(trigger.skill);
+                    }
+                }
+            }
+        }
+        return result;
     }
 }

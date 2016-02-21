@@ -5,10 +5,10 @@ import com.google.common.collect.Lists;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
-public final class EncounterDeck {
-
+public final class EncounterDeck implements Iterable<Encounter> {
 
     public static final class Builder {
         private List<Encounter> encounters = Lists.newArrayList();
@@ -40,4 +40,10 @@ public final class EncounterDeck {
     public Encounter chooseOne() {
         return encounters.get((int) (encounters.size() * Math.random()));
     }
+
+    @Override
+    public Iterator<Encounter> iterator() {
+        return encounters.iterator();
+    }
+
 }
