@@ -23,7 +23,6 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
 
     public SampleGameScreen(final MonsterGame game) {
         super(checkNotNull(game).plat);
-
         this.game = game;
         this.context = new GameContext(game, new Player("Abigail", Colors.BLUE), new Player("Bruce", Colors.CYAN));
         this.boundedLayer = new GroupLayer(game.bounds.width(), game.bounds.height());
@@ -73,59 +72,15 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
 
 
     private void createUI() {
-        iface.createRoot(AxisLayout.vertical().offStretch(), GameStyle.newSheet(game), boundedLayer)
+        iface.createRoot(AxisLayout.horizontal().offStretch(), GameStyle.newSheet(game), boundedLayer)
                 .setSize(boundedLayer.width(), boundedLayer.height())
                 .setStyles(Style.BACKGROUND.is(Background.image(game.tileCache.tile(TileCache.Key.BACKGROUND))))
-                .add(new Shim(0, 80))
-                .add(new Label() {
-                    {
-                        updateText();
-                        context.currentPlayer.connect(new Slot<Player>() {
-                            @Override
-                            public void onEmit(Player player) {
-                                updateText();
-                            }
-
-                        });
-                    }
-
-                    private void updateText() {
-                        text.update(context.currentPlayer.get().getName() + "\'s turn");
-                    }
-                })
-                .add(new Label() {
-                    {
-                        updateText();
-                        SampleGameScreen.this.context.phase.connect(new Slot<Phase>() {
-                            @Override
-                            public void onEmit(Phase phase) {
-                                updateText();
-                            }
-                        });
-                    }
-
-                    private void updateText() {
-                        text.update("Current phase: " + context.phase.get().name());
-                    }
-                })
-
-                .add(new Label() {
-                         {
-                             updateText();
-                             SampleGameScreen.this.context.phase.connect(new Slot<Phase>() {
-                                 @Override
-                                 public void onEmit(Phase phase) {
-                                     updateText();
-                                 }
-                             });
-                         }
-
-                         private void updateText() {
-                             text.update("Current Location: " + context.currentPlayer.get().location.get().toString());
-                         }
-                     },
-                        new MapView(context, new Dimension(boundedLayer.width(), boundedLayer.height())));
+                .add(new Sidebar(context)
+                        .setConstraint(AxisLayout.stretched(1f)))
+                .add(new MapView(context, new Dimension(boundedLayer.width(), boundedLayer.height()))
+                        .setConstraint(AxisLayout.stretched(3f)));
     }
+
 
     private void configurePlayerAdvancementAtEndOfRound() {
         context.phase.connect(new Slot<Phase>() {
