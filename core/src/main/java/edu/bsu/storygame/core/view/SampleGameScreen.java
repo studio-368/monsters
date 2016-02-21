@@ -2,7 +2,11 @@ package edu.bsu.storygame.core.view;
 
 import edu.bsu.storygame.core.MonsterGame;
 import edu.bsu.storygame.core.assets.TileCache;
-import edu.bsu.storygame.core.model.*;
+import edu.bsu.storygame.core.json.EncounterParser;
+import edu.bsu.storygame.core.model.Encounter;
+import edu.bsu.storygame.core.model.GameContext;
+import edu.bsu.storygame.core.model.Phase;
+import edu.bsu.storygame.core.model.Player;
 import playn.core.Game;
 import playn.scene.GroupLayer;
 import pythagoras.f.Dimension;
@@ -28,7 +32,7 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
         game.plat.assets().getText("encounters/cockatrice.json").onSuccess(new Slot<String>() {
             @Override
             public void onEmit(String s) {
-                EncounterParser parser = new EncounterParser(game.plat);
+                EncounterParser parser = new EncounterParser(game.plat.json());
                 encounter = parser.parse(s);
             }
         }).onFailure(new Slot<Throwable>() {

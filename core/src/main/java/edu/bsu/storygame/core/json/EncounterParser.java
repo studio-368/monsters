@@ -1,20 +1,19 @@
-package edu.bsu.storygame.core.model;
+package edu.bsu.storygame.core.json;
 
+import edu.bsu.storygame.core.model.*;
 import playn.core.Json;
-import playn.core.Platform;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class EncounterParser {
 
-    private final Platform plat;
+    private final Json json;
 
-    public EncounterParser(Platform plat) {
-        this.plat = checkNotNull(plat);
+    public EncounterParser(Json json) {
+        this.json = checkNotNull(json);
     }
 
-    public Encounter parse(String string) {
-        Json.Object object = plat.json().parse(string);
+    public Encounter parse(Json.Object object) {
         final String name = object.getString("name");
         final String imageKey = object.getString("image");
 
@@ -27,6 +26,11 @@ public final class EncounterParser {
             encounterBuilder.reaction(reaction);
         }
         return encounterBuilder.build();
+    }
+
+    public Encounter parse(String string) {
+        Json.Object object = json.parse(string);
+        return parse(object);
     }
 
     private Story parseStory(Json.Object jsonStory) {
