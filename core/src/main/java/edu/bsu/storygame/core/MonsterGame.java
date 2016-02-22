@@ -1,6 +1,7 @@
 package edu.bsu.storygame.core;
 
 import edu.bsu.storygame.core.assets.ImageCache;
+import edu.bsu.storygame.core.assets.NarrativeCache;
 import edu.bsu.storygame.core.assets.TileCache;
 import edu.bsu.storygame.core.util.AspectRatioTool;
 import edu.bsu.storygame.core.util.GameBounds;
@@ -10,8 +11,6 @@ import playn.scene.Pointer;
 import playn.scene.SceneGame;
 import pythagoras.f.IRectangle;
 import tripleplay.game.ScreenStack;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 public class MonsterGame extends SceneGame {
 
@@ -23,13 +22,13 @@ public class MonsterGame extends SceneGame {
     public final TileCache tileCache;
     public final GameBounds bounds;
     public final ScreenStack screenStack;
-    public final EncounterConfiguration encounters;
+    public final NarrativeCache narrativeCache;
 
-    public MonsterGame(Platform plat, EncounterConfiguration encounterConfiguration) {
+    public MonsterGame(Platform plat) {
         super(plat, UPDATE_RATE_MS);
-        this.encounters = checkNotNull(encounterConfiguration);
         imageCache = new ImageCache(plat.assets());
         tileCache = new TileCache(plat.assets());
+        narrativeCache = new NarrativeCache(this);
         initInput();
         this.bounds = initAspectRatio();
         screenStack = new ScreenStack(this, rootLayer);

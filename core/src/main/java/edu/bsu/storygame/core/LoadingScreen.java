@@ -3,6 +3,7 @@ package edu.bsu.storygame.core;
 import com.google.common.collect.Lists;
 import edu.bsu.storygame.core.assets.ImageCache;
 import edu.bsu.storygame.core.assets.TileCache;
+import edu.bsu.storygame.core.model.Narrative;
 import edu.bsu.storygame.core.view.GameStyle;
 import edu.bsu.storygame.core.view.MenuScreen;
 import playn.core.Game;
@@ -20,7 +21,7 @@ import tripleplay.util.Colors;
 import java.util.Collection;
 import java.util.List;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class LoadingScreen extends ScreenStack.UIScreen {
 
@@ -32,7 +33,7 @@ public class LoadingScreen extends ScreenStack.UIScreen {
         super(game.plat);
         this.game = checkNotNull(game);
 
-        List<RFuture<Boolean>> futures = Lists.newArrayListWithCapacity(2);
+        List<RFuture<Boolean>> futures = Lists.newArrayListWithCapacity(3);
         futures.add(game.imageCache.state.map(new Function<ImageCache, Boolean>() {
             @Override
             public Boolean apply(ImageCache imageCache) {
@@ -42,6 +43,12 @@ public class LoadingScreen extends ScreenStack.UIScreen {
         futures.add(game.tileCache.state.map(new Function<TileCache, Boolean>() {
             @Override
             public Boolean apply(TileCache tileCache) {
+                return true;
+            }
+        }));
+        futures.add(game.narrativeCache.state.map(new Function<Narrative, Boolean>() {
+            @Override
+            public Boolean apply(Narrative narrative) {
                 return true;
             }
         }));

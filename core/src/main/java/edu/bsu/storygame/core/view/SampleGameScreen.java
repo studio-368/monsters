@@ -2,9 +2,7 @@ package edu.bsu.storygame.core.view;
 
 import edu.bsu.storygame.core.MonsterGame;
 import edu.bsu.storygame.core.assets.TileCache;
-import edu.bsu.storygame.core.model.GameContext;
-import edu.bsu.storygame.core.model.Phase;
-import edu.bsu.storygame.core.model.Player;
+import edu.bsu.storygame.core.model.*;
 import playn.core.Game;
 import playn.scene.GroupLayer;
 import pythagoras.f.Dimension;
@@ -25,6 +23,7 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
 
     public SampleGameScreen(final MonsterGame game) {
         super(checkNotNull(game).plat);
+
         this.game = game;
         this.context = new GameContext(game, new Player("Abigail", Colors.BLUE), new Player("Bruce", Colors.CYAN));
         this.boundedLayer = new GroupLayer(game.bounds.width(), game.bounds.height());
@@ -53,7 +52,10 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
                         .to(boundedLayer.height() * (1 - SIZE_PERCENT) / 2)
                         .in(200f)
                         .easeIn();
-                dialog.add(new EncounterView(context, game.encounters.encountersFor(null).get(0)));
+
+                Narrative narrative = game.narrativeCache.state.result().get();
+                Encounter encounter = narrative.forRegion(context.currentPlayer.get().location.get()).chooseOne();
+                dialog.add(new EncounterView(context, encounter));
 
                 connection = context.phase.connect(new Slot<Phase>() {
                     @Override

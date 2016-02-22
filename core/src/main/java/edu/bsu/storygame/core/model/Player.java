@@ -11,7 +11,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public final class Player {
     private final String name;
     private final int color;
-    public final RList<Skill>  skills = new RList<>(new ArrayList<Skill>());
+    public final RList<String> skills = new RList<>(new ArrayList<String>());
     public final Value<Integer> storyPoints = Value.create(0);
     public final Value<Region> location = Value.create(Region.AFRICA);
 
