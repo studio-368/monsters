@@ -1,6 +1,7 @@
 git:
   depth: 1
 language: java
+jdk: oraclejdk8
 script:
 - mvn -Phtml clean package
 - if [ "$TRAVIS_BRANCH" == "master" ]; then bash ./deploy.sh; fi
