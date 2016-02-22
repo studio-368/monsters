@@ -2,11 +2,13 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/editor/editor.iml" filepath="$PROJECT_DIR$/editor/editor.iml" />
       <module fileurl="file://$PROJECT_DIR$/monsters.iml" filepath="$PROJECT_DIR$/monsters.iml" />
       <module fileurl="file://$PROJECT_DIR$/assets/monsters-assets.iml" filepath="$PROJECT_DIR$/assets/monsters-assets.iml" />
       <module fileurl="file://$PROJECT_DIR$/core/monsters-core.iml" filepath="$PROJECT_DIR$/core/monsters-core.iml" />
       <module fileurl="file://$PROJECT_DIR$/html/monsters-html.iml" filepath="$PROJECT_DIR$/html/monsters-html.iml" />
       <module fileurl="file://$PROJECT_DIR$/java/monsters-java.iml" filepath="$PROJECT_DIR$/java/monsters-java.iml" />
+      <module fileurl="file://$PROJECT_DIR$/test-assets/test-assets.iml" filepath="$PROJECT_DIR$/test-assets/test-assets.iml" />
     </modules>
   </component>
 </project>

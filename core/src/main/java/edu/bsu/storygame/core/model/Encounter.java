@@ -1,26 +1,82 @@
 package edu.bsu.storygame.core.model;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
-import edu.bsu.storygame.core.assets.ImageCache;
-import playn.core.Image;
+import com.google.common.collect.Lists;
+
+import java.util.List;
+import java.util.Objects;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class Encounter {
 
-    public final Image image;
-    public final String name = "Angry Cockatrice";
-    public final ImmutableList<Reaction> reactions = ImmutableList.of(
-            new Reaction("Fight",
-                    new Story("You encounter an angry beast and charge forward to fight it like a silly English person.",
-                            ImmutableList.of(
-                                    new SkillTrigger(Skill.WEAPON_USE, "You pound the tar out of that chicken thing."),
-                                    new SkillTrigger(Skill.LOGIC, "You make peace with the ugly bird lizard.")))),
-            new Reaction("Hide",
-                    new Story("You hear a terrifying sound and hide like a girly man",
-                            ImmutableList.of(
-                                    new SkillTrigger(Skill.WEAPON_USE, "You spend the rest of the day sharpening your sword, not that you have the guts to use it."),
-                                    new SkillTrigger(Skill.LOGIC, "You relish the mustard of this dinner time.")))));
+    private static final int APPROXIMATE_MAX_CAPACITY = 4;
 
-    public Encounter(GameContext context) {
-        this.image = context.game.imageCache.image(ImageCache.Key.COCKATRICE);
+    public static Builder with(String name) {
+        return new Builder(name);
+    }
+
+    public static final class Builder {
+        private String name;
+        private String imageKey;
+        private List<Reaction> reactions = Lists.newArrayListWithCapacity(APPROXIMATE_MAX_CAPACITY);
+
+        private Builder(String name) {
+            this.name = checkNotNull(name);
+        }
+
+        public Builder image(String path) {
+            this.imageKey = checkNotNull(path);
+            return this;
+        }
+
+        public Builder reaction(Reaction reaction) {
+            checkNotNull(reaction);
+            this.reactions.add(reaction);
+            return this;
+        }
+
+        public Encounter build() {
+            return new Encounter(this);
+        }
+    }
+
+    public final String name;
+    public final String imageKey;
+    public final ImmutableList<Reaction> reactions;
+
+    private Encounter(Builder builder) {
+        this.name = builder.name;
+        this.imageKey = checkNotNull(builder.imageKey);
+        this.reactions = ImmutableList.copyOf(builder.reactions);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("name", name)
+                .add("imageKey", imageKey)
+                .add("reactions", reactions)
+                .toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, imageKey, reactions);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        } else if (obj instanceof Encounter) {
+            Encounter other = (Encounter) obj;
+            return Objects.equals(this.name, other.name)
+                    && Objects.equals(this.imageKey, other.imageKey)
+                    && Objects.equals(this.reactions, other.reactions);
+        } else {
+            return false;
+        }
     }
 }
