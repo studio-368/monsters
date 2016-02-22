@@ -16,6 +16,9 @@ public class BiSelector {
     }
 
     public void add(final Togglable<?> button) {
+        if (selections.size() == 2) {
+            return;
+        }
         button.selected().connect(new Slot<Boolean>() {
             @Override
             public void onEmit(Boolean isSelected) {
@@ -27,4 +30,6 @@ public class BiSelector {
             }
         });
     }
+
+
 }

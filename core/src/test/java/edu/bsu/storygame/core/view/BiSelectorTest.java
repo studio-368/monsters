@@ -10,6 +10,8 @@ public class BiSelectorTest {
 
     private BiSelector selector;
     private ToggleButton button;
+    private ToggleButton secondButton;
+    private ToggleButton thirdButton;
 
     @Before
     public void setUp() {
@@ -33,6 +35,13 @@ public class BiSelectorTest {
         selector.add(button);
     }
 
+    private void givenTwoTrackedToggleButtons() {
+        button = new ToggleButton();
+        selector.add(button);
+        secondButton = new ToggleButton();
+        selector.add(secondButton);
+    }
+
     @Test
     public void testDeSelect_sizeIsZero() {
         givenATrackedToggleButton();
@@ -40,4 +49,24 @@ public class BiSelectorTest {
         button.selected().update(false);
         assertEquals(0, selector.selections().size());
     }
+
+    @Test
+    public void testSelectElements_sizeIsTwo() {
+        givenTwoTrackedToggleButtons();
+        button.selected().update(true);
+        secondButton.selected().update(true);
+        assertEquals(2, selector.selections().size());
+    }
+
+    @Test
+    public void testRestrictElements_sizeOfTwo() {
+        givenTwoTrackedToggleButtons();
+        button.selected().update(true);
+        secondButton.selected().update(true);
+        thirdButton = new ToggleButton();
+        selector.add(thirdButton);
+        thirdButton.selected().update(true);
+        assertEquals(2, selector.selections().size());
+    }
+
 }
