@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import react.Slot;
 import tripleplay.ui.Togglable;
+import tripleplay.ui.ToggleButton;
 
 import java.util.List;
 
@@ -16,20 +17,28 @@ public class BiSelector {
     }
 
     public void add(final Togglable<?> button) {
-        if (selections.size() == 2) {
-            return;
-        }
-        button.selected().connect(new Slot<Boolean>() {
-            @Override
-            public void onEmit(Boolean isSelected) {
-                if (isSelected) {
-                    selections.add(button);
-                } else {
-                    selections.remove(button);
+        if (isUpdatable()) {
+            button.selected().connect(new Slot<Boolean>() {
+                @Override
+                public void onEmit(Boolean isSelected) {
+                    if (isSelected) {
+                        selections.add(button);
+                    } else {
+                        selections.remove(button);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
+    public boolean isUpdatable() {
+        return (selections.size() < 2);
+    }
 
+    public void disableButtons() {
+        for (Togglable<?> button : selections()) {
+            ToggleButton toggled = (ToggleButton) button;
+            toggled.setEnabled(false);
+        }
+    }
 }

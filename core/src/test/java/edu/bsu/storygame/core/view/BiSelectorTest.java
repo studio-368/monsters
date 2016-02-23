@@ -11,7 +11,6 @@ public class BiSelectorTest {
     private BiSelector selector;
     private ToggleButton button;
     private ToggleButton secondButton;
-    private ToggleButton thirdButton;
 
     @Before
     public void setUp() {
@@ -51,6 +50,15 @@ public class BiSelectorTest {
     }
 
     @Test
+    public void testDeSelect_sizeIsOne() {
+        givenTwoTrackedToggleButtons();
+        button.selected().update(true);
+        secondButton.selected().update(true);
+        button.selected().update(false);
+        assertEquals(1, selector.selections().size());
+    }
+
+    @Test
     public void testSelectElements_sizeIsTwo() {
         givenTwoTrackedToggleButtons();
         button.selected().update(true);
@@ -59,14 +67,29 @@ public class BiSelectorTest {
     }
 
     @Test
-    public void testRestrictElements_sizeOfTwo() {
+    public void testThreeItemsAdded_TwoSelected() {
         givenTwoTrackedToggleButtons();
-        button.selected().update(true);
-        secondButton.selected().update(true);
-        thirdButton = new ToggleButton();
+        ToggleButton thirdButton = new ToggleButton();
+        button.selected().update(selector.isUpdatable());
+        secondButton.selected().update(selector.isUpdatable());
         selector.add(thirdButton);
-        thirdButton.selected().update(true);
+        thirdButton.selected().update(selector.isUpdatable());
         assertEquals(2, selector.selections().size());
+    }
+
+    @Test
+    public void disableButtons() {
+        givenTwoTrackedToggleButtons();
+        ToggleButton thirdButton = new ToggleButton();
+        button.selected().update(selector.isUpdatable());
+        secondButton.selected().update(selector.isUpdatable());
+        selector.add(thirdButton);
+        thirdButton.selected().update(selector.isUpdatable());
+        if (!selector.isUpdatable()) {
+            selector.disableButtons();
+        }
+        ToggleButton toggled = (ToggleButton) selector.selections().get(0);
+        assertEquals(false, toggled.isEnabled());
     }
 
 }
