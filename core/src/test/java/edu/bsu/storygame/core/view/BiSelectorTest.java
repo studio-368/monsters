@@ -8,8 +8,7 @@ import tripleplay.ui.ToggleButton;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkState;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
 public class BiSelectorTest {
 
@@ -34,8 +33,12 @@ public class BiSelectorTest {
         thenTheNumberOfSelectionsIs(1);
     }
 
-    private void thenTheNumberOfSelectionsIs(int number) {
-        assertEquals(number, selector.selections().size());
+    private void givenTrackedToggleButtons(int number) {
+        for (; number > 0; number--) {
+            ToggleButton button = new ToggleButton();
+            buttons.add(button);
+            selector.add(button);
+        }
     }
 
     private void whenTheFirstButtonIsToggled() {
@@ -43,12 +46,8 @@ public class BiSelectorTest {
         button.selected().update(!button.selected().get());
     }
 
-    private void givenTrackedToggleButtons(int number) {
-        for (; number > 0; number--) {
-            ToggleButton button = new ToggleButton();
-            buttons.add(button);
-            selector.add(button);
-        }
+    private void thenTheNumberOfSelectionsIs(int number) {
+        assertEquals(number, selector.selections().size());
     }
 
     @Test
@@ -93,10 +92,47 @@ public class BiSelectorTest {
     }
 
     @Test
-    public void testDisableButtonsAfterTwoSelections() {
+    public void testTwoSelections_otherButtonsAreDisabled() {
         givenTrackedToggleButtons(3);
         whenButtonsAreSelected(2);
         assertFalse(buttons.get(2).isEnabled());
     }
 
+    @Test
+    public void testTwoSelections_firstButtonIsStillEnabled() {
+        givenTrackedToggleButtons(3);
+        whenButtonsAreSelected(2);
+        assertTrue(buttons.get(0).isEnabled());
+    }
+
+    @Test
+    public void testTwoSelections_secondButtonIsStillEnabled() {
+        givenTrackedToggleButtons(3);
+        whenButtonsAreSelected(2);
+        assertTrue(buttons.get(1).isEnabled());
+    }
+
+    @Test
+    public void testTwoSelections_deselectOne_allButtonsEnabledAgain() {
+        givenTrackedToggleButtons(3);
+        givenButtonsAreSelected(2);
+        whenButtonsAreDeselected(1);
+        thenAllButtonsAreEnabled();
+    }
+
+    private void whenButtonsAreDeselected(int number) {
+        for (int i = 0; i < number; i++) {
+            buttons.get(i).selected().update(false);
+        }
+    }
+
+    private void thenAllButtonsAreEnabled() {
+        int disabled = 0;
+        for (ToggleButton b : buttons) {
+            if (!b.isEnabled()) {
+                disabled++;
+            }
+        }
+        assertEquals("Found " + disabled + " disabled buttons.", 0, disabled);
+    }
 }

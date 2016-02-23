@@ -9,6 +9,7 @@ import tripleplay.ui.ToggleButton;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 public class BiSelector {
 
@@ -20,8 +21,11 @@ public class BiSelector {
         return ImmutableList.copyOf(selections);
     }
 
-
     public BiSelector() {
+        configureButtonEnableManagementBasedOnSelectionSize();
+    }
+
+    private void configureButtonEnableManagementBasedOnSelectionSize() {
         selections.connect(new RList.Listener<ToggleButton>() {
             @Override
             public void onAdd(ToggleButton elem) {
@@ -34,6 +38,18 @@ public class BiSelector {
                 for (ToggleButton button : tracked) {
                     button.setEnabled(button.selected().get());
                 }
+            }
+
+            @Override
+            public void onRemove(ToggleButton elem) {
+                for (ToggleButton button : tracked) {
+                    button.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void onRemove(int index, ToggleButton elem) {
+                this.onRemove(elem);
             }
         });
     }
@@ -51,7 +67,8 @@ public class BiSelector {
                         selections.add(button);
                     }
                 } else {
-                    selections.remove(button);
+                    boolean removed = selections.remove(button);
+                    checkState(removed, "Attempted to remove an untracked button.");
                 }
             }
 
