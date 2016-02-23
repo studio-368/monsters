@@ -6,6 +6,7 @@ import edu.bsu.storygame.core.model.Narrative;
 import edu.bsu.storygame.core.model.Region;
 import edu.bsu.storygame.core.util.ScreamingCapitalizer;
 import playn.core.Json;
+import playn.core.json.JsonParserException;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -18,7 +19,7 @@ public final class NarrativeParser {
         this.encounterParser = new EncounterParser(json);
     }
 
-    public Narrative parse(String jsonString) {
+    public Narrative parse(String jsonString) throws JsonParserException {
         Narrative.Builder narrativeBuilder = new Narrative.Builder();
 
         Json.Array array = json.parseArray(jsonString);
