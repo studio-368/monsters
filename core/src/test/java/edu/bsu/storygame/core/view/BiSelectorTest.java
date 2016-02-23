@@ -5,6 +5,7 @@ import org.junit.Test;
 import tripleplay.ui.ToggleButton;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 public class BiSelectorTest {
 
@@ -66,30 +67,24 @@ public class BiSelectorTest {
         assertEquals(2, selector.selections().size());
     }
 
-    @Test
-    public void testThreeItemsAdded_TwoSelected() {
+    @Test(expected = IllegalStateException.class)
+    public void testThreeItemsAdded_twoSelected_thirdSelectionThrowsException() {
         givenTwoTrackedToggleButtons();
         ToggleButton thirdButton = new ToggleButton();
-        button.selected().update(selector.isUpdatable());
-        secondButton.selected().update(selector.isUpdatable());
         selector.add(thirdButton);
-        thirdButton.selected().update(selector.isUpdatable());
-        assertEquals(2, selector.selections().size());
+        button.selected().update(true);
+        secondButton.selected().update(true);
+        thirdButton.selected().update(true);
     }
 
     @Test
-    public void disableButtons() {
+    public void testDisableButtonsAfterTwoSelections() {
         givenTwoTrackedToggleButtons();
         ToggleButton thirdButton = new ToggleButton();
-        button.selected().update(selector.isUpdatable());
-        secondButton.selected().update(selector.isUpdatable());
         selector.add(thirdButton);
-        thirdButton.selected().update(selector.isUpdatable());
-        if (!selector.isUpdatable()) {
-            selector.disableButtons();
-        }
-        ToggleButton toggled = (ToggleButton) selector.selections().get(0);
-        assertEquals(false, toggled.isEnabled());
+        button.selected().update(true);
+        secondButton.selected().update(true);
+        assertFalse(thirdButton.isEnabled());
     }
 
 }
