@@ -21,14 +21,15 @@ public class PlayerCreationScreen extends ScreenStack.UIScreen {
     private GameContext context;
     private final BiSelector playerOneSelector = new BiSelector();
     private final BiSelector playerTwoSelector = new BiSelector();
+    private playerOneGroup groupFactory = new playerOneGroup();
     private final Group playerOneSkills;
     private final Group playerTwoSkills;
     private final Field playerOneField;
     private final Field playerTwoField;
     final RList<String> skillsOne = new RList<>(new ArrayList<String>());
     final RList<String> skillsTwo = new RList<>(new ArrayList<String>());
-    private Root root;
     private Label header;
+    private Root root;
 
     public PlayerCreationScreen(final MonsterGame game) {
         super(game.plat);
@@ -38,33 +39,10 @@ public class PlayerCreationScreen extends ScreenStack.UIScreen {
         root.addStyles(Style.BACKGROUND.is(Background.solid(Colors.ORANGE)));
         root.add(header = new Label("Nightmare Defenders!"));
         root.add(new Group(AxisLayout.horizontal().gap(200)).add(
-                new Group(AxisLayout.vertical().gap(50)).add(
-                        playerOneField = new Field("Enter Name").setPopupLabel("Enter Your Name"),
-                        playerOneSkills = new Group(new TableLayout(2).gaps(20, 20)).add(
-                                new SkillButton("Athleticism"),
-                                new SkillButton("Logic"),
-                                new SkillButton("Magic"),
-                                new SkillButton("Persuasion"),
-                                new SkillButton("Stealth"),
-                                new SkillButton("Weapon Use")
-                        )
-                ),
-                new Group(AxisLayout.vertical().gap(50)).add(
-                        playerTwoField = new Field("Enter Name").setPopupLabel("Enter Your Name"),
-                        playerTwoSkills = new Group(new TableLayout(2).gaps(20, 20)).add(
-                                new SkillButton("Athleticism"),
-                                new SkillButton("Logic"),
-                                new SkillButton("Magic"),
-                                new SkillButton("Persuasion"),
-                                new SkillButton("Stealth"),
-                                new SkillButton("Weapon Use")
-                        )
-                )
+                groupFactory.createPlayerGroup(playerOneField = new Field("Name"), playerOneSkills = groupFactory.createSkillGroup()),
+                groupFactory.createPlayerGroup(playerTwoField = new Field("Name"), playerTwoSkills = groupFactory.createSkillGroup())
         ));
-
         linkSelectors();
-
-
         root.add(new Button("Start")
                 .addStyles(Style.FONT.is(new Font("Times New Roman", 50)),
                         Style.HALIGN.center)
@@ -101,8 +79,8 @@ public class PlayerCreationScreen extends ScreenStack.UIScreen {
     private boolean hasCompletedPlayerCreation() {
         return playerOneSelector.selections().size() == 2
                 && playerTwoSelector.selections().size() == 2
-                && !playerOneField.text.get().equals("Enter Name")
-                && !playerTwoField.text.get().equals("Enter Name");
+                && !playerOneField.text.get().equals("Name")
+                && !playerTwoField.text.get().equals("Name");
     }
 
     @Override
@@ -115,6 +93,28 @@ public class PlayerCreationScreen extends ScreenStack.UIScreen {
         private SkillButton(String text) {
             super(text);
             setConstraint(Constraints.fixedSize(game.bounds.width() * 0.1f, game.bounds.height() * 0.1f));
+        }
+    }
+
+    private final class playerOneGroup extends PlayerCreationGroup {
+
+        @Override
+        public Group createPlayerGroup(Field nameField, Group skillGroup) {
+
+            return new Group(AxisLayout.vertical().gap(50)).add(
+                    nameField.setPopupLabel("Enter Your Name"),
+                    skillGroup.add(new SkillButton("Athleticism"),
+                            new SkillButton("Logic"),
+                            new SkillButton("Magic"),
+                            new SkillButton("Persuasion"),
+                            new SkillButton("Stealth"),
+                            new SkillButton("Weapon Use")
+                    ));
+        }
+
+        @Override
+        public Group createSkillGroup() {
+            return new Group(new TableLayout(2).gaps(20, 20));
         }
     }
 
