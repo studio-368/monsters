@@ -32,7 +32,7 @@
 
         <dependency>
             <groupId>io.playn</groupId>
-            <artifactId>playn-java-lwjgl</artifactId>
+            <artifactId>playn-java-lwjgl2</artifactId>
             <version>${playn.version}</version>
         </dependency>
 
