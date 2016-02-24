@@ -19,8 +19,8 @@ public class PlayerCreationScreen extends ScreenStack.UIScreen {
 
     private final MonsterGame game;
     private GameContext context;
-    private final BiSelector playerOneSelector;
-    private final BiSelector playerTwoSelector;
+    private final BiSelector playerOneSelector = new BiSelector();
+    private final BiSelector playerTwoSelector = new BiSelector();
     private final Group playerOneSkills;
     private final Group playerTwoSkills;
     private final Field playerOneField;
@@ -33,8 +33,6 @@ public class PlayerCreationScreen extends ScreenStack.UIScreen {
     public PlayerCreationScreen(final MonsterGame game) {
         super(game.plat);
         this.game = game;
-        playerOneSelector = new BiSelector();
-        playerTwoSelector = new BiSelector();
         root = iface.createRoot(AxisLayout.vertical().gap(100), SimpleStyles.newSheet(game.plat.graphics()), layer);
         root.setSize(game.bounds.width(), game.bounds.height());
         root.addStyles(Style.BACKGROUND.is(Background.solid(Colors.ORANGE)));
@@ -95,7 +93,7 @@ public class PlayerCreationScreen extends ScreenStack.UIScreen {
     private void savePlayerInformation() {
         for (int item = 0; item < 2; item++) {
             skillsOne.add(playerOneSelector.selections().get(item).text.get());
-            skillsTwo.add(playerOneSelector.selections().get(item).text.get());
+            skillsTwo.add(playerTwoSelector.selections().get(item).text.get());
         }
         this.context = new GameContext(game, new Player(playerOneField.text.get(), Colors.BLUE, skillsOne), new Player(playerTwoField.text.get(), Colors.CYAN, skillsTwo));
     }
