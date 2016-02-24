@@ -39,7 +39,7 @@ public class PlayerCreationScreen extends ScreenStack.UIScreen {
         root.add(header = new Label("Nightmare Defenders!"));
         root.add(new Group(AxisLayout.horizontal().gap(200)).add(
                 new Group(AxisLayout.vertical().gap(50)).add(
-                        playerOneField = new Field("Name").setPopupLabel("Enter Your Name"),
+                        playerOneField = new Field("Enter Name").setPopupLabel("Enter Your Name"),
                         playerOneSkills = new Group(new TableLayout(2).gaps(20, 20)).add(
                                 new SkillButton("Athleticism"),
                                 new SkillButton("Logic"),
@@ -50,7 +50,7 @@ public class PlayerCreationScreen extends ScreenStack.UIScreen {
                         )
                 ),
                 new Group(AxisLayout.vertical().gap(50)).add(
-                        playerTwoField = new Field("Name").setPopupLabel("Enter Your Name"),
+                        playerTwoField = new Field("Enter Name").setPopupLabel("Enter Your Name"),
                         playerTwoSkills = new Group(new TableLayout(2).gaps(20, 20)).add(
                                 new SkillButton("Athleticism"),
                                 new SkillButton("Logic"),
@@ -101,8 +101,8 @@ public class PlayerCreationScreen extends ScreenStack.UIScreen {
     private boolean hasCompletedPlayerCreation() {
         return playerOneSelector.selections().size() == 2
                 && playerTwoSelector.selections().size() == 2
-                && !playerOneField.text.equals(null)
-                && !playerTwoField.text.equals(null);
+                && !playerOneField.text.get().equals("Enter Name")
+                && !playerTwoField.text.get().equals("Enter Name");
     }
 
     @Override
