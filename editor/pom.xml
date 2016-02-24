@@ -57,5 +57,10 @@
             <version>2.6.1</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.threerings</groupId>
+            <artifactId>react</artifactId>
+            <version>1.5.2</version>
+        </dependency>
     </dependencies>
 </project>
