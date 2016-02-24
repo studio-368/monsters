@@ -5,23 +5,47 @@ import react.Value;
 
 import java.util.ArrayList;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
-
 public final class Player {
+
     private final String name;
     private final int color;
-    public final RList<String> skills = new RList<>(new ArrayList<String>());
-    public final Value<Integer> storyPoints = Value.create(0);
+    public RList<String> skills = new RList<>(new ArrayList<String>());
+    public Value<Integer> storyPoints = Value.create(0);
     public final Value<Region> location = Value.create(Region.AFRICA);
 
-    public Player(String name, int color, RList<String> skills) {
-        checkNotNull(name, "Name may not be null");
-        checkArgument(!name.trim().isEmpty(), "Name must have non-whitespace characters");
-        this.name = name;
-        this.color = color;
+    public static class Builder {
+
+        private String name;
+        private int color;
+        public RList<String> skills = new RList<>(new ArrayList<String>());
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder color(int color) {
+            this.color = color;
+            return this;
+        }
+
+        public Builder skills(RList<String> skills) {
+            this.skills = skills;
+            return this;
+        }
+
+        public Player build() {
+            return new Player(this);
+        }
+    }
+
+    private Player(Builder builder) {
+        this.name = builder.name;
+        this.color = builder.color;
+        this.skills = builder.skills;
     }
 
     public String getName(){return name;}
 
 }
+
