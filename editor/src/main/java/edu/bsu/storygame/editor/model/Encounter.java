@@ -13,4 +13,9 @@ public class Encounter {
         this.image = image;
         this.reactions = new ArrayList<>(reactions);
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

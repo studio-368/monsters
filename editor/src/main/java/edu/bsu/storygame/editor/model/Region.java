@@ -10,4 +10,9 @@ public class Region {
         this.region = region;
         this.encounters = encounters;
     }
+
+    @Override
+    public String toString() {
+        return region;
+    }
 }

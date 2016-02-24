@@ -8,4 +8,9 @@ public class SkillTrigger {
         this.skill = skill;
         this.conclusion = conclusion;
     }
+
+    @Override
+    public String toString() {
+        return skill;
+    }
 }

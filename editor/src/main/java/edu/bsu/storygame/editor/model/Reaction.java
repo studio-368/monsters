@@ -9,4 +9,9 @@ public class Reaction {
         this.name = name;
         this.story = story;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
