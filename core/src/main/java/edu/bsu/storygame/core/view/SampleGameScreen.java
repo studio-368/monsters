@@ -21,10 +21,10 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
     private final GameContext context;
     private final GroupLayer boundedLayer;
 
-    public SampleGameScreen(final MonsterGame game) {
+    public SampleGameScreen(final MonsterGame game, final GameContext context) {
         super(checkNotNull(game).plat);
         this.game = game;
-        this.context = new GameContext(game, new Player("Abigail", Colors.BLUE), new Player("Bruce", Colors.CYAN));
+        this.context = context;
         this.boundedLayer = new GroupLayer(game.bounds.width(), game.bounds.height());
         layer.addAt(boundedLayer,
                 (game.plat.graphics().viewSize.width() - game.bounds.width()) / 2,
