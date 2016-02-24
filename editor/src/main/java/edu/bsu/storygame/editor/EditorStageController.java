@@ -4,6 +4,7 @@ import edu.bsu.storygame.editor.model.Encounter;
 import edu.bsu.storygame.editor.model.Narrative;
 import edu.bsu.storygame.editor.view.EmptyDocumentPane;
 import edu.bsu.storygame.editor.view.EncounterEditPane;
+import edu.bsu.storygame.editor.view.JsonPromptStage;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -51,10 +52,23 @@ public class EditorStageController implements Initializable {
         narrative.updateForce(null);
     }
 
-    private void updateNarrativeView() {
-        if (narrative.get() == null) return;
+    public void updateNarrativeView() {
+        if (narrative.get() == null) {
+            configureNoDocument();
+            return;
+        }
         TreeItemWrapper<Narrative> root = TreeItemWrapper.wrap(narrative.get());
         narrativeTree.setRoot(root);
+        narrativeTree.setShowRoot(false);
+        configureDocumentOpened();
+    }
+
+    private void configureNoDocument() {
+
+    }
+
+    private void configureDocumentOpened() {
+        textSaveMenuItem.setDisable(false);
     }
 
     private void configureItemSelection() {
@@ -62,7 +76,7 @@ public class EditorStageController implements Initializable {
             if (c.getList().size() == 0) return;
             Object selectedObject = ((TreeItemWrapper<Object>) c.getList().get(0)).reference;
             if (selectedObject instanceof Encounter) {
-                setEditPane(new EncounterEditPane((Encounter) selectedObject));
+                setEditPane(new EncounterEditPane((Encounter) selectedObject, EditorStageController.this));
             }
         });
     }
@@ -76,5 +90,15 @@ public class EditorStageController implements Initializable {
         String jsonString = JsonPromptStage.prompt();
         if (jsonString == null) return;
         narrative.update(parser.parse(jsonString));
+    }
+
+    @FXML
+    public void displayJsonText() {
+        String jsonString = parser.convertToJson(narrative.get());
+        JsonPromptStage.display(jsonString);
+    }
+
+    public void refresh() {
+        updateNarrativeView();
     }
 }

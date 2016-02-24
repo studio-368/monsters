@@ -8,6 +8,10 @@ public class Encounter {
     public String image;
     public List<Reaction> reactions;
 
+    public static Encounter emptyEncounter() {
+        return new Encounter("", "", new ArrayList<>());
+    }
+
     public Encounter(String name, String image, List<Reaction> reactions) {
         this.name = name;
         this.image = image;

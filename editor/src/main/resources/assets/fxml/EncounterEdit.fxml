@@ -9,12 +9,14 @@
     <columnConstraints>
         <ColumnConstraints halignment="LEFT" hgrow="NEVER" minWidth="10.0"/>
         <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0"/>
+        <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0"/>
     </columnConstraints>
     <rowConstraints>
         <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="SOMETIMES"/>
         <RowConstraints minHeight="10.0" valignment="TOP" vgrow="SOMETIMES"/>
         <RowConstraints minHeight="10.0" valignment="TOP" vgrow="SOMETIMES"/>
-        <RowConstraints minHeight="10.0" valignment="TOP" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" valignment="TOP" vgrow="ALWAYS"/>
+        <RowConstraints minHeight="10.0" valignment="TOP" vgrow="NEVER"/>
     </rowConstraints>
     <children>
         <Label fx:id="encounterName" text="Monster Name" GridPane.columnSpan="2">
@@ -40,16 +42,27 @@
                 <HBox spacing="5.0">
                     <children>
                         <Button fx:id="reactionAddButton" mnemonicParsing="false" onAction="#onReactionAdd" text="Add"/>
+                        <Button fx:id="reactionRenameButton" disable="true" mnemonicParsing="false"
+                                onAction="#onReactionRename" text="Rename"/>
                         <Button fx:id="reactionDeleteButton" disable="true" mnemonicParsing="false"
                                 onAction="#onReactionDelete" text="Delete"/>
-                        <Button fx:id="reactionOpenButton" disable="true" mnemonicParsing="false"
-                                onAction="#onReactionOpen" text="Open..."/>
                     </children>
                 </HBox>
             </children>
         </VBox>
         <Label text="Image:" GridPane.rowIndex="2"/>
         <TextField fx:id="encounterImage" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+        <VBox alignment="CENTER" spacing="15.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
+            <children>
+                <Button fx:id="reactionUpButton" disable="true" maxWidth="1.7976931348623157E308"
+                        mnemonicParsing="false" onAction="#onReactionUpwards" text="Up"/>
+                <Button fx:id="reactionDownButton" disable="true" maxWidth="1.7976931348623157E308"
+                        mnemonicParsing="false" onAction="#onReactionDownwards" text="Down"/>
+            </children>
+            <padding>
+                <Insets bottom="30.0"/>
+            </padding>
+        </VBox>
     </children>
     <padding>
         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>

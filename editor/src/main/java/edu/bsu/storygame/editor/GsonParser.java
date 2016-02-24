@@ -1,6 +1,7 @@
 package edu.bsu.storygame.editor;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import edu.bsu.storygame.editor.model.Narrative;
 import edu.bsu.storygame.editor.model.Region;
@@ -14,7 +15,7 @@ public class GsonParser {
     private final Gson gson;
 
     public GsonParser() {
-        this(new Gson());
+        this(new GsonBuilder().setPrettyPrinting().create());
     }
 
     public GsonParser(Gson gson) {

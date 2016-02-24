@@ -1,21 +1,24 @@
 package edu.bsu.storygame.editor.view;
 
 import com.sun.javafx.collections.ObservableListWrapper;
+import edu.bsu.storygame.editor.EditorStageController;
 import edu.bsu.storygame.editor.model.Encounter;
 import edu.bsu.storygame.editor.model.Reaction;
+import edu.bsu.storygame.editor.model.Story;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class EncounterEditPane extends GridPane {
 
     private final Encounter encounter;
+    private final EditorStageController parent;
 
     @FXML
     private ListView<Reaction> encounterReactionsList;
@@ -24,17 +27,24 @@ public class EncounterEditPane extends GridPane {
     @FXML
     private Button reactionAddButton;
     @FXML
+    private Button reactionUpButton;
+    @FXML
+    private Button reactionDownButton;
+    @FXML
+    private Button reactionRenameButton;
+    @FXML
     private TextField encounterNameTextField;
     @FXML
     private TextField encounterImage;
     @FXML
     private Button reactionDeleteButton;
-    @FXML
-    private Button reactionOpenButton;
+    private Reaction selectedReaction = null;
 
-    public EncounterEditPane(Encounter encounter) {
+    public EncounterEditPane(Encounter encounter, EditorStageController parent) {
+        this.parent = parent;
         this.encounter = encounter;
         loadFxml();
+        configure();
         populate();
     }
 
@@ -49,6 +59,28 @@ public class EncounterEditPane extends GridPane {
         }
     }
 
+    private void configure() {
+        encounterReactionsList.getSelectionModel().getSelectedItems().addListener((ListChangeListener<Reaction>) c -> {
+            if (c.getList().size() == 0) {
+                selectedReaction = null;
+                setReactionButtonsDisabled(true);
+            } else {
+                selectedReaction = c.getList().get(0);
+                setReactionButtonsDisabled(false);
+            }
+        });
+    }
+
+    private void setReactionButtonsDisabled(boolean disabled) {
+        ObservableList<Reaction> items = encounterReactionsList.getItems();
+        boolean topOfList = items.indexOf(selectedReaction) == 0;
+        boolean bottomOfList = items.indexOf(selectedReaction) == items.size() - 1;
+        reactionRenameButton.setDisable(disabled);
+        reactionDeleteButton.setDisable(disabled);
+        reactionUpButton.setDisable(disabled || topOfList);
+        reactionDownButton.setDisable(disabled || bottomOfList);
+    }
+
     private void populate() {
         encounterName.setText(encounter.name + " encounter");
         encounterNameTextField.setText(encounter.name);
@@ -58,17 +90,61 @@ public class EncounterEditPane extends GridPane {
 
     @FXML
     private void onReactionAdd() {
-        // TODO This method must exist for FXML to load
+        String reactionName = TextPrompt.emptyPrompt();
+        if (reactionName == null) return;
+        Reaction reaction = new Reaction(reactionName, Story.emptyStory());
+        encounterReactionsList.getItems().add(reaction);
+        refresh();
     }
 
     @FXML
     private void onReactionDelete() {
-        // TODO This method must exist for FXML to load
+        if (confirm("Are you sure you want to delete this?")) {
+            encounterReactionsList.getItems().remove(selectedReaction);
+            refresh();
+        }
+    }
+
+
+    @FXML
+    private void onReactionRename() {
+        selectedReaction.name = TextPrompt.promptFromString(selectedReaction.name);
+        refresh();
     }
 
     @FXML
-    private void onReactionOpen() {
-        // TODO This method must exist for FXML to load
+    private void onReactionUpwards() {
+        ObservableList<Reaction> list = encounterReactionsList.getItems();
+        int index = list.indexOf(selectedReaction);
+        Reaction oldReaction = list.remove(index);
+        list.add(index - 1, oldReaction);
+        refresh();
+        encounterReactionsList.getSelectionModel().selectIndices(index - 1);
+    }
+
+    @FXML
+    private void onReactionDownwards() {
+        ObservableList<Reaction> list = encounterReactionsList.getItems();
+        int index = list.indexOf(selectedReaction);
+        Reaction oldReaction = list.remove(index);
+        list.add(index + 1, oldReaction);
+        refresh();
+        encounterReactionsList.getSelectionModel().selectIndices(index + 1);
+    }
+
+    private boolean confirm(String prompt) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText(null);
+        alert.setContentText(prompt);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.get() == ButtonType.OK;
+    }
+
+    private void refresh() {
+        parent.refresh();
+        encounterReactionsList.refresh();
     }
 
 }

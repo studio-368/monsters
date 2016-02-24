@@ -1,4 +1,4 @@
-package edu.bsu.storygame.editor;
+package edu.bsu.storygame.editor.view;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -22,6 +22,13 @@ public class JsonPromptStage extends Stage {
         JsonPromptStage stage = new JsonPromptStage();
         stage.showAndWait();
         return stage.jsonText;
+    }
+
+    public static void display(String json) {
+        JsonPromptStage stage = new JsonPromptStage();
+        stage.jsonTextArea.setText(json);
+        stage.jsonTextArea.setEditable(false);
+        stage.show();
     }
 
     private JsonPromptStage() {

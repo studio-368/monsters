@@ -32,7 +32,8 @@
                                                     shortcut="UP"/>
                             </accelerator>
                         </MenuItem>
-                        <MenuItem fx:id="textSaveMenuItem" disable="true" text="View _JSON...">
+                        <MenuItem fx:id="textSaveMenuItem" disable="true" onAction="#displayJsonText"
+                                  text="View _JSON...">
                             <accelerator>
                                 <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="DOWN"
                                                     shortcut="UP"/>
