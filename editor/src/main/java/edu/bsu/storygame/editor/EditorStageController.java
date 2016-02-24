@@ -1,23 +1,44 @@
 package edu.bsu.storygame.editor;
 
-import edu.bsu.storygame.editor.model.*;
+import edu.bsu.storygame.editor.model.Encounter;
+import edu.bsu.storygame.editor.model.Narrative;
+import edu.bsu.storygame.editor.view.EmptyDocumentPane;
+import edu.bsu.storygame.editor.view.EncounterEditPane;
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import react.Slot;
 import react.Value;
 
-public class EditorStageController {
+import java.net.URL;
+import java.util.ResourceBundle;
+import java.util.Stack;
+
+public class EditorStageController implements Initializable {
 
     @FXML
-    MenuItem fileSaveMenuItem;
+    private BorderPane rootNode;
+    @FXML
+    private MenuItem fileSaveMenuItem;
+    @FXML
+    public MenuItem textSaveMenuItem;
     @FXML
     private TreeView<String> narrativeTree;
+    private EmptyDocumentPane emptyDocumentPane = new EmptyDocumentPane(this);
+    private final Stack<Pane> editStack = new Stack<>();
+
     private final GsonParser parser = new GsonParser();
     private final Value<Narrative> narrative = Value.create(null);
 
-    public EditorStageController() {
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
         configureNarrativeListener();
+        configureItemSelection();
     }
 
     private void configureNarrativeListener() {
@@ -31,45 +52,27 @@ public class EditorStageController {
     }
 
     private void updateNarrativeView() {
-        if (narrative.get() == null) return; // TODO: Make blank
-        TreeItemWrapper<Narrative> root = new TreeItemWrapper<>("Narrative", narrative.get());
-        addRegions(root);
+        if (narrative.get() == null) return;
+        TreeItemWrapper<Narrative> root = TreeItemWrapper.wrap(narrative.get());
         narrativeTree.setRoot(root);
     }
 
-    private void addRegions(TreeItemWrapper<Narrative> root) {
-        for (Region region : root.reference.regions) {
-            TreeItemWrapper<Region> regionItem = new TreeItemWrapper<>(region.region, region);
-            addEncounters(regionItem);
-            root.getChildren().add(regionItem);
-        }
+    private void configureItemSelection() {
+        narrativeTree.getSelectionModel().getSelectedItems().addListener((ListChangeListener<TreeItem<String>>) c -> {
+            if (c.getList().size() == 0) return;
+            Object selectedObject = ((TreeItemWrapper<Object>) c.getList().get(0)).reference;
+            if (selectedObject instanceof Encounter) {
+                setEditPane(new EncounterEditPane((Encounter) selectedObject));
+            }
+        });
     }
 
-    private void addEncounters(TreeItemWrapper<Region> regions) {
-        for (Encounter encounter : regions.reference.encounters) {
-            TreeItemWrapper<Encounter> encounterItem = new TreeItemWrapper<>(encounter.name, encounter);
-            addReactions(encounterItem);
-            regions.getChildren().add(encounterItem);
-        }
-    }
-
-    private void addReactions(TreeItemWrapper<Encounter> encounters) {
-        for (Reaction reaction : encounters.reference.reactions) {
-            TreeItemWrapper<Reaction> reactionItem = new TreeItemWrapper<>(reaction.name, reaction);
-            addSkillTriggers(reactionItem);
-            encounters.getChildren().add(reactionItem);
-        }
-    }
-
-    private void addSkillTriggers(TreeItemWrapper<Reaction> reactions) {
-        for (SkillTrigger trigger : reactions.reference.story.triggers) {
-            TreeItemWrapper<SkillTrigger> item = new TreeItemWrapper<>(trigger.skill, trigger);
-            reactions.getChildren().add(item);
-        }
+    private void setEditPane(Pane pane) {
+        rootNode.setCenter(pane);
     }
 
     @FXML
-    private void openFromText() {
+    public void openFromText() {
         String jsonString = JsonPromptStage.prompt();
         if (jsonString == null) return;
         narrative.update(parser.parse(jsonString));
