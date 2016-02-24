@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <fx:root hgap="5.0" type="javafx.scene.layout.GridPane" vgap="5.0" xmlns="http://javafx.com/javafx/8"
@@ -10,13 +9,12 @@
     <columnConstraints>
         <ColumnConstraints halignment="LEFT" hgrow="NEVER" minWidth="10.0"/>
         <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0"/>
-        <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0"/>
     </columnConstraints>
     <rowConstraints>
         <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="SOMETIMES"/>
         <RowConstraints minHeight="10.0" valignment="TOP" vgrow="SOMETIMES"/>
         <RowConstraints minHeight="10.0" valignment="TOP" vgrow="SOMETIMES"/>
-        <RowConstraints minHeight="2.0" valignment="CENTER" vgrow="ALWAYS"/>
+        <RowConstraints minHeight="10.0" valignment="TOP" vgrow="SOMETIMES"/>
     </rowConstraints>
     <children>
         <Label fx:id="encounterName" text="Monster Name" GridPane.columnSpan="2">
@@ -34,29 +32,8 @@
                 <Insets top="5.0"/>
             </GridPane.margin>
         </TextField>
-        <VBox spacing="5.0" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="3">
-            <children>
-                <ImageView fx:id="encounterImageView" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true"
-                           preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="2"/>
-                <HBox alignment="CENTER" spacing="5.0">
-                    <children>
-                        <Label text="Change image:"/>
-                        <Button mnemonicParsing="false" onAction="#browseForNewImage" text="Browse..."/>
-                    </children>
-                    <VBox.margin>
-                        <Insets/>
-                    </VBox.margin>
-                    <padding>
-                        <Insets bottom="5.0" top="5.0"/>
-                    </padding>
-                </HBox>
-            </children>
-            <padding>
-                <Insets left="2.0" right="2.0"/>
-            </padding>
-        </VBox>
-        <Label text="Reactions:" GridPane.rowIndex="2"/>
-        <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
+        <Label text="Reactions:" GridPane.rowIndex="3"/>
+        <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.vgrow="ALWAYS">
             <children>
                 <ListView fx:id="encounterReactionsList" maxHeight="1.7976931348623157E308"
                           maxWidth="1.7976931348623157E308" prefHeight="150.0" prefWidth="200.0"/>
@@ -71,6 +48,8 @@
                 </HBox>
             </children>
         </VBox>
+        <Label text="Image:" GridPane.rowIndex="2"/>
+        <TextField fx:id="encounterImage" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
     </children>
     <padding>
         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>

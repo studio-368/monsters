@@ -9,7 +9,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
@@ -25,9 +24,9 @@ public class EncounterEditPane extends GridPane {
     @FXML
     private Button reactionAddButton;
     @FXML
-    private ImageView encounterImageView;
-    @FXML
     private TextField encounterNameTextField;
+    @FXML
+    private TextField encounterImage;
     @FXML
     private Button reactionDeleteButton;
     @FXML
@@ -54,11 +53,7 @@ public class EncounterEditPane extends GridPane {
         encounterName.setText(encounter.name + " encounter");
         encounterNameTextField.setText(encounter.name);
         encounterReactionsList.setItems(new ObservableListWrapper<>(encounter.reactions));
-    }
-
-    @FXML
-    private void browseForNewImage() {
-        // TODO This method must exist for FXML to load
+        encounterImage.setText(encounter.image);
     }
 
     @FXML
