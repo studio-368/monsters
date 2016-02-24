@@ -1,7 +1,9 @@
 package edu.bsu.storygame.core;
 
 import edu.bsu.storygame.core.assets.ImageCache;
+import edu.bsu.storygame.core.assets.NarrativeCache;
 import edu.bsu.storygame.core.assets.TileCache;
+import edu.bsu.storygame.core.model.Narrative;
 import edu.bsu.storygame.core.util.AspectRatioTool;
 import edu.bsu.storygame.core.util.GameBounds;
 import playn.core.Platform;
@@ -19,17 +21,29 @@ public class MonsterGame extends SceneGame {
 
     private static final int UPDATE_RATE_MS = 33; // 30 times per second
 
+    public static final class Config {
+        public Platform platform;
+        public Narrative narrativeOverride;
+
+        public Config(Platform plat) {
+            this.platform = checkNotNull(plat);
+        }
+    }
+
     public final ImageCache imageCache;
     public final TileCache tileCache;
     public final GameBounds bounds;
     public final ScreenStack screenStack;
-    public final EncounterConfiguration encounters;
+    public final NarrativeCache narrativeCache;
 
-    public MonsterGame(Platform plat, EncounterConfiguration encounterConfiguration) {
-        super(plat, UPDATE_RATE_MS);
-        this.encounters = checkNotNull(encounterConfiguration);
+    public MonsterGame(Config config) {
+        super(config.platform, UPDATE_RATE_MS);
         imageCache = new ImageCache(plat.assets());
         tileCache = new TileCache(plat.assets());
+        narrativeCache =
+                config.narrativeOverride == null
+                        ? new NarrativeCache.Default(this)
+                        : new NarrativeCache.Overridden(config.narrativeOverride);
         initInput();
         this.bounds = initAspectRatio();
         screenStack = new ScreenStack(this, rootLayer);

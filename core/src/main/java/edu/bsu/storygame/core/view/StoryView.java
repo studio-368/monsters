@@ -23,7 +23,7 @@ public class StoryView extends Group {
 
         final List<Button> buttons = Lists.newArrayList();
         for (final SkillTrigger trigger : story.triggers) {
-            Button button = new Button(trigger.skill.text)
+            Button button = new Button(trigger.skill)
                     .onClick(new Slot<Button>() {
                         @Override
                         public void onEmit(Button button) {

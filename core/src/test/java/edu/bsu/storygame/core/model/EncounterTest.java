@@ -1,6 +1,7 @@
 package edu.bsu.storygame.core.model;
 
 import com.google.common.testing.EqualsTester;
+import edu.bsu.storygame.core.PlaceholderEncounterFactory;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -32,21 +33,7 @@ public class EncounterTest {
     }
 
     private Encounter makeSampleEncounter() {
-        return Encounter.with("Angry Cockatrice")
-                .image("cockatrice.png")
-                .reaction(Reaction.create("Fight")
-                        .story(Story.withText("You aggressively see a thing")
-                                .trigger(SkillTrigger.skill(Skill.WEAPON_USE)
-                                        .conclusion("You stab it"))
-                                .trigger(SkillTrigger.skill(Skill.LOGIC)
-                                        .conclusion("You think it to death"))
-                                .build()))
-                .reaction(Reaction.create("Hide")
-                        .story(Story.withText("When you hear a thing, you hide.")
-                                .trigger(SkillTrigger.skill(Skill.WEAPON_USE)
-                                        .conclusion("Whatevs"))
-                                .build()))
-                .build();
+        return PlaceholderEncounterFactory.createEncounter();
     }
 
     @Test

@@ -47,8 +47,8 @@ public class MapView extends Group {
             onClick(new SignalView.Listener<Button>() {
                 @Override
                 public void onEmit(Button button) {
-                    context.phase.update(Phase.ENCOUNTER);
                     context.currentPlayer.get().location.update(region);
+                    context.phase.update(Phase.ENCOUNTER);
                 }
             });
         }
