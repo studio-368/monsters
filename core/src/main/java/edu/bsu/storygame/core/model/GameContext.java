@@ -4,14 +4,14 @@ import com.google.common.collect.ImmutableList;
 import edu.bsu.storygame.core.MonsterGame;
 import react.Value;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 public final class GameContext {
     public final MonsterGame game;
     public final Value<Phase> phase = Value.create(Phase.MOVEMENT);
     public final ImmutableList<Player> players;
     public final Value<Player> currentPlayer;
+    public final Value<Encounter> encounter = Value.create(null);
 
     public GameContext(MonsterGame game, Player... players) {
         this.game = checkNotNull(game);
@@ -20,6 +20,10 @@ public final class GameContext {
             checkNotNull(p, "Player may not be null");
         }
         this.players = ImmutableList.copyOf(players);
-        this.currentPlayer = Value.create(players[0]);
+        this.currentPlayer = Value.create(this.players.get(0));
+    }
+
+    public final Player otherPlayer() {
+        return currentPlayer.get() == players.get(0) ? players.get(1) : players.get(0);
     }
 }

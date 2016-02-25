@@ -2,7 +2,10 @@ package edu.bsu.storygame.core.view;
 
 import edu.bsu.storygame.core.assets.Typeface;
 import edu.bsu.storygame.core.model.GameContext;
-import tripleplay.ui.*;
+import tripleplay.ui.Background;
+import tripleplay.ui.Group;
+import tripleplay.ui.Label;
+import tripleplay.ui.Style;
 import tripleplay.ui.layout.AxisLayout;
 import tripleplay.util.Colors;
 
@@ -10,11 +13,11 @@ import tripleplay.util.Colors;
         public Sidebar(GameContext context) {
             super(AxisLayout.vertical());
             addStyles(Style.BACKGROUND.is(Background.solid(Colors.BLACK)));
-            add(playerArea(context, 0)).setConstraint(AxisLayout.stretched(1.5f));
-            add(playerArea(context, 1)).setConstraint(AxisLayout.stretched(1.5f));
+            add(createPlayerArea(context, 0)).setConstraint(AxisLayout.stretched(1.5f));
+            add(createPlayerArea(context, 1)).setConstraint(AxisLayout.stretched(1.5f));
         }
 
-        public Group playerArea(GameContext context, int playerNum){
+        public Group createPlayerArea(GameContext context, int playerNum) {
             Group group = new Group(AxisLayout.vertical());
             if (playerNum == 1) {
                 group.addStyles(Style.BACKGROUND.is(Background.solid(Colors.RED)));

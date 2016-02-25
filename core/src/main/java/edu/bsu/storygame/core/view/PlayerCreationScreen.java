@@ -114,7 +114,6 @@ public class PlayerCreationScreen extends ScreenStack.UIScreen {
 
         private SkillButton(String text) {
             super(text);
-            setConstraint(Constraints.fixedSize(game.bounds.width() * 0.1f, game.bounds.height() * 0.1f));
         }
     }
 
