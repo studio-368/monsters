@@ -2,9 +2,11 @@ package edu.bsu.storygame.editor;
 
 import edu.bsu.storygame.editor.model.Encounter;
 import edu.bsu.storygame.editor.model.Narrative;
+import edu.bsu.storygame.editor.model.Region;
 import edu.bsu.storygame.editor.view.EmptyDocumentPane;
 import edu.bsu.storygame.editor.view.EncounterEditPane;
 import edu.bsu.storygame.editor.view.JsonPromptStage;
+import edu.bsu.storygame.editor.view.RegionEditPane;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -75,10 +77,20 @@ public class EditorStageController implements Initializable {
         narrativeTree.getSelectionModel().getSelectedItems().addListener((ListChangeListener<TreeItem<String>>) c -> {
             if (c.getList().size() == 0) return;
             Object selectedObject = ((TreeItemWrapper<Object>) c.getList().get(0)).reference;
-            if (selectedObject instanceof Encounter) {
-                setEditPane(new EncounterEditPane((Encounter) selectedObject, EditorStageController.this));
+            if (selectedObject instanceof Region) {
+                editRegion((Region) selectedObject);
+            } else if (selectedObject instanceof Encounter) {
+                editEncounter((Encounter) selectedObject);
             }
         });
+    }
+
+    private void editRegion(Region region) {
+        setEditPane(new RegionEditPane(region, this));
+    }
+
+    private void editEncounter(Encounter encounter) {
+        setEditPane(new EncounterEditPane(encounter, this));
     }
 
     private void setEditPane(Pane pane) {
