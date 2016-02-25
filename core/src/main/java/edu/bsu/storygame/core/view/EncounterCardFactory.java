@@ -2,16 +2,16 @@ package edu.bsu.storygame.core.view;
 
 import edu.bsu.storygame.core.assets.ImageCache;
 import edu.bsu.storygame.core.model.*;
-import playn.core.Color;
 import playn.core.Image;
 import playn.scene.GroupLayer;
 import playn.scene.Layer;
 import react.Slot;
 import tripleplay.ui.*;
+import tripleplay.ui.layout.AbsoluteLayout;
 import tripleplay.ui.layout.AxisLayout;
 import tripleplay.ui.layout.FlowLayout;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class EncounterCardFactory {
 
@@ -36,15 +36,14 @@ public class EncounterCardFactory {
             }
         });
 
-        iface.createRoot(AxisLayout.vertical().offStretch(), GameStyle.newSheet(context.game), layer)
+        iface.createRoot(new AbsoluteLayout(), GameStyle.newSheet(context.game), layer)
                 .setSize(width, height)
-                .setStyles(Style.BACKGROUND.is(Background.solid(Color.rgb(39, 80, 5))))
-                .add(new EncounterCard());
+                .add(AbsoluteLayout.at(new EncounterCard(), 0, 0, width, height));
 
         return layer;
     }
 
-    private final class EncounterCard extends Group {
+    final class EncounterCard extends Group {
         private final TitleLabel titleLabel = new TitleLabel();
         private final InteractionArea area = new InteractionArea();
 
@@ -54,10 +53,13 @@ public class EncounterCardFactory {
             add(area);
         }
 
-        private final class TitleLabel extends Label {
-            public TitleLabel() {
-                addStyles(Style.HALIGN.center,
-                        Style.ICON_POS.below);
+        @Override
+        protected Class<?> getStyleClass() {
+            return EncounterCard.class;
+        }
+
+        final class TitleLabel extends Label {
+            private TitleLabel() {
                 context.encounter.connect(new Slot<Encounter>() {
                     public static final float IMAGE_SIZE = 0.80f;
 
@@ -75,9 +77,14 @@ public class EncounterCardFactory {
                     }
                 });
             }
+
+            @Override
+            protected Class<?> getStyleClass() {
+                return TitleLabel.class;
+            }
         }
 
-        private class InteractionArea extends Group {
+        class InteractionArea extends Group {
 
             private Reaction reaction;
 
@@ -100,14 +107,14 @@ public class EncounterCardFactory {
                         if (phase.equals(Phase.STORY)) {
                             removeAll();
                             final Story story = reaction.story;
-                            add(new Label(story.text).addStyles(Style.TEXT_WRAP.on));
+                            add(new StoryLabel(story));
                             for (final SkillTrigger trigger : story.triggers) {
                                 Button skillButton = new Button(trigger.skill);
                                 skillButton.onClick(new Slot<Button>() {
                                     @Override
                                     public void onEmit(Button button) {
                                         InteractionArea.this.removeAll();
-                                        InteractionArea.this.add(new Label(trigger.conclusion).addStyles(Style.TEXT_WRAP.on),
+                                        InteractionArea.this.add(new ConclusionLabel(trigger.conclusion),
                                                 new Button("Done").onClick(new Slot<Button>() {
                                                     {
                                                         context.phase.connect(new Slot<Phase>() {
@@ -131,9 +138,21 @@ public class EncounterCardFactory {
                 });
             }
 
-            private final class ReactionButton extends Button {
 
-                public ReactionButton(final Reaction reaction) {
+            final class StoryLabel extends Label {
+                private StoryLabel(Story story) {
+                    super(story.text);
+                }
+
+                @Override
+                protected Class<?> getStyleClass() {
+                    return StoryLabel.class;
+                }
+            }
+
+            final class ReactionButton extends Button {
+
+                private ReactionButton(final Reaction reaction) {
                     super(reaction.name);
                     onClick(new Slot<Button>() {
                         @Override
@@ -148,6 +167,17 @@ public class EncounterCardFactory {
                             setEnabled(phase.equals(Phase.ENCOUNTER));
                         }
                     });
+                }
+            }
+
+            final class ConclusionLabel extends Label {
+                private ConclusionLabel(String text) {
+                    super(text);
+                }
+
+                @Override
+                protected Class<?> getStyleClass() {
+                    return ConclusionLabel.class;
                 }
             }
         }
