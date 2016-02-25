@@ -5,9 +5,5 @@ public enum Phase {
     ENCOUNTER,
     HANDOFF,
     STORY,
-    END_OF_ROUND;
-
-    public Phase next() {
-        return Phase.values()[(this.ordinal() + 1) % Phase.values().length];
-    }
+    END_OF_ROUND
 }
