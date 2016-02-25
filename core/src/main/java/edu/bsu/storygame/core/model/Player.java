@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public final class Player {
+public class Player {
     private final String name;
     private final int color;
     public final RList<String> skills = new RList<>(new ArrayList<String>());

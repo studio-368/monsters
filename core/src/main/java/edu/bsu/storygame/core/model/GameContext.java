@@ -2,9 +2,11 @@ package edu.bsu.storygame.core.model;
 
 import com.google.common.collect.ImmutableList;
 import edu.bsu.storygame.core.MonsterGame;
+import react.Slot;
 import react.Value;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class GameContext {
     public final MonsterGame game;
@@ -21,6 +23,23 @@ public final class GameContext {
         }
         this.players = ImmutableList.copyOf(players);
         this.currentPlayer = Value.create(this.players.get(0));
+
+        configureCommonRules();
+    }
+
+    private void configureCommonRules() {
+        configureResetEncounterAtEndOfRound();
+    }
+
+    private void configureResetEncounterAtEndOfRound() {
+        phase.connect(new Slot<Phase>() {
+            @Override
+            public void onEmit(Phase phase) {
+                if (phase == Phase.END_OF_ROUND) {
+                    encounter.update(null);
+                }
+            }
+        });
     }
 
     public final Player otherPlayer() {
