@@ -54,6 +54,7 @@ public final class EncounterParser {
         checkNotNull(text, "Conclusion must have text");
         builder.text(text);
         builder.points(conclusionObject.getInt("points"));
+        builder.skill(conclusionObject.getString("skill"));
         return builder.build();
     }
 }

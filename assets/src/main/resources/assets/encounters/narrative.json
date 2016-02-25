@@ -242,7 +242,7 @@
                   "skill": "Logic",
                   "conclusion": {
                     "text": "You out-think it",
-                    "points": 1
+                    "skill": "Magic"
                   }
                 }
               ]
