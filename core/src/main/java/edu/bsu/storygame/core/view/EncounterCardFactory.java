@@ -112,9 +112,10 @@ public class EncounterCardFactory {
                                 skillButton.onClick(new Slot<Button>() {
                                     @Override
                                     public void onEmit(Button button) {
+                                        final Conclusion conclusion = trigger.conclusion;
                                         InteractionArea.this.removeAll();
-                                        InteractionArea.this.add(new ConclusionLabel(trigger.conclusion),
-                                                new RewardLabel(trigger.conclusion.points),
+                                        InteractionArea.this.add(new ConclusionLabel(conclusion),
+                                                new RewardLabel(trigger.conclusion),
                                                 new Button("Done").onClick(new Slot<Button>() {
                                                     {
                                                         context.phase.connect(new Slot<Phase>() {
@@ -130,6 +131,15 @@ public class EncounterCardFactory {
                                                         context.phase.update(Phase.END_OF_ROUND);
                                                     }
                                                 }));
+                                        applyModelChanges(conclusion);
+                                    }
+
+                                    private void applyModelChanges(Conclusion conclusion) {
+                                        context.currentPlayer.get().storyPoints.update(
+                                                context.currentPlayer.get().storyPoints.get() + conclusion.points);
+                                        if (conclusion.skill != null) {
+                                            context.currentPlayer.get().skills.add(conclusion.skill);
+                                        }
                                     }
                                 });
                                 add(skillButton);
@@ -183,11 +193,26 @@ public class EncounterCardFactory {
             }
 
             final class RewardLabel extends Label {
-                private RewardLabel(int points) {
+                private RewardLabel(Conclusion conclusion) {
                     super();
-                    if (points > 0) {
-                        text.update("You gain " + points + " story points");
+                    StringBuilder stringBuilder = new StringBuilder();
+                    if (conclusion.points > 0) {
+                        stringBuilder.append("You gain ")
+                                .append(String.valueOf(conclusion.points))
+                                .append(" story points");
                     }
+                    if (conclusion.skill != null) {
+                        if (stringBuilder.length() > 0) {
+                            stringBuilder.append(" and the ")
+                                    .append(conclusion.skill)
+                                    .append(" skill");
+                        } else {
+                            stringBuilder.append("You gain the ")
+                                    .append(conclusion.skill)
+                                    .append(" skill");
+                        }
+                    }
+                    text.update(stringBuilder.toString());
                 }
 
                 @Override
