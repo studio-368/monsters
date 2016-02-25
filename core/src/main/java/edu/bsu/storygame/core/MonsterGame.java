@@ -24,6 +24,7 @@ public class MonsterGame extends SceneGame {
     public static final class Config {
         public Platform platform;
         public Narrative narrativeOverride;
+        public boolean debugMode = false;
 
         public Config(Platform plat) {
             this.platform = checkNotNull(plat);
@@ -45,6 +46,9 @@ public class MonsterGame extends SceneGame {
                         ? new NarrativeCache.Default(this)
                         : new NarrativeCache.Overridden(config.narrativeOverride);
         initInput();
+        if (config.debugMode) {
+            plat.input().keyboardEvents.connect(new DebugMode(this));
+        }
         this.bounds = initAspectRatio();
         screenStack = new ScreenStack(this, rootLayer);
         screenStack.push(new LoadingScreen(this, screenStack));
