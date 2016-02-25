@@ -35,6 +35,18 @@
             <version>${guava.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>io.playn</groupId>
+            <artifactId>playn-java-lwjgl2</artifactId>
+            <version>${playn.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>edu.bsu.storygame</groupId>
+            <artifactId>monsters-assets</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>

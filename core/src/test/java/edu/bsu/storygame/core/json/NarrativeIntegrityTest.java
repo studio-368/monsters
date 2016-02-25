@@ -8,7 +8,7 @@ import playn.java.JavaPlatform;
 
 import static org.junit.Assert.assertTrue;
 
-public class NarrativeRegionCoverageTest {
+public class NarrativeIntegrityTest {
 
     @Test
     public void testEachRegionHasAtLeastOneEncounter() throws Exception {

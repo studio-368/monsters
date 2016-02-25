@@ -1,9 +1,6 @@
 package edu.bsu.storygame.core.json;
 
-import edu.bsu.storygame.core.model.Encounter;
-import edu.bsu.storygame.core.model.Reaction;
-import edu.bsu.storygame.core.model.SkillTrigger;
-import edu.bsu.storygame.core.model.Story;
+import edu.bsu.storygame.core.model.*;
 import playn.core.Json;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -43,9 +40,20 @@ public final class EncounterParser {
         for (int i = 0, limit = jsonTriggers.length(); i < limit; i++) {
             Json.Object jsonTrigger = jsonTriggers.getObject(i);
             String skill = jsonTrigger.getString("skill");
-            String conclusion = jsonTrigger.getString("conclusion");
+            Json.Object conclusionObject = jsonTrigger.getObject("conclusion");
+            Conclusion conclusion = parseConclusion(conclusionObject);
             storyBuilder.trigger(SkillTrigger.skill(skill).conclusion(conclusion));
         }
         return storyBuilder.build();
+    }
+
+    private Conclusion parseConclusion(Json.Object conclusionObject) {
+        checkNotNull(conclusionObject, "Trigger must have a conclusion");
+        Conclusion.Builder builder = new Conclusion.Builder();
+        String text = conclusionObject.getString("text");
+        checkNotNull(text, "Conclusion must have text");
+        builder.text(text);
+        builder.points(conclusionObject.getInt("points"));
+        return builder.build();
     }
 }

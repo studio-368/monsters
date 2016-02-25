@@ -9,7 +9,6 @@ import react.Slot;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AbsoluteLayout;
 import tripleplay.ui.layout.AxisLayout;
-import tripleplay.ui.layout.FlowLayout;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -89,7 +88,7 @@ public class EncounterCardFactory {
             private Reaction reaction;
 
             private InteractionArea() {
-                super(new FlowLayout());
+                super(AxisLayout.vertical());
                 context.encounter.connect(new Slot<Encounter>() {
                     @Override
                     public void onEmit(Encounter encounter) {
@@ -115,6 +114,7 @@ public class EncounterCardFactory {
                                     public void onEmit(Button button) {
                                         InteractionArea.this.removeAll();
                                         InteractionArea.this.add(new ConclusionLabel(trigger.conclusion),
+                                                new RewardLabel(trigger.conclusion.points),
                                                 new Button("Done").onClick(new Slot<Button>() {
                                                     {
                                                         context.phase.connect(new Slot<Phase>() {
@@ -124,6 +124,7 @@ public class EncounterCardFactory {
                                                             }
                                                         });
                                                     }
+
                                                     @Override
                                                     public void onEmit(Button button) {
                                                         context.phase.update(Phase.END_OF_ROUND);
@@ -171,13 +172,27 @@ public class EncounterCardFactory {
             }
 
             final class ConclusionLabel extends Label {
-                private ConclusionLabel(String text) {
-                    super(text);
+                private ConclusionLabel(Conclusion conclusion) {
+                    super(conclusion.text);
                 }
 
                 @Override
                 protected Class<?> getStyleClass() {
                     return ConclusionLabel.class;
+                }
+            }
+
+            final class RewardLabel extends Label {
+                private RewardLabel(int points) {
+                    super();
+                    if (points > 0) {
+                        text.update("You gain " + points + " story points");
+                    }
+                }
+
+                @Override
+                protected Class<?> getStyleClass() {
+                    return RewardLabel.class;
                 }
             }
         }

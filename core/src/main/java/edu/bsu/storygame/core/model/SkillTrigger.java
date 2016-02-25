@@ -14,20 +14,20 @@ public final class SkillTrigger {
 
     public static final class Builder {
         private final String skill;
-        private String conclusion;
+        private Conclusion conclusion;
 
         private Builder(String skill) {
             this.skill = checkNotNull(skill);
         }
 
-        public SkillTrigger conclusion(String conclusion) {
+        public SkillTrigger conclusion(Conclusion conclusion) {
             this.conclusion = checkNotNull(conclusion);
             return new SkillTrigger(this);
         }
     }
 
     public final String skill;
-    public final String conclusion;
+    public final Conclusion conclusion;
 
     private SkillTrigger(Builder builder) {
         this.skill = builder.skill;
