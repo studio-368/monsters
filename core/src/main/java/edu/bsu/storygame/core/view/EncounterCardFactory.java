@@ -114,7 +114,7 @@ public class EncounterCardFactory {
                                     @Override
                                     public void onEmit(Button button) {
                                         InteractionArea.this.removeAll();
-                                        InteractionArea.this.add(new ConclusionLabel(trigger.conclusion),
+                                        InteractionArea.this.add(new ConclusionLabel(trigger.conclusion.text),
                                                 new Button("Done").onClick(new Slot<Button>() {
                                                     {
                                                         context.phase.connect(new Slot<Phase>() {

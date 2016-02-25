@@ -1,9 +1,6 @@
 package edu.bsu.storygame.core.util;
 
-import edu.bsu.storygame.core.model.Encounter;
-import edu.bsu.storygame.core.model.Reaction;
-import edu.bsu.storygame.core.model.SkillTrigger;
-import edu.bsu.storygame.core.model.Story;
+import edu.bsu.storygame.core.model.*;
 
 public class EncounterMatchingTestJson {
 
@@ -13,16 +10,16 @@ public class EncounterMatchingTestJson {
                 .reaction(Reaction.create("Fight")
                         .story(Story.withText("Story 1")
                                 .trigger(SkillTrigger.skill("Logic")
-                                        .conclusion("Conclusion 1"))
+                                        .conclusion(new Conclusion.Builder().text("Conclusion 1").points(1).build()))
                                 .trigger(SkillTrigger.skill("Magic")
-                                        .conclusion("Conclusion 2"))
+                                        .conclusion(new Conclusion.Builder().text("Conclusion 2").build()))
                                 .build()))
                 .reaction(Reaction.create("Hide")
                         .story(Story.withText("Story 2")
                                 .trigger(SkillTrigger.skill("Logic")
-                                        .conclusion("Conclusion 1-A"))
+                                        .conclusion(new Conclusion.Builder().text("Conclusion 1-A").points(1).build()))
                                 .trigger(SkillTrigger.skill("Magic")
-                                        .conclusion("Conclusion 2-B"))
+                                        .conclusion(new Conclusion.Builder().text("Conclusion 2-B").build()))
                                 .build()))
                 .build();
     }
