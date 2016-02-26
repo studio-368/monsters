@@ -2,18 +2,18 @@ package edu.bsu.storygame.core.view;
 
 import edu.bsu.storygame.core.MonsterGame;
 import edu.bsu.storygame.core.assets.TileCache;
-import edu.bsu.storygame.core.model.*;
+import edu.bsu.storygame.core.model.GameContext;
+import edu.bsu.storygame.core.model.Phase;
 import playn.core.Game;
 import playn.scene.GroupLayer;
-import pythagoras.f.Dimension;
-import react.Connection;
+import playn.scene.Layer;
 import react.Slot;
 import tripleplay.game.ScreenStack;
-import tripleplay.ui.*;
-import tripleplay.ui.layout.AxisLayout;
-import tripleplay.util.Colors;
+import tripleplay.ui.Background;
+import tripleplay.ui.Style;
+import tripleplay.ui.layout.AbsoluteLayout;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 public class SampleGameScreen extends ScreenStack.UIScreen {
 
@@ -21,111 +21,53 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
     private final GameContext context;
     private final GroupLayer boundedLayer;
 
-    public SampleGameScreen(final MonsterGame game) {
+    public SampleGameScreen(final MonsterGame game, final GameContext context) {
         super(checkNotNull(game).plat);
-
         this.game = game;
-        this.context = new GameContext(game, new Player("Abigail", Colors.BLUE), new Player("Bruce", Colors.CYAN));
+        this.context = context;
         this.boundedLayer = new GroupLayer(game.bounds.width(), game.bounds.height());
         layer.addAt(boundedLayer,
                 (game.plat.graphics().viewSize.width() - game.bounds.width()) / 2,
                 (game.plat.graphics().viewSize.height() - game.bounds.height()) / 2);
 
-        createUI();
-        context.phase.connect(new Slot<Phase>() {
-            private Connection connection;
-            private final float SIZE_PERCENT = 0.9f;
-
-            @Override
-            public void onEmit(Phase phase) {
-                if (phase.equals(Phase.ENCOUNTER)) {
-                    popupEncounterDialog();
-                }
-            }
-
-            private void popupEncounterDialog() {
-                final Root dialog = iface.createRoot(AxisLayout.vertical(), SimpleStyles.newSheet(game.plat.graphics()), boundedLayer);
-                dialog.setStyles(Style.BACKGROUND.is(Background.solid(Colors.LIGHT_GRAY)));
-                dialog.setSize(boundedLayer.width() * SIZE_PERCENT, boundedLayer.height() * SIZE_PERCENT)
-                        .setLocation(boundedLayer.width() * (1 - SIZE_PERCENT) / 2, boundedLayer.height());
-                iface.anim.tweenY(dialog.layer)
-                        .to(boundedLayer.height() * (1 - SIZE_PERCENT) / 2)
-                        .in(200f)
-                        .easeIn();
-
-                Narrative narrative = game.narrativeCache.state.result().get();
-                Encounter encounter = narrative.forRegion(context.currentPlayer.get().location.get()).chooseOne();
-                dialog.add(new EncounterView(context, encounter));
-
-                connection = context.phase.connect(new Slot<Phase>() {
-                    @Override
-                    public void onEmit(Phase phase) {
-                        if (phase.equals(Phase.END_OF_ROUND)) {
-                            iface.removeRoot(dialog);
-                            connection.close();
-                        }
-                    }
-                });
-            }
-        });
         configurePlayerAdvancementAtEndOfRound();
     }
 
+    @Override
+    public void wasAdded() {
+        super.wasAdded();
+        createUI();
+    }
 
+    // We are using some extra variables to enhance readability.
+    @SuppressWarnings("UnnecessaryLocalVariable")
     private void createUI() {
-        iface.createRoot(AxisLayout.vertical().offStretch(), GameStyle.newSheet(game), boundedLayer)
+        final float sidebarX = 0;
+        final float sidebarY = 0;
+        final float sidebarWidth = game.bounds.width() * 0.25f;
+        final float sidebarHeight = game.bounds.height();
+        final float mapX = game.bounds.width() * 0.25f;
+        final float mapY = 0;
+        final float mapWidth = game.bounds.width() * 0.75f;
+        final float mapHeight = game.bounds.height();
+
+        iface.createRoot(new AbsoluteLayout(), GameStyle.newSheet(game), boundedLayer)
                 .setSize(boundedLayer.width(), boundedLayer.height())
                 .setStyles(Style.BACKGROUND.is(Background.image(game.tileCache.tile(TileCache.Key.BACKGROUND))))
-                .add(new Shim(0, 80))
-                .add(new Label() {
-                    {
-                        updateText();
-                        context.currentPlayer.connect(new Slot<Player>() {
-                            @Override
-                            public void onEmit(Player player) {
-                                updateText();
-                            }
+                .add(AbsoluteLayout.at(new Sidebar(context), sidebarX, sidebarY, sidebarWidth, sidebarHeight))
+                .add(AbsoluteLayout.at(new MapView(context), mapX, mapY, mapWidth, mapHeight));
 
-                        });
-                    }
+        final float cardWidth = mapWidth * 0.68f;
+        final float cardHeight = mapHeight;
+        final float cardX = mapX + (mapWidth - cardWidth) / 2f;
+        final float cardY = 0;
+        EncounterCardFactory factory = new EncounterCardFactory(context);
+        boundedLayer.addAt(factory.create(cardWidth, cardHeight, iface), cardX, cardY);
 
-                    private void updateText() {
-                        text.update(context.currentPlayer.get().getName() + "\'s turn");
-                    }
-                })
-                .add(new Label() {
-                    {
-                        updateText();
-                        SampleGameScreen.this.context.phase.connect(new Slot<Phase>() {
-                            @Override
-                            public void onEmit(Phase phase) {
-                                updateText();
-                            }
-                        });
-                    }
-
-                    private void updateText() {
-                        text.update("Current phase: " + context.phase.get().name());
-                    }
-                })
-
-                .add(new Label() {
-                         {
-                             updateText();
-                             SampleGameScreen.this.context.phase.connect(new Slot<Phase>() {
-                                 @Override
-                                 public void onEmit(Phase phase) {
-                                     updateText();
-                                 }
-                             });
-                         }
-
-                         private void updateText() {
-                             text.update("Current Location: " + context.currentPlayer.get().location.get().toString());
-                         }
-                     },
-                        new MapView(context, new Dimension(boundedLayer.width(), boundedLayer.height())));
+        Layer handoffDialog = new HandoffDialogFactory(context).create(iface);
+        boundedLayer.addAt(handoffDialog, (boundedLayer.width() - handoffDialog.width()) / 2, (boundedLayer.height() - handoffDialog.height()) / 2);
     }
+
 
     private void configurePlayerAdvancementAtEndOfRound() {
         context.phase.connect(new Slot<Phase>() {

@@ -1,26 +1,24 @@
 package edu.bsu.storygame.core.view;
 
+import edu.bsu.storygame.core.model.Encounter;
 import edu.bsu.storygame.core.model.GameContext;
 import edu.bsu.storygame.core.model.Phase;
 import edu.bsu.storygame.core.model.Region;
-import pythagoras.f.IDimension;
 import react.SignalView;
 import react.Slot;
 import tripleplay.ui.Button;
-import tripleplay.ui.Constraints;
 import tripleplay.ui.Group;
 import tripleplay.ui.layout.AxisLayout;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 public class MapView extends Group {
 
     private final GameContext context;
 
-    public MapView(GameContext gameContext, IDimension size) {
+    public MapView(GameContext gameContext) {
         super(AxisLayout.vertical());
         this.context = checkNotNull(gameContext);
-        setConstraint(Constraints.fixedSize(size.width(), size.height()));
         add(new RegionButton(Region.AFRICA),
                 new RegionButton(Region.AMERICAS),
                 new RegionButton(Region.ASIA),
@@ -35,9 +33,6 @@ public class MapView extends Group {
 
         RegionButton(final Region region) {
             super(region.toString());
-            setConstraint(Constraints.fixedSize(
-                    context.game.bounds.width() * PERCENT_OF_WIDTH,
-                    context.game.bounds.height() * PERCENT_OF_HEIGHT));
             context.phase.connect(new Slot<Phase>() {
                 @Override
                 public void onEmit(Phase phase) {
@@ -48,6 +43,8 @@ public class MapView extends Group {
                 @Override
                 public void onEmit(Button button) {
                     context.currentPlayer.get().location.update(region);
+                    Encounter encounter = context.game.narrativeCache.state.result().get().forRegion(region).chooseOne();
+                    context.encounter.update(encounter);
                     context.phase.update(Phase.ENCOUNTER);
                 }
             });

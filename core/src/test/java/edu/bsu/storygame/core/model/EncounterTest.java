@@ -1,7 +1,7 @@
 package edu.bsu.storygame.core.model;
 
 import com.google.common.testing.EqualsTester;
-import edu.bsu.storygame.core.PlaceholderEncounterFactory;
+import edu.bsu.storygame.core.util.EncounterMatchingTestJson;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -33,7 +33,7 @@ public class EncounterTest {
     }
 
     private Encounter makeSampleEncounter() {
-        return PlaceholderEncounterFactory.createEncounter();
+        return EncounterMatchingTestJson.create();
     }
 
     @Test

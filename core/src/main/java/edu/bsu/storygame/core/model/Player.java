@@ -15,7 +15,7 @@ public final class Player {
     public final Value<Integer> storyPoints = Value.create(0);
     public final Value<Region> location = Value.create(Region.AFRICA);
 
-    public Player(String name, int color) {
+    public Player(String name, int color, RList<String> skills) {
         checkNotNull(name, "Name may not be null");
         checkArgument(!name.trim().isEmpty(), "Name must have non-whitespace characters");
         this.name = name;

@@ -13,11 +13,17 @@
               "triggers": [
                 {
                   "skill": "Weapon Use",
-                  "conclusion": "You pound the tar out of that chicken thing."
+                  "conclusion": {
+                    "text": "You pound the tar out of that chicken thing.",
+                    "points": 1
+                  }
                 },
                 {
                   "skill": "Logic",
-                  "conclusion": "You make peace with the ugly bird lizard."
+                  "conclusion": {
+                    "text": "You out-think it",
+                    "points": 1
+                  }
                 }
               ]
             }
@@ -29,11 +35,17 @@
               "triggers": [
                 {
                   "skill": "Weapon use",
-                  "conclusion": "You sharpen your weapon and hide in shame."
+                  "conclusion": {
+                    "text": "You sharpen your weapon and hide in shame.",
+                    "points": 1
+                  }
                 },
                 {
                   "skill": "Logic",
-                  "conclusion": "You deduce a syllogism... for SCIENCE!"
+                  "conclusion": {
+                    "text": "You deduce a syllogism... for SCIENCE!",
+                    "points": 1
+                  }
                 }
               ]
             }
@@ -56,11 +68,17 @@
               "triggers": [
                 {
                   "skill": "Weapon Use",
-                  "conclusion": "You pound the tar out of that chicken thing."
+                  "conclusion": {
+                    "text": "You pound the tar out of that chicken thing.",
+                    "points": 1
+                  }
                 },
                 {
                   "skill": "Logic",
-                  "conclusion": "You make peace with the ugly bird lizard."
+                  "conclusion": {
+                    "text": "You out-think it",
+                    "points": 1
+                  }
                 }
               ]
             }
@@ -72,11 +90,17 @@
               "triggers": [
                 {
                   "skill": "Weapon use",
-                  "conclusion": "You sharpen your weapon and hide in shame."
+                  "conclusion": {
+                    "text": "You sharpen your weapon and hide in shame.",
+                    "points": 1
+                  }
                 },
                 {
                   "skill": "Logic",
-                  "conclusion": "You deduce a syllogism... for SCIENCE!"
+                  "conclusion": {
+                    "text": "You deduce a syllogism... for SCIENCE!",
+                    "points": 1
+                  }
                 }
               ]
             }
@@ -99,11 +123,17 @@
               "triggers": [
                 {
                   "skill": "Weapon Use",
-                  "conclusion": "You pound the tar out of that chicken thing."
+                  "conclusion": {
+                    "text": "You pound the tar out of that chicken thing.",
+                    "points": 1
+                  }
                 },
                 {
                   "skill": "Logic",
-                  "conclusion": "You make peace with the ugly bird lizard."
+                  "conclusion": {
+                    "text": "You out-think it",
+                    "points": 1
+                  }
                 }
               ]
             }
@@ -115,11 +145,17 @@
               "triggers": [
                 {
                   "skill": "Weapon use",
-                  "conclusion": "You sharpen your weapon and hide in shame."
+                  "conclusion": {
+                    "text": "You sharpen your weapon and hide in shame.",
+                    "points": 1
+                  }
                 },
                 {
                   "skill": "Logic",
-                  "conclusion": "You deduce a syllogism... for SCIENCE!"
+                  "conclusion": {
+                    "text": "You deduce a syllogism... for SCIENCE!",
+                    "points": 1
+                  }
                 }
               ]
             }
@@ -142,11 +178,17 @@
               "triggers": [
                 {
                   "skill": "Weapon Use",
-                  "conclusion": "You pound the tar out of that chicken thing."
+                  "conclusion": {
+                    "text": "You pound the tar out of that chicken thing.",
+                    "points": 1
+                  }
                 },
                 {
                   "skill": "Logic",
-                  "conclusion": "You make peace with the ugly bird lizard."
+                  "conclusion": {
+                    "text": "You out-think it",
+                    "points": 1
+                  }
                 }
               ]
             }
@@ -158,11 +200,17 @@
               "triggers": [
                 {
                   "skill": "Weapon use",
-                  "conclusion": "You sharpen your weapon and hide in shame."
+                  "conclusion": {
+                    "text": "You sharpen your weapon and hide in shame.",
+                    "points": 1
+                  }
                 },
                 {
                   "skill": "Logic",
-                  "conclusion": "You deduce a syllogism... for SCIENCE!"
+                  "conclusion": {
+                    "text": "You deduce a syllogism... for SCIENCE!",
+                    "points": 1
+                  }
                 }
               ]
             }
@@ -185,11 +233,17 @@
               "triggers": [
                 {
                   "skill": "Weapon Use",
-                  "conclusion": "You pound the tar out of that chicken thing."
+                  "conclusion": {
+                    "text": "You pound the tar out of that chicken thing.",
+                    "points": 1
+                  }
                 },
                 {
                   "skill": "Logic",
-                  "conclusion": "You make peace with the ugly bird lizard."
+                  "conclusion": {
+                    "text": "You out-think it",
+                    "points": 1
+                  }
                 }
               ]
             }
@@ -201,11 +255,17 @@
               "triggers": [
                 {
                   "skill": "Weapon use",
-                  "conclusion": "You sharpen your weapon and hide in shame."
+                  "conclusion": {
+                    "text": "You sharpen your weapon and hide in shame.",
+                    "points": 1
+                  }
                 },
                 {
                   "skill": "Logic",
-                  "conclusion": "You deduce a syllogism... for SCIENCE!"
+                  "conclusion": {
+                    "text": "You deduce a syllogism... for SCIENCE!",
+                    "points": 1
+                  }
                 }
               ]
             }
@@ -228,11 +288,17 @@
               "triggers": [
                 {
                   "skill": "Weapon Use",
-                  "conclusion": "You pound the tar out of that chicken thing."
+                  "conclusion": {
+                    "text": "You pound the tar out of that chicken thing.",
+                    "points": 1
+                  }
                 },
                 {
                   "skill": "Logic",
-                  "conclusion": "You make peace with the ugly bird lizard."
+                  "conclusion": {
+                    "text": "You out-think it",
+                    "points": 1
+                  }
                 }
               ]
             }
@@ -244,11 +310,17 @@
               "triggers": [
                 {
                   "skill": "Weapon use",
-                  "conclusion": "You sharpen your weapon and hide in shame."
+                  "conclusion": {
+                    "text": "You sharpen your weapon and hide in shame.",
+                    "points": 1
+                  }
                 },
                 {
                   "skill": "Logic",
-                  "conclusion": "You deduce a syllogism... for SCIENCE!"
+                  "conclusion": {
+                    "text": "You deduce a syllogism... for SCIENCE!",
+                    "points": 1
+                  }
                 }
               ]
             }

@@ -28,7 +28,10 @@ public class MonsterGameJava {
 
         LWJGLPlatform plat = new LWJGLPlatform(config);
         registerFonts(plat);
-        new MonsterGame(new MonsterGame.Config(plat));
+
+        MonsterGame.Config gameConf = new MonsterGame.Config(plat);
+        gameConf.debugMode = true;
+        new MonsterGame(gameConf);
         plat.start();
     }
 
