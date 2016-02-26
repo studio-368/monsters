@@ -11,7 +11,7 @@ import tripleplay.util.Colors;
 
     public class Sidebar extends Group {
         public Sidebar(GameContext context) {
-            super(AxisLayout.vertical());
+            super(AxisLayout.vertical().offStretch());
             addStyles(Style.BACKGROUND.is(Background.solid(Colors.BLACK)));
             add(createPlayerArea(context, 0)).setConstraint(AxisLayout.stretched(1.5f));
             add(createPlayerArea(context, 1)).setConstraint(AxisLayout.stretched(1.5f));
@@ -27,9 +27,9 @@ import tripleplay.util.Colors;
             group.addStyles(Style.HALIGN.left, Style.VALIGN.top);
             group.add(new Label(context.players.get(playerNum).getName())
                     .addStyles(Style.FONT.is(Typeface.OXYGEN.in(context.game).atSize(0.04f))));
-            group.add(new Label("Skill: An Arbitrary Skill")
+            group.add(new Label("Skill: " + context.players.get(playerNum).skills.get(0))
                     .addStyles(Style.FONT.is(Typeface.OXYGEN.in(context.game).atSize(0.03f))));
-            group.add(new Label("Skill: Another Arbitrary Skill")
+            group.add(new Label("Skill: " + context.players.get(playerNum).skills.get(1))
                     .addStyles(Style.FONT.is(Typeface.OXYGEN.in(context.game).atSize(0.03f))));
             group.setConstraint(AxisLayout.stretched(1.5f));
             return group;

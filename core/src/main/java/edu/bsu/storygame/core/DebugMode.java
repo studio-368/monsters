@@ -15,7 +15,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class DebugMode implements SignalView.Listener<Keyboard.Event> {
 
-    private static final ImmutableList<String> SAMPLE_SKILLS = ImmutableList.of("Skill 1", "Skill 2");
+    private static final ImmutableList<String> SAMPLE_SKILLS = ImmutableList.of("WEAPON_USE", "MAGIC");
 
     private final ImmutableMap.Builder<Key, Runnable> builder = ImmutableMap.builder();
 
