@@ -6,6 +6,8 @@ import react.Value;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.TableLayout;
 
+import java.util.Set;
+
 public class PlayerCreationGroup extends Group {
 
     public Value<Boolean> isFilled = Value.create(false);
@@ -56,14 +58,13 @@ public class PlayerCreationGroup extends Group {
     }
 
     private Group createSkillGroup() {
-        return new Group(new TableLayout(2).gaps(20, 20)).add(
-                new SkillButton("Athleticism"),
-                new SkillButton("Logic"),
-                new SkillButton("Magic"),
-                new SkillButton("Persuasion"),
-                new SkillButton("Stealth"),
-                new SkillButton("Weapon Use")
-        );
+        Set<String> skillSet = game.narrativeCache.state.result().get().skills();
+        Group group = new Group(new TableLayout(2).gaps(20, 20));
+        for (String skill : skillSet) {
+            group.add(new SkillButton(skill));
+
+        }
+        return group;
     }
 
 
