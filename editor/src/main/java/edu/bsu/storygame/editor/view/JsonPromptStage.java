@@ -2,19 +2,24 @@ package edu.bsu.storygame.editor.view;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
+import java.awt.*;
+import java.net.URL;
+
 public class JsonPromptStage extends Stage {
 
     private final AnchorPane root = new AnchorPane();
     private final TextArea jsonTextArea = new TextArea();
     private final HBox buttonHbox = new HBox();
-    private final Button okButton = new Button("Open");
+    private final Button confirmButton = new Button("Open");
     private final Button cancelButton = new Button("Cancel");
+    private final Hyperlink testLink = new Hyperlink("Test in web browser");
 
     private String jsonText = null;
 
@@ -28,6 +33,7 @@ public class JsonPromptStage extends Stage {
         JsonPromptStage stage = new JsonPromptStage();
         stage.jsonTextArea.setText(json);
         stage.jsonTextArea.setEditable(false);
+        stage.bindCopyButton();
         stage.show();
     }
 
@@ -58,23 +64,45 @@ public class JsonPromptStage extends Stage {
         buttonHbox.setSpacing(10.0);
         AnchorPane.setBottomAnchor(buttonHbox, 14.0);
         AnchorPane.setRightAnchor(buttonHbox, 14.0);
-        buttonHbox.getChildren().add(okButton);
+        buttonHbox.getChildren().add(confirmButton);
         buttonHbox.getChildren().add(cancelButton);
     }
 
     private void configure() {
         cancelButton.setCancelButton(true);
-        okButton.setDefaultButton(true);
+        confirmButton.setDefaultButton(true);
         bindOkButton();
         bindCancelButton();
         setScene(new Scene(root));
     }
 
     private void bindOkButton() {
-        okButton.setOnAction(event -> {
+        confirmButton.setText("Open");
+        confirmButton.setOnAction(event -> {
             jsonText = jsonTextArea.getText();
             close();
         });
+    }
+
+    private void bindCopyButton() {
+        confirmButton.setText("Copy");
+        confirmButton.setOnAction(event -> {
+            jsonTextArea.copy();
+            jsonTextArea.selectAll();
+            confirmButton.setText("Copied!");
+            displayTestLink();
+        });
+    }
+
+    private void displayTestLink() {
+        testLink.setOnAction(event -> {
+            try {
+                Desktop.getDesktop().browse(new URL("http://spring-studio-2016.github.io/monsters/?override").toURI());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        buttonHbox.getChildren().add(0, testLink);
     }
 
     private void bindCancelButton() {
