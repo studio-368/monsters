@@ -24,6 +24,7 @@ import tripleplay.util.Colors;
             } else if(playerNum == 0){
                 group.addStyles(Style.BACKGROUND.is(Background.solid(Colors.BLUE)));
             }
+            group.addStyles(Style.HALIGN.left, Style.VALIGN.top);
             group.add(new Label(context.players.get(playerNum).getName())
                     .addStyles(Style.FONT.is(Typeface.OXYGEN.in(context.game).atSize(0.04f))));
             group.add(new Label("Skill: An Arbitrary Skill")
