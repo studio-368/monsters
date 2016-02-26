@@ -28,11 +28,11 @@ public class GsonParserTest {
                                     Lists.newArrayList(
                                             new SkillTrigger(
                                                     "Logic",
-                                                    "Conclusion 1"
+                                                    new Conclusion("Conclusion 1", 1)
                                             ),
                                             new SkillTrigger(
                                                     "Magic",
-                                                    "Conclusion 2"
+                                                    new Conclusion("Conclusion 2")
                                             )
                                     )
                             )),
@@ -41,11 +41,11 @@ public class GsonParserTest {
                                     Lists.newArrayList(
                                             new SkillTrigger(
                                                     "Logic",
-                                                    "Conclusion 1-A"
+                                                    new Conclusion("Conclusion 1-A", 1)
                                             ),
                                             new SkillTrigger(
                                                     "Magic",
-                                                    "Conclusion 2-B"
+                                                    new Conclusion("Conclusion 2-B")
                                             )
                                     )
                             ))

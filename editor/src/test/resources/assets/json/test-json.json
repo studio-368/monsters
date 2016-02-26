@@ -13,11 +13,16 @@
               "triggers": [
                 {
                   "skill": "Logic",
-                  "conclusion": "Conclusion 1"
+                  "conclusion": {
+                    "text": "Conclusion 1",
+                    "points": 1
+                  }
                 },
                 {
                   "skill": "Magic",
-                  "conclusion": "Conclusion 2"
+                  "conclusion": {
+                    "text": "Conclusion 2"
+                  }
                 }
               ]
             }
@@ -29,11 +34,16 @@
               "triggers": [
                 {
                   "skill": "Logic",
-                  "conclusion": "Conclusion 1-A"
+                  "conclusion": {
+                    "text": "Conclusion 1-A",
+                    "points": 1
+                  }
                 },
                 {
                   "skill": "Magic",
-                  "conclusion": "Conclusion 2-B"
+                  "conclusion": {
+                    "text": "Conclusion 2-B"
+                  }
                 }
               ]
             }

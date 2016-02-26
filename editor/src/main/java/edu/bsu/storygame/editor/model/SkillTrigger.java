@@ -2,9 +2,9 @@ package edu.bsu.storygame.editor.model;
 
 public class SkillTrigger {
     public String skill;
-    public String conclusion;
+    public Conclusion conclusion;
 
-    public SkillTrigger(String skill, String conclusion) {
+    public SkillTrigger(String skill, Conclusion conclusion) {
         this.skill = skill;
         this.conclusion = conclusion;
     }
