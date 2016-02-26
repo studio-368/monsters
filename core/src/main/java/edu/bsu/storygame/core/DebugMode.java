@@ -24,8 +24,8 @@ public class DebugMode implements SignalView.Listener<Keyboard.Event> {
             @Override
             public void run() {
                 GameContext context = new GameContext(game,
-                        new Player.Builder().name("Ann").color(Colors.WHITE).skills(makeSkillList()).build(),
-                        new Player.Builder().name("Barb").color(Colors.BLACK).skills(makeSkillList()).build());
+                        new Player.Builder().name("Ann").color(Colors.BLUE).skills(makeSkillList()).build(),
+                        new Player.Builder().name("Barb").color(Colors.RED).skills(makeSkillList()).build());
                 game.screenStack.push(new SampleGameScreen(game, context));
             }
 

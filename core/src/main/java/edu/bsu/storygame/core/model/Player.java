@@ -5,10 +5,10 @@ import react.Value;
 
 import java.util.ArrayList;
 
-public final class Player {
+public class Player {
 
-    private final String name;
-    private final int color;
+    public final String name;
+    public final int color;
     public RList<String> skills = new RList<>(new ArrayList<String>());
     public Value<Integer> storyPoints = Value.create(0);
     public final Value<Region> location = Value.create(Region.AFRICA);
@@ -44,8 +44,6 @@ public final class Player {
         this.color = builder.color;
         this.skills = builder.skills;
     }
-
-    public String getName(){return name;}
 
 }
 
