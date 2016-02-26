@@ -5,7 +5,7 @@ import react.Value;
 
 import java.util.ArrayList;
 
-public final class Player {
+public class Player {
 
     private final String name;
     private final int color;
