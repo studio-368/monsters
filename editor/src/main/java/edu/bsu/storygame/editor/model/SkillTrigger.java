@@ -4,6 +4,16 @@ public class SkillTrigger {
     public String skill;
     public Conclusion conclusion;
 
+    public static final String[] availableSkills = {
+            null,
+            "Athleticism",
+            "Logic",
+            "Magic",
+            "Persuasion",
+            "Stealth",
+            "Weapon Use"
+    };
+
     public SkillTrigger(String skill, Conclusion conclusion) {
         this.skill = skill;
         this.conclusion = conclusion;
@@ -11,6 +21,9 @@ public class SkillTrigger {
 
     @Override
     public String toString() {
+        if (skill == null) {
+            return "No skill";
+        }
         return skill;
     }
 

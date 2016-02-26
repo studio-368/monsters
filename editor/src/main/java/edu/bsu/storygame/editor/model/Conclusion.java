@@ -2,13 +2,17 @@ package edu.bsu.storygame.editor.model;
 
 public class Conclusion {
     public String text;
-    public int points;
+    public Integer points;
 
-    public Conclusion(String text) {
-        this(text, 0);
+    public static Conclusion emptyConclusion() {
+        return new Conclusion("");
     }
 
-    public Conclusion(String text, int points) {
+    public Conclusion(String text) {
+        this(text, null);
+    }
+
+    public Conclusion(String text, Integer points) {
         this.text = text;
         this.points = points;
     }

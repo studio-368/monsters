@@ -2,11 +2,9 @@ package edu.bsu.storygame.editor;
 
 import edu.bsu.storygame.editor.model.Encounter;
 import edu.bsu.storygame.editor.model.Narrative;
+import edu.bsu.storygame.editor.model.Reaction;
 import edu.bsu.storygame.editor.model.Region;
-import edu.bsu.storygame.editor.view.EmptyDocumentPane;
-import edu.bsu.storygame.editor.view.EncounterEditPane;
-import edu.bsu.storygame.editor.view.JsonPromptStage;
-import edu.bsu.storygame.editor.view.RegionEditPane;
+import edu.bsu.storygame.editor.view.*;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -81,6 +79,8 @@ public class EditorStageController implements Initializable {
                 editRegion((Region) selectedObject);
             } else if (selectedObject instanceof Encounter) {
                 editEncounter((Encounter) selectedObject);
+            } else if (selectedObject instanceof Reaction) {
+                editReaction((Reaction) selectedObject);
             }
         });
     }
@@ -91,6 +91,10 @@ public class EditorStageController implements Initializable {
 
     private void editEncounter(Encounter encounter) {
         setEditPane(new EncounterEditPane(encounter, this));
+    }
+
+    private void editReaction(Reaction reaction) {
+        setEditPane(new ReactionEditPane(reaction, this));
     }
 
     private void setEditPane(Pane pane) {
