@@ -108,40 +108,7 @@ public class EncounterCardFactory {
                             final Story story = reaction.story;
                             add(new StoryLabel(story));
                             for (final SkillTrigger trigger : story.triggers) {
-                                Button skillButton = new SkillButton(trigger.skill);
-                                skillButton.onClick(new Slot<Button>() {
-                                    @Override
-                                    public void onEmit(Button button) {
-                                        final Conclusion conclusion = trigger.conclusion;
-                                        InteractionArea.this.removeAll();
-                                        InteractionArea.this.add(new ConclusionLabel(conclusion),
-                                                new RewardLabel(trigger.conclusion),
-                                                new Button("Done").onClick(new Slot<Button>() {
-                                                    {
-                                                        context.phase.connect(new Slot<Phase>() {
-                                                            @Override
-                                                            public void onEmit(Phase phase) {
-                                                                setEnabled(phase.equals(Phase.STORY));
-                                                            }
-                                                        });
-                                                    }
-
-                                                    @Override
-                                                    public void onEmit(Button button) {
-                                                        context.phase.update(Phase.END_OF_ROUND);
-                                                    }
-                                                }));
-                                        applyModelChanges(conclusion);
-                                    }
-
-                                    private void applyModelChanges(Conclusion conclusion) {
-                                        context.currentPlayer.get().storyPoints.update(
-                                                context.currentPlayer.get().storyPoints.get() + conclusion.points);
-                                        if (conclusion.skill != null) {
-                                            context.currentPlayer.get().skills.add(conclusion.skill);
-                                        }
-                                    }
-                                });
+                                Button skillButton = new SkillTriggerButton(trigger);
                                 add(skillButton);
                             }
                         }
@@ -149,15 +116,53 @@ public class EncounterCardFactory {
                 });
             }
 
+            final class SkillTriggerButton extends Button {
+                private SkillTriggerButton(final SkillTrigger trigger) {
+                    super(trigger.skill.name);
+                    onClick(new Slot<Button>() {
+                        private final Player currentPlayer = context.currentPlayer.get();
 
-            final class SkillButton extends Button {
-                private SkillButton(Skill skill) {
-                    super(skill.name);
+                        @Override
+                        public void onEmit(Button button) {
+                            final Conclusion conclusion = trigger.conclusion;
+                            InteractionArea.this.removeAll();
+                            InteractionArea.this.add(new ConclusionLabel(conclusion),
+                                    new RewardLabel(trigger.conclusion),
+                                    new Button("Done").onClick(new Slot<Button>() {
+                                        {
+                                            context.phase.connect(new Slot<Phase>() {
+                                                @Override
+                                                public void onEmit(Phase phase) {
+                                                    setEnabled(phase.equals(Phase.STORY));
+                                                }
+                                            });
+                                        }
+
+                                        @Override
+                                        public void onEmit(Button button) {
+                                            context.phase.update(Phase.END_OF_ROUND);
+                                        }
+                                    }));
+                            applyModelChanges(conclusion);
+                        }
+
+                        private void applyModelChanges(Conclusion conclusion) {
+                            currentPlayer.storyPoints.update(
+                                    currentPlayer.storyPoints.get() + conclusion.points);
+                            if (isThereASkillRewardThisPlayerDoesNotHave(conclusion)) {
+                                context.currentPlayer.get().skills.add(conclusion.skill);
+                            }
+                        }
+
+                        private boolean isThereASkillRewardThisPlayerDoesNotHave(Conclusion conclusion) {
+                            return conclusion.skill != null && !currentPlayer.skills.contains(conclusion.skill);
+                        }
+                    });
                 }
 
                 @Override
                 protected Class<?> getStyleClass() {
-                    return SkillButton.class;
+                    return SkillTriggerButton.class;
                 }
             }
 

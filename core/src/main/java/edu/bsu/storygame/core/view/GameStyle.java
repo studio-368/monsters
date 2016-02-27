@@ -80,9 +80,9 @@ public final class GameStyle {
                 .add(EncounterCardFactory.EncounterCard.InteractionArea.ConclusionLabel.class,
                         Style.TEXT_WRAP.on,
                         Style.COLOR.is(Colors.WHITE))
-                .add(EncounterCardFactory.EncounterCard.InteractionArea.SkillButton.class,
+                .add(EncounterCardFactory.EncounterCard.InteractionArea.SkillTriggerButton.class,
                         buttonRegularStyle)
-                .add(EncounterCardFactory.EncounterCard.InteractionArea.SkillButton.class, Style.Mode.SELECTED,
+                .add(EncounterCardFactory.EncounterCard.InteractionArea.SkillTriggerButton.class, Style.Mode.SELECTED,
                         buttonSelectedStyle);
     }
 }
