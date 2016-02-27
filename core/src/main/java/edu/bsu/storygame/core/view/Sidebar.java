@@ -5,6 +5,7 @@ import edu.bsu.storygame.core.model.GameContext;
 import edu.bsu.storygame.core.model.Player;
 import edu.bsu.storygame.core.model.Skill;
 import react.RList;
+import react.SignalView;
 import tripleplay.ui.Background;
 import tripleplay.ui.Group;
 import tripleplay.ui.Label;
@@ -28,7 +29,9 @@ public class Sidebar extends Group {
     }
 
     final class PlayerView extends Group {
+
         private final Group skillGroup = new Group(AxisLayout.vertical());
+        private final Group pointGroup = new Group(AxisLayout.vertical());
         private final Player player;
 
         PlayerView(Player player) {
@@ -40,8 +43,11 @@ public class Sidebar extends Group {
             add(new Label(player.name)
                     .addStyles(Style.FONT.is(Typeface.OXYGEN.in(context.game).atSize(0.04f))));
             watchForSkillChanges();
+            watchForPointChange();
             add(skillGroup);
+            add(pointGroup);
             regenerateSkillGroup();
+            updatePointChange();
         }
 
         private void watchForSkillChanges() {
@@ -58,12 +64,27 @@ public class Sidebar extends Group {
             });
         }
 
+        private void watchForPointChange() {
+            player.storyPoints.connect(new SignalView.Listener<Integer>() {
+                @Override
+                public void onEmit(Integer integer) {
+                    updatePointChange();
+                }
+            });
+        }
+
+        private void updatePointChange() {
+            pointGroup.removeAll();
+            pointGroup.add(new PointLabel(player.storyPoints.get()));
+        }
+
         private void regenerateSkillGroup() {
             skillGroup.removeAll();
             for (Skill skill : player.skills) {
                 skillGroup.add(new SkillLabel(skill));
             }
         }
+
     }
 
     final class SkillLabel extends Label {
@@ -76,4 +97,12 @@ public class Sidebar extends Group {
             return SkillLabel.class;
         }
     }
+
+    final class PointLabel extends Label {
+        private PointLabel(Integer points) {
+            super(points.toString());
+
+        }
+    }
+
 }
