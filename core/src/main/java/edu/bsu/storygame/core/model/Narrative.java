@@ -38,8 +38,8 @@ public final class Narrative {
         return map.get(region);
     }
 
-    public Set<String> skills() {
-        Set<String> result = Sets.newTreeSet();
+    public Set<Skill> skills() {
+        Set<Skill> result = Sets.newTreeSet();
         for (EncounterDeck deck : map.values()) {
             for (Encounter encounter : deck) {
                 for (Reaction reaction : encounter.reactions) {

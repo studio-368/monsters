@@ -31,13 +31,17 @@ public final class GameStyle {
         int bgColor = 0xFFCCCCCC, ulColor = 0xFFEEEEEE, brColor = 0xFFAAAAAA;
         Background butBg = Background.roundRect(gfx, bgColor, 5, ulColor, 2).inset(5, 6, 2, 6);
         Background butSelBg = Background.roundRect(gfx, bgColor, 5, brColor, 2).inset(6, 5, 1, 7);
+
+        final Style.Binding buttonRegularStyle = Style.BACKGROUND.is(butBg);
+        final Style.Binding buttonSelectedStyle = Style.BACKGROUND.is(butSelBg);
+
         return Stylesheet.builder()
                 .add(Label.class,
                         Style.FONT.is(font))
                 .add(Button.class,
-                        Style.BACKGROUND.is(butBg))
+                        buttonRegularStyle)
                 .add(Button.class, Style.Mode.SELECTED,
-                        Style.BACKGROUND.is(butSelBg))
+                        buttonSelectedStyle)
                 .add(ToggleButton.class,
                         Style.BACKGROUND.is(butBg))
                 .add(ToggleButton.class, Style.Mode.SELECTED,
@@ -75,6 +79,10 @@ public final class GameStyle {
                         Style.COLOR.is(Colors.WHITE))
                 .add(EncounterCardFactory.EncounterCard.InteractionArea.ConclusionLabel.class,
                         Style.TEXT_WRAP.on,
-                        Style.COLOR.is(Colors.WHITE));
+                        Style.COLOR.is(Colors.WHITE))
+                .add(EncounterCardFactory.EncounterCard.InteractionArea.SkillTriggerButton.class,
+                        buttonRegularStyle)
+                .add(EncounterCardFactory.EncounterCard.InteractionArea.SkillTriggerButton.class, Style.Mode.SELECTED,
+                        buttonSelectedStyle);
     }
 }

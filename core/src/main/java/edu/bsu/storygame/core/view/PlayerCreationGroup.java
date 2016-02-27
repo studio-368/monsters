@@ -1,6 +1,7 @@
 package edu.bsu.storygame.core.view;
 
 import edu.bsu.storygame.core.MonsterGame;
+import edu.bsu.storygame.core.model.Skill;
 import react.Slot;
 import react.Value;
 import tripleplay.ui.*;
@@ -58,9 +59,9 @@ public class PlayerCreationGroup extends Group {
     }
 
     private Group createSkillGroup() {
-        Set<String> skillSet = game.narrativeCache.state.result().get().skills();
+        Set<Skill> skillSet = game.narrativeCache.state.result().get().skills();
         Group group = new Group(new TableLayout(2).gaps(20, 20));
-        for (String skill : skillSet) {
+        for (Skill skill : skillSet) {
             group.add(new SkillButton(skill));
 
         }
@@ -77,8 +78,8 @@ public class PlayerCreationGroup extends Group {
         private static final float PERCENT_OF_HEIGHT = 0.1f;
         private static final float PERCENT_OF_WIDTH = 0.2f;
 
-        SkillButton(String text) {
-            super(text);
+        SkillButton(Skill skill) {
+            super(skill.name);
             setConstraint(Constraints.fixedSize(
                     game.bounds.width() * PERCENT_OF_WIDTH,
                     game.bounds.height() * PERCENT_OF_HEIGHT));

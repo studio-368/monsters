@@ -39,7 +39,7 @@ public final class EncounterParser {
         Json.Array jsonTriggers = jsonStory.getArray("triggers");
         for (int i = 0, limit = jsonTriggers.length(); i < limit; i++) {
             Json.Object jsonTrigger = jsonTriggers.getObject(i);
-            String skill = jsonTrigger.getString("skill");
+            Skill skill = Skill.named(jsonTrigger.getString("skill"));
             Json.Object conclusionObject = jsonTrigger.getObject("conclusion");
             Conclusion conclusion = parseConclusion(conclusionObject);
             storyBuilder.trigger(SkillTrigger.skill(skill).conclusion(conclusion));
@@ -54,7 +54,10 @@ public final class EncounterParser {
         checkNotNull(text, "Conclusion must have text");
         builder.text(text);
         builder.points(conclusionObject.getInt("points"));
-        builder.skill(conclusionObject.getString("skill"));
+        String skillReward = conclusionObject.getString("skill");
+        if (skillReward != null) {
+            builder.skill(Skill.named(skillReward));
+        }
         return builder.build();
     }
 }
