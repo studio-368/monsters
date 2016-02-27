@@ -108,7 +108,7 @@ public class EncounterCardFactory {
                             final Story story = reaction.story;
                             add(new StoryLabel(story));
                             for (final SkillTrigger trigger : story.triggers) {
-                                Button skillButton = new Button(trigger.skill);
+                                Button skillButton = new SkillButton(trigger.skill);
                                 skillButton.onClick(new Slot<Button>() {
                                     @Override
                                     public void onEmit(Button button) {
@@ -149,6 +149,17 @@ public class EncounterCardFactory {
                 });
             }
 
+
+            final class SkillButton extends Button {
+                private SkillButton(Skill skill) {
+                    super(skill.name);
+                }
+
+                @Override
+                protected Class<?> getStyleClass() {
+                    return SkillButton.class;
+                }
+            }
 
             final class StoryLabel extends Label {
                 private StoryLabel(Story story) {
@@ -208,7 +219,7 @@ public class EncounterCardFactory {
                                     .append(" skill");
                         } else {
                             stringBuilder.append("You gain the ")
-                                    .append(conclusion.skill)
+                                    .append(conclusion.skill.name)
                                     .append(" skill");
                         }
                     }

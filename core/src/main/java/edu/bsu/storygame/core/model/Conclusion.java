@@ -9,7 +9,7 @@ public final class Conclusion {
     public static class Builder {
         private String text;
         private int points = 0;
-        private String skill = null;
+        private Skill skill = null;
 
         public Builder text(String text) {
             this.text = text;
@@ -21,7 +21,7 @@ public final class Conclusion {
             return this;
         }
 
-        public Builder skill(String skill) {
+        public Builder skill(Skill skill) {
             this.skill = skill;
             return this;
         }
@@ -33,7 +33,7 @@ public final class Conclusion {
 
     public final String text;
     public final int points;
-    public final String skill;
+    public final Skill skill;
 
     private Conclusion(Builder importer) {
         this.text = importer.text;

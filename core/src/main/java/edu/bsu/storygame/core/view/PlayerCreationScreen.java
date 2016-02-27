@@ -1,18 +1,19 @@
 package edu.bsu.storygame.core.view;
 
+import com.google.common.collect.Lists;
 import edu.bsu.storygame.core.MonsterGame;
 import edu.bsu.storygame.core.assets.Typeface;
 import edu.bsu.storygame.core.model.GameContext;
 import edu.bsu.storygame.core.model.Player;
+import edu.bsu.storygame.core.model.Skill;
 import playn.core.Game;
-import react.RList;
 import react.Slot;
 import tripleplay.game.ScreenStack;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
 import tripleplay.util.Colors;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class PlayerCreationScreen extends ScreenStack.UIScreen {
 
@@ -77,12 +78,12 @@ public class PlayerCreationScreen extends ScreenStack.UIScreen {
 
     private GameContext createPlayerContext() {
 
-        final RList<String> skillsOne = new RList<>(new ArrayList<String>());
-        final RList<String> skillsTwo = new RList<>(new ArrayList<String>());
+        final List<Skill> skillsOne = Lists.newArrayList();
+        final List<Skill> skillsTwo = Lists.newArrayList();
 
         for (int item = 0; item < MAX_PLAYERS; item++) {
-            skillsOne.add(playerOneGroup.selector.selections().get(item).text.get());
-            skillsTwo.add(playerTwoGroup.selector.selections().get(item).text.get());
+            skillsOne.add(Skill.named(playerOneGroup.selector.selections().get(item).text.get()));
+            skillsTwo.add(Skill.named(playerTwoGroup.selector.selections().get(item).text.get()));
         }
 
         Player playerOne = new Player.Builder().name(playerOneGroup.nameField.text.get())

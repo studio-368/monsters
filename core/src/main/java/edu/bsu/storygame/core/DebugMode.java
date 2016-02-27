@@ -2,20 +2,26 @@ package edu.bsu.storygame.core;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import edu.bsu.storygame.core.model.GameContext;
 import edu.bsu.storygame.core.model.Player;
+import edu.bsu.storygame.core.model.Skill;
 import edu.bsu.storygame.core.view.SampleGameScreen;
 import playn.core.Key;
 import playn.core.Keyboard;
-import react.RList;
 import react.SignalView;
 import tripleplay.util.Colors;
+
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class DebugMode implements SignalView.Listener<Keyboard.Event> {
 
-    private static final ImmutableList<String> SAMPLE_SKILLS = ImmutableList.of("WEAPON_USE", "MAGIC");
+    private static final ImmutableList<Skill> SAMPLE_SKILLS = ImmutableList.of(
+            Skill.named("Weapon use"),
+            Skill.named("Magic")
+    );
 
     private final ImmutableMap.Builder<Key, Runnable> builder = ImmutableMap.builder();
 
@@ -29,8 +35,8 @@ public class DebugMode implements SignalView.Listener<Keyboard.Event> {
                 game.screenStack.push(new SampleGameScreen(game, context));
             }
 
-            private RList<String> makeSkillList() {
-                RList<String> list = RList.create();
+            private List<Skill> makeSkillList() {
+                List<Skill> list = Lists.newArrayList();
                 list.addAll(SAMPLE_SKILLS);
                 return list;
             }

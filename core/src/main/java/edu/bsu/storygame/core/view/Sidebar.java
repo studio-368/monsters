@@ -3,6 +3,7 @@ package edu.bsu.storygame.core.view;
 import edu.bsu.storygame.core.assets.Typeface;
 import edu.bsu.storygame.core.model.GameContext;
 import edu.bsu.storygame.core.model.Player;
+import edu.bsu.storygame.core.model.Skill;
 import react.RList;
 import tripleplay.ui.Background;
 import tripleplay.ui.Group;
@@ -44,14 +45,14 @@ public class Sidebar extends Group {
         }
 
         private void watchForSkillChanges() {
-            player.skills.connect(new RList.Listener<String>() {
+            player.skills.connect(new RList.Listener<Skill>() {
                 @Override
-                public void onAdd(String elem) {
+                public void onAdd(Skill elem) {
                     regenerateSkillGroup();
                 }
 
                 @Override
-                public void onRemove(String elem) {
+                public void onRemove(Skill elem) {
                     regenerateSkillGroup();
                 }
             });
@@ -59,15 +60,15 @@ public class Sidebar extends Group {
 
         private void regenerateSkillGroup() {
             skillGroup.removeAll();
-            for (String skill : player.skills) {
+            for (Skill skill : player.skills) {
                 skillGroup.add(new SkillLabel(skill));
             }
         }
     }
 
     final class SkillLabel extends Label {
-        private SkillLabel(String skill) {
-            super(skill);
+        private SkillLabel(Skill skill) {
+            super(skill.name);
         }
 
         @Override
