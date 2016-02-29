@@ -6,10 +6,7 @@ import edu.bsu.storygame.core.model.Player;
 import edu.bsu.storygame.core.model.Skill;
 import react.RList;
 import react.SignalView;
-import tripleplay.ui.Background;
-import tripleplay.ui.Group;
-import tripleplay.ui.Label;
-import tripleplay.ui.Style;
+import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
 import tripleplay.util.Colors;
 
@@ -30,13 +27,14 @@ public class Sidebar extends Group {
 
     final class PlayerView extends Group {
 
-        private final Group skillGroup = new Group(AxisLayout.vertical());
-        private final Group pointGroup = new Group(AxisLayout.vertical());
+        private final SkillGroup skillGroup = new SkillGroup(AxisLayout.vertical());
+        private PointLabel pointLabel;
         private final Player player;
 
         PlayerView(Player player) {
             super(AxisLayout.vertical());
             this.player = checkNotNull(player);
+            pointLabel = new PointLabel(player.storyPoints.get());
             addStyles(Style.BACKGROUND.is(Background.solid(player.color)),
                     Style.HALIGN.left,
                     Style.VALIGN.top);
@@ -45,21 +43,26 @@ public class Sidebar extends Group {
             watchForSkillChanges();
             watchForPointChange();
             add(skillGroup);
-            add(pointGroup);
-            regenerateSkillGroup();
-            updatePointChange();
+            add(pointLabel);
+            initPlayerFields();
+        }
+
+        private void initPlayerFields() {
+            pointLabel.updatePlayerPoints(player.storyPoints.get());
+            skillGroup.updatePlayerSkills(player);
         }
 
         private void watchForSkillChanges() {
             player.skills.connect(new RList.Listener<Skill>() {
                 @Override
                 public void onAdd(Skill elem) {
-                    regenerateSkillGroup();
+                    skillGroup.updatePlayerSkills(player);
+
                 }
 
                 @Override
                 public void onRemove(Skill elem) {
-                    regenerateSkillGroup();
+                    skillGroup.updatePlayerSkills(player);
                 }
             });
         }
@@ -68,23 +71,10 @@ public class Sidebar extends Group {
             player.storyPoints.connect(new SignalView.Listener<Integer>() {
                 @Override
                 public void onEmit(Integer integer) {
-                    updatePointChange();
+                    pointLabel.updatePlayerPoints(integer);
                 }
             });
         }
-
-        private void updatePointChange() {
-            pointGroup.removeAll();
-            pointGroup.add(new PointLabel(player.storyPoints.get()));
-        }
-
-        private void regenerateSkillGroup() {
-            skillGroup.removeAll();
-            for (Skill skill : player.skills) {
-                skillGroup.add(new SkillLabel(skill));
-            }
-        }
-
     }
 
     final class SkillLabel extends Label {
@@ -98,10 +88,26 @@ public class Sidebar extends Group {
         }
     }
 
+    final class SkillGroup extends Group {
+        private SkillGroup(Layout layout) {
+            super(layout);
+        }
+
+        private void updatePlayerSkills(Player player) {
+            this.removeAll();
+            for (Skill skill : player.skills) {
+                this.add(new SkillLabel(skill));
+            }
+        }
+    }
+
     final class PointLabel extends Label {
         private PointLabel(Integer points) {
             super(points.toString());
+        }
 
+        private void updatePlayerPoints(Integer points) {
+            this.setText(points.toString());
         }
     }
 

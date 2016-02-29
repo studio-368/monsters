@@ -14,6 +14,7 @@ public final class GameContext {
     public final ImmutableList<Player> players;
     public final Value<Player> currentPlayer;
     public final Value<Encounter> encounter = Value.create(null);
+    public final Value<Integer> winCondition = Value.create(1);
 
     public GameContext(MonsterGame game, Player... players) {
         this.game = checkNotNull(game);
@@ -24,10 +25,6 @@ public final class GameContext {
         this.players = ImmutableList.copyOf(players);
         this.currentPlayer = Value.create(this.players.get(0));
 
-        configureCommonRules();
-    }
-
-    private void configureCommonRules() {
         configureResetEncounterAtEndOfRound();
     }
 
@@ -45,4 +42,5 @@ public final class GameContext {
     public final Player otherPlayer() {
         return currentPlayer.get() == players.get(0) ? players.get(1) : players.get(0);
     }
+
 }

@@ -16,6 +16,7 @@ public class Player {
     public RList<Skill> skills;
     public Value<Integer> storyPoints = Value.create(0);
     public final Value<Region> location = Value.create(Region.AFRICA);
+    public final Value<Boolean> hasWon = Value.create(false);
 
     public static class Builder {
 

@@ -27,7 +27,8 @@ public class PlayerCreationScreen extends ScreenStack.UIScreen {
     public PlayerCreationScreen(final MonsterGame game) {
         super(game.plat);
         this.game = game;
-        root = iface.createRoot(AxisLayout.vertical().gap(80), GameStyle.newSheet(game), layer);
+        root = iface.createRoot(AxisLayout.vertical().gap(50), GameStyle.newSheet(game), layer);
+
         root.setSize(game.bounds.width(), game.bounds.height());
         root.addStyles(Style.BACKGROUND.is(Background.solid(Colors.ORANGE)));
         root.add(new Label("Nightmare Defenders!"));
