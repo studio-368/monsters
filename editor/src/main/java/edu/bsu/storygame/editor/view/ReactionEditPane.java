@@ -109,7 +109,10 @@ public class ReactionEditPane extends GridPane {
             pointsCheckBox.setSelected(selectedUsableSkill.conclusion.points != null);
             pointsCheckBox.setDisable(false);
             pointsChangeTextField.setDisable(false);
-            pointsChangeTextField.setText("" + selectedUsableSkill.conclusion.points);
+            if (selectedUsableSkill.conclusion.points != null)
+                pointsChangeTextField.setText("" + selectedUsableSkill.conclusion.points);
+            else
+                pointsChangeTextField.clear();
         }
     }
 
