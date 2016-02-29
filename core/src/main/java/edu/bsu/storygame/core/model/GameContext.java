@@ -14,7 +14,7 @@ public final class GameContext {
     public final ImmutableList<Player> players;
     public final Value<Player> currentPlayer;
     public final Value<Encounter> encounter = Value.create(null);
-    public final Value<Integer> winCondition = Value.create(1);
+    public final int pointsRequiredForVictory = 5;
 
     public GameContext(MonsterGame game, Player... players) {
         this.game = checkNotNull(game);

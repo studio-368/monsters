@@ -16,7 +16,7 @@ import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class DebugMode implements SignalView.Listener<Keyboard.Event> {
+public class KeystrokeBasedPlayerGenerator implements SignalView.Listener<Keyboard.Event> {
 
     private static final ImmutableList<Skill> SAMPLE_SKILLS = ImmutableList.of(
             Skill.named("Weapon use"),
@@ -46,7 +46,7 @@ public class DebugMode implements SignalView.Listener<Keyboard.Event> {
     private final MonsterGame game;
     private final ImmutableMap<Key, Runnable> actionMap = builder.build();
 
-    public DebugMode(MonsterGame game) {
+    public KeystrokeBasedPlayerGenerator(MonsterGame game) {
         this.game = checkNotNull(game);
     }
 

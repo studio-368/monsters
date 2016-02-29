@@ -5,6 +5,7 @@ import edu.bsu.storygame.core.assets.TileCache;
 import edu.bsu.storygame.core.model.GameContext;
 import edu.bsu.storygame.core.model.Phase;
 import edu.bsu.storygame.core.model.Player;
+import edu.bsu.storygame.core.util.DebugKeys;
 import playn.core.Color;
 import playn.core.Game;
 import playn.scene.GroupLayer;
@@ -35,6 +36,10 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
                 (game.plat.graphics().viewSize.height() - game.bounds.height()) / 2);
 
         configurePlayerAdvancementAtEndOfRound();
+
+        if (game.config.debugMode()) {
+            game.plat.input().keyboardEvents.connect(new DebugKeys(context));
+        }
     }
 
     @Override
@@ -78,7 +83,7 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
             @Override
             public void onEmit(Phase phase) {
                 if (phase.equals(Phase.END_OF_ROUND)) {
-                    if (context.currentPlayer.get().storyPoints.get().equals(context.winCondition.get())) {
+                    if (currentPlayerHasEnoughPointsToWin()) {
                         context.currentPlayer.get().hasWon.update(true);
                         configureWinScreen();
                     } else {
@@ -86,6 +91,10 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
                         context.phase.update(Phase.MOVEMENT);
                     }
                 }
+            }
+
+            private boolean currentPlayerHasEnoughPointsToWin() {
+                return context.currentPlayer.get().storyPoints.get() >= context.pointsRequiredForVictory;
             }
 
             private void configureWinScreen() {
