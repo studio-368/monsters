@@ -65,11 +65,48 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
         final float cardHeight = mapHeight;
         final float cardX = mapX + (mapWidth - cardWidth) / 2f;
         final float cardY = 0;
-        EncounterCardFactory factory = new EncounterCardFactory(context);
-        boundedLayer.addAt(factory.create(cardWidth, cardHeight, iface), cardX, cardY);
+        final EncounterCardFactory factory = new EncounterCardFactory(context);
+        final Layer encounterCard = factory.create(cardWidth, cardHeight, iface);
+        encounterCard.setVisible(false);
+        boundedLayer.addAt(encounterCard, cardX, cardY);
+        context.phase.connect(new Slot<Phase>() {
+            final float duration = 300f;
+
+            @Override
+            public void onEmit(Phase phase) {
+                if (phase == Phase.ENCOUNTER) {
+                    animateCardEntrance();
+                } else if (phase == Phase.END_OF_ROUND) {
+                    animateCardRemoval();
+                }
+            }
+
+            private void animateCardEntrance() {
+                encounterCard.setVisible(true);
+                iface.anim.tweenTranslation(encounterCard)
+                        .from(game.plat.graphics().viewSize.width(), cardY + cardHeight / 2f)
+                        .to(cardX, cardY)
+                        .in(duration)
+                        .easeIn();
+            }
+
+            private void animateCardRemoval() {
+                iface.anim.tweenTranslation(encounterCard)
+                        .to(game.plat.graphics().viewSize.width(), cardY - cardHeight / 2f)
+                        .in(duration)
+                        .easeOut()
+                        .then()
+                        .action(new Runnable() {
+                            @Override
+                            public void run() {
+                                encounterCard.setVisible(false);
+                            }
+                        });
+            }
+        });
+
         Layer handoffDialog = new HandoffDialogFactory(context).create(iface);
         boundedLayer.addAt(handoffDialog, (boundedLayer.width() - handoffDialog.width()) / 2, (boundedLayer.height() - handoffDialog.height()) / 2);
-
     }
 
 
