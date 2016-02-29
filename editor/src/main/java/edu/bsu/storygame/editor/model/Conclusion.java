@@ -3,18 +3,20 @@ package edu.bsu.storygame.editor.model;
 public class Conclusion {
     public String text;
     public Integer points;
+    public String skill;
 
     public static Conclusion emptyConclusion() {
         return new Conclusion("");
     }
 
     public Conclusion(String text) {
-        this(text, null);
+        this(text, null, null);
     }
 
-    public Conclusion(String text, Integer points) {
+    public Conclusion(String text, Integer points, String skill) {
         this.text = text;
         this.points = points;
+        this.skill = skill;
     }
 
     @Override
@@ -24,15 +26,16 @@ public class Conclusion {
 
         Conclusion that = (Conclusion) o;
 
-        if (points != that.points) return false;
-        return text != null ? text.equals(that.text) : that.text == null;
-
+        if (text != null ? !text.equals(that.text) : that.text != null) return false;
+        if (points != null ? !points.equals(that.points) : that.points != null) return false;
+        return skill != null ? skill.equals(that.skill) : that.skill == null;
     }
 
     @Override
     public int hashCode() {
         int result = text != null ? text.hashCode() : 0;
-        result = 31 * result + points;
+        result = 31 * result + (points != null ? points.hashCode() : 0);
+        result = 31 * result + (skill != null ? skill.hashCode() : 0);
         return result;
     }
 }
