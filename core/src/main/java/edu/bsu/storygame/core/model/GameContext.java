@@ -25,10 +25,6 @@ public final class GameContext {
         this.players = ImmutableList.copyOf(players);
         this.currentPlayer = Value.create(this.players.get(0));
 
-        configureCommonRules();
-    }
-
-    private void configureCommonRules() {
         configureResetEncounterAtEndOfRound();
     }
 
@@ -38,7 +34,6 @@ public final class GameContext {
             public void onEmit(Phase phase) {
                 if (phase == Phase.END_OF_ROUND) {
                     encounter.update(null);
-                    checkWinCondition();
                 }
             }
         });
@@ -48,9 +43,4 @@ public final class GameContext {
         return currentPlayer.get() == players.get(0) ? players.get(1) : players.get(0);
     }
 
-    public void checkWinCondition() {
-        if (currentPlayer.get().storyPoints.get().equals(winCondition.get())) {
-            currentPlayer.get().hasWon.update(true);
-        }
-    }
 }

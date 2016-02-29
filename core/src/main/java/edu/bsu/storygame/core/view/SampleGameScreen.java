@@ -4,14 +4,17 @@ import edu.bsu.storygame.core.MonsterGame;
 import edu.bsu.storygame.core.assets.TileCache;
 import edu.bsu.storygame.core.model.GameContext;
 import edu.bsu.storygame.core.model.Phase;
+import edu.bsu.storygame.core.model.Player;
+import playn.core.Color;
 import playn.core.Game;
 import playn.scene.GroupLayer;
 import playn.scene.Layer;
 import react.Slot;
 import tripleplay.game.ScreenStack;
-import tripleplay.ui.Background;
-import tripleplay.ui.Style;
+import tripleplay.ui.*;
 import tripleplay.ui.layout.AbsoluteLayout;
+import tripleplay.ui.layout.AxisLayout;
+import tripleplay.util.Colors;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -20,6 +23,7 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
     private final MonsterGame game;
     private final GameContext context;
     private final GroupLayer boundedLayer;
+    private Layer winScreen;
 
     public SampleGameScreen(final MonsterGame game, final GameContext context) {
         super(checkNotNull(game).plat);
@@ -63,11 +67,9 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
         final float cardY = 0;
         EncounterCardFactory factory = new EncounterCardFactory(context);
         boundedLayer.addAt(factory.create(cardWidth, cardHeight, iface), cardX, cardY);
-
         Layer handoffDialog = new HandoffDialogFactory(context).create(iface);
-        Layer winScreen = new WinScreen(context).create(iface);
         boundedLayer.addAt(handoffDialog, (boundedLayer.width() - handoffDialog.width()) / 2, (boundedLayer.height() - handoffDialog.height()) / 2);
-        boundedLayer.addAt(winScreen, (boundedLayer.width() - handoffDialog.width()) / 2, (boundedLayer.height() - handoffDialog.height()) / 2);
+
     }
 
 
@@ -76,9 +78,19 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
             @Override
             public void onEmit(Phase phase) {
                 if (phase.equals(Phase.END_OF_ROUND)) {
-                    advancePlayer();
-                    context.phase.update(Phase.MOVEMENT);
+                    if (context.currentPlayer.get().storyPoints.get().equals(context.winCondition.get())) {
+                        context.currentPlayer.get().hasWon.update(true);
+                        configureWinScreen();
+                    } else {
+                        advancePlayer();
+                        context.phase.update(Phase.MOVEMENT);
+                    }
                 }
+            }
+
+            private void configureWinScreen() {
+                winScreen = new WinScreen(context, context.currentPlayer.get()).create(iface);
+                boundedLayer.addAt(winScreen, (boundedLayer.width() - winScreen.width()) / 2, (boundedLayer.height() - winScreen.height()) / 2);
             }
 
             private void advancePlayer() {
@@ -97,5 +109,36 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
     @Override
     public Game game() {
         return game;
+    }
+
+    private class WinScreen {
+
+        private final GameContext context;
+        private final Player winner;
+
+        public WinScreen(GameContext context, Player winner) {
+            this.context = checkNotNull(context);
+            this.winner = checkNotNull(winner);
+        }
+
+        public Layer create(Interface iface) {
+            final GroupLayer layer = new GroupLayer(context.game.bounds.width() / 2f, context.game.bounds.height() / 2f);
+            Label winLabel = new Label(winner.name + " Wins");
+            iface.createRoot(AxisLayout.vertical().offStretch(), GameStyle.newSheet(context.game), layer)
+                    .setSize(layer.width(), layer.height())
+                    .addStyles(Style.BACKGROUND.is(Background.solid(Color.argb(128, 128, 128, 128))))
+                    .add(winLabel.addStyles(Style.COLOR.is(Colors.WHITE)))
+
+                    .add(new Button("Play Again?").onClick(new Slot<Button>() {
+                        @Override
+                        public void onEmit(Button button) {
+                            context.game.screenStack.push(new PlayerCreationScreen(context.game), context.game.screenStack.slide());
+                        }
+                    }));
+
+            return layer;
+        }
+
+
     }
 }
