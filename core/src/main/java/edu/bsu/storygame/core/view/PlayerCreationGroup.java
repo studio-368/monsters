@@ -37,7 +37,7 @@ public class PlayerCreationGroup extends Group {
     }
 
     private Field initNameField() {
-        return new Field("")
+        return new Field("Name")
                 .setConstraint(Constraints.fixedSize(game.bounds.width() * 0.15f, game.bounds.height() * 0.08f));
     }
 

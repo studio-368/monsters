@@ -13,7 +13,7 @@ import tripleplay.ui.Background;
 import tripleplay.ui.Style;
 import tripleplay.ui.layout.AbsoluteLayout;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class SampleGameScreen extends ScreenStack.UIScreen {
 
@@ -65,7 +65,9 @@ public class SampleGameScreen extends ScreenStack.UIScreen {
         boundedLayer.addAt(factory.create(cardWidth, cardHeight, iface), cardX, cardY);
 
         Layer handoffDialog = new HandoffDialogFactory(context).create(iface);
+        Layer winScreen = new WinScreen(context).create(iface);
         boundedLayer.addAt(handoffDialog, (boundedLayer.width() - handoffDialog.width()) / 2, (boundedLayer.height() - handoffDialog.height()) / 2);
+        boundedLayer.addAt(winScreen, (boundedLayer.width() - handoffDialog.width()) / 2, (boundedLayer.height() - handoffDialog.height()) / 2);
     }
 
 
