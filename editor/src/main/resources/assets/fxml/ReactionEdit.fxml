@@ -10,8 +10,6 @@
     <columnConstraints>
         <ColumnConstraints halignment="LEFT" hgrow="NEVER" minWidth="10.0"/>
         <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0"/>
-        <ColumnConstraints halignment="LEFT" hgrow="NEVER" minWidth="10.0"/>
-        <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0"/>
     </columnConstraints>
     <rowConstraints>
         <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="SOMETIMES"/>
@@ -44,26 +42,19 @@
         <Label text="Usable skills:" textOverrun="CLIP" wrapText="true" GridPane.rowIndex="3"/>
         <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.vgrow="ALWAYS">
             <children>
-                <ListView fx:id="usableSkillsList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                <ListView fx:id="skillsList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
                           prefHeight="150.0" prefWidth="200.0"/>
-                <HBox spacing="5.0"/>
+                <HBox spacing="5.0">
+                    <children>
+                        <Button fx:id="addSkillButton" mnemonicParsing="false" onAction="#onAddSkill" text="Add"/>
+                        <Button fx:id="renameSkillButton" disable="true" mnemonicParsing="false"
+                                onAction="#onRenameSkill" text="Rename"/>
+                        <Button fx:id="removeSkillButton" disable="true" mnemonicParsing="false"
+                                onAction="#onRemoveSkill" text="Remove"/>
+                    </children>
+                </HBox>
             </children>
         </VBox>
-        <VBox alignment="CENTER" spacing="15.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
-            <children>
-                <Button fx:id="addSkillButton" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
-                        onAction="#onAddSkill" text="&lt;" textOverrun="CLIP"/>
-                <Button fx:id="removeSkillButton" disable="true" maxWidth="1.7976931348623157E308"
-                        mnemonicParsing="false" onAction="#onRemoveSkill" text="&gt;" textOverrun="CLIP"/>
-            </children>
-            <padding>
-                <Insets bottom="30.0"/>
-            </padding>
-        </VBox>
-        <Label text="Available skills:" textOverrun="CLIP" wrapText="true" GridPane.columnIndex="3"
-               GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM"/>
-        <ListView fx:id="availableSkillsList" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="3"
-                  GridPane.rowIndex="3"/>
         <Label text="Select a skill to edit below" wrapText="true" GridPane.columnIndex="1"
                GridPane.columnSpan="2147483647" GridPane.rowIndex="4"/>
         <Separator GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="5"

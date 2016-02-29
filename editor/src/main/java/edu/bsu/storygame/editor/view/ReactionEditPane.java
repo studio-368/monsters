@@ -14,8 +14,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ReactionEditPane extends GridPane {
     private final EditorStageController parent;
@@ -28,11 +26,11 @@ public class ReactionEditPane extends GridPane {
     @FXML
     private TextField reactionStoryTextField;
     @FXML
-    private ListView<SkillTrigger> usableSkillsList;
-    @FXML
-    private ListView<SkillTrigger> availableSkillsList;
+    private ListView<SkillTrigger> skillsList;
     @FXML
     private Button addSkillButton;
+    @FXML
+    private Button renameSkillButton;
     @FXML
     private Button removeSkillButton;
     @FXML
@@ -49,8 +47,7 @@ public class ReactionEditPane extends GridPane {
     private CheckBox newSkillCheckBox;
     @FXML
     private TextField newSkillTextField;
-    private SkillTrigger selectedUsableSkill = null;
-    private SkillTrigger selectedAvailableSkill = null;
+    private SkillTrigger selectedSkill = null;
 
     public ReactionEditPane(Reaction reaction, EditorStageController parent) {
         this.parent = parent;
@@ -74,7 +71,6 @@ public class ReactionEditPane extends GridPane {
     private void configure() {
         pointsChangeTextField.setText("1");
         configureUsableSkillsList();
-        configureAvailableSkillsList();
         bindTextField(reactionNameTextField, (o, v, n) -> onReactionNameChange());
         bindTextField(reactionStoryTextField, (o, v, n) -> onStoryChange());
         bindTextArea(conclusionNarrativeTextArea, (o, v, n) -> onNarrativeChange());
@@ -91,20 +87,22 @@ public class ReactionEditPane extends GridPane {
     }
 
     private void configureUsableSkillsList() {
-        usableSkillsList.getSelectionModel().getSelectedItems().addListener((ListChangeListener<SkillTrigger>) c -> {
+        skillsList.getSelectionModel().getSelectedItems().addListener((ListChangeListener<SkillTrigger>) c -> {
             if (c.getList().size() == 0) {
-                selectedUsableSkill = null;
+                selectedSkill = null;
+                renameSkillButton.setDisable(true);
                 removeSkillButton.setDisable(true);
             } else {
-                selectedUsableSkill = c.getList().get(0);
-                removeSkillButton.setDisable(selectedUsableSkill.skill == null);
+                selectedSkill = c.getList().get(0);
+                renameSkillButton.setDisable(selectedSkill.skill == null);
+                removeSkillButton.setDisable(selectedSkill.skill == null);
             }
             updateConclusionEditor();
         });
     }
 
     private void updateConclusionEditor() {
-        if (selectedUsableSkill == null) {
+        if (selectedSkill == null) {
             conclusionDescription.setText("No skill trigger selected");
             conclusionNarrativeTextArea.setText("");
             conclusionNarrativeTextArea.setDisable(true);
@@ -114,64 +112,49 @@ public class ReactionEditPane extends GridPane {
             newSkillCheckBox.setSelected(false);
             newSkillTextField.clear();
         } else {
-            conclusionDescription.setText(reaction.name + " with " + selectedUsableSkill.toString().toLowerCase());
-            conclusionNarrativeTextArea.setText(selectedUsableSkill.conclusion.text);
+            conclusionDescription.setText(reaction.name + " with " + selectedSkill.toString().toLowerCase());
+            conclusionNarrativeTextArea.setText(selectedSkill.conclusion.text);
             conclusionNarrativeTextArea.setDisable(false);
             resultsVBox.setDisable(false);
-            pointsCheckBox.setSelected(selectedUsableSkill.conclusion.points != null);
+            pointsCheckBox.setSelected(selectedSkill.conclusion.points != null);
             pointsChangeTextField.setDisable(false);
-            if (selectedUsableSkill.conclusion.points != null)
-                pointsChangeTextField.setText("" + selectedUsableSkill.conclusion.points);
+            if (selectedSkill.conclusion.points != null)
+                pointsChangeTextField.setText("" + selectedSkill.conclusion.points);
             else
                 pointsChangeTextField.clear();
-            newSkillCheckBox.setSelected(selectedUsableSkill.conclusion.skill != null);
-            newSkillTextField.setText(selectedUsableSkill.conclusion.skill);
+            newSkillCheckBox.setSelected(selectedSkill.conclusion.skill != null);
+            newSkillTextField.setText(selectedSkill.conclusion.skill);
         }
-    }
-
-    private void configureAvailableSkillsList() {
-        availableSkillsList.getSelectionModel().getSelectedItems().addListener((ListChangeListener<SkillTrigger>) c -> {
-            if (c.getList().size() == 0) {
-                selectedAvailableSkill = null;
-                addSkillButton.setDisable(true);
-            } else {
-                selectedAvailableSkill = c.getList().get(0);
-                addSkillButton.setDisable(false);
-            }
-        });
     }
 
     private void populateReaction() {
         reactionName.setText(reaction.name + " reaction");
         reactionNameTextField.setText(reaction.name);
-        usableSkillsList.setItems(new ObservableListWrapper<>(reaction.story.triggers));
-        refreshAvailableSkills();
-    }
-
-    private void refreshAvailableSkills() {
-        List<String> skills = new ArrayList<>();
-        usableSkillsList.getItems().forEach(skillTrigger -> skills.add(skillTrigger.skill));
-        availableSkillsList.getItems().forEach(skillTrigger -> skills.add(skillTrigger.skill));
-        for (String skill : SkillTrigger.availableSkills) {
-            if (!skills.contains(skill))
-                availableSkillsList.getItems().add(new SkillTrigger(skill, Conclusion.emptyConclusion()));
-        }
+        skillsList.setItems(new ObservableListWrapper<>(reaction.story.triggers));
     }
 
     @FXML
     private void onAddSkill() {
-        usableSkillsList.getItems().add(selectedAvailableSkill);
-        usableSkillsList.getSelectionModel().select(selectedAvailableSkill);
-        availableSkillsList.getItems().remove(selectedAvailableSkill);
-        parent.refresh();
+        String newSkillName = TextPrompt.emptyPrompt();
+        SkillTrigger trigger;
+        if (newSkillName.equals("") || newSkillName.equalsIgnoreCase("No skill")) {
+            trigger = new SkillTrigger(null, Conclusion.emptyConclusion());
+        } else {
+            trigger = new SkillTrigger(newSkillName, Conclusion.emptyConclusion());
+        }
+        skillsList.getItems().add(trigger);
+        skillsList.getSelectionModel().select(trigger);
     }
 
     @FXML
     private void onRemoveSkill() {
-        availableSkillsList.getItems().add(selectedUsableSkill);
-        availableSkillsList.getSelectionModel().select(selectedUsableSkill);
-        usableSkillsList.getItems().remove(selectedUsableSkill);
-        parent.refresh();
+        skillsList.getItems().remove(selectedSkill);
+    }
+
+    @FXML
+    private void onRenameSkill() {
+        selectedSkill.skill = TextPrompt.promptFromString(selectedSkill.skill);
+        skillsList.refresh();
     }
 
     @FXML
@@ -187,13 +170,13 @@ public class ReactionEditPane extends GridPane {
 
     @FXML
     private void onNarrativeChange() {
-        selectedUsableSkill.conclusion.text = conclusionNarrativeTextArea.getText();
+        selectedSkill.conclusion.text = conclusionNarrativeTextArea.getText();
     }
 
     @FXML
     private void onStoryPointsChange() {
         if (!pointsCheckBox.isSelected()) {
-            selectedUsableSkill.conclusion.points = null;
+            selectedSkill.conclusion.points = null;
         } else {
             updateStoryPoints();
         }
@@ -202,9 +185,9 @@ public class ReactionEditPane extends GridPane {
     @FXML
     private void onNewSkillChange() {
         if (!newSkillCheckBox.isSelected()) {
-            selectedUsableSkill.conclusion.skill = null;
+            selectedSkill.conclusion.skill = null;
         } else {
-            selectedUsableSkill.conclusion.skill = newSkillTextField.getText();
+            selectedSkill.conclusion.skill = newSkillTextField.getText();
         }
     }
 
@@ -216,7 +199,7 @@ public class ReactionEditPane extends GridPane {
             pointsChangeTextField.setStyle("-fx-text-fill: #FF0000");
             return;
         }
-        selectedUsableSkill.conclusion.points = points;
+        selectedSkill.conclusion.points = points;
         pointsChangeTextField.setStyle("");
 
     }
