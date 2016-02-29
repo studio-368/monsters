@@ -5,6 +5,7 @@ import edu.bsu.storygame.editor.EditorStageController;
 import edu.bsu.storygame.editor.model.Encounter;
 import edu.bsu.storygame.editor.model.Reaction;
 import edu.bsu.storygame.editor.model.Story;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -69,6 +70,8 @@ public class EncounterEditPane extends GridPane {
                 setReactionButtonsDisabled(false);
             }
         });
+        bindTextField(encounterNameTextField, (v, o, n) -> onNameChange());
+        bindTextField(encounterImage, (v, o, n) -> onImageChange());
     }
 
     private void setReactionButtonsDisabled(boolean disabled) {
@@ -81,11 +84,26 @@ public class EncounterEditPane extends GridPane {
         reactionDownButton.setDisable(disabled || bottomOfList);
     }
 
+    private void bindTextField(TextField field, ChangeListener<String> listener) {
+        field.textProperty().addListener(listener);
+    }
+
     private void populate() {
         encounterName.setText(encounter.name + " encounter");
         encounterNameTextField.setText(encounter.name);
         encounterReactionsList.setItems(new ObservableListWrapper<>(encounter.reactions));
         encounterImage.setText(encounter.image);
+    }
+
+    @FXML
+    private void onNameChange() {
+        encounter.name = encounterNameTextField.getText();
+        encounterName.setText(encounter.name + " encounter");
+    }
+
+    @FXML
+    private void onImageChange() {
+        encounter.image = encounterImage.getText();
     }
 
     @FXML

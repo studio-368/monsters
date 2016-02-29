@@ -29,7 +29,8 @@
                 <Insets top="5.0"/>
             </GridPane.margin>
         </Label>
-        <TextField fx:id="encounterNameTextField" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <TextField fx:id="encounterNameTextField" onAction="#onNameChange" GridPane.columnIndex="1"
+                   GridPane.rowIndex="1">
             <GridPane.margin>
                 <Insets top="5.0"/>
             </GridPane.margin>
@@ -51,7 +52,7 @@
             </children>
         </VBox>
         <Label text="Image:" GridPane.rowIndex="2"/>
-        <TextField fx:id="encounterImage" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+        <TextField fx:id="encounterImage" onAction="#onImageChange" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
         <VBox alignment="TOP_CENTER" spacing="15.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
             <children>
                 <Button fx:id="reactionUpButton" disable="true" maxWidth="1.7976931348623157E308"

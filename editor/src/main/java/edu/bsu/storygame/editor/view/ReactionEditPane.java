@@ -5,6 +5,7 @@ import edu.bsu.storygame.editor.EditorStageController;
 import edu.bsu.storygame.editor.model.Conclusion;
 import edu.bsu.storygame.editor.model.Reaction;
 import edu.bsu.storygame.editor.model.SkillTrigger;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,6 +24,8 @@ public class ReactionEditPane extends GridPane {
     private Label reactionName;
     @FXML
     private TextField reactionNameTextField;
+    @FXML
+    private TextField reactionStoryTextField;
     @FXML
     private ListView<SkillTrigger> usableSkillsList;
     @FXML
@@ -61,14 +64,22 @@ public class ReactionEditPane extends GridPane {
         }
     }
 
-    private void initialize() {
-
-    }
-
     private void configure() {
         pointsChangeTextField.setText("1");
         configureUsableSkillsList();
         configureAvailableSkillsList();
+        bindTextField(reactionNameTextField, (o, v, n) -> onReactionNameChange());
+        bindTextField(reactionStoryTextField, (o, v, n) -> onStoryChange());
+        bindTextArea(conclusionNarrativeTextArea, (o, v, n) -> onNarrativeChange());
+        bindTextField(pointsChangeTextField, (o, v, n) -> onStoryPointsChange());
+    }
+
+    private void bindTextField(TextField field, ChangeListener<String> listener) {
+        field.textProperty().addListener(listener);
+    }
+
+    private void bindTextArea(TextArea field, ChangeListener<String> listener) {
+        field.textProperty().addListener(listener);
     }
 
     private void configureUsableSkillsList() {
@@ -145,6 +156,44 @@ public class ReactionEditPane extends GridPane {
         availableSkillsList.getSelectionModel().select(selectedUsableSkill);
         usableSkillsList.getItems().remove(selectedUsableSkill);
         parent.refresh();
+    }
+
+    @FXML
+    private void onReactionNameChange() {
+        reaction.name = reactionNameTextField.getText();
+        reactionName.setText(reaction.name);
+    }
+
+    @FXML
+    private void onStoryChange() {
+        reaction.story.text = reactionStoryTextField.getText();
+    }
+
+    @FXML
+    private void onNarrativeChange() {
+        selectedUsableSkill.conclusion.text = conclusionNarrativeTextArea.getText();
+    }
+
+    @FXML
+    private void onStoryPointsChange() {
+        if (!pointsCheckBox.isSelected()) {
+            selectedUsableSkill.conclusion.points = null;
+        } else {
+            updateStoryPoints();
+        }
+    }
+
+    private void updateStoryPoints() {
+        int points;
+        try {
+            points = Integer.valueOf(pointsChangeTextField.getText());
+        } catch (Exception e) {
+            pointsChangeTextField.setStyle("-fx-text-fill: #FF0000");
+            return;
+        }
+        selectedUsableSkill.conclusion.points = points;
+        pointsChangeTextField.setStyle("");
+
     }
 
 
