@@ -9,6 +9,7 @@ import react.Slot;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AbsoluteLayout;
 import tripleplay.ui.layout.AxisLayout;
+import tripleplay.ui.layout.FlowLayout;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -37,6 +38,7 @@ public class EncounterCardFactory {
             super(AxisLayout.vertical().offStretch());
             add(titleLabel);
             add(area);
+            add(new Shim(0, 0).setConstraint(AxisLayout.stretched()));
         }
 
         @Override
@@ -81,9 +83,7 @@ public class EncounterCardFactory {
                     public void onEmit(Encounter encounter) {
                         removeAll();
                         if (encounter != null) {
-                            for (Reaction reaction : encounter.reactions) {
-                                add(new ReactionButton(reaction));
-                            }
+                            add(makeReactionButtonAreaFor(encounter));
                         }
                     }
                 });
@@ -92,18 +92,45 @@ public class EncounterCardFactory {
                     public void onEmit(Phase phase) {
                         if (phase.equals(Phase.STORY)) {
                             removeAll();
-                            final Story story = reaction.story;
-                            add(new StoryLabel(story));
-                            for (final SkillTrigger trigger : story.triggers) {
-                                Button skillButton = new SkillTriggerButton(trigger);
-                                add(skillButton);
-                            }
+                            add(makeStoryAndSkillsAreaFor(reaction.story));
                         }
                     }
                 });
             }
 
-            final class SkillTriggerButton extends Button {
+            private Group makeReactionButtonAreaFor(Encounter encounter) {
+                Group group = new Group(new FlowLayout());
+                for (Reaction reaction : encounter.reactions) {
+                    group.add(new ReactionButton(reaction));
+                }
+                return group;
+            }
+
+            private Group makeStoryAndSkillsAreaFor(Story story) {
+                Group group = new Group(AxisLayout.vertical().offStretch());
+                group.add(new StoryLabel(story));
+                Group buttonGroup = new Group(new FlowLayout());
+                for (final SkillTrigger trigger : story.triggers) {
+                    Button skillButton = new SkillTriggerButton(trigger);
+                    buttonGroup.add(skillButton);
+                }
+                group.add(buttonGroup);
+                return group;
+            }
+
+            protected class StyledButton extends Button {
+                protected StyledButton(String text) {
+                    super(text);
+                }
+
+                @Override
+                protected Class<?> getStyleClass() {
+                    return StyledButton.class;
+                }
+            }
+
+
+            final class SkillTriggerButton extends StyledButton {
                 private SkillTriggerButton(final SkillTrigger trigger) {
                     super(trigger.skill.name);
                     onClick(new Slot<Button>() {
@@ -115,7 +142,7 @@ public class EncounterCardFactory {
                             InteractionArea.this.removeAll();
                             InteractionArea.this.add(new ConclusionLabel(conclusion),
                                     new RewardLabel(trigger.conclusion),
-                                    new Button("Done").onClick(new Slot<Button>() {
+                                    new StyledButton("Done").onClick(new Slot<Button>() {
                                         {
                                             context.phase.connect(new Slot<Phase>() {
                                                 @Override
@@ -146,26 +173,26 @@ public class EncounterCardFactory {
                         }
                     });
                 }
+            }
+
+            protected abstract class StyledNarrativeLabel extends Label {
+                protected StyledNarrativeLabel(String text) {
+                    super(text);
+                }
 
                 @Override
                 protected Class<?> getStyleClass() {
-                    return SkillTriggerButton.class;
+                    return StyledNarrativeLabel.class;
                 }
             }
 
-            final class StoryLabel extends Label {
+            final class StoryLabel extends StyledNarrativeLabel {
                 private StoryLabel(Story story) {
                     super(story.text);
                 }
-
-                @Override
-                protected Class<?> getStyleClass() {
-                    return StoryLabel.class;
-                }
             }
 
-            final class ReactionButton extends Button {
-
+            final class ReactionButton extends StyledButton {
                 private ReactionButton(final Reaction reaction) {
                     super(reaction.name);
                     onClick(new Slot<Button>() {
@@ -184,14 +211,9 @@ public class EncounterCardFactory {
                 }
             }
 
-            final class ConclusionLabel extends Label {
+            final class ConclusionLabel extends StyledNarrativeLabel {
                 private ConclusionLabel(Conclusion conclusion) {
                     super(conclusion.text);
-                }
-
-                @Override
-                protected Class<?> getStyleClass() {
-                    return ConclusionLabel.class;
                 }
             }
 
