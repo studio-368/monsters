@@ -21,13 +21,22 @@ public class MonsterGame extends SceneGame {
 
     private static final int UPDATE_RATE_MS = 33; // 30 times per second
 
-    public static final class Config {
+    public interface ReadableConfig {
+        boolean debugMode();
+    }
+
+    public static final class Config implements ReadableConfig {
         public Platform platform;
         public Narrative narrativeOverride;
         public boolean debugMode = false;
 
         public Config(Platform plat) {
             this.platform = checkNotNull(plat);
+        }
+
+        @Override
+        public boolean debugMode() {
+            return debugMode;
         }
     }
 
@@ -36,9 +45,11 @@ public class MonsterGame extends SceneGame {
     public final GameBounds bounds;
     public final ScreenStack screenStack;
     public final NarrativeCache narrativeCache;
+    public final ReadableConfig config;
 
     public MonsterGame(Config config) {
         super(config.platform, UPDATE_RATE_MS);
+        this.config = config;
         imageCache = new ImageCache(plat.assets());
         tileCache = new TileCache(plat.assets());
         narrativeCache =
@@ -47,7 +58,7 @@ public class MonsterGame extends SceneGame {
                         : new NarrativeCache.Overridden(config.narrativeOverride);
         initInput();
         if (config.debugMode) {
-            plat.input().keyboardEvents.connect(new DebugMode(this));
+            plat.input().keyboardEvents.connect(new KeystrokeBasedPlayerGenerator(this));
         }
         this.bounds = initAspectRatio();
         screenStack = new ScreenStack(this, rootLayer);
