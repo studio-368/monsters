@@ -23,22 +23,9 @@ public class EncounterCardFactory {
 
     public Layer create(float width, float height, Interface iface) {
         final GroupLayer layer = new GroupLayer(width, height);
-        layer.setVisible(false);
-        context.phase.connect(new Slot<Phase>() {
-            @Override
-            public void onEmit(Phase phase) {
-                if (phase.equals(Phase.ENCOUNTER)) {
-                    layer.setVisible(true);
-                } else if (phase.equals(Phase.END_OF_ROUND)) {
-                    layer.setVisible(false);
-                }
-            }
-        });
-
         iface.createRoot(new AbsoluteLayout(), GameStyle.newSheet(context.game), layer)
                 .setSize(width, height)
                 .add(AbsoluteLayout.at(new EncounterCard(), 0, 0, width, height));
-
         return layer;
     }
 
