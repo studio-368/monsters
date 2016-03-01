@@ -31,14 +31,14 @@ public final class PlayerCreationGroup extends Group {
         super(AxisLayout.vertical().offStretch());
         this.game = checkNotNull(game);
         add(createNameArea(),
-                new Label("Choose two skills:").addStyles(Style.HALIGN.left),
+                new StyledLabel("Choose two skills:").addStyles(Style.HALIGN.left),
                 createSkillGroup());
         watchForFormCompletion();
     }
 
     private Group createNameArea() {
         Group group = new Group(AxisLayout.horizontal());
-        group.add(new Label("Name:"));
+        group.add(new StyledLabel("Name:"));
         group.add(nameField = new Field()
                 .setConstraint(Constraints.fixedSize(game.bounds.width() * 0.15f, game.bounds.height() * 0.08f)));
         group.addStyles(Style.BACKGROUND.is(Background.blank().inset(game.bounds.percentOfHeight(0.02f))));
@@ -98,19 +98,28 @@ public final class PlayerCreationGroup extends Group {
         return result;
     }
 
+    final class StyledLabel extends Label {
+        private StyledLabel(String text) {
+            super(text);
+        }
+
+        @Override
+        protected Class<?> getStyleClass() {
+            return StyledLabel.class;
+        }
+    }
+
     final class SkillButton extends ToggleButton {
 
-        private static final float PERCENT_OF_HEIGHT = 0.10f;
-        private static final float PERCENT_OF_WIDTH = 0.20f;
+        private static final float PERCENT_OF_WIDTH = 0.22f;
 
         final Skill skill;
 
         SkillButton(Skill skill) {
             super(skill.name);
             this.skill = skill;
-            setConstraint(Constraints.fixedSize(
-                    game.bounds.width() * PERCENT_OF_WIDTH,
-                    game.bounds.height() * PERCENT_OF_HEIGHT));
+            setConstraint(Constraints.fixedWidth(
+                    game.bounds.width() * PERCENT_OF_WIDTH));
         }
 
         @Override
@@ -118,7 +127,6 @@ public final class PlayerCreationGroup extends Group {
             return SkillButton.class;
         }
     }
-
 }
 
 

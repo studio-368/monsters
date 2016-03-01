@@ -34,17 +34,9 @@ public final class PlayerCreationScreen extends ScreenStack.UIScreen {
                 .setConstraint(Constraints.fixedHeight(game.bounds.percentOfHeight(0.65f)))
         );
 
-        final Button startButton = new Button("Start").onClick(new Slot<Button>() {
-            @Override
-            public void onEmit(Button button) {
-                game.screenStack.push(new SampleGameScreen(game, createGameContext()), game.screenStack.slide());
-            }
-        });
-        root.add(
-                new Group(new FlowLayout())
-                        .add(startButton
-                                .addStyles(Style.FONT.is(Typeface.OXYGEN.in(game).atSize(0.08f)),
-                                        Style.HALIGN.center).setEnabled(false)));
+        final Button startButton = new StartButton();
+        root.add(new Group(new FlowLayout())
+                .add(startButton.setEnabled(false)));
 
         Values.and(playerOneGroup.complete, playerTwoGroup.complete).connect(startButton.enabledSlot());
     }
@@ -67,6 +59,22 @@ public final class PlayerCreationScreen extends ScreenStack.UIScreen {
         return game;
     }
 
+    final class StartButton extends Button {
+        private StartButton() {
+            super("Start");
+            onClick(new Slot<Button>() {
+                @Override
+                public void onEmit(Button button) {
+                    game.screenStack.push(new SampleGameScreen(game, createGameContext()), game.screenStack.slide());
+                }
+            });
+        }
+
+        @Override
+        protected Class<?> getStyleClass() {
+            return StartButton.class;
+        }
+    }
 }
 
 
