@@ -1,90 +1,122 @@
 package edu.bsu.storygame.core.view;
 
+import com.google.common.collect.Lists;
 import edu.bsu.storygame.core.MonsterGame;
+import edu.bsu.storygame.core.model.Player;
 import edu.bsu.storygame.core.model.Skill;
+import react.RList;
 import react.Slot;
 import react.Value;
+import react.ValueView;
 import tripleplay.ui.*;
-import tripleplay.ui.layout.TableLayout;
+import tripleplay.ui.layout.AxisLayout;
+import tripleplay.ui.layout.FlowLayout;
 
+import java.util.List;
 import java.util.Set;
 
-public class PlayerCreationGroup extends Group {
+import static com.google.common.base.Preconditions.checkNotNull;
 
-    public Value<Boolean> isFilled = Value.create(false);
-    private MonsterGame game;
-    public BiSelector selector = new BiSelector();
-    private Group skillGroup;
-    public Field nameField;
+public final class PlayerCreationGroup extends Group {
 
-    public PlayerCreationGroup(Layout layout, MonsterGame game) {
-        super(layout);
-        this.game = game;
-        add(nameField = initNameField());
-        add(skillGroup = createSkillGroup());
-        linkSelector();
+    private static final int NUMBER_OF_SKILLS = 2;
 
+    public final ValueView<Boolean> complete = Value.create(false);
+
+    private final MonsterGame game;
+    private final BiSelector selector = new BiSelector();
+    private Field nameField;
+
+    public PlayerCreationGroup(MonsterGame game) {
+        super(AxisLayout.vertical().offStretch());
+        this.game = checkNotNull(game);
+        add(createNameArea(),
+                new Label("Choose two skills:").addStyles(Style.HALIGN.left),
+                createSkillGroup());
+        watchForFormCompletion();
+    }
+
+    private Group createNameArea() {
+        Group group = new Group(AxisLayout.horizontal());
+        group.add(new Label("Name:"));
+        group.add(nameField = new Field()
+                .setConstraint(Constraints.fixedSize(game.bounds.width() * 0.15f, game.bounds.height() * 0.08f)));
+        group.addStyles(Style.BACKGROUND.is(Background.blank().inset(game.bounds.percentOfHeight(0.02f))));
+        return group;
+    }
+
+    private void watchForFormCompletion() {
         nameField.text.connect(new Slot<String>() {
             @Override
             public void onEmit(String s) {
-                if (checkContinueProtocol()) {
-                    isFilled.update(true);
-                } else {
-                    isFilled.update(false);
-                }
+                checkForCompletion();
+            }
+        });
+
+        selector.selections.connect(new RList.Listener<ToggleButton>() {
+            @Override
+            public void onAdd(ToggleButton elem) {
+                checkForCompletion();
+            }
+
+            @Override
+            public void onRemove(ToggleButton elem) {
+                checkForCompletion();
             }
         });
     }
 
-    private Field initNameField() {
-        return new Field("Name")
-                .setConstraint(Constraints.fixedSize(game.bounds.width() * 0.15f, game.bounds.height() * 0.08f));
-    }
-
-    private void linkSelector() {
-        for (Element<?> button : skillGroup) {
-            selector.add((ToggleButton) button);
-            ((ToggleButton) button).selected().connect(new Slot<Boolean>() {
-                @Override
-                public void onEmit(Boolean isSelected) {
-                    if (checkContinueProtocol()) {
-                        isFilled.update(true);
-                    } else {
-                        isFilled.update(false);
-                    }
-                }
-            });
-        }
-
+    private void checkForCompletion() {
+        final boolean isComplete = selector.size() == NUMBER_OF_SKILLS
+                && !nameField.text.get().trim().isEmpty();
+        ((Value<Boolean>) complete).update(isComplete);
     }
 
     private Group createSkillGroup() {
         Set<Skill> skillSet = game.narrativeCache.state.result().get().skills();
-        Group group = new Group(new TableLayout(2).gaps(20, 20));
+        Group group = new Group(new FlowLayout());
         for (Skill skill : skillSet) {
-            group.add(new SkillButton(skill));
-
+            SkillButton skillButton = new SkillButton(skill);
+            selector.add(skillButton);
+            group.add(skillButton);
         }
         return group;
     }
 
-
-    private Boolean checkContinueProtocol() {
-        return selector.selections().size() == 2 && !nameField.text.get().equals("");
+    public Player.Builder createPlayerBuilder() {
+        return new Player.Builder()
+                .name(nameField.text.get().trim())
+                .skills(getSelectedSkills());
     }
 
-    private final class SkillButton extends ToggleButton {
+    private List<Skill> getSelectedSkills() {
+        List<Skill> result = Lists.newArrayList();
+        for (ToggleButton button : selector.selections()) {
+            Skill skill = ((SkillButton) button).skill;
+            result.add(skill);
+        }
+        return result;
+    }
 
-        private static final float PERCENT_OF_HEIGHT = 0.1f;
-        private static final float PERCENT_OF_WIDTH = 0.2f;
+    final class SkillButton extends ToggleButton {
+
+        private static final float PERCENT_OF_HEIGHT = 0.10f;
+        private static final float PERCENT_OF_WIDTH = 0.20f;
+
+        final Skill skill;
 
         SkillButton(Skill skill) {
             super(skill.name);
+            this.skill = skill;
             setConstraint(Constraints.fixedSize(
                     game.bounds.width() * PERCENT_OF_WIDTH,
                     game.bounds.height() * PERCENT_OF_HEIGHT));
         }
 
+        @Override
+        protected Class<?> getStyleClass() {
+            return SkillButton.class;
+        }
     }
 
 }
