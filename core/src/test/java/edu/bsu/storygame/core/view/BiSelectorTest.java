@@ -23,7 +23,7 @@ public class BiSelectorTest {
 
     @Test
     public void testSelections_noSelections_sizeIsZero() {
-        assertEquals(0, selector.selections().size());
+        assertEquals(0, selector.size());
     }
 
     @Test

@@ -6,6 +6,7 @@ import playn.core.Font;
 import playn.core.Graphics;
 import tripleplay.ui.*;
 import tripleplay.ui.util.Insets;
+import tripleplay.util.Colors;
 
 /**
  * A stylesheet generator.
@@ -85,6 +86,16 @@ public final class GameStyle {
                         Style.COLOR.is(0xFFFFFFFF))
                 .add(Tabs.class,
                         Tabs.HIGHLIGHTER.is(Tabs.textColorHighlighter(0xFF000000, 0xFFFFFFFF)))
+
+                .add(PlayerCreationGroup.SkillButton.class,
+                        Style.FONT.is(oxygenLarge),
+                        Style.COLOR.is(Colors.BLACK),
+                        Style.BACKGROUND.is(Background.roundRect(gfx, Colors.WHITE, borderWidth, Colors.BLACK, borderWidth)))
+                .add(PlayerCreationGroup.SkillButton.class, Style.Mode.SELECTED,
+                        Style.FONT.is(oxygenLarge),
+                        Style.COLOR.is(Colors.WHITE),
+                        Style.BACKGROUND.is(Background.roundRect(gfx, Colors.BLACK, borderWidth, Colors.WHITE, borderWidth)))
+
                 .add(EncounterCardFactory.EncounterCard.class,
                         Style.BACKGROUND.is(Background.roundRect(game.plat.graphics(), Palette.BLACK_PEARL, game.bounds.percentOfHeight(0.03f))))
                 .add(EncounterCardFactory.EncounterCard.TitleLabel.class,

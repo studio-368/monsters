@@ -17,6 +17,9 @@ public final class Palette {
     public static final int CARMINE = Color.rgb(36, 154, 200);
     public static final int TUSCANY = Color.rgb(172, 92, 65);
 
+    public static final int PLAYER_ONE = BLUE_LAGOON;
+    public static final int PLAYER_TWO = TROPICAL_RAIN_FOREST;
+
     private Palette() {
     }
 }

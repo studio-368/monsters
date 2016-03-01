@@ -11,10 +11,10 @@ import java.util.List;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
-public class BiSelector {
+public final class BiSelector {
 
     private static final int MAX_SELECTIONS = 2;
-    private final RList<ToggleButton> selections = RList.create();
+    public final RList<ToggleButton> selections = RList.create();
     private final List<ToggleButton> tracked = Lists.newArrayList();
 
     public List<ToggleButton> selections() {
@@ -76,5 +76,9 @@ public class BiSelector {
                 return selections.size() == 2;
             }
         });
+    }
+
+    public int size() {
+        return selections.size();
     }
 }
