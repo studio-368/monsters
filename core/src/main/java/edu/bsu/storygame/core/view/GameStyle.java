@@ -112,6 +112,18 @@ public final class GameStyle {
                         Style.COLOR.is(Colors.LIGHT_GRAY),
                         Style.BACKGROUND.is(Background.roundRect(gfx, Colors.GRAY, cornerRadius, Colors.LIGHT_GRAY, borderWidth).insets(buttonInsets)))
 
+                .add(Sidebar.NameLabel.class,
+                        Style.FONT.is(oxygenLarge),
+                        Style.COLOR.is(Colors.WHITE),
+                        Style.HALIGN.left)
+                .add(Sidebar.SkillLabel.class,
+                        Style.FONT.is(oxygenRegular),
+                        Style.HALIGN.left)
+                .add(Sidebar.PointLabel.class,
+                        Style.FONT.is(oxygenLarge),
+                        Style.COLOR.is(Palette.SPROUT),
+                        Style.BACKGROUND.is(Background.bordered(Palette.COCOA_BROWN, Palette.SPROUT, borderWidth).insets(buttonInsets)))
+
                 .add(EncounterCardFactory.EncounterCard.class,
                         Style.BACKGROUND.is(Background.roundRect(game.plat.graphics(), Palette.BLACK_PEARL, game.bounds.percentOfHeight(0.03f))))
                 .add(EncounterCardFactory.EncounterCard.TitleLabel.class,
