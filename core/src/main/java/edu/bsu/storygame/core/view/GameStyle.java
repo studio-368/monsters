@@ -2,11 +2,10 @@ package edu.bsu.storygame.core.view;
 
 import edu.bsu.storygame.core.MonsterGame;
 import edu.bsu.storygame.core.assets.Typeface;
-import playn.core.Color;
 import playn.core.Font;
 import playn.core.Graphics;
 import tripleplay.ui.*;
-import tripleplay.util.Colors;
+import tripleplay.ui.util.Insets;
 
 /**
  * A stylesheet generator.
@@ -17,6 +16,10 @@ import tripleplay.util.Colors;
  */
 public final class GameStyle {
 
+    private static final float LARGE = 0.05f;
+    private static final float REGULAR = 0.038f;
+    private static final float SMALL = 0.02f;
+
     private GameStyle() {
     }
 
@@ -26,18 +29,32 @@ public final class GameStyle {
 
     public static Stylesheet.Builder newSheetBuilder(MonsterGame game) {
         final Graphics gfx = game.plat.graphics();
-        final Font font = Typeface.OXYGEN.in(game).atSize(0.05f);
 
         int bgColor = 0xFFCCCCCC, ulColor = 0xFFEEEEEE, brColor = 0xFFAAAAAA;
         Background butBg = Background.roundRect(gfx, bgColor, 5, ulColor, 2).inset(5, 6, 2, 6);
         Background butSelBg = Background.roundRect(gfx, bgColor, 5, brColor, 2).inset(6, 5, 1, 7);
+
+        final float cornerRadius = game.bounds.percentOfHeight(0.02f);
+        final float borderWidth = game.bounds.percentOfHeight(0.005f);
+        final Insets insets = new Insets(game.bounds.percentOfHeight(0.02f),
+                game.bounds.percentOfHeight(0.02f),
+                game.bounds.percentOfHeight(0.02f),
+                game.bounds.percentOfHeight(0.02f));
+        final Background palettizedButtonBg = Background.roundRect(gfx, Palette.BLACK_PEARL, cornerRadius, Palette.SPROUT, borderWidth)
+                .insets(insets);
+        final Background palettizedSelectedButtonBg = Background.roundRect(gfx, Palette.SPROUT, cornerRadius, Palette.BLACK_PEARL, borderWidth)
+                .insets(insets);
+
+        final Font oxygenRegular = Typeface.OXYGEN.in(game).atSize(REGULAR);
+        final Font oxygenLarge = Typeface.OXYGEN.in(game).atSize(LARGE);
+        final Font oxygenLightRegular = Typeface.OXYGEN_LIGHT.in(game).atSize(REGULAR);
 
         final Style.Binding buttonRegularStyle = Style.BACKGROUND.is(butBg);
         final Style.Binding buttonSelectedStyle = Style.BACKGROUND.is(butSelBg);
 
         return Stylesheet.builder()
                 .add(Label.class,
-                        Style.FONT.is(font))
+                        Style.FONT.is(oxygenRegular))
                 .add(Button.class,
                         buttonRegularStyle)
                 .add(Button.class, Style.Mode.SELECTED,
@@ -69,20 +86,35 @@ public final class GameStyle {
                 .add(Tabs.class,
                         Tabs.HIGHLIGHTER.is(Tabs.textColorHighlighter(0xFF000000, 0xFFFFFFFF)))
                 .add(EncounterCardFactory.EncounterCard.class,
-                        Style.BACKGROUND.is(Background.solid(Color.rgb(39, 80, 5))))
+                        Style.BACKGROUND.is(Background.roundRect(game.plat.graphics(), Palette.BLACK_PEARL, game.bounds.percentOfHeight(0.03f))))
                 .add(EncounterCardFactory.EncounterCard.TitleLabel.class,
-                        Style.COLOR.is(Colors.WHITE),
+                        Style.FONT.is(Typeface.OXYGEN.in(game).atSize(LARGE)),
+                        Style.COLOR.is(Palette.TROPICAL_RAIN_FOREST),
+                        Style.BACKGROUND.is(Background.blank().inset(game.bounds.percentOfHeight(SMALL))),
+                        Style.ICON_GAP.is((int) game.bounds.percentOfHeight(SMALL)),
                         Style.HALIGN.center,
                         Style.ICON_POS.below)
-                .add(EncounterCardFactory.EncounterCard.InteractionArea.StoryLabel.class,
+                .add(EncounterCardFactory.EncounterCard.InteractionArea.StyledButton.class,
+                        Style.FONT.is(oxygenLarge),
+                        Style.BACKGROUND.is(palettizedButtonBg),
+                        Style.COLOR.is(Palette.SPROUT))
+                .add(EncounterCardFactory.EncounterCard.InteractionArea.StyledButton.class, Style.Mode.SELECTED,
+                        Style.FONT.is(oxygenLarge),
+                        Style.BACKGROUND.is(palettizedSelectedButtonBg),
+                        Style.COLOR.is(Palette.BLACK_PEARL))
+                .add(EncounterCardFactory.EncounterCard.InteractionArea.StyledNarrativeLabel.class,
                         Style.TEXT_WRAP.on,
-                        Style.COLOR.is(Colors.WHITE))
-                .add(EncounterCardFactory.EncounterCard.InteractionArea.ConclusionLabel.class,
-                        Style.TEXT_WRAP.on,
-                        Style.COLOR.is(Colors.WHITE))
+                        Style.FONT.is(oxygenLightRegular),
+                        Style.COLOR.is(Palette.SPROUT),
+                        Style.BACKGROUND.is(Background.solid(Palette.BLUE_LAGOON)
+                                .inset(game.bounds.percentOfHeight(SMALL))))
                 .add(EncounterCardFactory.EncounterCard.InteractionArea.SkillTriggerButton.class,
-                        buttonRegularStyle)
+                        Style.COLOR.is(Palette.SPROUT),
+                        Style.BACKGROUND.is(palettizedButtonBg))
                 .add(EncounterCardFactory.EncounterCard.InteractionArea.SkillTriggerButton.class, Style.Mode.SELECTED,
-                        buttonSelectedStyle);
+                        Style.COLOR.is(Palette.BLACK_PEARL),
+                        Style.BACKGROUND.is(palettizedSelectedButtonBg))
+                .add(EncounterCardFactory.EncounterCard.InteractionArea.RewardLabel.class,
+                        Style.COLOR.is(Palette.SPROUT));
     }
 }
