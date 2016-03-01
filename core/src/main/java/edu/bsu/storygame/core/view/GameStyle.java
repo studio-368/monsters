@@ -37,14 +37,14 @@ public final class GameStyle {
 
         final float cornerRadius = game.bounds.percentOfHeight(0.02f);
         final float borderWidth = game.bounds.percentOfHeight(0.005f);
-        final Insets insets = new Insets(game.bounds.percentOfHeight(0.02f),
+        final Insets buttonInsets = new Insets(game.bounds.percentOfHeight(0.02f),
                 game.bounds.percentOfHeight(0.02f),
                 game.bounds.percentOfHeight(0.02f),
                 game.bounds.percentOfHeight(0.02f));
         final Background palettizedButtonBg = Background.roundRect(gfx, Palette.BLACK_PEARL, cornerRadius, Palette.SPROUT, borderWidth)
-                .insets(insets);
+                .insets(buttonInsets);
         final Background palettizedSelectedButtonBg = Background.roundRect(gfx, Palette.SPROUT, cornerRadius, Palette.BLACK_PEARL, borderWidth)
-                .insets(insets);
+                .insets(buttonInsets);
 
         final Font oxygenRegular = Typeface.OXYGEN.in(game).atSize(REGULAR);
         final Font oxygenLarge = Typeface.OXYGEN.in(game).atSize(LARGE);
@@ -72,6 +72,7 @@ public final class GameStyle {
                                 inset(3, 2, 0, 3)))
                 // flip ul and br to make Field appear recessed
                 .add(Field.class,
+                        Style.FONT.is(oxygenRegular),
                         Style.BACKGROUND.is(Background.beveled(0xFFFFFFFF, brColor, ulColor).inset(5)),
                         Style.HALIGN.left)
                 .add(Field.class, Style.Mode.DISABLED,
@@ -87,14 +88,29 @@ public final class GameStyle {
                 .add(Tabs.class,
                         Tabs.HIGHLIGHTER.is(Tabs.textColorHighlighter(0xFF000000, 0xFFFFFFFF)))
 
+                .add(PlayerCreationGroup.StyledLabel.class,
+                        Style.FONT.is(oxygenRegular),
+                        Style.COLOR.is(Colors.WHITE))
                 .add(PlayerCreationGroup.SkillButton.class,
                         Style.FONT.is(oxygenLarge),
                         Style.COLOR.is(Colors.BLACK),
-                        Style.BACKGROUND.is(Background.roundRect(gfx, Colors.WHITE, borderWidth, Colors.BLACK, borderWidth)))
+                        Style.BACKGROUND.is(Background.roundRect(gfx, Colors.WHITE, cornerRadius, Colors.BLACK, borderWidth).insets(buttonInsets)))
                 .add(PlayerCreationGroup.SkillButton.class, Style.Mode.SELECTED,
                         Style.FONT.is(oxygenLarge),
                         Style.COLOR.is(Colors.WHITE),
-                        Style.BACKGROUND.is(Background.roundRect(gfx, Colors.BLACK, borderWidth, Colors.WHITE, borderWidth)))
+                        Style.BACKGROUND.is(Background.roundRect(gfx, Colors.BLACK, cornerRadius, Colors.WHITE, borderWidth).insets(buttonInsets)))
+                .add(PlayerCreationScreen.StartButton.class,
+                        Style.FONT.is(oxygenLarge),
+                        Style.COLOR.is(Colors.BLACK),
+                        Style.BACKGROUND.is(Background.roundRect(gfx, Colors.WHITE, cornerRadius, Colors.BLACK, borderWidth).insets(buttonInsets)))
+                .add(PlayerCreationScreen.StartButton.class, Style.Mode.SELECTED,
+                        Style.FONT.is(oxygenLarge),
+                        Style.COLOR.is(Colors.WHITE),
+                        Style.BACKGROUND.is(Background.roundRect(gfx, Colors.BLACK, cornerRadius, Colors.WHITE, borderWidth).insets(buttonInsets)))
+                .add(PlayerCreationScreen.StartButton.class, Style.Mode.DISABLED,
+                        Style.FONT.is(oxygenLarge),
+                        Style.COLOR.is(Colors.LIGHT_GRAY),
+                        Style.BACKGROUND.is(Background.roundRect(gfx, Colors.GRAY, cornerRadius, Colors.LIGHT_GRAY, borderWidth).insets(buttonInsets)))
 
                 .add(EncounterCardFactory.EncounterCard.class,
                         Style.BACKGROUND.is(Background.roundRect(game.plat.graphics(), Palette.BLACK_PEARL, game.bounds.percentOfHeight(0.03f))))
