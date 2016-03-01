@@ -2,6 +2,7 @@ package edu.bsu.storygame.core.view;
 
 import edu.bsu.storygame.core.MonsterGame;
 import edu.bsu.storygame.core.assets.Typeface;
+import playn.core.Color;
 import playn.core.Font;
 import playn.core.Graphics;
 import tripleplay.ui.*;
@@ -20,6 +21,8 @@ public final class GameStyle {
     private static final float LARGE = 0.05f;
     private static final float REGULAR = 0.038f;
     private static final float SMALL = 0.02f;
+
+    private static final int DARK_TRANSLUCENT_GREY = Color.argb(240, 30, 30, 30);
 
     private GameStyle() {
     }
@@ -154,6 +157,20 @@ public final class GameStyle {
                         Style.COLOR.is(Palette.BLACK_PEARL),
                         Style.BACKGROUND.is(palettizedSelectedButtonBg))
                 .add(EncounterCardFactory.EncounterCard.InteractionArea.RewardLabel.class,
-                        Style.COLOR.is(Palette.SPROUT));
+                        Style.COLOR.is(Palette.SPROUT))
+
+                .add(HandoffDialogFactory.HandoffDialog.class,
+                        Style.BACKGROUND.is(Background.roundRect(gfx, DARK_TRANSLUCENT_GREY, cornerRadius)))
+                .add(HandoffDialogFactory.StyledLabel.class,
+                        Style.FONT.is(oxygenLarge),
+                        Style.COLOR.is(Colors.WHITE))
+                .add(HandoffDialogFactory.OkButton.class,
+                        Style.FONT.is(oxygenLarge),
+                        Style.COLOR.is(Colors.WHITE),
+                        Style.BACKGROUND.is(Background.roundRect(gfx, Palette.TUSCANY, cornerRadius, Palette.SPROUT, borderWidth)))
+                .add(HandoffDialogFactory.OkButton.class, Style.Mode.SELECTED,
+                        Style.FONT.is(oxygenLarge),
+                        Style.COLOR.is(Palette.TUSCANY),
+                        Style.BACKGROUND.is(Background.roundRect(gfx, Palette.SPROUT, cornerRadius, Palette.TUSCANY, borderWidth)));
     }
 }
