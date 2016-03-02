@@ -1,16 +1,5 @@
 # Nightmare Defenders
 
-_(General project information goes here)_
-
-## Story Editor
-The "Editor" run configuration will run the editor from within IntelliJ IDEA.
-The "Build the Editor" configuration will export the editor as an executable
-jar to `editor/target/editor-1.0-SNAPSHOT-jar-with-dependencies.jar`; this file is
- an executable jar, so from the project directory, you can run it as:
- ```
- java -jar editor/target/editor-1.0-SNAPSHOT-jar-with-dependencies.jar
- ```
-
 _Nightmare Defenders_ is a narrative-rich two-player video game based around three primary design goals:
  * Use narrative as the primary focus of gameplay
  * Incorporate modern technology into the narrative-rich genre
@@ -37,3 +26,13 @@ when running the HTML build locally, use the url `http://127.0.0.1?override`
 to access this feature. Note that this only replaces the narrative file
 and does not manipulate known regions or loaded image assets, so proceed
 with caution.
+
+## Story Editor
+The "Editor" run configuration will run the editor from within IntelliJ IDEA.
+The "Build the Editor" configuration will export the editor as an executable
+jar to `editor/target/editor-1.0-SNAPSHOT-jar-with-dependencies.jar`; this file is
+ an executable jar, so from the project directory, you can run it as:
+ ```
+ java -jar editor/target/editor-1.0-SNAPSHOT-jar-with-dependencies.jar
+ ```
+
