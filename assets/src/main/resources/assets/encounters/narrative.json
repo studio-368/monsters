@@ -20,7 +20,7 @@
                 },
                 {
                   "conclusion": {
-                    "text": "You try to catch the bug, but it’s too fast. It escapes out the window.",
+                    "text": "You try to catch the bug, but it's too fast. It escapes out the window.",
                     "points": 0
                   }
                 }
@@ -30,7 +30,7 @@
           {
             "name": "Kill",
             "story": {
-              "text": "A sixth sense wakes you from your dreams. There’s a single firefly dancing around you.The bug’s light may be subtle, but it’s keeping you awake. ",
+              "text": "A sixth sense wakes you from your dreams. There's a single firefly dancing around you.The bug's light may be subtle, but it's keeping you awake. ",
               "triggers": [
                 {
                   "conclusion": {
@@ -44,7 +44,7 @@
           {
             "name": "Ignore",
             "story": {
-              "text": "You decide to ignore the bug and go back to sleep. A moment later you feel the bug land on you, followed by a sharp pain. It bit you. You go to smack it but it’s already gone. ",
+              "text": "You decide to ignore the bug and go back to sleep. A moment later you feel the bug land on you, followed by a sharp pain. It bit you. You go to smack it but it's already gone. ",
               "triggers": [
                 {
                   "conclusion": {
@@ -144,7 +144,7 @@
               "triggers": [
                 {
                   "conclusion": {
-                    "text": "You drink the medicine they gave you. The monster sees it can’t harm you and dives back into the water. \n",
+                    "text": "You drink the medicine they gave you. The monster sees it can't harm you and dives back into the water. \n",
                     "points": 1
                   }
                 }
@@ -165,7 +165,7 @@
                 },
                 {
                   "conclusion": {
-                    "text": "When you get close to the Ninki Nanka, it snaps its huge teeth at you. You can’t fight it. ",
+                    "text": "When you get close to the Ninki Nanka, it snaps its huge teeth at you. You can't fight it. ",
                     "points": 0
                   }
                 }
@@ -180,7 +180,7 @@
                 {
                   "skill": "Stealth",
                   "conclusion": {
-                    "text": "The monster is looking straight at you, but you’re not sure it can actually see you. You back away slowly and the Ninki Nanka does nothing. You get away safely.",
+                    "text": "The monster is looking straight at you, but you're not sure it can actually see you. You back away slowly and the Ninki Nanka does nothing. You get away safely.",
                     "points": 1
                   }
                 },
@@ -212,7 +212,7 @@
                 {
                   "skill": "Magic",
                   "conclusion": {
-                    "text": "You’ve heard that these types of dragons are the mortal enemies of tigers, so you cast a spell to summon a giant tiger. The dragon sees it and the two become locked in battle.",
+                    "text": "You've heard that these types of dragons are the mortal enemies of tigers, so you cast a spell to summon a giant tiger. The dragon sees it and the two become locked in battle.",
                     "points": 1
                   }
                 },
@@ -232,7 +232,7 @@
               "triggers": [
                 {
                   "conclusion": {
-                    "text": "You’ve heard that these types of dragons revere a mystical flaming pearl. You bribe the dragon with a regular pearl in exchange for stopping the storm.",
+                    "text": "You've heard that these types of dragons revere a mystical flaming pearl. You bribe the dragon with a regular pearl in exchange for stopping the storm.",
                     "points": 1
                   }
                 }
@@ -242,7 +242,7 @@
           {
             "name": "Run",
             "story": {
-              "text": "The dragon is flying so high that you think it probably can’t see you. This is your chance to make your escape.",
+              "text": "The dragon is flying so high that you think it probably can't see you. This is your chance to make your escape.",
               "triggers": [
                 {
                   "skill": "Stealth",
@@ -269,7 +269,7 @@
           {
             "name": "Greet",
             "story": {
-              "text": "As you’re sitting on the edge of a river, you see a large turtle swimming towards you. When it gets close it launches from the water to reveal it’s not a turtle, but a kappa!",
+              "text": "As you're sitting on the edge of a river, you see a large turtle swimming towards you. When it gets close it launches from the water to reveal it's not a turtle, but a kappa!",
               "triggers": [
                 {
                   "skill": "Logic",
@@ -290,18 +290,18 @@
           {
             "name": "Attack",
             "story": {
-              "text": "The heat of the day is getting to you and you decide to splash some water from the nearby river on your face. As you kneel you’re ambushed by something in the currents.",
+              "text": "The heat of the day is getting to you and you decide to splash some water from the nearby river on your face. As you kneel you're ambushed by something in the currents.",
               "triggers": [
                 {
                   "skill": "Weapon Use",
                   "conclusion": {
-                    "text": "You draw your blade, and the kappa hisses at you. It seems more disgusted at the metal you’re wielding than it is of you. It backs away, returning to the water.",
+                    "text": "You draw your blade, and the kappa hisses at you. It seems more disgusted at the metal you're wielding than it is of you. It backs away, returning to the water.",
                     "points": 1
                   }
                 },
                 {
                   "conclusion": {
-                    "text": "The creature is intimidating, but you don’t back down. It lunges. You swing a mighty punch. You hit it in the face, the water in its head spills, and the kappa falls. ",
+                    "text": "The creature is intimidating, but you don't back down. It lunges. You swing a mighty punch. You hit it in the face, the water in its head spills, and the kappa falls. ",
                     "points": 1
                   }
                 }
@@ -316,7 +316,7 @@
                 {
                   "skill": "Persuasion",
                   "conclusion": {
-                    "text": "The kappa returns to the river. You think you’ve failed until you see its shell coming back. It hands you a giant Scroll of Healing to take to the village.",
+                    "text": "The kappa returns to the river. You think you've failed until you see its shell coming back. It hands you a giant Scroll of Healing to take to the village.",
                     "points": 1
                   }
                 },
@@ -359,7 +359,7 @@
           {
             "name": "Attack",
             "story": {
-              "text": "As you enjoy a moonlit stroll, you see a light quickly approaching. Mesmerized, you watch it get closer, until you realize it’s fire. You’re being attacked by an angry fox spirit.",
+              "text": "As you enjoy a moonlit stroll, you see a light quickly approaching. Mesmerized, you watch it get closer, until you realize it's fire. You're being attacked by an angry fox spirit.",
               "triggers": [
                 {
                   "skill": "Weapon Use",
@@ -384,7 +384,7 @@
               "triggers": [
                 {
                   "conclusion": {
-                    "text": "You can sense the power of the fox and decide it’s best not to disturb it. You carefully shut the library doors behind you and leave the mansion. ",
+                    "text": "You can sense the power of the fox and decide it's best not to disturb it. You carefully shut the library doors behind you and leave the mansion. ",
                     "points": 1
                   }
                 }
@@ -426,18 +426,18 @@
           {
             "name": "Attack",
             "story": {
-              "text": "You’re trekking through a swamp. You start to get a sense that something, other than the bugs biting your arm, is following you. You turn to see a large shadow trailing you.",
+              "text": "You're trekking through a swamp. You start to get a sense that something, other than the bugs biting your arm, is following you. You turn to see a large shadow trailing you.",
               "triggers": [
                 {
                   "skill": "Weapon Use",
                   "conclusion": {
-                    "text": "The beast realizes it has been spotted and charges. There’s barely enough time to draw your sword and fend off the creature.",
+                    "text": "The beast realizes it has been spotted and charges. There's barely enough time to draw your sword and fend off the creature.",
                     "points": 1
                   }
                 },
                 {
                   "conclusion": {
-                    "text": "You don’t have any weapons, but grab a thick branch as the beast charges you. You dodge its bite and smack the monster on its head. Dazed, it flees back into the swamp.",
+                    "text": "You don't have any weapons, but grab a thick branch as the beast charges you. You dodge its bite and smack the monster on its head. Dazed, it flees back into the swamp.",
                     "points": 1
                   }
                 }
@@ -447,11 +447,11 @@
           {
             "name": "Run",
             "story": {
-              "text": "As you make your way through the swamp you become uneasy, jumping at every turn. There’s a loud snap of breaking branches behind you. ",
+              "text": "As you make your way through the swamp you become uneasy, jumping at every turn. There's a loud snap of breaking branches behind you. ",
               "triggers": [
                 {
                   "conclusion": {
-                    "text": "You don’t bother looking behind you. Your instincts tell you to run, and you listen.",
+                    "text": "You don't bother looking behind you. Your instincts tell you to run, and you listen.",
                     "points": 1
                   }
                 }
@@ -472,7 +472,7 @@
                 {
                   "skill": "Logic",
                   "conclusion": {
-                    "text": "You’ve heard stories about people leaving offerings for the taniwha that guard their villages. You give the creature a traditional green twig and sweet potato.",
+                    "text": "You've heard stories about people leaving offerings for the taniwha that guard their villages. You give the creature a traditional green twig and sweet potato.",
                     "points": 1
                   }
                 },
@@ -499,7 +499,7 @@
                 },
                 {
                   "conclusion": {
-                    "text": "The creature snaps its teeth at you. You don’t want to go anywhere near that thing. You scream until the monster gets bored with you and swims away.",
+                    "text": "The creature snaps its teeth at you. You don't want to go anywhere near that thing. You scream until the monster gets bored with you and swims away.",
                     "points": 0
                   }
                 }
@@ -536,7 +536,7 @@
           {
             "name": "Observe",
             "story": {
-              "text": "You see the yowie up ahead, skulking around in the grass. It hasn’t noticed you yet, so you decide to sit back and watch what it does. ",
+              "text": "You see the yowie up ahead, skulking around in the grass. It hasn't noticed you yet, so you decide to sit back and watch what it does. ",
               "triggers": [
                 {
                   "skill": "Stealth",
@@ -557,7 +557,7 @@
           {
             "name": "Attack",
             "story": {
-              "text": "The Yowie sees you and rears up, preparing for an attack. If you don’t do anything, it will crush you with its mighty fists.",
+              "text": "The Yowie sees you and rears up, preparing for an attack. If you don't do anything, it will crush you with its mighty fists.",
               "triggers": [
                 {
                   "skill": "Weapon Use",
@@ -610,7 +610,7 @@
           {
             "name": "Pay Respects",
             "story": {
-              "text": "The wraith stares at you from within a lonely graveyard. It seems like it wants something from you, but you aren’t sure. Perhaps there’s something you can do for it.",
+              "text": "The wraith stares at you from within a lonely graveyard. It seems like it wants something from you, but you aren't sure. Perhaps there's something you can do for it.",
               "triggers": [
                 {
                   "skill": "Logic",
@@ -636,7 +636,7 @@
                 {
                   "skill": "Magic",
                   "conclusion": {
-                    "text": "The fog thickens as the wraith comes nearer. You cast a fireball spell, and it hits the wraith’s lantern. The lantern shatters, and the wraith cries out as it disappears.",
+                    "text": "The fog thickens as the wraith comes nearer. You cast a fireball spell, and it hits the wraith's lantern. The lantern shatters, and the wraith cries out as it disappears.",
                     "points": 1
                   }
                 },
@@ -705,7 +705,7 @@
                 {
                   "skill": "Magic",
                   "conclusion": {
-                    "text": "Three spheres of light swirl around the monster’s head and chase Nessie down into the water. You hope she will escape through the large crevice at the bottom of the lake.",
+                    "text": "Three spheres of light swirl around the monster's head and chase Nessie down into the water. You hope she will escape through the large crevice at the bottom of the lake.",
                     "points": 1
                   }
                 },
@@ -726,13 +726,13 @@
                 {
                   "skill": "Stealth",
                   "conclusion": {
-                    "text": "Even though Nessie is a lake monster, you’ve read that she can run on land. You try to look small and unimportant so the monster will lose interest in you, and you escape.",
+                    "text": "Even though Nessie is a lake monster, you've read that she can run on land. You try to look small and unimportant so the monster will lose interest in you, and you escape.",
                     "points": 1
                   }
                 },
                 {
                   "conclusion": {
-                    "text": "You don’t realize that Nessie has been reported running on land before. You just barely get away.",
+                    "text": "You don't realize that Nessie has been reported running on land before. You just barely get away.",
                     "points": 0
                   }
                 }
@@ -759,7 +759,7 @@
                 },
                 {
                   "conclusion": {
-                    "text": "You try to get close enough to talk to the creature, but it can’t hear you over all of the commotion. You give up and go home.",
+                    "text": "You try to get close enough to talk to the creature, but it can't hear you over all of the commotion. You give up and go home.",
                     "points": 0
                   }
                 }
@@ -790,7 +790,7 @@
           {
             "name": "Run",
             "story": {
-              "text": "This thing is so big, you can hardly see its face behind its massive tentacles. There’s no way it can catch you.",
+              "text": "This thing is so big, you can hardly see its face behind its massive tentacles. There's no way it can catch you.",
               "triggers": [
                 {
                   "skill": "Athleticism",
@@ -838,7 +838,7 @@
           {
             "name": "Attack",
             "story": {
-              "text": "The cockatrice notices movement behind it and starts to turn around. You must do something before it looks at you. Otherwise, you’ll be turned to stone.",
+              "text": "The cockatrice notices movement behind it and starts to turn around. You must do something before it looks at you. Otherwise, you'll be turned to stone.",
               "triggers": [
                 {
                   "skill": "Magic",
@@ -859,7 +859,7 @@
           {
             "name": "Run",
             "story": {
-              "text": "The cockatrice is lying in the grass, sleeping soundly. It has no idea you’re there, and you know how dangerous it is. You decide to leave it alone.",
+              "text": "The cockatrice is lying in the grass, sleeping soundly. It has no idea you're there, and you know how dangerous it is. You decide to leave it alone.",
               "triggers": [
                 {
                   "conclusion": {
@@ -889,7 +889,7 @@
                 {
                   "skill": "Persuasion",
                   "conclusion": {
-                    "text": "You go to the farmer’s house and work out an agreement with the villagers: every day, one person will set out food or meat for the monster.",
+                    "text": "You go to the farmer's house and work out an agreement with the villagers: every day, one person will set out food or meat for the monster.",
                     "points": 1
                   }
                 },
@@ -931,13 +931,13 @@
                 {
                   "skill": "Athleticism",
                   "conclusion": {
-                    "text": "You don’t like the way that thing is looking at you. You run to the farmer’s house and hide there until morning.",
+                    "text": "You don't like the way that thing is looking at you. You run to the farmer's house and hide there until morning.",
                     "points": 1
                   }
                 },
                 {
                   "conclusion": {
-                    "text": "You want to try and get away, but its menacing gaze stops you. You watch it drink the goats’ blood until morning.",
+                    "text": "You want to try and get away, but its menacing gaze stops you. You watch it drink the goats' blood until morning.",
                     "points": 0
                   }
                 }
@@ -953,18 +953,18 @@
           {
             "name": "Invite",
             "story": {
-              "text": "You are dancing around a fire to tribal music. You see a woman hiding on the forest’s edge and invite her to join.",
+              "text": "You are dancing around a fire to tribal music. You see a woman hiding on the forest's edge and invite her to join.",
               "triggers": [
                 {
                   "skill": "Logic",
                   "conclusion": {
-                    "text": "As the woman nears, you notice she doesn’t have feet, but deer hooves. You look away and let her enjoy a night of dancing. ",
+                    "text": "As the woman nears, you notice she doesn't have feet, but deer hooves. You look away and let her enjoy a night of dancing. ",
                     "points": 1
                   }
                 },
                 {
                   "conclusion": {
-                    "text": "The woman’s deer hooves grab your attention. Your stares make her embarrassed and uncomfortable. She runs back to the woods. Something in the forest now feels threatening.",
+                    "text": "The woman's deer hooves grab your attention. Your stares make her embarrassed and uncomfortable. She runs back to the woods. Something in the forest now feels threatening.",
                     "points": 1
                   }
                 }
@@ -999,7 +999,7 @@
                 },
                 {
                   "conclusion": {
-                    "text": "The spirit ignores your offering. Instead, she looks longingly at the drums left by last night’s fire.\n",
+                    "text": "The spirit ignores your offering. Instead, she looks longingly at the drums left by last night's fire.\n",
                     "points": 0
                   }
                 }
@@ -1036,7 +1036,7 @@
           {
             "name": "Attack",
             "story": {
-              "text": "While travelling, you find a wendigo wandering about, looking for a meal. The creature spies you and gets ready to attack. If you don’t do something, you will be its next meal.",
+              "text": "While travelling, you find a wendigo wandering about, looking for a meal. The creature spies you and gets ready to attack. If you don't do something, you will be its next meal.",
               "triggers": [
                 {
                   "skill": "Magic",
