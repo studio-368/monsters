@@ -21,6 +21,7 @@ public final class GameStyle {
     private static final float LARGE = 0.05f;
     private static final float REGULAR = 0.038f;
     private static final float SMALL = 0.02f;
+    private static final float TINY = 0.01f;
 
     private static final int DARK_TRANSLUCENT_GREY = Color.argb(240, 30, 30, 30);
 
@@ -140,7 +141,7 @@ public final class GameStyle {
                         Style.FONT.is(Typeface.OXYGEN.in(game).atSize(LARGE)),
                         Style.COLOR.is(Palette.TROPICAL_RAIN_FOREST),
                         Style.BACKGROUND.is(Background.blank().inset(game.bounds.percentOfHeight(SMALL))),
-                        Style.ICON_GAP.is((int) game.bounds.percentOfHeight(SMALL)),
+                        Style.ICON_GAP.is((int) game.bounds.percentOfHeight(TINY)),
                         Style.HALIGN.center,
                         Style.ICON_POS.below)
                 .add(EncounterCardFactory.EncounterCard.InteractionArea.StyledButton.class,
@@ -156,7 +157,7 @@ public final class GameStyle {
                         Style.FONT.is(oxygenLightRegular),
                         Style.COLOR.is(Palette.SPROUT),
                         Style.BACKGROUND.is(Background.solid(Palette.BLUE_LAGOON)
-                                .inset(game.bounds.percentOfHeight(SMALL))))
+                                .inset(game.bounds.percentOfHeight(TINY))))
                 .add(EncounterCardFactory.EncounterCard.InteractionArea.TriggerButton.class,
                         Style.COLOR.is(Palette.SPROUT),
                         Style.BACKGROUND.is(palettizedButtonBg))
@@ -165,6 +166,14 @@ public final class GameStyle {
                         Style.BACKGROUND.is(palettizedSelectedButtonBg))
                 .add(EncounterCardFactory.EncounterCard.InteractionArea.RewardLabel.class,
                         Style.COLOR.is(Palette.SPROUT))
+                .add(EncounterCardFactory.EncounterCard.InteractionArea.DoneButton.class,
+                        Style.FONT.is(oxygenRegular),
+                        Style.BACKGROUND.is(palettizedButtonBg),
+                        Style.COLOR.is(Palette.SPROUT))
+                .add(EncounterCardFactory.EncounterCard.InteractionArea.DoneButton.class, Style.Mode.SELECTED,
+                        Style.FONT.is(oxygenRegular),
+                        Style.BACKGROUND.is(palettizedSelectedButtonBg),
+                        Style.COLOR.is(Palette.BLACK_PEARL))
 
                 .add(HandoffDialogFactory.HandoffDialog.class,
                         Style.BACKGROUND.is(Background.roundRect(gfx, DARK_TRANSLUCENT_GREY, cornerRadius)))

@@ -148,21 +148,7 @@ public class EncounterCardFactory {
                             InteractionArea.this.removeAll();
                             InteractionArea.this.add(new ConclusionLabel(conclusion),
                                     new RewardLabel(conclusion),
-                                    new StyledButton("Done").onClick(new Slot<Button>() {
-                                        {
-                                            context.phase.connect(new Slot<Phase>() {
-                                                @Override
-                                                public void onEmit(Phase phase) {
-                                                    setEnabled(phase.equals(Phase.STORY));
-                                                }
-                                            });
-                                        }
-
-                                        @Override
-                                        public void onEmit(Button button) {
-                                            context.phase.update(Phase.END_OF_ROUND);
-                                        }
-                                    }));
+                                    new DoneButton());
                             applyModelChanges(conclusion);
                         }
 
@@ -249,6 +235,32 @@ public class EncounterCardFactory {
                 @Override
                 protected Class<?> getStyleClass() {
                     return RewardLabel.class;
+                }
+            }
+
+            final class DoneButton extends Button {
+                private DoneButton() {
+                    super("Done");
+                    onClick(new Slot<Button>() {
+                        {
+                            context.phase.connect(new Slot<Phase>() {
+                                @Override
+                                public void onEmit(Phase phase) {
+                                    setEnabled(phase.equals(Phase.STORY));
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onEmit(Button button) {
+                            context.phase.update(Phase.END_OF_ROUND);
+                        }
+                    });
+                }
+
+                @Override
+                protected Class<?> getStyleClass() {
+                    return DoneButton.class;
                 }
             }
         }
