@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<fx:root hgap="5.0" type="javafx.scene.layout.GridPane" vgap="5.0" xmlns="http://javafx.com/javafx/8"
+         xmlns:fx="http://javafx.com/fxml/1">
+    <columnConstraints>
+        <ColumnConstraints halignment="LEFT" hgrow="NEVER" minWidth="10.0"/>
+        <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0"/>
+        <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" valignment="TOP" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" valignment="TOP" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" valignment="TOP" vgrow="ALWAYS"/>
+        <RowConstraints minHeight="10.0" valignment="TOP" vgrow="NEVER"/>
+    </rowConstraints>
+    <children>
+        <Label fx:id="encounterName" text="Monster Name" GridPane.columnSpan="2">
+            <font>
+                <Font name="System Bold" size="18.0"/>
+            </font>
+        </Label>
+        <Label text="Name:" GridPane.rowIndex="1">
+            <GridPane.margin>
+                <Insets top="5.0"/>
+            </GridPane.margin>
+        </Label>
+        <TextField fx:id="encounterNameTextField" onAction="#onNameChange" GridPane.columnIndex="1"
+                   GridPane.rowIndex="1">
+            <GridPane.margin>
+                <Insets top="5.0"/>
+            </GridPane.margin>
+        </TextField>
+        <Label text="Reactions:" GridPane.rowIndex="3"/>
+        <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.vgrow="ALWAYS">
+            <children>
+                <ListView fx:id="encounterReactionsList" maxHeight="1.7976931348623157E308"
+                          maxWidth="1.7976931348623157E308" prefHeight="150.0" prefWidth="200.0"/>
+                <HBox spacing="5.0">
+                    <children>
+                        <Button fx:id="reactionAddButton" mnemonicParsing="false" onAction="#onReactionAdd" text="Add"/>
+                        <Button fx:id="reactionRenameButton" disable="true" mnemonicParsing="false"
+                                onAction="#onReactionRename" text="Rename"/>
+                        <Button fx:id="reactionDeleteButton" disable="true" mnemonicParsing="false"
+                                onAction="#onReactionDelete" text="Delete"/>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+        <Label text="Image:" GridPane.rowIndex="2"/>
+        <TextField fx:id="encounterImage" onAction="#onImageChange" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+        <VBox alignment="TOP_CENTER" spacing="15.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
+            <children>
+                <Button fx:id="reactionUpButton" disable="true" maxWidth="1.7976931348623157E308"
+                        mnemonicParsing="false" onAction="#onReactionUpwards" text="Up"/>
+                <Button fx:id="reactionDownButton" disable="true" maxWidth="1.7976931348623157E308"
+                        mnemonicParsing="false" onAction="#onReactionDownwards" text="Down"/>
+            </children>
+        </VBox>
+    </children>
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+    </padding>
+</fx:root>
