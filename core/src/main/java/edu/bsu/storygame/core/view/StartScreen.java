@@ -3,8 +3,8 @@ package edu.bsu.storygame.core.view;
 import edu.bsu.storygame.core.MonsterGame;
 import edu.bsu.storygame.core.assets.ImageCache;
 import edu.bsu.storygame.core.assets.Typeface;
+import edu.bsu.storygame.core.util.IconScaler;
 import playn.core.Game;
-import playn.core.Image;
 import playn.scene.GroupLayer;
 import react.Slot;
 import tripleplay.game.ScreenStack;
@@ -29,10 +29,8 @@ public class StartScreen extends ScreenStack.UIScreen {
     }
 
     private void initRoot() {
-        final float iconPercentOfScreen = 0.25f;
-        final Image image = game.imageCache.image(ImageCache.Key.LOGO);
-        final float scale = iconPercentOfScreen * size().width() / image.width();
-        final Icon scaledIcon = Icons.scaled(Icons.image(image), scale);
+        IconScaler scaler = new IconScaler(game);
+        Icon logo = scaler.scale(ImageCache.Key.LOGO, game.bounds.width() * 0.25f);
         root = iface.createRoot(AxisLayout.vertical(), GameStyle.newSheet(game), boundedLayer)
                 .setSize(game.bounds.width(), game.bounds.height())
                 .addStyles(Style.BACKGROUND.is(Background.solid(Palette.TUSCANY)))
@@ -40,7 +38,7 @@ public class StartScreen extends ScreenStack.UIScreen {
                                 .addStyles(Style.FONT.is(Typeface.PASSION_ONE.in(game).atSize(0.08f)),
                                         Style.TEXT_WRAP.on,
                                         Style.COLOR.is(Palette.BLUE_LAGOON)),
-                        new Label(scaledIcon),
+                        new Label(logo),
                         new Label("Monsters are appearing in people's nightmares all over the world")
                                 .addStyles(Style.FONT.is(Typeface.OXYGEN.in(game).atSize(0.08f)),
                                         Style.TEXT_WRAP.on,

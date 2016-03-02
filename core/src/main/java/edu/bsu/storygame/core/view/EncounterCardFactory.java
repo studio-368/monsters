@@ -2,7 +2,7 @@ package edu.bsu.storygame.core.view;
 
 import edu.bsu.storygame.core.assets.ImageCache;
 import edu.bsu.storygame.core.model.*;
-import playn.core.Image;
+import edu.bsu.storygame.core.util.IconScaler;
 import playn.scene.GroupLayer;
 import playn.scene.Layer;
 import react.Slot;
@@ -11,15 +11,16 @@ import tripleplay.ui.layout.AbsoluteLayout;
 import tripleplay.ui.layout.AxisLayout;
 import tripleplay.ui.layout.FlowLayout;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 public class EncounterCardFactory {
 
     private final GameContext context;
-
+    private final IconScaler scaler;
 
     public EncounterCardFactory(GameContext context) {
         this.context = checkNotNull(context);
+        scaler = new IconScaler(context.game);
     }
 
     public Layer create(float width, float height, Interface iface) {
@@ -56,10 +57,8 @@ public class EncounterCardFactory {
                         if (encounter != null) {
                             text.update(encounter.name);
                             final ImageCache.Key imageKey = ImageCache.Key.valueOf(encounter.imageKey.toUpperCase());
-                            final Image image = context.game.imageCache.image(imageKey);
-                            final Icon unscaledIcon = Icons.image(image);
-                            final float scale = IMAGE_SIZE * size().width() / image.width();
-                            final Icon scaledIcon = Icons.scaled(unscaledIcon, scale);
+                            final float desiredWidth = IMAGE_SIZE * size().width();
+                            Icon scaledIcon = scaler.scale(imageKey, desiredWidth);
                             icon.update(scaledIcon);
                         }
                     }
