@@ -3,7 +3,7 @@ package edu.bsu.storygame.core.json;
 import edu.bsu.storygame.core.model.*;
 import playn.core.Json;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 public final class EncounterParser {
 
@@ -22,8 +22,12 @@ public final class EncounterParser {
         for (int i = 0, limit = jsonReactions.length(); i < limit; i++) {
             Json.Object jsonReaction = jsonReactions.getObject(i);
             String reactionName = jsonReaction.getString("name");
-            Reaction reaction = Reaction.create(reactionName).story(parseStory(jsonReaction.getObject("story")));
-            encounterBuilder.reaction(reaction);
+            try {
+                Reaction reaction = Reaction.create(reactionName).story(parseStory(jsonReaction.getObject("story")));
+                encounterBuilder.reaction(reaction);
+            } catch (Exception e) {
+                throw new IllegalStateException("Failed to parse encounter " + name, e);
+            }
         }
         return encounterBuilder.build();
     }
@@ -39,12 +43,22 @@ public final class EncounterParser {
         Json.Array jsonTriggers = jsonStory.getArray("triggers");
         for (int i = 0, limit = jsonTriggers.length(); i < limit; i++) {
             Json.Object jsonTrigger = jsonTriggers.getObject(i);
-            Skill skill = Skill.named(jsonTrigger.getString("skill"));
-            Json.Object conclusionObject = jsonTrigger.getObject("conclusion");
-            Conclusion conclusion = parseConclusion(conclusionObject);
-            storyBuilder.trigger(SkillTrigger.skill(skill).conclusion(conclusion));
+            parseTrigger(jsonTrigger, storyBuilder);
         }
         return storyBuilder.build();
+    }
+
+    private void parseTrigger(Json.Object jsonTrigger, Story.Builder storyBuilder) {
+        String skillString = jsonTrigger.getString("skill");
+        Json.Object conclusionObject = jsonTrigger.getObject("conclusion");
+        Conclusion conclusion = parseConclusion(conclusionObject);
+        if (skillString != null) {
+            Skill skill = Skill.named(skillString);
+            storyBuilder.trigger(SkillTrigger.skill(skill).conclusion(conclusion));
+        } else {
+            NoSkillTrigger noSkill = new NoSkillTrigger(conclusion);
+            storyBuilder.trigger(noSkill);
+        }
     }
 
     private Conclusion parseConclusion(Json.Object conclusionObject) {

@@ -115,11 +115,12 @@ public class EncounterCardFactory {
                 group.add(new StoryLabel(story));
                 Group buttonGroup = new Group(new FlowLayout());
                 for (final SkillTrigger trigger : story.triggers) {
-                    if (context.currentPlayer.get().skills.contains(trigger.skill) || trigger.skill.name.equals("None")) {
-                        Button skillButton = new SkillTriggerButton(trigger);
+                    if (context.currentPlayer.get().skills.contains(trigger.skill)) {
+                        Button skillButton = new TriggerButton(trigger.skill.name, trigger.conclusion);
                         buttonGroup.add(skillButton);
                     }
                 }
+                buttonGroup.add(new TriggerButton("No skill", story.noSkill.conclusion));
                 group.add(buttonGroup);
                 return group;
             }
@@ -136,18 +137,17 @@ public class EncounterCardFactory {
             }
 
 
-            final class SkillTriggerButton extends StyledButton {
-                private SkillTriggerButton(final SkillTrigger trigger) {
-                    super(trigger.skill.name);
+            final class TriggerButton extends StyledButton {
+                private TriggerButton(final String name, final Conclusion conclusion) {
+                    super(name);
                     onClick(new Slot<Button>() {
                         private final Player currentPlayer = context.currentPlayer.get();
 
                         @Override
                         public void onEmit(Button button) {
-                            final Conclusion conclusion = trigger.conclusion;
                             InteractionArea.this.removeAll();
                             InteractionArea.this.add(new ConclusionLabel(conclusion),
-                                    new RewardLabel(trigger.conclusion),
+                                    new RewardLabel(conclusion),
                                     new StyledButton("Done").onClick(new Slot<Button>() {
                                         {
                                             context.phase.connect(new Slot<Phase>() {

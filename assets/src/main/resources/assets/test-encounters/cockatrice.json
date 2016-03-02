@@ -15,7 +15,6 @@
             }
           },
           {
-            "skill": "Magic",
             "conclusion": {
               "text": "Conclusion 2",
               "skill": "RewardSkill"
@@ -30,7 +29,6 @@
         "text": "Story 2",
         "triggers": [
           {
-            "skill": "Logic",
             "conclusion": {
               "text": "Conclusion 1-A",
               "points": 1,

@@ -12,8 +12,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.Charset;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public class GsonParserTest {
 
@@ -30,7 +29,7 @@ public class GsonParserTest {
                                                     new Conclusion("Conclusion 1", 1, null)
                                             ),
                                             new SkillTrigger(
-                                                    "Magic",
+                                                    null,
                                                     new Conclusion("Conclusion 2")
                                             )
                                     )
@@ -43,7 +42,7 @@ public class GsonParserTest {
                                                     new Conclusion("Conclusion 1-A", 1, null)
                                             ),
                                             new SkillTrigger(
-                                                    "Magic",
+                                                    null,
                                                     new Conclusion("Conclusion 2-B")
                                             )
                                     )

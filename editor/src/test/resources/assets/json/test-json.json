@@ -19,7 +19,6 @@
                   }
                 },
                 {
-                  "skill": "Magic",
                   "conclusion": {
                     "text": "Conclusion 2"
                   }
@@ -40,7 +39,6 @@
                   }
                 },
                 {
-                  "skill": "Magic",
                   "conclusion": {
                     "text": "Conclusion 2-B"
                   }

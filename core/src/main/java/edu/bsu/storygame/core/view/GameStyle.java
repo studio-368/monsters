@@ -157,10 +157,10 @@ public final class GameStyle {
                         Style.COLOR.is(Palette.SPROUT),
                         Style.BACKGROUND.is(Background.solid(Palette.BLUE_LAGOON)
                                 .inset(game.bounds.percentOfHeight(SMALL))))
-                .add(EncounterCardFactory.EncounterCard.InteractionArea.SkillTriggerButton.class,
+                .add(EncounterCardFactory.EncounterCard.InteractionArea.TriggerButton.class,
                         Style.COLOR.is(Palette.SPROUT),
                         Style.BACKGROUND.is(palettizedButtonBg))
-                .add(EncounterCardFactory.EncounterCard.InteractionArea.SkillTriggerButton.class, Style.Mode.SELECTED,
+                .add(EncounterCardFactory.EncounterCard.InteractionArea.TriggerButton.class, Style.Mode.SELECTED,
                         Style.COLOR.is(Palette.BLACK_PEARL),
                         Style.BACKGROUND.is(palettizedSelectedButtonBg))
                 .add(EncounterCardFactory.EncounterCard.InteractionArea.RewardLabel.class,
