@@ -8,15 +8,15 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class SkillTrigger {
 
-    public static Builder skill(String skill) {
+    public static Builder skill(Skill skill) {
         return new Builder(skill);
     }
 
     public static final class Builder {
-        private final String skill;
+        private final Skill skill;
         private Conclusion conclusion;
 
-        private Builder(String skill) {
+        private Builder(Skill skill) {
             this.skill = checkNotNull(skill);
         }
 
@@ -26,7 +26,7 @@ public final class SkillTrigger {
         }
     }
 
-    public final String skill;
+    public final Skill skill;
     public final Conclusion conclusion;
 
     private SkillTrigger(Builder builder) {

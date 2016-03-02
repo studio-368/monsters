@@ -22,9 +22,8 @@ public class MapView extends Group {
         add(new RegionButton(Region.AFRICA),
                 new RegionButton(Region.AMERICAS),
                 new RegionButton(Region.ASIA),
-                new RegionButton(Region.NORTHERN_EUROPE),
-                new RegionButton(Region.OCEANIA),
-                new RegionButton(Region.SOUTHERN_EUROPE));
+                new RegionButton(Region.EUROPE),
+                new RegionButton(Region.OCEANIA));
     }
 
     private final class RegionButton extends Button {

@@ -17,7 +17,8 @@
           {
             "skill": "Magic",
             "conclusion": {
-              "text": "Conclusion 2"
+              "text": "Conclusion 2",
+              "skill": "RewardSkill"
             }
           }
         ]
@@ -32,7 +33,8 @@
             "skill": "Logic",
             "conclusion": {
               "text": "Conclusion 1-A",
-              "points": 1
+              "points": 1,
+              "skill": "RewardSkill-2"
             }
           },
           {

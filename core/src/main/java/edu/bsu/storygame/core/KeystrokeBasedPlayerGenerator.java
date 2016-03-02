@@ -2,20 +2,26 @@ package edu.bsu.storygame.core;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import edu.bsu.storygame.core.model.GameContext;
 import edu.bsu.storygame.core.model.Player;
+import edu.bsu.storygame.core.model.Skill;
+import edu.bsu.storygame.core.view.Palette;
 import edu.bsu.storygame.core.view.SampleGameScreen;
 import playn.core.Key;
 import playn.core.Keyboard;
-import react.RList;
 import react.SignalView;
-import tripleplay.util.Colors;
+
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class DebugMode implements SignalView.Listener<Keyboard.Event> {
+public class KeystrokeBasedPlayerGenerator implements SignalView.Listener<Keyboard.Event> {
 
-    private static final ImmutableList<String> SAMPLE_SKILLS = ImmutableList.of("Skill 1", "Skill 2");
+    private static final ImmutableList<Skill> SAMPLE_SKILLS = ImmutableList.of(
+            Skill.named("Weapon use"),
+            Skill.named("Magic")
+    );
 
     private final ImmutableMap.Builder<Key, Runnable> builder = ImmutableMap.builder();
 
@@ -24,13 +30,13 @@ public class DebugMode implements SignalView.Listener<Keyboard.Event> {
             @Override
             public void run() {
                 GameContext context = new GameContext(game,
-                        new Player("Ann", Colors.WHITE, makeSkillList()),
-                        new Player("Barb", Colors.BLACK, makeSkillList()));
+                        new Player.Builder().name("Ann").color(Palette.PLAYER_ONE).skills(makeSkillList()).build(),
+                        new Player.Builder().name("Barb").color(Palette.PLAYER_TWO).skills(makeSkillList()).build());
                 game.screenStack.push(new SampleGameScreen(game, context));
             }
 
-            private RList<String> makeSkillList() {
-                RList<String> list = RList.create();
+            private List<Skill> makeSkillList() {
+                List<Skill> list = Lists.newArrayList();
                 list.addAll(SAMPLE_SKILLS);
                 return list;
             }
@@ -40,7 +46,7 @@ public class DebugMode implements SignalView.Listener<Keyboard.Event> {
     private final MonsterGame game;
     private final ImmutableMap<Key, Runnable> actionMap = builder.build();
 
-    public DebugMode(MonsterGame game) {
+    public KeystrokeBasedPlayerGenerator(MonsterGame game) {
         this.game = checkNotNull(game);
     }
 

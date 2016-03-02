@@ -165,65 +165,10 @@
     ]
   },
   {
-    "region": "Northern Europe",
+    "region": "Europe",
     "encounters": [
       {
         "name": "North European Cockatrice",
-        "image": "cockatrice",
-        "reactions": [
-          {
-            "name": "Fight",
-            "story": {
-              "text": "You encounter an angry beast and charge forward to fight it like a silly English person.",
-              "triggers": [
-                {
-                  "skill": "Weapon Use",
-                  "conclusion": {
-                    "text": "You pound the tar out of that chicken thing.",
-                    "points": 1
-                  }
-                },
-                {
-                  "skill": "Logic",
-                  "conclusion": {
-                    "text": "You out-think it",
-                    "points": 1
-                  }
-                }
-              ]
-            }
-          },
-          {
-            "name": "Hide",
-            "story": {
-              "text": "You hear a terrifying sound and hide like a girly man",
-              "triggers": [
-                {
-                  "skill": "Weapon use",
-                  "conclusion": {
-                    "text": "You sharpen your weapon and hide in shame.",
-                    "points": 1
-                  }
-                },
-                {
-                  "skill": "Logic",
-                  "conclusion": {
-                    "text": "You deduce a syllogism... for SCIENCE!",
-                    "points": 1
-                  }
-                }
-              ]
-            }
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "region": "Southern Europe",
-    "encounters": [
-      {
-        "name": "South European Cockatrice",
         "image": "cockatrice",
         "reactions": [
           {
@@ -297,7 +242,7 @@
                   "skill": "Logic",
                   "conclusion": {
                     "text": "You out-think it",
-                    "points": 1
+                    "skill": "Magic"
                   }
                 }
               ]

@@ -9,6 +9,7 @@ import react.Slot;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AbsoluteLayout;
 import tripleplay.ui.layout.AxisLayout;
+import tripleplay.ui.layout.FlowLayout;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -23,22 +24,9 @@ public class EncounterCardFactory {
 
     public Layer create(float width, float height, Interface iface) {
         final GroupLayer layer = new GroupLayer(width, height);
-        layer.setVisible(false);
-        context.phase.connect(new Slot<Phase>() {
-            @Override
-            public void onEmit(Phase phase) {
-                if (phase.equals(Phase.ENCOUNTER)) {
-                    layer.setVisible(true);
-                } else if (phase.equals(Phase.END_OF_ROUND)) {
-                    layer.setVisible(false);
-                }
-            }
-        });
-
         iface.createRoot(new AbsoluteLayout(), GameStyle.newSheet(context.game), layer)
                 .setSize(width, height)
                 .add(AbsoluteLayout.at(new EncounterCard(), 0, 0, width, height));
-
         return layer;
     }
 
@@ -50,6 +38,7 @@ public class EncounterCardFactory {
             super(AxisLayout.vertical().offStretch());
             add(titleLabel);
             add(area);
+            add(new Shim(0, 0).setConstraint(AxisLayout.stretched()));
         }
 
         @Override
@@ -94,9 +83,7 @@ public class EncounterCardFactory {
                     public void onEmit(Encounter encounter) {
                         removeAll();
                         if (encounter != null) {
-                            for (Reaction reaction : encounter.reactions) {
-                                add(new ReactionButton(reaction));
-                            }
+                            add(makeReactionButtonAreaFor(encounter));
                         }
                     }
                 });
@@ -105,54 +92,107 @@ public class EncounterCardFactory {
                     public void onEmit(Phase phase) {
                         if (phase.equals(Phase.STORY)) {
                             removeAll();
-                            final Story story = reaction.story;
-                            add(new StoryLabel(story));
-                            for (final SkillTrigger trigger : story.triggers) {
-                                Button skillButton = new Button(trigger.skill);
-                                skillButton.onClick(new Slot<Button>() {
-                                    @Override
-                                    public void onEmit(Button button) {
-                                        InteractionArea.this.removeAll();
-                                        InteractionArea.this.add(new ConclusionLabel(trigger.conclusion),
-                                                new RewardLabel(trigger.conclusion.points),
-                                                new Button("Done").onClick(new Slot<Button>() {
-                                                    {
-                                                        context.phase.connect(new Slot<Phase>() {
-                                                            @Override
-                                                            public void onEmit(Phase phase) {
-                                                                setEnabled(phase.equals(Phase.STORY));
-                                                            }
-                                                        });
-                                                    }
-
-                                                    @Override
-                                                    public void onEmit(Button button) {
-                                                        context.phase.update(Phase.END_OF_ROUND);
-                                                    }
-                                                }));
-                                    }
-                                });
-                                add(skillButton);
-                            }
+                            add(makeStoryAndSkillsAreaFor(reaction.story));
                         }
                     }
                 });
             }
 
+            private Group makeReactionButtonAreaFor(Encounter encounter) {
+                Group group = new Group(new FlowLayout());
+                for (Reaction reaction : encounter.reactions) {
+                    group.add(new ReactionButton(reaction));
+                }
+                return group;
+            }
 
-            final class StoryLabel extends Label {
-                private StoryLabel(Story story) {
-                    super(story.text);
+            private Group makeStoryAndSkillsAreaFor(Story story) {
+                Group group = new Group(AxisLayout.vertical().offStretch());
+                group.add(new StoryLabel(story));
+                Group buttonGroup = new Group(new FlowLayout());
+                for (final SkillTrigger trigger : story.triggers) {
+                    Button skillButton = new SkillTriggerButton(trigger);
+                    buttonGroup.add(skillButton);
+                }
+                group.add(buttonGroup);
+                return group;
+            }
+
+            protected class StyledButton extends Button {
+                protected StyledButton(String text) {
+                    super(text);
                 }
 
                 @Override
                 protected Class<?> getStyleClass() {
-                    return StoryLabel.class;
+                    return StyledButton.class;
                 }
             }
 
-            final class ReactionButton extends Button {
 
+            final class SkillTriggerButton extends StyledButton {
+                private SkillTriggerButton(final SkillTrigger trigger) {
+                    super(trigger.skill.name);
+                    onClick(new Slot<Button>() {
+                        private final Player currentPlayer = context.currentPlayer.get();
+
+                        @Override
+                        public void onEmit(Button button) {
+                            final Conclusion conclusion = trigger.conclusion;
+                            InteractionArea.this.removeAll();
+                            InteractionArea.this.add(new ConclusionLabel(conclusion),
+                                    new RewardLabel(trigger.conclusion),
+                                    new StyledButton("Done").onClick(new Slot<Button>() {
+                                        {
+                                            context.phase.connect(new Slot<Phase>() {
+                                                @Override
+                                                public void onEmit(Phase phase) {
+                                                    setEnabled(phase.equals(Phase.STORY));
+                                                }
+                                            });
+                                        }
+
+                                        @Override
+                                        public void onEmit(Button button) {
+                                            context.phase.update(Phase.END_OF_ROUND);
+                                        }
+                                    }));
+                            applyModelChanges(conclusion);
+                        }
+
+                        private void applyModelChanges(Conclusion conclusion) {
+                            currentPlayer.storyPoints.update(
+                                    currentPlayer.storyPoints.get() + conclusion.points);
+                            if (isThereASkillRewardThisPlayerDoesNotHave(conclusion)) {
+                                context.currentPlayer.get().skills.add(conclusion.skill);
+                            }
+                        }
+
+                        private boolean isThereASkillRewardThisPlayerDoesNotHave(Conclusion conclusion) {
+                            return conclusion.skill != null && !currentPlayer.skills.contains(conclusion.skill);
+                        }
+                    });
+                }
+            }
+
+            protected abstract class StyledNarrativeLabel extends Label {
+                protected StyledNarrativeLabel(String text) {
+                    super(text);
+                }
+
+                @Override
+                protected Class<?> getStyleClass() {
+                    return StyledNarrativeLabel.class;
+                }
+            }
+
+            final class StoryLabel extends StyledNarrativeLabel {
+                private StoryLabel(Story story) {
+                    super(story.text);
+                }
+            }
+
+            final class ReactionButton extends StyledButton {
                 private ReactionButton(final Reaction reaction) {
                     super(reaction.name);
                     onClick(new Slot<Button>() {
@@ -171,23 +211,33 @@ public class EncounterCardFactory {
                 }
             }
 
-            final class ConclusionLabel extends Label {
+            final class ConclusionLabel extends StyledNarrativeLabel {
                 private ConclusionLabel(Conclusion conclusion) {
                     super(conclusion.text);
-                }
-
-                @Override
-                protected Class<?> getStyleClass() {
-                    return ConclusionLabel.class;
                 }
             }
 
             final class RewardLabel extends Label {
-                private RewardLabel(int points) {
+                private RewardLabel(Conclusion conclusion) {
                     super();
-                    if (points > 0) {
-                        text.update("You gain " + points + " story points");
+                    StringBuilder stringBuilder = new StringBuilder();
+                    if (conclusion.points > 0) {
+                        stringBuilder.append("You gain ")
+                                .append(String.valueOf(conclusion.points))
+                                .append(" story points");
                     }
+                    if (conclusion.skill != null) {
+                        if (stringBuilder.length() > 0) {
+                            stringBuilder.append(" and the ")
+                                    .append(conclusion.skill)
+                                    .append(" skill");
+                        } else {
+                            stringBuilder.append("You gain the ")
+                                    .append(conclusion.skill.name)
+                                    .append(" skill");
+                        }
+                    }
+                    text.update(stringBuilder.toString());
                 }
 
                 @Override

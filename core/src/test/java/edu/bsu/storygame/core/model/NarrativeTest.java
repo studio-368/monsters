@@ -32,7 +32,7 @@ public class NarrativeTest {
                         }))
                         .build();
 
-        Set<String> expected = ImmutableSet.of("Logic", "Magic");
+        Set<Skill> expected = ImmutableSet.of(Skill.named("Logic"), Skill.named("Magic"));
         assertEquals(expected, narrative.skills());
     }
 }

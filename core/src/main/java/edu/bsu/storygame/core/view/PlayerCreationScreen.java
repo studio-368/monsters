@@ -1,108 +1,57 @@
 package edu.bsu.storygame.core.view;
 
 import edu.bsu.storygame.core.MonsterGame;
+import edu.bsu.storygame.core.assets.Typeface;
 import edu.bsu.storygame.core.model.GameContext;
 import edu.bsu.storygame.core.model.Player;
-import playn.core.Font;
 import playn.core.Game;
-import react.RList;
 import react.Slot;
+import react.Values;
 import tripleplay.game.ScreenStack;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
-import tripleplay.ui.layout.TableLayout;
-import tripleplay.util.Colors;
+import tripleplay.ui.layout.FlowLayout;
 
-import java.util.ArrayList;
-
-public class PlayerCreationScreen extends ScreenStack.UIScreen {
+public final class PlayerCreationScreen extends ScreenStack.UIScreen {
 
     private final MonsterGame game;
-    private GameContext context;
-    private final BiSelector playerOneSelector = new BiSelector();
-    private final BiSelector playerTwoSelector = new BiSelector();
-    private final Group playerOneSkills;
-    private final Group playerTwoSkills;
-    private final Field playerOneField;
-    private final Field playerTwoField;
-    final RList<String> skillsOne = new RList<>(new ArrayList<String>());
-    final RList<String> skillsTwo = new RList<>(new ArrayList<String>());
-    private Root root;
-    private Label header;
+    private final Root root;
+    private final PlayerCreationGroup playerOneGroup;
+    private final PlayerCreationGroup playerTwoGroup;
 
     public PlayerCreationScreen(final MonsterGame game) {
         super(game.plat);
         this.game = game;
-        root = iface.createRoot(AxisLayout.vertical().gap(100), SimpleStyles.newSheet(game.plat.graphics()), layer);
+        root = iface.createRoot(AxisLayout.vertical().offStretch(),
+                GameStyle.newSheet(game), layer);
         root.setSize(game.bounds.width(), game.bounds.height());
-        root.addStyles(Style.BACKGROUND.is(Background.solid(Colors.ORANGE)));
-        root.add(header = new Label("Nightmare Defenders!"));
-        root.add(new Group(AxisLayout.horizontal().gap(200)).add(
-                new Group(AxisLayout.vertical().gap(50)).add(
-                        playerOneField = new Field("Enter Name").setPopupLabel("Enter Your Name"),
-                        playerOneSkills = new Group(new TableLayout(2).gaps(20, 20)).add(
-                                new SkillButton("Athleticism"),
-                                new SkillButton("Logic"),
-                                new SkillButton("Magic"),
-                                new SkillButton("Persuasion"),
-                                new SkillButton("Stealth"),
-                                new SkillButton("Weapon Use")
-                        )
-                ),
-                new Group(AxisLayout.vertical().gap(50)).add(
-                        playerTwoField = new Field("Enter Name").setPopupLabel("Enter Your Name"),
-                        playerTwoSkills = new Group(new TableLayout(2).gaps(20, 20)).add(
-                                new SkillButton("Athleticism"),
-                                new SkillButton("Logic"),
-                                new SkillButton("Magic"),
-                                new SkillButton("Persuasion"),
-                                new SkillButton("Stealth"),
-                                new SkillButton("Weapon Use")
-                        )
-                )
-        ));
+        root.addStyles(Style.BACKGROUND.is(Background.solid(Palette.TUSCANY)));
+        root.add(new Label("Nightmare Defenders").addStyles(Style.FONT.is(Typeface.PASSION_ONE.in(game).atSize(0.15f))));
+        playerOneGroup = createPlayerGroup(Palette.PLAYER_ONE);
+        playerTwoGroup = createPlayerGroup(Palette.PLAYER_TWO);
+        root.add(new Group(AxisLayout.horizontal().offStretch().stretchByDefault().gap(0))
+                .add(playerOneGroup, playerTwoGroup)
+                .setConstraint(Constraints.fixedHeight(game.bounds.percentOfHeight(0.65f)))
+        );
 
-        linkSelectors();
+        final Button startButton = new StartButton();
+        root.add(new Group(new FlowLayout())
+                .add(startButton.setEnabled(false)));
 
-
-        root.add(new Button("Start")
-                .addStyles(Style.FONT.is(new Font("Times New Roman", 50)),
-                        Style.HALIGN.center)
-                .onClick(new Slot<Button>() {
-                    @Override
-                    public void onEmit(Button button) {
-                        if (hasCompletedPlayerCreation()) {
-                            savePlayerInformation();
-                            game.screenStack.push(new SampleGameScreen(game, context), game.screenStack.slide());
-                        } else {
-                            header.setText("Error");
-                        }
-                    }
-                }));
+        Values.and(playerOneGroup.complete, playerTwoGroup.complete).connect(startButton.enabledSlot());
     }
 
-    private void linkSelectors() {
-        for (Element<?> button : playerOneSkills) {
-            playerOneSelector.add((ToggleButton) button);
-        }
-        for (Element<?> button : playerTwoSkills) {
-            playerTwoSelector.add((ToggleButton) button);
-        }
+    private PlayerCreationGroup createPlayerGroup(final int color) {
+        PlayerCreationGroup group = new PlayerCreationGroup(game);
+        group.addStyles(Style.BACKGROUND.is(Background.solid(color)),
+                Style.VALIGN.top);
+        return group;
     }
 
-    private void savePlayerInformation() {
-        for (int item = 0; item < 2; item++) {
-            skillsOne.add(playerOneSelector.selections().get(item).text.get());
-            skillsTwo.add(playerTwoSelector.selections().get(item).text.get());
-        }
-        this.context = new GameContext(game, new Player(playerOneField.text.get(), Colors.BLUE, skillsOne), new Player(playerTwoField.text.get(), Colors.CYAN, skillsTwo));
-    }
-
-    private boolean hasCompletedPlayerCreation() {
-        return playerOneSelector.selections().size() == 2
-                && playerTwoSelector.selections().size() == 2
-                && !playerOneField.text.get().equals("Enter Name")
-                && !playerTwoField.text.get().equals("Enter Name");
+    private GameContext createGameContext() {
+        Player p1 = playerOneGroup.createPlayerBuilder().color(Palette.BLUE_LAGOON).build();
+        Player p2 = playerTwoGroup.createPlayerBuilder().color(Palette.TROPICAL_RAIN_FOREST).build();
+        return new GameContext(game, p1, p2);
     }
 
     @Override
@@ -110,12 +59,22 @@ public class PlayerCreationScreen extends ScreenStack.UIScreen {
         return game;
     }
 
-    private final class SkillButton extends ToggleButton {
+    final class StartButton extends Button {
+        private StartButton() {
+            super("Start");
+            onClick(new Slot<Button>() {
+                @Override
+                public void onEmit(Button button) {
+                    game.screenStack.push(new SampleGameScreen(game, createGameContext()), game.screenStack.slide());
+                }
+            });
+        }
 
-        private SkillButton(String text) {
-            super(text);
+        @Override
+        protected Class<?> getStyleClass() {
+            return StartButton.class;
         }
     }
-
-
 }
+
+
