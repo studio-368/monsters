@@ -35,6 +35,7 @@ public final class Sidebar extends Group {
         PlayerView(int playerNumber) {
             super(AxisLayout.horizontal());
             this.player = context.players.get(playerNumber);
+
             Icon star = new IconScaler(context.game)
                     .scale(ImageCache.Key.STAR, context.game.bounds.width() * 0.08f);
 
