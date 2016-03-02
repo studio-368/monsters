@@ -264,7 +264,7 @@
       },
       {
         "name": "Kappa",
-        "image": "",
+        "image": "kappa",
         "reactions": [
           {
             "name": "Greet",
@@ -400,7 +400,7 @@
     "encounters": [
       {
         "name": "Bunyip",
-        "image": "",
+        "image": "bunyip",
         "reactions": [
           {
             "name": "Hide",
@@ -605,7 +605,7 @@
     "encounters": [
       {
         "name": "Wraith",
-        "image": "",
+        "image": "wraith",
         "reactions": [
           {
             "name": "Pay Respects",
@@ -667,7 +667,7 @@
       },
       {
         "name": "Loch Ness Monster",
-        "image": "",
+        "image": "nessy",
         "reactions": [
           {
             "name": "Talk",
@@ -743,7 +743,7 @@
       },
       {
         "name": "Kraken",
-        "image": "",
+        "image": "kraken",
         "reactions": [
           {
             "name": "Talk",
@@ -812,7 +812,7 @@
       },
       {
         "name": "Cockatrice",
-        "image": "",
+        "image": "cockatrice",
         "reactions": [
           {
             "name": "Observe",
