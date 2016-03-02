@@ -56,7 +56,12 @@ public class EncounterCardFactory {
                     public void onEmit(Encounter encounter) {
                         if (encounter != null) {
                             text.update(encounter.name);
-                            final ImageCache.Key imageKey = ImageCache.Key.valueOf(encounter.imageKey.toUpperCase());
+                            ImageCache.Key imageKey;
+                            try {
+                                imageKey = ImageCache.Key.valueOf(encounter.imageKey.toUpperCase());
+                            } catch (IllegalArgumentException e) {
+                                imageKey = ImageCache.Key.MISSING_IMAGE;
+                            }
                             final float desiredWidth = IMAGE_SIZE * size().width();
                             Icon scaledIcon = scaler.scale(imageKey, desiredWidth);
                             icon.update(scaledIcon);
@@ -110,7 +115,7 @@ public class EncounterCardFactory {
                 group.add(new StoryLabel(story));
                 Group buttonGroup = new Group(new FlowLayout());
                 for (final SkillTrigger trigger : story.triggers) {
-                    if(context.currentPlayer.get().skills.contains(trigger.skill) || trigger.skill.name.equals("None")) {
+                    if (context.currentPlayer.get().skills.contains(trigger.skill) || trigger.skill.name.equals("None")) {
                         Button skillButton = new SkillTriggerButton(trigger);
                         buttonGroup.add(skillButton);
                     }

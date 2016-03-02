@@ -19,7 +19,8 @@ public class ImageCache {
 
     public enum Key {
         COCKATRICE("cockatrice.png"),
-        LOGO("logo.png");
+        LOGO("logo.png"),
+        MISSING_IMAGE("missing_image.png");
 
         private final String path;
 
