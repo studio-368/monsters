@@ -130,6 +130,7 @@ public class ReactionEditPane extends GridPane {
     private void populateReaction() {
         reactionName.setText(reaction.name + " reaction");
         reactionNameTextField.setText(reaction.name);
+        reactionStoryTextField.setText(reaction.story.text);
         skillsList.setItems(new ObservableListWrapper<>(reaction.story.triggers));
     }
 
