@@ -20,7 +20,12 @@ public class ImageCache {
     public enum Key {
         COCKATRICE("cockatrice.png"),
         LOGO("logo.png"),
-        MISSING_IMAGE("missing_image.png");
+        MISSING_IMAGE("missing_image.png"),
+        BUNYIP("bunyip.png"),
+        KAPPA("kappa.png"),
+        KRAKEN("kraken.png"),
+        NESSY("nessy.png"),
+        WRAITH("wraith.png");
 
         private final String path;
 
