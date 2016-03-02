@@ -6,7 +6,6 @@ import edu.bsu.storygame.core.model.Player;
 import edu.bsu.storygame.core.model.Skill;
 import edu.bsu.storygame.core.util.IconScaler;
 import react.RList;
-import react.SignalView;
 import react.Slot;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
@@ -31,7 +30,6 @@ public final class Sidebar extends Group {
     final class PlayerView extends Group {
 
         private final SkillGroup skillGroup;
-        private PointLabel pointLabel;
         private final Player player;
 
         PlayerView(int playerNumber) {
@@ -47,17 +45,14 @@ public final class Sidebar extends Group {
                     .add(new TurnLabel(star))
                     .setConstraint(AxisLayout.stretched());
 
-            pointLabel = new PointLabel(player.storyPoints.get());
-
             add(textGroup,
-                    pointLabel);
+                    new PointLabel());
 
             addStyles(Style.BACKGROUND.is(Background.solid(player.color).inset(context.game.bounds.percentOfHeight(0.01f))),
                     Style.HALIGN.left,
                     Style.VALIGN.top);
 
             watchForSkillChanges();
-            watchForPointChange();
             skillGroup.updatePlayerSkills(player);
         }
 
@@ -71,15 +66,6 @@ public final class Sidebar extends Group {
                 @Override
                 public void onRemove(Skill elem) {
                     skillGroup.updatePlayerSkills(player);
-                }
-            });
-        }
-
-        private void watchForPointChange() {
-            player.storyPoints.connect(new SignalView.Listener<Integer>() {
-                @Override
-                public void onEmit(Integer integer) {
-                    pointLabel.updatePlayerPoints(integer);
                 }
             });
         }
@@ -102,6 +88,22 @@ public final class Sidebar extends Group {
             }
         }
 
+        final class PointLabel extends Label {
+            private PointLabel() {
+                super(player.storyPoints.get().toString());
+                player.storyPoints.connect(new Slot<Integer>() {
+                    @Override
+                    public void onEmit(Integer integer) {
+                        text.update(integer.toString());
+                    }
+                });
+            }
+
+            @Override
+            protected Class<?> getStyleClass() {
+                return PointLabel.class;
+            }
+        }
     }
 
 
@@ -144,18 +146,4 @@ public final class Sidebar extends Group {
         }
     }
 
-    final class PointLabel extends Label {
-        private PointLabel(Integer points) {
-            super(points.toString());
-        }
-
-        private void updatePlayerPoints(Integer points) {
-            this.setText(points.toString());
-        }
-
-        @Override
-        protected Class<?> getStyleClass() {
-            return PointLabel.class;
-        }
-    }
 }
