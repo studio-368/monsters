@@ -58,25 +58,47 @@
     "region": "Asia",
     "encounters": [
       {
-        "name": "Asian Cockatrice",
+        "name": "Kappa",
         "image": "cockatrice",
         "reactions": [
           {
-            "name": "Fight",
+            "name": "GREET",
             "story": {
               "text": "You encounter an angry beast and charge forward to fight it like a silly English person.",
               "triggers": [
                 {
-                  "skill": "Weapon Use",
+                  "skill": "LOGIC",
                   "conclusion": {
-                    "text": "You pound the tar out of that chicken thing.",
+                    "text": "Remembering Japanese manners, you give the kappa a greeting bow. It returns your bow, emptying the water-filled dip on its head. It loses its strength and crawls to the water.",
                     "points": 1
                   }
                 },
                 {
-                  "skill": "Logic",
+                  "skill": "None",
                   "conclusion": {
-                    "text": "You out-think it",
+                    "text": "The kappa stares at you, confused, as you wave at it. Without warning it tackles you and tries to drag you into the river. You manage to free yourself and flee from the river.",
+                    "points": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "ATTACK",
+            "story": {
+              "text": "As you’re sitting on the edge of a river you see a large turtle swimming towards you. When it gets close it launches from the water to reveal it’s not a turtle, but a kappa!",
+              "triggers": [
+                {
+                  "skill": "Weapon use",
+                  "conclusion": {
+                    "text": "As you draw your blade, the kappa hisses at you. It seems more disgusted at the metal you’re wielding more than it is of you. It backs away, returning to the water",
+                    "points": 1
+                  }
+                },
+                {
+                  "skill": "None",
+                  "conclusion": {
+                    "text": "The creature is intimidating, but you don’t back down. It lunges. You swing a mighty punch. You hit it in the face, the water in its head spills, and the kappa falls.",
                     "points": 1
                   }
                 }
@@ -84,22 +106,15 @@
             }
           },
           {
-            "name": "Hide",
+            "name": "RUN",
             "story": {
-              "text": "You hear a terrifying sound and hide like a girly man",
+              "text": "As you’re sitting on the edge of a river you see a large turtle swimming towards you. When it gets close it launches from the water to reveal it’s not a turtle, but a kappa!",
               "triggers": [
                 {
-                  "skill": "Weapon use",
+                  "skill": "None",
                   "conclusion": {
-                    "text": "You sharpen your weapon and hide in shame.",
-                    "points": 1
-                  }
-                },
-                {
-                  "skill": "Logic",
-                  "conclusion": {
-                    "text": "You deduce a syllogism... for SCIENCE!",
-                    "points": 1
+                    "text": "You know the tales of how kappa drown and eat their victims. That’s not how you want to leave this world. You flee before it can attack.",
+                    "points": 0
                   }
                 }
               ]
