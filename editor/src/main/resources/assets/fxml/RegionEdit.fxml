@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<fx:root hgap="5.0" type="javafx.scene.layout.GridPane" vgap="5.0" xmlns="http://javafx.com/javafx/8"
+         xmlns:fx="http://javafx.com/fxml/1">
+    <columnConstraints>
+        <ColumnConstraints halignment="LEFT" hgrow="NEVER" minWidth="10.0"/>
+        <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0"/>
+        <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" valignment="TOP" vgrow="ALWAYS"/>
+    </rowConstraints>
+    <children>
+        <Label fx:id="regionName" text="Region edit" GridPane.columnSpan="2">
+            <font>
+                <Font name="System Bold" size="18.0"/>
+            </font>
+        </Label>
+        <Label text="Encounters:" GridPane.rowIndex="1"/>
+        <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+            <children>
+                <ListView fx:id="regionEncountersList" maxHeight="1.7976931348623157E308"
+                          maxWidth="1.7976931348623157E308" prefHeight="150.0" prefWidth="200.0"/>
+                <HBox spacing="5.0">
+                    <children>
+                        <Button fx:id="encounterAddButton" mnemonicParsing="false" onAction="#onEncounterAdd"
+                                text="Add"/>
+                        <Button fx:id="encounterRenameButton" disable="true" mnemonicParsing="false"
+                                onAction="#onEncounterRename" text="Rename"/>
+                        <Button fx:id="encounterDeleteButton" disable="true" mnemonicParsing="false"
+                                onAction="#onEncounterDelete" text="Delete"/>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+        <VBox alignment="CENTER" spacing="15.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+            <children>
+                <Button fx:id="encounterUpButton" disable="true" maxWidth="1.7976931348623157E308"
+                        mnemonicParsing="false" onAction="#onEncounterUpwards" text="Up"/>
+                <Button fx:id="encounterDownButton" disable="true" maxWidth="1.7976931348623157E308"
+                        mnemonicParsing="false" onAction="#onEncounterDownwards" text="Down"/>
+            </children>
+            <padding>
+                <Insets bottom="30.0"/>
+            </padding>
+        </VBox>
+    </children>
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+    </padding>
+</fx:root>
