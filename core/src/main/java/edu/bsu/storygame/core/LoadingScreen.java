@@ -5,7 +5,7 @@ import edu.bsu.storygame.core.assets.ImageCache;
 import edu.bsu.storygame.core.assets.TileCache;
 import edu.bsu.storygame.core.model.Narrative;
 import edu.bsu.storygame.core.view.GameStyle;
-import edu.bsu.storygame.core.view.MenuScreen;
+import edu.bsu.storygame.core.view.StartScreen;
 import playn.core.Game;
 import react.Function;
 import react.RFuture;
@@ -21,7 +21,7 @@ import tripleplay.util.Colors;
 import java.util.Collection;
 import java.util.List;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 public class LoadingScreen extends ScreenStack.UIScreen {
 
@@ -58,7 +58,7 @@ public class LoadingScreen extends ScreenStack.UIScreen {
                     @Override
                     public void onEmit(Try<Collection<Boolean>> collectionTry) {
                         if (collectionTry.isSuccess()) {
-                            screenStack.push(new MenuScreen(game), screenStack.slide().left());
+                            screenStack.push(new StartScreen(game), screenStack.slide().left());
                         } else {
                             root.add(new Label("Failure caching resources; see log for details.")
                                     .setStyles(Style.COLOR.is(Colors.WHITE)));

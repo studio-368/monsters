@@ -2,7 +2,7 @@ package edu.bsu.storygame.core.view;
 
 import edu.bsu.storygame.core.assets.ImageCache;
 import edu.bsu.storygame.core.model.*;
-import playn.core.Image;
+import edu.bsu.storygame.core.util.IconScaler;
 import playn.scene.GroupLayer;
 import playn.scene.Layer;
 import react.Slot;
@@ -11,15 +11,16 @@ import tripleplay.ui.layout.AbsoluteLayout;
 import tripleplay.ui.layout.AxisLayout;
 import tripleplay.ui.layout.FlowLayout;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 public class EncounterCardFactory {
 
     private final GameContext context;
-
+    private final IconScaler scaler;
 
     public EncounterCardFactory(GameContext context) {
         this.context = checkNotNull(context);
+        scaler = new IconScaler(context.game);
     }
 
     public Layer create(float width, float height, Interface iface) {
@@ -55,11 +56,14 @@ public class EncounterCardFactory {
                     public void onEmit(Encounter encounter) {
                         if (encounter != null) {
                             text.update(encounter.name);
-                            final ImageCache.Key imageKey = ImageCache.Key.valueOf(encounter.imageKey.toUpperCase());
-                            final Image image = context.game.imageCache.image(imageKey);
-                            final Icon unscaledIcon = Icons.image(image);
-                            final float scale = IMAGE_SIZE * size().width() / image.width();
-                            final Icon scaledIcon = Icons.scaled(unscaledIcon, scale);
+                            ImageCache.Key imageKey;
+                            try {
+                                imageKey = ImageCache.Key.valueOf(encounter.imageKey.toUpperCase());
+                            } catch (IllegalArgumentException e) {
+                                imageKey = ImageCache.Key.MISSING_IMAGE;
+                            }
+                            final float desiredWidth = IMAGE_SIZE * size().width();
+                            Icon scaledIcon = scaler.scale(imageKey, desiredWidth);
                             icon.update(scaledIcon);
                         }
                     }
@@ -111,7 +115,7 @@ public class EncounterCardFactory {
                 group.add(new StoryLabel(story));
                 Group buttonGroup = new Group(new FlowLayout());
                 for (final SkillTrigger trigger : story.triggers) {
-                    if(context.currentPlayer.get().skills.contains(trigger.skill) || trigger.skill.name.equals("None")) {
+                    if (context.currentPlayer.get().skills.contains(trigger.skill) || trigger.skill.name.equals("None")) {
                         Button skillButton = new SkillTriggerButton(trigger);
                         buttonGroup.add(skillButton);
                     }
