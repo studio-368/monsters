@@ -111,8 +111,10 @@ public class EncounterCardFactory {
                 group.add(new StoryLabel(story));
                 Group buttonGroup = new Group(new FlowLayout());
                 for (final SkillTrigger trigger : story.triggers) {
-                    Button skillButton = new SkillTriggerButton(trigger);
-                    buttonGroup.add(skillButton);
+                    if(context.currentPlayer.get().skills.contains(trigger.skill) || trigger.skill.name.equals("None")) {
+                        Button skillButton = new SkillTriggerButton(trigger);
+                        buttonGroup.add(skillButton);
+                    }
                 }
                 group.add(buttonGroup);
                 return group;
