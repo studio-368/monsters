@@ -1,5 +1,5 @@
 git:
-  depth: 1
+  depth: 100
 language: java
 jdk: oraclejdk8
 before_install:
