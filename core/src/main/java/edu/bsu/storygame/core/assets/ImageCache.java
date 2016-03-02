@@ -13,12 +13,14 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.List;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 public class ImageCache {
 
     public enum Key {
-        COCKATRICE("cockatrice.png");
+        COCKATRICE("cockatrice.png"),
+        LOGO("logo.png");
+
         private final String path;
 
         Key(String relativePath) {

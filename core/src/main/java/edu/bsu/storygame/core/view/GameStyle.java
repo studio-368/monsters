@@ -91,6 +91,13 @@ public final class GameStyle {
                 .add(Tabs.class,
                         Tabs.HIGHLIGHTER.is(Tabs.textColorHighlighter(0xFF000000, 0xFFFFFFFF)))
 
+                .add(StartScreen.StartButton.class,
+                        Style.FONT.is(oxygenLarge),
+                        Style.BACKGROUND.is(Background.roundRect(gfx, Colors.WHITE, cornerRadius, Colors.BLACK, borderWidth).insets(buttonInsets)))
+                .add(StartScreen.StartButton.class, Style.Mode.SELECTED,
+                        Style.FONT.is(oxygenLarge),
+                        Style.BACKGROUND.is(Background.roundRect(gfx, Colors.BLACK, cornerRadius, Colors.WHITE, borderWidth).insets(buttonInsets)))
+
                 .add(PlayerCreationGroup.StyledLabel.class,
                         Style.FONT.is(oxygenRegular),
                         Style.COLOR.is(Colors.WHITE))
