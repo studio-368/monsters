@@ -3,7 +3,6 @@ package edu.bsu.storygame.editor;
 import com.google.common.collect.Lists;
 import com.google.common.io.Resources;
 import edu.bsu.storygame.core.json.NarrativeParser;
-import edu.bsu.storygame.core.util.EncounterMatchingTestJson;
 import edu.bsu.storygame.editor.model.*;
 import org.junit.Test;
 import playn.core.json.JsonParserException;
@@ -73,17 +72,18 @@ public class GsonParserTest {
         JavaPlatform.Headless plat = new JavaPlatform.Headless(new JavaPlatform.Config());
         NarrativeParser coreParser = new NarrativeParser(plat.json());
         String generatedJson = parser.convertToJson(NARRATIVE_TEST);
-        edu.bsu.storygame.core.model.Narrative narrativeFromParser;
         try {
-            narrativeFromParser = coreParser.parse(generatedJson);
+            coreParser.parse(generatedJson);
         } catch (JsonParserException e) {
             fail();
-            return;
         }
-        edu.bsu.storygame.core.model.Encounter generatedEncounter =
-                narrativeFromParser.forRegion(edu.bsu.storygame.core.model.Region.AFRICA).chooseOne();
-        edu.bsu.storygame.core.model.Encounter testEncounter =
-                EncounterMatchingTestJson.create();
-        assertEquals(generatedEncounter, testEncounter);
+    }
+
+    @Test(expected = JsonParserException.class)
+    public void testCoreParserThrowsAnExceptionWhenGivenAnInvalidNarrative() {
+        final String validJsonButInvalidNarrative = "{\"studio\":368}";
+        JavaPlatform.Headless plat = new JavaPlatform.Headless(new JavaPlatform.Config());
+        NarrativeParser coreParser = new NarrativeParser(plat.json());
+        coreParser.parse(validJsonButInvalidNarrative);
     }
 }
