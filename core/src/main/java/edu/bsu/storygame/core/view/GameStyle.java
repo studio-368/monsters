@@ -130,7 +130,7 @@ public final class GameStyle {
                 .add(Sidebar.SkillLabel.class,
                         Style.FONT.is(oxygenRegular),
                         Style.HALIGN.left)
-                .add(Sidebar.PointLabel.class,
+                .add(Sidebar.PlayerView.PointLabel.class,
                         Style.FONT.is(oxygenLarge),
                         Style.COLOR.is(Palette.SPROUT),
                         Style.BACKGROUND.is(Background.bordered(Palette.COCOA_BROWN, Palette.SPROUT, borderWidth).insets(buttonInsets)))
