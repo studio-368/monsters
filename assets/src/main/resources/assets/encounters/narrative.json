@@ -879,7 +879,7 @@
     "encounters": [
       {
         "name": "Chupacabra",
-        "image": "",
+        "image": "chupacabra",
         "reactions": [
           {
             "name": "Talk",

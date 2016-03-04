@@ -26,7 +26,8 @@ public class ImageCache {
         KRAKEN("kraken.png"),
         NESSY("nessy.png"),
         WRAITH("wraith.png"),
-        STAR("star.png");
+        STAR("star.png"),
+        CHUPACABRA("chupacabra.png");
 
         private final String path;
 
