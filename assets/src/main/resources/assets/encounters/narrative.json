@@ -59,7 +59,7 @@
       },
       {
         "name": "Impundulu",
-        "image": "",
+        "image": "impundulu",
         "reactions": [
           {
             "name": "Trap",
@@ -121,7 +121,7 @@
       },
       {
         "name": "Ninki Nanka",
-        "image": "",
+        "image": "ninki_naka",
         "reactions": [
           {
             "name": "Talk",
@@ -202,7 +202,7 @@
     "encounters": [
       {
         "name": "Chinese Lung Dragon",
-        "image": "",
+        "image": "chinese_dragon",
         "reactions": [
           {
             "name": "Attack",
@@ -948,7 +948,7 @@
       },
       {
         "name": "Deer Woman",
-        "image": "",
+        "image": "deer_women",
         "reactions": [
           {
             "name": "Invite",

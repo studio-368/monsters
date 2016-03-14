@@ -27,7 +27,11 @@ public class ImageCache {
         NESSY("nessy.png"),
         WRAITH("wraith.png"),
         STAR("star.png"),
-        CHUPACABRA("chupacabra.png");
+        CHUPACABRA("chupacabra.png"),
+        CHINESE_DRAGON("chinese_dragon.png"),
+        DEER_WOMEN("deer_woman.png"),
+        IMPUNDULU("impundulu.png"),
+        NINKI_NAKA("ninki_naka.png");
 
         private final String path;
 
