@@ -65,7 +65,7 @@ public final class PlayerCreationScreen extends ScreenStack.UIScreen {
             onClick(new Slot<Button>() {
                 @Override
                 public void onEmit(Button button) {
-                    game.screenStack.push(new SampleGameScreen(game, createGameContext()), game.screenStack.slide());
+                    game.screenStack.push(new GameScreen(createGameContext()), game.screenStack.slide());
                 }
             });
         }

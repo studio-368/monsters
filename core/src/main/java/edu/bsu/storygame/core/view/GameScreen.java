@@ -1,61 +1,87 @@
 package edu.bsu.storygame.core.view;
 
 import com.google.common.collect.Maps;
-import edu.bsu.storygame.core.MonsterGame;
+import edu.bsu.storygame.core.model.GameContext;
+import edu.bsu.storygame.core.model.Region;
 import playn.core.Game;
+import playn.scene.GroupLayer;
+import playn.scene.Layer;
 import playn.scene.Pointer;
 import pythagoras.f.Dimension;
 import pythagoras.f.IDimension;
 import pythagoras.f.IPoint;
 import pythagoras.f.Point;
 import react.SignalView;
+import react.Slot;
 import tripleplay.game.ScreenStack;
 import tripleplay.util.Colors;
 
 import java.util.Map;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class GameScreen extends ScreenStack.UIScreen {
 
-    private final MonsterGame game;
+    private final GameContext context;
+    private final GroupLayer group;
 
     private final Map<NotebookLayer, Point> restingLocations = Maps.newHashMap();
 
-
-    public GameScreen(MonsterGame game) {
-        super(game.plat);
-        this.game = game;
+    public GameScreen(GameContext context) {
+        super(context.game.plat);
+        this.context = context;
+        this.group = new GroupLayer(context.game.bounds.width(), context.game.bounds.height());
+        layer.addCenterAt(group, context.game.plat.graphics().viewSize.width() / 2,
+                context.game.plat.graphics().viewSize.height() / 2);
     }
 
     @Override
     public void wasAdded() {
         super.wasAdded();
 
+        initMapView();
+
+        final float width = group.width();
+        final float height = group.height();
+
+        final float NOTEBOOK_Y_POSITION_PERCENT = 0.75f;
         final float NOTEBOOK_WIDTH_PERCENT = 0.45f;
         final float NOTEBOOK_GUTTER_WIDTH_PERCENT = 0.60f;
-        final float NOTEBOOK_Y_POSITION_PERCENT = 0.75f;
 
-        final IDimension notebookSize = new Dimension(size().width() * NOTEBOOK_WIDTH_PERCENT, size().height());
+        final IDimension notebookSize = new Dimension(width * NOTEBOOK_WIDTH_PERCENT, height);
 
         final NotebookLayer player1Notebook = new NotebookLayer(Colors.CYAN, notebookSize);
         final NotebookLayer player2Notebook = new NotebookLayer(Colors.YELLOW, notebookSize);
 
-        final float player2NotebookX = (size().width() - size().width() * NOTEBOOK_GUTTER_WIDTH_PERCENT) / 2f;
-        final float player1NotebookX = player2NotebookX + (size().width() * (NOTEBOOK_GUTTER_WIDTH_PERCENT - NOTEBOOK_WIDTH_PERCENT));
+        final float player2NotebookX = (width - width * NOTEBOOK_GUTTER_WIDTH_PERCENT) / 2f;
+        final float player1NotebookX = player2NotebookX + (width * (NOTEBOOK_GUTTER_WIDTH_PERCENT - NOTEBOOK_WIDTH_PERCENT));
 
-        final float notebookY = size().height() * NOTEBOOK_Y_POSITION_PERCENT;
+        final float notebookY = height * NOTEBOOK_Y_POSITION_PERCENT;
 
         Point notebook1RestingLocation = new Point(player1NotebookX, notebookY);
         Point notebook2RestingLocation = new Point(player2NotebookX, notebookY);
         restingLocations.put(player1Notebook, notebook1RestingLocation);
         restingLocations.put(player2Notebook, notebook2RestingLocation);
 
-        layer.addAt(player2Notebook.layer, notebook2RestingLocation.x, notebook2RestingLocation.y);
-        layer.addAt(player1Notebook.layer, notebook1RestingLocation.x, notebook1RestingLocation.y);
+        group.addAt(player2Notebook.layer, notebook2RestingLocation.x, notebook2RestingLocation.y);
+        group.addAt(player1Notebook.layer, notebook1RestingLocation.x, notebook1RestingLocation.y);
 
         player1Notebook.layer.events().connect(new NotebookOpener(player1Notebook));
         player2Notebook.layer.events().connect(new NotebookOpener(player2Notebook));
+    }
+
+    private void initMapView() {
+        MapView mapView = new MapView(context);
+        mapView.setOrigin(Layer.Origin.CENTER);
+        mapView.setScale(context.game.bounds.width() / mapView.width());
+        group.addAt(mapView, context.game.bounds.width() / 2, mapView.scaledHeight() / 2);
+
+        mapView.pick.connect(new Slot<Region>() {
+            @Override
+            public void onEmit(Region region) {
+                context.game.plat.log().debug("Picked " + region);
+            }
+        });
     }
 
     private final class NotebookOpener implements SignalView.Listener<Object> {
@@ -101,6 +127,6 @@ public final class GameScreen extends ScreenStack.UIScreen {
 
     @Override
     public Game game() {
-        return game;
+        return context.game;
     }
 }
