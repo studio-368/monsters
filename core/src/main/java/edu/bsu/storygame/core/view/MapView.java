@@ -20,12 +20,14 @@ public final class MapView extends ImageLayer {
     /**
      * The mapping of rectangular regions in the unscaled source image to their regions.
      */
-    private static final Map<Rectangle, Region> NATURAL_COORDINATE_MAP = ImmutableMap.of(
-            new Rectangle(496, 226, 186, 290), Region.AFRICA,
-            new Rectangle(682, 69, 299, 232), Region.ASIA,
-            new Rectangle(906, 370, 220, 194), Region.OCEANIA,
-            new Rectangle(513, 91, 123, 101), Region.EUROPE,
-            new Rectangle(117, 78, 266, 528), Region.AMERICAS);
+    private static final Map<Rectangle, Region> NATURAL_COORDINATE_MAP = ImmutableMap.<Rectangle, Region>builder()
+            .put(new Rectangle(496, 226, 186, 290), Region.AFRICA)
+            .put(new Rectangle(682, 69, 299, 232), Region.ASIA)
+            .put(new Rectangle(906, 370, 220, 194), Region.OCEANIA)
+            .put(new Rectangle(513, 91, 123, 101), Region.EUROPE)
+            .put(new Rectangle(117, 78, 266, 214), Region.NORTH_AMERICAS)
+            .put(new Rectangle(117, 300, 300, 214), Region.SOUTH_AMERICAS)
+            .build();
 
     public final SignalView<Region> pick = Signal.create();
     private final GameContext context;
