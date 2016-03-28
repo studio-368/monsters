@@ -25,8 +25,8 @@ public final class MapView extends ImageLayer {
             .put(new Rectangle(682, 69, 299, 232), Region.ASIA)
             .put(new Rectangle(906, 370, 220, 194), Region.OCEANIA)
             .put(new Rectangle(513, 91, 123, 101), Region.EUROPE)
-            .put(new Rectangle(117, 78, 266, 214), Region.NORTH_AMERICAS)
-            .put(new Rectangle(117, 300, 300, 214), Region.SOUTH_AMERICAS)
+            .put(new Rectangle(117, 78, 266, 214), Region.NORTH_AMERICA)
+            .put(new Rectangle(117, 300, 300, 214), Region.SOUTH_AMERICA)
             .build();
 
     public final SignalView<Region> pick = Signal.create();

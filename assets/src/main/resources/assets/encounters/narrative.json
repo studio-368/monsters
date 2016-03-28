@@ -875,77 +875,8 @@
     ]
   },
   {
-    "region": "North_Americas",
+    "region": "North_America",
     "encounters": [
-      {
-        "name": "Chupacabra",
-        "image": "chupacabra",
-        "reactions": [
-          {
-            "name": "Talk",
-            "story": {
-              "text": "The sun sets on the small goat farm you promised to guard. Everything seems ok, until one of the goats suddenly drops dead. A creature the size of a small bear grins at you.",
-              "triggers": [
-                {
-                  "skill": "Persuasion",
-                  "conclusion": {
-                    "text": "You go to the farmer's house and work out an agreement with the villagers: every day, one person will set out food or meat for the monster.",
-                    "points": 1
-                  }
-                },
-                {
-                  "conclusion": {
-                    "text": "You try to talk to the chupacabra, but it is too busy drinking goat blood to hear you.",
-                    "points": 0
-                  }
-                }
-              ]
-            }
-          },
-          {
-            "name": "Catch",
-            "story": {
-              "text": "A village asks you to help them catch a creature that has been terrorizing their goat farms. You wait until the creature appears at sunset.",
-              "triggers": [
-                {
-                  "skill": "Magic",
-                  "conclusion": {
-                    "text": "You summon a fiery cage to trap the monster in. In the morning, you organize a meeting with the town to figure out a peaceful solution.",
-                    "points": 1
-                  }
-                },
-                {
-                  "conclusion": {
-                    "text": "You run at the monster and try to grab it, but it hops away like a kangaroo and escapes into the night.",
-                    "points": 0
-                  }
-                }
-              ]
-            }
-          },
-          {
-            "name": "Run",
-            "story": {
-              "text": "You offer to help a small village protect their goats from a creature that is drinking their blood. When you actually see it, however, it is too terrifying to catch.",
-              "triggers": [
-                {
-                  "skill": "Athleticism",
-                  "conclusion": {
-                    "text": "You don't like the way that thing is looking at you. You run to the farmer's house and hide there until morning.",
-                    "points": 1
-                  }
-                },
-                {
-                  "conclusion": {
-                    "text": "You want to try and get away, but its menacing gaze stops you. You watch it drink the goats' blood until morning.",
-                    "points": 0
-                  }
-                }
-              ]
-            }
-          }
-        ]
-      },
       {
         "name": "Deer Woman",
         "image": "deer_women",
@@ -1078,5 +1009,80 @@
         ]
       }
     ]
+  },
+  {
+    "region": "South_America",
+    "encounters": [
+      {
+        "name": "Chupacabra",
+        "image": "chupacabra",
+        "reactions": [
+          {
+            "name": "Talk",
+            "story": {
+              "text": "The sun sets on the small goat farm you promised to guard. Everything seems ok, until one of the goats suddenly drops dead. A creature the size of a small bear grins at you.",
+              "triggers": [
+                {
+                  "skill": "Persuasion",
+                  "conclusion": {
+                    "text": "You go to the farmer's house and work out an agreement with the villagers: every day, one person will set out food or meat for the monster.",
+                    "points": 1
+                  }
+                },
+                {
+                  "conclusion": {
+                    "text": "You try to talk to the chupacabra, but it is too busy drinking goat blood to hear you.",
+                    "points": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "Catch",
+            "story": {
+              "text": "A village asks you to help them catch a creature that has been terrorizing their goat farms. You wait until the creature appears at sunset.",
+              "triggers": [
+                {
+                  "skill": "Magic",
+                  "conclusion": {
+                    "text": "You summon a fiery cage to trap the monster in. In the morning, you organize a meeting with the town to figure out a peaceful solution.",
+                    "points": 1
+                  }
+                },
+                {
+                  "conclusion": {
+                    "text": "You run at the monster and try to grab it, but it hops away like a kangaroo and escapes into the night.",
+                    "points": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "Run",
+            "story": {
+              "text": "You offer to help a small village protect their goats from a creature that is drinking their blood. When you actually see it, however, it is too terrifying to catch.",
+              "triggers": [
+                {
+                  "skill": "Athleticism",
+                  "conclusion": {
+                    "text": "You don't like the way that thing is looking at you. You run to the farmer's house and hide there until morning.",
+                    "points": 1
+                  }
+                },
+                {
+                  "conclusion": {
+                    "text": "You want to try and get away, but its menacing gaze stops you. You watch it drink the goats' blood until morning.",
+                    "points": 0
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+
   }
 ]
