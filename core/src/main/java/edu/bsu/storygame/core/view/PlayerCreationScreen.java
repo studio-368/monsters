@@ -18,6 +18,9 @@ public final class PlayerCreationScreen extends ScreenStack.UIScreen {
     private final Root root;
     private final PlayerCreationGroup playerOneGroup;
     private final PlayerCreationGroup playerTwoGroup;
+    private Player.Builder[] players;
+    private SampleGameScreen gameScreen;
+    private final Button startButton;
 
     public PlayerCreationScreen(final MonsterGame game) {
         super(game.plat);
@@ -26,19 +29,30 @@ public final class PlayerCreationScreen extends ScreenStack.UIScreen {
                 GameStyle.newSheet(game), layer);
         root.setSize(game.bounds.width(), game.bounds.height());
         root.addStyles(Style.BACKGROUND.is(Background.solid(Palette.TUSCANY)));
-        root.add(new Label("Nightmare Defenders").addStyles(Style.FONT.is(Typeface.PASSION_ONE.in(game).atSize(0.15f))));
+        root.add(new Label("Traveler's Notebook: Monster Tales").addStyles(Style.FONT.is(Typeface.PASSION_ONE.in(game).atSize(0.10f))));
         playerOneGroup = createPlayerGroup(Palette.PLAYER_ONE);
         playerTwoGroup = createPlayerGroup(Palette.PLAYER_TWO);
         root.add(new Group(AxisLayout.horizontal().offStretch().stretchByDefault().gap(0))
                 .add(playerOneGroup, playerTwoGroup)
                 .setConstraint(Constraints.fixedHeight(game.bounds.percentOfHeight(0.65f)))
         );
-
-        final Button startButton = new StartButton();
+        gameScreen = new SampleGameScreen(game);
+        startButton = new NavigationButton("Start", gameScreen);
         root.add(new Group(new FlowLayout())
                 .add(startButton.setEnabled(false)));
 
-        Values.and(playerOneGroup.complete, playerTwoGroup.complete).connect(startButton.enabledSlot());
+       if( Values.and(playerOneGroup.complete, playerTwoGroup.complete).get()){
+           enableButton();
+       }
+    }
+
+    private void enableButton(){
+        startButton.enabledSlot();
+        gameScreen.setContext(createGameContext());
+    }
+
+    public void setPlayers(Player.Builder[] players){
+        this.players = players;
     }
 
     private PlayerCreationGroup createPlayerGroup(final int color) {
@@ -48,9 +62,9 @@ public final class PlayerCreationScreen extends ScreenStack.UIScreen {
         return group;
     }
 
-    private GameContext createGameContext() {
-        Player p1 = playerOneGroup.createPlayerBuilder().color(Palette.BLUE_LAGOON).build();
-        Player p2 = playerTwoGroup.createPlayerBuilder().color(Palette.TROPICAL_RAIN_FOREST).build();
+    private GameContext createGameContext(){
+        Player p1 = players[0].skills(playerOneGroup.getSelectedSkills()).build();
+        Player p2 = players[1].skills(playerTwoGroup.getSelectedSkills()).build();
         return new GameContext(game, p1, p2);
     }
 
@@ -58,23 +72,4 @@ public final class PlayerCreationScreen extends ScreenStack.UIScreen {
     public Game game() {
         return game;
     }
-
-    final class StartButton extends Button {
-        private StartButton() {
-            super("Start");
-            onClick(new Slot<Button>() {
-                @Override
-                public void onEmit(Button button) {
-                    game.screenStack.push(new SampleGameScreen(game, createGameContext()), game.screenStack.slide());
-                }
-            });
-        }
-
-        @Override
-        protected Class<?> getStyleClass() {
-            return StartButton.class;
-        }
-    }
 }
-
-

@@ -91,15 +91,7 @@ public final class GameStyle {
                         Style.COLOR.is(0xFFFFFFFF))
                 .add(Tabs.class,
                         Tabs.HIGHLIGHTER.is(Tabs.textColorHighlighter(0xFF000000, 0xFFFFFFFF)))
-
-                .add(StartScreen.StartButton.class,
-                        Style.FONT.is(oxygenLarge),
-                        Style.BACKGROUND.is(Background.roundRect(gfx, Colors.WHITE, cornerRadius, Colors.BLACK, borderWidth).insets(buttonInsets)))
-                .add(StartScreen.StartButton.class, Style.Mode.SELECTED,
-                        Style.FONT.is(oxygenLarge),
-                        Style.BACKGROUND.is(Background.roundRect(gfx, Colors.BLACK, cornerRadius, Colors.WHITE, borderWidth).insets(buttonInsets)))
-
-                .add(PlayerCreationGroup.StyledLabel.class,
+                .add(StyledLabel.class,
                         Style.FONT.is(oxygenRegular),
                         Style.COLOR.is(Colors.WHITE))
                 .add(PlayerCreationGroup.SkillButton.class,
@@ -110,15 +102,15 @@ public final class GameStyle {
                         Style.FONT.is(oxygenLarge),
                         Style.COLOR.is(Colors.WHITE),
                         Style.BACKGROUND.is(Background.roundRect(gfx, Colors.BLACK, cornerRadius, Colors.WHITE, borderWidth).insets(buttonInsets)))
-                .add(PlayerCreationScreen.StartButton.class,
+                .add(NavigationButton.class,
                         Style.FONT.is(oxygenLarge),
                         Style.COLOR.is(Colors.BLACK),
                         Style.BACKGROUND.is(Background.roundRect(gfx, Colors.WHITE, cornerRadius, Colors.BLACK, borderWidth).insets(buttonInsets)))
-                .add(PlayerCreationScreen.StartButton.class, Style.Mode.SELECTED,
+                .add(NavigationButton.class, Style.Mode.SELECTED,
                         Style.FONT.is(oxygenLarge),
                         Style.COLOR.is(Colors.WHITE),
                         Style.BACKGROUND.is(Background.roundRect(gfx, Colors.BLACK, cornerRadius, Colors.WHITE, borderWidth).insets(buttonInsets)))
-                .add(PlayerCreationScreen.StartButton.class, Style.Mode.DISABLED,
+                .add(NavigationButton.class, Style.Mode.DISABLED,
                         Style.FONT.is(oxygenLarge),
                         Style.COLOR.is(Colors.LIGHT_GRAY),
                         Style.BACKGROUND.is(Background.roundRect(gfx, Colors.GRAY, cornerRadius, Colors.LIGHT_GRAY, borderWidth).insets(buttonInsets)))
@@ -177,9 +169,6 @@ public final class GameStyle {
 
                 .add(HandoffDialogFactory.HandoffDialog.class,
                         Style.BACKGROUND.is(Background.roundRect(gfx, DARK_TRANSLUCENT_GREY, cornerRadius)))
-                .add(HandoffDialogFactory.StyledLabel.class,
-                        Style.FONT.is(oxygenLarge),
-                        Style.COLOR.is(Colors.WHITE))
                 .add(HandoffDialogFactory.OkButton.class,
                         Style.FONT.is(oxygenLarge),
                         Style.COLOR.is(Colors.WHITE),

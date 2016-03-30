@@ -2,6 +2,7 @@ package edu.bsu.storygame.core.view;
 
 import com.google.common.collect.Lists;
 import edu.bsu.storygame.core.MonsterGame;
+import edu.bsu.storygame.core.model.GameContext;
 import edu.bsu.storygame.core.model.Player;
 import edu.bsu.storygame.core.model.Skill;
 import react.RList;
@@ -25,34 +26,16 @@ public final class PlayerCreationGroup extends Group {
 
     private final MonsterGame game;
     private final BiSelector selector = new BiSelector();
-    private Field nameField;
 
     public PlayerCreationGroup(MonsterGame game) {
         super(AxisLayout.vertical().offStretch());
         this.game = checkNotNull(game);
-        add(createNameArea(),
-                new StyledLabel("Choose two skills:").addStyles(Style.HALIGN.left),
+        add(new StyledLabel("Choose two skills:").addStyles(Style.HALIGN.left),
                 createSkillGroup());
         watchForFormCompletion();
     }
 
-    private Group createNameArea() {
-        Group group = new Group(AxisLayout.horizontal());
-        group.add(new StyledLabel("Name:"));
-        group.add(nameField = new Field()
-                .setConstraint(Constraints.fixedSize(game.bounds.width() * 0.15f, game.bounds.height() * 0.08f)));
-        group.addStyles(Style.BACKGROUND.is(Background.blank().inset(game.bounds.percentOfHeight(0.02f))));
-        return group;
-    }
-
     private void watchForFormCompletion() {
-        nameField.text.connect(new Slot<String>() {
-            @Override
-            public void onEmit(String s) {
-                checkForCompletion();
-            }
-        });
-
         selector.selections.connect(new RList.Listener<ToggleButton>() {
             @Override
             public void onAdd(ToggleButton elem) {
@@ -67,8 +50,7 @@ public final class PlayerCreationGroup extends Group {
     }
 
     private void checkForCompletion() {
-        final boolean isComplete = selector.size() == NUMBER_OF_SKILLS
-                && !nameField.text.get().trim().isEmpty();
+        final boolean isComplete = selector.size() == NUMBER_OF_SKILLS;
         ((Value<Boolean>) complete).update(isComplete);
     }
 
@@ -83,13 +65,7 @@ public final class PlayerCreationGroup extends Group {
         return group;
     }
 
-    public Player.Builder createPlayerBuilder() {
-        return new Player.Builder()
-                .name(nameField.text.get().trim())
-                .skills(getSelectedSkills());
-    }
-
-    private List<Skill> getSelectedSkills() {
+    public List<Skill> getSelectedSkills() {
         List<Skill> result = Lists.newArrayList();
         for (ToggleButton button : selector.selections()) {
             Skill skill = ((SkillButton) button).skill;
@@ -98,16 +74,6 @@ public final class PlayerCreationGroup extends Group {
         return result;
     }
 
-    final class StyledLabel extends Label {
-        private StyledLabel(String text) {
-            super(text);
-        }
-
-        @Override
-        protected Class<?> getStyleClass() {
-            return StyledLabel.class;
-        }
-    }
 
     final class SkillButton extends ToggleButton {
 

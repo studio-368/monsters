@@ -19,20 +19,22 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class SampleGameScreen extends ScreenStack.UIScreen {
 
     private final MonsterGame game;
-    private final GameContext context;
+    private  GameContext context;
     private final GroupLayer boundedLayer;
 
-    public SampleGameScreen(final MonsterGame game, final GameContext context) {
+    public SampleGameScreen(final MonsterGame game) {
         super(checkNotNull(game).plat);
         this.game = game;
-        this.context = context;
         this.boundedLayer = new GroupLayer(game.bounds.width(), game.bounds.height());
         layer.addAt(boundedLayer,
                 (game.plat.graphics().viewSize.width() - game.bounds.width()) / 2,
                 (game.plat.graphics().viewSize.height() - game.bounds.height()) / 2);
 
-        configurePlayerAdvancementAtEndOfRound();
+    }
 
+    public void setContext(final GameContext context){
+        this.context = context;
+        configurePlayerAdvancementAtEndOfRound();
         if (game.config.debugMode()) {
             game.plat.input().keyboardEvents.connect(new DebugKeys(context));
         }
