@@ -10,12 +10,11 @@ import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
-public class ReactionEditPane extends GridPane {
+public class ReactionEditPane extends EditPane {
     private final EditorStageController parent;
     private final Reaction reaction;
 
@@ -128,10 +127,8 @@ public class ReactionEditPane extends GridPane {
     }
 
     private void populateReaction() {
-        reactionName.setText(reaction.name + " reaction");
-        reactionNameTextField.setText(reaction.name);
-        reactionStoryTextField.setText(reaction.story.text);
         skillsList.setItems(new ObservableListWrapper<>(reaction.story.triggers));
+        refresh();
     }
 
     @FXML
@@ -162,6 +159,7 @@ public class ReactionEditPane extends GridPane {
     private void onReactionNameChange() {
         reaction.name = reactionNameTextField.getText();
         reactionName.setText(reaction.name);
+        parent.refresh();
     }
 
     @FXML
@@ -176,6 +174,7 @@ public class ReactionEditPane extends GridPane {
 
     @FXML
     private void onStoryPointsChange() {
+        if (selectedSkill == null) return;
         if (!pointsCheckBox.isSelected()) {
             selectedSkill.conclusion.points = null;
         } else {
@@ -203,6 +202,14 @@ public class ReactionEditPane extends GridPane {
         selectedSkill.conclusion.points = points;
         pointsChangeTextField.setStyle("");
 
+    }
+
+    public void refresh() {
+        reactionName.setText(reaction.name + " reaction");
+        reactionNameTextField.setText(reaction.name);
+        reactionStoryTextField.setText(reaction.story.text);
+        skillsList.refresh();
+        updateConclusionEditor();
     }
 
 

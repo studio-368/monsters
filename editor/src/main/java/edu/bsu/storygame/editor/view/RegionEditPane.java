@@ -9,13 +9,12 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 
-public class RegionEditPane extends GridPane {
+public class RegionEditPane extends EditPane {
     private final Region region;
     private final EditorStageController parent;
 
@@ -56,12 +55,14 @@ public class RegionEditPane extends GridPane {
 
     private void configure() {
         setOnEncounterSelectionChanged(change -> {
+            parent.clearAfter(this);
             if (change.getList().size() == 0) {
                 selectedEncounter = null;
                 setEncounterButtonsDisabled(true);
             } else {
                 selectedEncounter = change.getList().get(0);
                 setEncounterButtonsDisabled(false);
+                parent.editEncounter(selectedEncounter);
             }
         });
     }
@@ -91,13 +92,13 @@ public class RegionEditPane extends GridPane {
         if (encounterName == null) return;
         Encounter encounter = new Encounter(encounterName, "", new ArrayList<>());
         regionEncountersList.getItems().add(encounter);
-        refresh();
+        parent.refresh();
     }
 
     @FXML
     private void onEncounterRename() {
         selectedEncounter.name = TextPrompt.promptFromString(selectedEncounter.name);
-        refresh();
+        parent.refresh();
     }
 
     @FXML
@@ -114,7 +115,7 @@ public class RegionEditPane extends GridPane {
         int index = list.indexOf(selectedEncounter);
         Encounter encounter = list.remove(index);
         list.add(index - 1, encounter);
-        refresh();
+        parent.refresh();
         regionEncountersList.getSelectionModel().selectIndices(index - 1);
     }
 
@@ -124,7 +125,7 @@ public class RegionEditPane extends GridPane {
         int index = list.indexOf(selectedEncounter);
         Encounter encounter = list.remove(index);
         list.add(index + 1, encounter);
-        refresh();
+        parent.refresh();
         regionEncountersList.getSelectionModel().selectIndices(index + 1);
     }
 
@@ -135,11 +136,10 @@ public class RegionEditPane extends GridPane {
         alert.setContentText(prompt);
 
         Optional<ButtonType> result = alert.showAndWait();
-        return result.get() == ButtonType.OK;
+        return result.isPresent() && result.get() == ButtonType.OK;
     }
 
-    private void refresh() {
-        parent.refresh();
+    public void refresh() {
         regionEncountersList.refresh();
     }
 }

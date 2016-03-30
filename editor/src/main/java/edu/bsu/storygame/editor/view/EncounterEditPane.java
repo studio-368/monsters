@@ -11,12 +11,11 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
 import java.util.Optional;
 
-public class EncounterEditPane extends GridPane {
+public class EncounterEditPane extends EditPane {
 
     private final Encounter encounter;
     private final EditorStageController parent;
@@ -62,12 +61,14 @@ public class EncounterEditPane extends GridPane {
 
     private void configure() {
         encounterReactionsList.getSelectionModel().getSelectedItems().addListener((ListChangeListener<Reaction>) c -> {
-            if (c.getList().size() == 0) {
+            parent.clearAfter(this);
+            if (c.getList().size() == 1) {
+                selectedReaction = c.getList().get(0);
+                parent.editReaction(selectedReaction);
+                setReactionButtonsDisabled(false);
+            } else {
                 selectedReaction = null;
                 setReactionButtonsDisabled(true);
-            } else {
-                selectedReaction = c.getList().get(0);
-                setReactionButtonsDisabled(false);
             }
         });
         bindTextField(encounterNameTextField, (v, o, n) -> onNameChange());
@@ -89,16 +90,15 @@ public class EncounterEditPane extends GridPane {
     }
 
     private void populate() {
-        encounterName.setText(encounter.name + " encounter");
-        encounterNameTextField.setText(encounter.name);
         encounterReactionsList.setItems(new ObservableListWrapper<>(encounter.reactions));
-        encounterImage.setText(encounter.image);
+        refresh();
     }
 
     @FXML
     private void onNameChange() {
         encounter.name = encounterNameTextField.getText();
         encounterName.setText(encounter.name + " encounter");
+        parent.refresh();
     }
 
     @FXML
@@ -112,7 +112,7 @@ public class EncounterEditPane extends GridPane {
         if (reactionName == null) return;
         Reaction reaction = new Reaction(reactionName, Story.emptyStory());
         encounterReactionsList.getItems().add(reaction);
-        refresh();
+        parent.refresh();
     }
 
     @FXML
@@ -127,7 +127,7 @@ public class EncounterEditPane extends GridPane {
     @FXML
     private void onReactionRename() {
         selectedReaction.name = TextPrompt.promptFromString(selectedReaction.name);
-        refresh();
+        parent.refresh();
     }
 
     @FXML
@@ -136,7 +136,7 @@ public class EncounterEditPane extends GridPane {
         int index = list.indexOf(selectedReaction);
         Reaction oldReaction = list.remove(index);
         list.add(index - 1, oldReaction);
-        refresh();
+        parent.refresh();
         encounterReactionsList.getSelectionModel().selectIndices(index - 1);
     }
 
@@ -146,7 +146,7 @@ public class EncounterEditPane extends GridPane {
         int index = list.indexOf(selectedReaction);
         Reaction oldReaction = list.remove(index);
         list.add(index + 1, oldReaction);
-        refresh();
+        parent.refresh();
         encounterReactionsList.getSelectionModel().selectIndices(index + 1);
     }
 
@@ -157,11 +157,13 @@ public class EncounterEditPane extends GridPane {
         alert.setContentText(prompt);
 
         Optional<ButtonType> result = alert.showAndWait();
-        return result.get() == ButtonType.OK;
+        return result.isPresent() && result.get() == ButtonType.OK;
     }
 
-    private void refresh() {
-        parent.refresh();
+    public void refresh() {
+        encounterName.setText(encounter.name + " encounter");
+        encounterNameTextField.setText(encounter.name);
+        encounterImage.setText(encounter.image);
         encounterReactionsList.refresh();
     }
 
