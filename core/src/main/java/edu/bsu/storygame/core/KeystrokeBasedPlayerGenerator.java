@@ -6,8 +6,8 @@ import com.google.common.collect.Lists;
 import edu.bsu.storygame.core.model.GameContext;
 import edu.bsu.storygame.core.model.Player;
 import edu.bsu.storygame.core.model.Skill;
+import edu.bsu.storygame.core.view.GameScreen;
 import edu.bsu.storygame.core.view.Palette;
-import edu.bsu.storygame.core.view.SampleGameScreen;
 import playn.core.Key;
 import playn.core.Keyboard;
 import react.SignalView;
@@ -32,7 +32,7 @@ public class KeystrokeBasedPlayerGenerator implements SignalView.Listener<Keyboa
                 GameContext context = new GameContext(game,
                         new Player.Builder().name("Ann").color(Palette.PLAYER_ONE).skills(makeSkillList()).build(),
                         new Player.Builder().name("Barb").color(Palette.PLAYER_TWO).skills(makeSkillList()).build());
-                SampleGameScreen gameScreen = new SampleGameScreen(game);
+                GameScreen gameScreen = new GameScreen(game);
                 gameScreen.setContext(context);
                 game.screenStack.push(gameScreen);
             }

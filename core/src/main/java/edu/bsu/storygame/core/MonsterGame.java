@@ -2,7 +2,6 @@ package edu.bsu.storygame.core;
 
 import edu.bsu.storygame.core.assets.ImageCache;
 import edu.bsu.storygame.core.assets.NarrativeCache;
-import edu.bsu.storygame.core.assets.TileCache;
 import edu.bsu.storygame.core.model.Narrative;
 import edu.bsu.storygame.core.util.AspectRatioTool;
 import edu.bsu.storygame.core.util.GameBounds;
@@ -21,11 +20,7 @@ public class MonsterGame extends SceneGame {
 
     private static final int UPDATE_RATE_MS = 33; // 30 times per second
 
-    public interface ReadableConfig {
-        boolean debugMode();
-    }
-
-    public static final class Config implements ReadableConfig {
+    public static final class Config {
         public Platform platform;
         public Narrative narrativeOverride;
         public boolean debugMode = false;
@@ -33,30 +28,22 @@ public class MonsterGame extends SceneGame {
         public Config(Platform plat) {
             this.platform = checkNotNull(plat);
         }
-
-        @Override
-        public boolean debugMode() {
-            return debugMode;
-        }
     }
 
     public final ImageCache imageCache;
-    public final TileCache tileCache;
     public final GameBounds bounds;
     public final ScreenStack screenStack;
     public final NarrativeCache narrativeCache;
-    public final ReadableConfig config;
+    public final Pointer pointer;
 
     public MonsterGame(Config config) {
         super(config.platform, UPDATE_RATE_MS);
-        this.config = config;
         imageCache = new ImageCache(plat.assets());
-        tileCache = new TileCache(plat.assets());
         narrativeCache =
                 config.narrativeOverride == null
                         ? new NarrativeCache.Default(this)
                         : new NarrativeCache.Overridden(config.narrativeOverride);
-        initInput();
+        this.pointer = initInput();
         if (config.debugMode) {
             plat.input().keyboardEvents.connect(new KeystrokeBasedPlayerGenerator(this));
         }
@@ -65,9 +52,10 @@ public class MonsterGame extends SceneGame {
         screenStack.push(new LoadingScreen(this, screenStack));
     }
 
-    private void initInput() {
-        new Pointer(plat, rootLayer, true);
+    private Pointer initInput() {
+        Pointer p = new Pointer(plat, rootLayer, true);
         plat.input().mouseEvents.connect(new Mouse.Dispatcher(rootLayer, true));
+        return p;
     }
 
     private GameBounds initAspectRatio() {

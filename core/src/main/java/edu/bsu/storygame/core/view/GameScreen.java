@@ -1,6 +1,7 @@
 package edu.bsu.storygame.core.view;
 
 import com.google.common.collect.Maps;
+import edu.bsu.storygame.core.MonsterGame;
 import edu.bsu.storygame.core.model.GameContext;
 import edu.bsu.storygame.core.model.Region;
 import playn.core.Game;
@@ -22,13 +23,18 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class GameScreen extends ScreenStack.UIScreen {
 
-    private final GameContext context;
-    private final GroupLayer group;
+    private MonsterGame game;
+    private GameContext context;
+    private GroupLayer group;
 
     private final Map<NotebookLayer, Point> restingLocations = Maps.newHashMap();
 
-    public GameScreen(GameContext context) {
-        super(context.game.plat);
+    public GameScreen(MonsterGame game) {
+        super(game.plat);
+        this.game = game;
+    }
+
+    public void setContext(GameContext context){
         this.context = context;
         this.group = new GroupLayer(context.game.bounds.width(), context.game.bounds.height());
         layer.addCenterAt(group, context.game.plat.graphics().viewSize.width() / 2,
@@ -127,6 +133,6 @@ public final class GameScreen extends ScreenStack.UIScreen {
 
     @Override
     public Game game() {
-        return context.game;
+        return game;
     }
 }
