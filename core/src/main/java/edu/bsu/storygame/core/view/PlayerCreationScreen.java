@@ -18,7 +18,7 @@ public final class PlayerCreationScreen extends ScreenStack.UIScreen {
     private final Root root;
     private final PlayerCreationGroup playerOneGroup;
     private final PlayerCreationGroup playerTwoGroup;
-    private Player.Builder[] players;
+    private String[] players;
     private SampleGameScreen gameScreen;
     private final Button startButton;
 
@@ -51,7 +51,7 @@ public final class PlayerCreationScreen extends ScreenStack.UIScreen {
         gameScreen.setContext(createGameContext());
     }
 
-    public void setPlayers(Player.Builder[] players){
+    public void setPlayers(String[] players){
         this.players = players;
     }
 
@@ -63,8 +63,9 @@ public final class PlayerCreationScreen extends ScreenStack.UIScreen {
     }
 
     private GameContext createGameContext(){
-        Player p1 = players[0].skills(playerOneGroup.getSelectedSkills()).build();
-        Player p2 = players[1].skills(playerTwoGroup.getSelectedSkills()).build();
+
+        Player p1 = new Player.Builder().name(players[0]).color(Palette.PLAYER_ONE).skills(playerOneGroup.getSelectedSkills()).build();
+        Player p2 = new Player.Builder().name(players[1]).color(Palette.PLAYER_TWO).skills(playerTwoGroup.getSelectedSkills()).build();
         return new GameContext(game, p1, p2);
     }
 
