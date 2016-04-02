@@ -27,12 +27,12 @@ public final class PlayerCreationGroup extends Group {
     private final BiSelector biselector = new BiSelector();
     private final Selector selector = new Selector();
 
-    public PlayerCreationGroup(MonsterGame game) {
+    public PlayerCreationGroup(MonsterGame game, String playerName) {
         super(AxisLayout.vertical().offStretch());
         this.game = checkNotNull(game);
-        add(new StyledLabel("Choose two skills:").addStyles(Style.HALIGN.left),
+        add(new StyledLabel(playerName + " is from:").addStyles(Style.HALIGN.left),
                 createRegionGroup());
-        add(new StyledLabel("Choose two skills:").addStyles(Style.HALIGN.left),
+        add(new StyledLabel(playerName + "'s two skills are:").addStyles(Style.HALIGN.left),
                 createSkillGroup());
         watchForFormCompletion();
     }
@@ -103,8 +103,8 @@ public final class PlayerCreationGroup extends Group {
         SkillButton(Skill skill) {
             super(skill.name);
             this.skill = skill;
-            setConstraint(Constraints.fixedWidth(
-                    game.bounds.width() * PERCENT_OF_WIDTH));
+            setConstraint(Constraints.fixedSize(
+                    game.bounds.width() * PERCENT_OF_WIDTH, 48));
         }
 
         @Override
@@ -121,8 +121,8 @@ public final class PlayerCreationGroup extends Group {
         RegionButton(Region region) {
             super(region.name().toLowerCase().replace("_", " "));
             this.region = region;
-            setConstraint(Constraints.fixedWidth(
-                    game.bounds.width() * PERCENT_OF_WIDTH));
+            setConstraint(Constraints.fixedSize(
+                    game.bounds.width() * PERCENT_OF_WIDTH, 48));
         }
 
         @Override

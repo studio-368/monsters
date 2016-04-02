@@ -18,8 +18,7 @@ public class PlayerNameScreen extends ScreenStack.UIScreen {
     private Field nameFieldOne;
     private Field nameFieldTwo;
     public final ValueView<Boolean> complete = Value.create(false);
-    private PlayerCreationScreen creationScreen;
-    private final NavigationButton continueButton;
+    private Button continueButton = new Button("Done");
 
     public PlayerNameScreen(final MonsterGame game) {
         super(game.plat);
@@ -30,8 +29,12 @@ public class PlayerNameScreen extends ScreenStack.UIScreen {
         root.addStyles(Style.BACKGROUND.is(Background.solid(Palette.TUSCANY)));
         root.add(new Label("Traveler's Notebook: Monster Tales").addStyles(Style.FONT.is(Typeface.PASSION_ONE.in(game).atSize(0.10f))));
         root.add(new Label("Please enter your names:").addStyles(Style.FONT.is(Typeface.PASSION_ONE.in(game).atSize(0.05f))));
-        creationScreen = new PlayerCreationScreen(game);
-        continueButton = new NavigationButton("Done", creationScreen);
+        continueButton.onClick(new Slot<Button>() {
+            @Override
+            public void onEmit(Button button) {
+                game.screenStack.push(new PlayerCreationScreen(game, new String[] {nameFieldOne.text.get().trim(), nameFieldTwo.text.get().trim()}), game.screenStack.slide());
+            }
+        });
         root.add(new Group(AxisLayout.horizontal().offStretch().stretchByDefault().gap(0))
                 .add(createNameArea(1), createNameArea(2))
                 .setConstraint(Constraints.fixedHeight(game.bounds.percentOfHeight(0.65f))));
@@ -72,7 +75,6 @@ public class PlayerNameScreen extends ScreenStack.UIScreen {
         ((Value<Boolean>) complete).update(isComplete);
         if(complete.get()) {
             continueButton.setEnabled(true);
-            creationScreen.setPlayers(new String[] {nameFieldOne.text.get().trim(), nameFieldTwo.text.get().trim()});
         }
     }
     @Override

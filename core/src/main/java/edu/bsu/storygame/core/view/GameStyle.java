@@ -54,9 +54,6 @@ public final class GameStyle {
         final Font oxygenLarge = Typeface.OXYGEN.in(game).atSize(LARGE);
         final Font oxygenLightRegular = Typeface.OXYGEN_LIGHT.in(game).atSize(REGULAR);
 
-        final Style.Binding buttonRegularStyle = Style.BACKGROUND.is(butBg);
-        final Style.Binding buttonSelectedStyle = Style.BACKGROUND.is(butSelBg);
-
         return Stylesheet.builder()
                 .add(Label.class,
                         Style.FONT.is(oxygenRegular))
@@ -104,11 +101,11 @@ public final class GameStyle {
                         Style.FONT.is(oxygenRegular),
                         Style.COLOR.is(Colors.WHITE))
                 .add(PlayerCreationGroup.SkillButton.class,
-                        Style.FONT.is(oxygenLarge),
+                        Style.FONT.is(oxygenRegular),
                         Style.COLOR.is(Colors.BLACK),
                         Style.BACKGROUND.is(Background.roundRect(gfx, Colors.WHITE, cornerRadius, Colors.BLACK, borderWidth).insets(buttonInsets)))
                 .add(PlayerCreationGroup.SkillButton.class, Style.Mode.SELECTED,
-                        Style.FONT.is(oxygenLarge),
+                        Style.FONT.is(oxygenRegular),
                         Style.COLOR.is(Colors.WHITE),
                         Style.BACKGROUND.is(Background.roundRect(gfx, Colors.BLACK, cornerRadius, Colors.WHITE, borderWidth).insets(buttonInsets)))
                 .add(NavigationButton.class,
