@@ -42,7 +42,7 @@ public class HandoffDialogFactory {
     }
 
     final class HandoffDialog extends Group {
-        final Label label = new StyledLabel();
+        final Label label = new StyledLabel("");
 
         private HandoffDialog() {
             super(AxisLayout.vertical().stretchByDefault());
@@ -55,13 +55,6 @@ public class HandoffDialogFactory {
         @Override
         protected Class<?> getStyleClass() {
             return HandoffDialog.class;
-        }
-    }
-
-    static final class StyledLabel extends Label {
-        @Override
-        protected Class<?> getStyleClass() {
-            return PlayerCreationGroup.StyledLabel.class;
         }
     }
 
