@@ -14,7 +14,6 @@ import pythagoras.f.Point;
 import react.SignalView;
 import react.Slot;
 import tripleplay.game.ScreenStack;
-import tripleplay.util.Colors;
 
 import java.util.Map;
 
@@ -53,8 +52,8 @@ public final class GameScreen extends ScreenStack.UIScreen {
 
         final IDimension notebookSize = new Dimension(width * NOTEBOOK_WIDTH_PERCENT, height * NOTEBOOK_HEIGHT_PERCENT);
 
-        final NotebookLayer player1Notebook = new NotebookLayer(Colors.CYAN, notebookSize, context);
-        final NotebookLayer player2Notebook = new NotebookLayer(Colors.YELLOW, notebookSize, context);
+        final NotebookLayer player1Notebook = new NotebookLayer(context.players.get(0), notebookSize, context);
+        final NotebookLayer player2Notebook = new NotebookLayer(context.players.get(1), notebookSize, context);
 
         final float player2NotebookX = (width - width * NOTEBOOK_GUTTER_WIDTH_PERCENT) / 2f;
         final float player1NotebookX = player2NotebookX + (width * (NOTEBOOK_GUTTER_WIDTH_PERCENT - NOTEBOOK_WIDTH_PERCENT));
