@@ -93,6 +93,10 @@ public final class PlayerCreationGroup extends Group {
         return result;
     }
 
+    public Region getSelectedRegion(){
+        return ((RegionButton)selector.selected.get()).region;
+    }
+
 
     final class SkillButton extends ToggleButton {
 

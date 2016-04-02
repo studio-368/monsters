@@ -59,8 +59,18 @@ public final class PlayerCreationScreen extends ScreenStack.UIScreen {
 
     private GameContext createGameContext(){
 
-        Player p1 = new Player.Builder().name(players[0]).color(Palette.PLAYER_ONE).skills(playerOneGroup.getSelectedSkills()).build();
-        Player p2 = new Player.Builder().name(players[1]).color(Palette.PLAYER_TWO).skills(playerTwoGroup.getSelectedSkills()).build();
+        Player p1 = new Player.Builder()
+                .name(players[0])
+                .color(Palette.PLAYER_ONE)
+                .skills(playerOneGroup.getSelectedSkills())
+                .location(playerOneGroup.getSelectedRegion())
+                .build();
+        Player p2 = new Player.Builder()
+                .name(players[1])
+                .color(Palette.PLAYER_TWO)
+                .skills(playerTwoGroup.getSelectedSkills())
+                .location(playerTwoGroup.getSelectedRegion())
+                .build();
         return new GameContext(game, p1, p2);
     }
 
