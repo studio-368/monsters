@@ -32,7 +32,9 @@ public class PlayerNameScreen extends ScreenStack.UIScreen {
         continueButton.onClick(new Slot<Button>() {
             @Override
             public void onEmit(Button button) {
-                game.screenStack.push(new PlayerCreationScreen(game, new String[] {nameFieldOne.text.get().trim(), nameFieldTwo.text.get().trim()}), game.screenStack.slide());
+                game.screenStack.push(new PlayerCreationScreen(game, new String[]{
+                        nameFieldOne.text.get().trim(), nameFieldTwo.text.get().trim()
+                }), game.screenStack.slide());
             }
         });
         root.add(new Group(AxisLayout.horizontal().offStretch().stretchByDefault().gap(0))
@@ -77,6 +79,7 @@ public class PlayerNameScreen extends ScreenStack.UIScreen {
             continueButton.setEnabled(true);
         }
     }
+
     @Override
     public Game game() {
         return game;

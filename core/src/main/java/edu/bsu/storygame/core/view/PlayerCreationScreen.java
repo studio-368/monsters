@@ -58,7 +58,6 @@ public final class PlayerCreationScreen extends ScreenStack.UIScreen {
     }
 
     private GameContext createGameContext(){
-
         Player p1 = new Player.Builder()
                 .name(players[0])
                 .color(Palette.PLAYER_ONE)
