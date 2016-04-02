@@ -23,18 +23,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class GameScreen extends ScreenStack.UIScreen {
 
-    private MonsterGame game;
     private GameContext context;
     private GroupLayer group;
 
     private final Map<NotebookLayer, Point> restingLocations = Maps.newHashMap();
 
-    public GameScreen(MonsterGame game) {
-        super(game.plat);
-        this.game = game;
-    }
-
-    public void setContext(GameContext context){
+    public GameScreen(GameContext context) {
+        super(context.game.plat);
         this.context = context;
         this.group = new GroupLayer(context.game.bounds.width(), context.game.bounds.height());
         layer.addCenterAt(group, context.game.plat.graphics().viewSize.width() / 2,
@@ -133,6 +128,6 @@ public final class GameScreen extends ScreenStack.UIScreen {
 
     @Override
     public Game game() {
-        return game;
+        return context.game;
     }
 }

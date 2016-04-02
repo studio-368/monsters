@@ -19,7 +19,6 @@ public final class PlayerCreationScreen extends ScreenStack.UIScreen {
     private final PlayerCreationGroup playerOneGroup;
     private final PlayerCreationGroup playerTwoGroup;
     private String[] players;
-    private GameScreen gameScreen;
     private final Button startButton;
 
     public PlayerCreationScreen(final MonsterGame game) {
@@ -36,19 +35,17 @@ public final class PlayerCreationScreen extends ScreenStack.UIScreen {
                 .add(playerOneGroup, playerTwoGroup)
                 .setConstraint(Constraints.fixedHeight(game.bounds.percentOfHeight(0.65f)))
         );
-        gameScreen = new GameScreen(game);
-        startButton = new NavigationButton("Start", gameScreen);
+        startButton = new Button("Start");
+        startButton.onClick(new Slot<Button>() {
+            @Override
+            public void onEmit(Button button) {
+                game.screenStack.push(new GameScreen(createGameContext()), game.screenStack.slide());
+            }
+        });
         root.add(new Group(new FlowLayout())
                 .add(startButton.setEnabled(false)));
 
-       if( Values.and(playerOneGroup.complete, playerTwoGroup.complete).get()){
-           enableButton();
-       }
-    }
-
-    private void enableButton(){
-        startButton.enabledSlot();
-        gameScreen.setContext(createGameContext());
+       Values.and(playerOneGroup.complete, playerTwoGroup.complete).connect(startButton.enabledSlot());
     }
 
     public void setPlayers(String[] players){

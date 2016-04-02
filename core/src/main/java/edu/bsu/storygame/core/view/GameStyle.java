@@ -61,9 +61,18 @@ public final class GameStyle {
                 .add(Label.class,
                         Style.FONT.is(oxygenRegular))
                 .add(Button.class,
-                        buttonRegularStyle)
+                        Style.FONT.is(oxygenLarge),
+                        Style.COLOR.is(Colors.BLACK),
+                        Style.BACKGROUND.is(Background.roundRect(gfx, Colors.WHITE, cornerRadius, Colors.BLACK, borderWidth).insets(buttonInsets)))
                 .add(Button.class, Style.Mode.SELECTED,
-                        buttonSelectedStyle)
+                        Style.FONT.is(oxygenLarge),
+                        Style.COLOR.is(Colors.WHITE),
+                        Style.BACKGROUND.is(Background.roundRect(gfx, Colors.BLACK, cornerRadius, Colors.WHITE, borderWidth).insets(buttonInsets)))
+                .add(Button.class, Style.Mode.DISABLED,
+                        Style.FONT.is(oxygenLarge),
+                        Style.COLOR.is(Colors.LIGHT_GRAY),
+                        Style.BACKGROUND.is(Background.roundRect(gfx, Colors.GRAY, cornerRadius, Colors.LIGHT_GRAY, borderWidth).insets(buttonInsets)))
+
                 .add(ToggleButton.class,
                         Style.BACKGROUND.is(butBg))
                 .add(ToggleButton.class, Style.Mode.SELECTED,
