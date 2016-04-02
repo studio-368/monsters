@@ -22,6 +22,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class GameScreen extends ScreenStack.UIScreen {
 
+    private static final float BOOK_TRANSLATION_DURATION = 400f;
+
     private final GameContext context;
     private final GroupLayer group;
 
@@ -46,9 +48,10 @@ public final class GameScreen extends ScreenStack.UIScreen {
 
         final float NOTEBOOK_Y_POSITION_PERCENT = 0.75f;
         final float NOTEBOOK_WIDTH_PERCENT = 0.45f;
+        final float NOTEBOOK_HEIGHT_PERCENT = 0.80f;
         final float NOTEBOOK_GUTTER_WIDTH_PERCENT = 0.60f;
 
-        final IDimension notebookSize = new Dimension(width * NOTEBOOK_WIDTH_PERCENT, height);
+        final IDimension notebookSize = new Dimension(width * NOTEBOOK_WIDTH_PERCENT, height * NOTEBOOK_HEIGHT_PERCENT);
 
         final NotebookLayer player1Notebook = new NotebookLayer(Colors.CYAN, notebookSize);
         final NotebookLayer player2Notebook = new NotebookLayer(Colors.YELLOW, notebookSize);
@@ -63,11 +66,11 @@ public final class GameScreen extends ScreenStack.UIScreen {
         restingLocations.put(player1Notebook, notebook1RestingLocation);
         restingLocations.put(player2Notebook, notebook2RestingLocation);
 
-        group.addAt(player2Notebook.layer, notebook2RestingLocation.x, notebook2RestingLocation.y);
-        group.addAt(player1Notebook.layer, notebook1RestingLocation.x, notebook1RestingLocation.y);
+        group.addAt(player2Notebook, notebook2RestingLocation.x, notebook2RestingLocation.y);
+        group.addAt(player1Notebook, notebook1RestingLocation.x, notebook1RestingLocation.y);
 
-        player1Notebook.layer.events().connect(new NotebookOpener(player1Notebook));
-        player2Notebook.layer.events().connect(new NotebookOpener(player2Notebook));
+        player1Notebook.events().connect(new NotebookOpener(player1Notebook));
+        player2Notebook.events().connect(new NotebookOpener(player2Notebook));
     }
 
     private void initMapView() {
@@ -110,18 +113,33 @@ public final class GameScreen extends ScreenStack.UIScreen {
         }
     }
 
-    private void openNotebook(NotebookLayer notebook) {
-        iface.anim.tweenTranslation(notebook.layer)
-                .to(100, 0)
-                .in(500f)
-                .easeIn();
+    private void openNotebook(final NotebookLayer notebook) {
+        iface.anim.tweenTranslation(notebook)
+                .to(context.game.bounds.width() / 2, context.game.bounds.height() * 0.10f)
+                .in(BOOK_TRANSLATION_DURATION)
+                .easeIn()
+                .then()
+                .action(new Runnable() {
+                    @Override
+                    public void run() {
+                        notebook.open(iface.anim);
+                    }
+                });
     }
 
-    private void closeNotebook(NotebookLayer notebook) {
+    private void closeNotebook(final NotebookLayer notebook) {
         IPoint target = restingLocations.get(notebook);
-        iface.anim.tweenTranslation(notebook.layer)
+        iface.anim.action(new Runnable() {
+            @Override
+            public void run() {
+                notebook.close(iface.anim);
+            }
+        }).then()
+                .delay(NotebookLayer.OPEN_CLOSE_ANIM_DURATION)
+                .then()
+                .tweenTranslation(notebook)
                 .to(target)
-                .in(500f)
+                .in(BOOK_TRANSLATION_DURATION)
                 .easeIn();
     }
 
