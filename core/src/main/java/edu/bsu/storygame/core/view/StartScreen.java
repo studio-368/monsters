@@ -6,7 +6,6 @@ import edu.bsu.storygame.core.assets.Typeface;
 import edu.bsu.storygame.core.util.IconScaler;
 import playn.core.Game;
 import playn.scene.GroupLayer;
-import react.Slot;
 import tripleplay.game.ScreenStack;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
@@ -43,7 +42,7 @@ public class StartScreen extends ScreenStack.UIScreen {
                                 .addStyles(Style.FONT.is(Typeface.OXYGEN.in(game).atSize(0.08f)),
                                         Style.TEXT_WRAP.on,
                                         Style.COLOR.is(Palette.BLUE_LAGOON)),
-                        new StartButton());
+                        new NavigationButton("Join the Fight!", new PlayerNameScreen(game)));
     }
 
     @Override
@@ -51,20 +50,4 @@ public class StartScreen extends ScreenStack.UIScreen {
         return game;
     }
 
-    final class StartButton extends Button {
-        private StartButton() {
-            super("Join the Fight");
-            onClick(new Slot<Button>() {
-                @Override
-                public void onEmit(Button button) {
-                    game.screenStack.push(new PlayerCreationScreen(game), game.screenStack.slide());
-                }
-            });
-        }
-
-        @Override
-        protected Class<?> getStyleClass() {
-            return StartButton.class;
-        }
-    }
 }

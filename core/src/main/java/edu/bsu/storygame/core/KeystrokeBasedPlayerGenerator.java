@@ -32,7 +32,8 @@ public class KeystrokeBasedPlayerGenerator implements SignalView.Listener<Keyboa
                 GameContext context = new GameContext(game,
                         new Player.Builder().name("Ann").color(Palette.PLAYER_ONE).skills(makeSkillList()).build(),
                         new Player.Builder().name("Barb").color(Palette.PLAYER_TWO).skills(makeSkillList()).build());
-                game.screenStack.push(new GameScreen(context));
+                GameScreen gameScreen = new GameScreen(context);
+                game.screenStack.push(gameScreen);
             }
 
             private List<Skill> makeSkillList() {
