@@ -8,7 +8,6 @@ import edu.bsu.storygame.core.model.Player;
 import edu.bsu.storygame.core.util.IconScaler;
 import playn.core.Game;
 import playn.scene.GroupLayer;
-import react.Slot;
 import tripleplay.game.ScreenStack;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
@@ -51,30 +50,13 @@ public class WinScreen extends ScreenStack.UIScreen {
                                 .addStyles(Style.FONT.is(Typeface.PASSION_ONE.in(game).atSize(0.08f)),
                                         Style.TEXT_WRAP.on,
                                         Style.COLOR.is(Palette.BLUE_LAGOON)),
-                        new RestartButton());
+                        new NavigationButton("Play again", new PlayerNameScreen(context.game)));
 
     }
 
     @Override
     public Game game() {
         return context.game;
-    }
-
-    private final class RestartButton extends Button {
-        private RestartButton() {
-            super("Play again");
-            onClick(new Slot<Button>() {
-                @Override
-                public void onEmit(Button button) {
-                    context.game.screenStack.push(new PlayerCreationScreen(context.game), context.game.screenStack.slide());
-                }
-            });
-        }
-
-        @Override
-        protected Class<?> getStyleClass() {
-            return PlayerCreationScreen.StartButton.class;
-        }
     }
 
 }

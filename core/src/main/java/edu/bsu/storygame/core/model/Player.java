@@ -15,7 +15,7 @@ public class Player {
     public final int color;
     public RList<Skill> skills;
     public Value<Integer> storyPoints = Value.create(0);
-    public final Value<Region> location = Value.create(Region.AFRICA);
+    public Value<Region> location;
     public final Value<Boolean> hasWon = Value.create(false);
 
     public static class Builder {
@@ -23,6 +23,7 @@ public class Player {
         private String name;
         private int color;
         private List<Skill> skills;
+        private Region location;
 
         public Builder name(String name) {
             this.name = name;
@@ -41,6 +42,11 @@ public class Player {
             return this;
         }
 
+        public Builder location(Region region) {
+            this.location = region;
+            return this;
+        }
+
         public Player build() {
             return new Player(this);
         }
@@ -50,6 +56,7 @@ public class Player {
         this.name = builder.name;
         this.color = builder.color;
         this.skills = RList.create(builder.skills);
+        this.location = Value.create(builder.location);
     }
 
 }
