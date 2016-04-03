@@ -2,6 +2,7 @@ package edu.bsu.storygame.core.intro;
 
 import com.google.common.collect.ImmutableList;
 import edu.bsu.storygame.core.MonsterGame;
+import edu.bsu.storygame.core.view.BoundedUIScreen;
 import edu.bsu.storygame.core.view.GameStyle;
 import playn.core.Game;
 import playn.scene.GroupLayer;
@@ -60,8 +61,7 @@ public final class SlideShow {
             }
         }
 
-        private final class Slide extends ScreenStack.UIScreen {
-            private final GroupLayer content;
+        private final class Slide extends BoundedUIScreen {
             private final SlideData data;
             private boolean popupShown = false;
             private final Button nextButton = new Button("Next").onClick(new Slot<Button>() {
@@ -80,11 +80,8 @@ public final class SlideShow {
             });
 
             public Slide(SlideData data) {
-                super(game.plat);
+                super(game);
                 this.data = checkNotNull(data);
-                this.content = new GroupLayer(game.bounds.width(), game.bounds.height());
-                this.layer.addCenterAt(content, game.plat.graphics().viewSize.width() / 2,
-                        game.plat.graphics().viewSize.height() / 2);
             }
 
             @Override

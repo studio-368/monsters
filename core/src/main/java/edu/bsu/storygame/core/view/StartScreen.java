@@ -7,34 +7,27 @@ import edu.bsu.storygame.core.intro.SlideData;
 import edu.bsu.storygame.core.intro.SlideShow;
 import edu.bsu.storygame.core.util.IconScaler;
 import playn.core.Game;
-import playn.scene.GroupLayer;
 import react.SignalView;
 import react.Slot;
 import react.Try;
-import tripleplay.game.ScreenStack;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
 
-public class StartScreen extends ScreenStack.UIScreen {
+public final class StartScreen extends BoundedUIScreen {
 
     private final MonsterGame game;
-    private final GroupLayer boundedLayer;
 
     public StartScreen(final MonsterGame game) {
-        super(game.plat);
+        super(game);
         this.game = game;
-        this.boundedLayer = new GroupLayer(game.bounds.width(), game.bounds.height());
-        layer.addAt(boundedLayer,
-                (game.plat.graphics().viewSize.width() - game.bounds.width()) / 2,
-                (game.plat.graphics().viewSize.height() - game.bounds.height()) / 2);
         initRoot();
     }
 
     private void initRoot() {
         IconScaler scaler = new IconScaler(game);
         Icon logo = scaler.scale(ImageCache.Key.LOGO, game.bounds.width() * 0.25f);
-        iface.createRoot(AxisLayout.vertical(), GameStyle.newSheet(game), boundedLayer)
-                .setSize(game.bounds.width(), game.bounds.height())
+        iface.createRoot(AxisLayout.vertical(), GameStyle.newSheet(game), content)
+                .setSize(content.width(), content.height())
                 .addStyles(Style.BACKGROUND.is(Background.solid(Palette.TUSCANY)))
                 .add(new Label("The Nightmare Defenders need your help!")
                                 .addStyles(Style.FONT.is(Typeface.PASSION_ONE.in(game).atSize(0.08f)),

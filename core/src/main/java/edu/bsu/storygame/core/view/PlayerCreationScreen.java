@@ -7,12 +7,11 @@ import edu.bsu.storygame.core.model.Player;
 import playn.core.Game;
 import react.Slot;
 import react.Values;
-import tripleplay.game.ScreenStack;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
 import tripleplay.ui.layout.FlowLayout;
 
-public final class PlayerCreationScreen extends ScreenStack.UIScreen {
+public final class PlayerCreationScreen extends BoundedUIScreen {
 
     private final MonsterGame game;
     private final Root root;
@@ -22,12 +21,12 @@ public final class PlayerCreationScreen extends ScreenStack.UIScreen {
     private final Button startButton;
 
     public PlayerCreationScreen(final MonsterGame game, String[] players) {
-        super(game.plat);
+        super(game);
         this.game = game;
         this.players = players;
         root = iface.createRoot(AxisLayout.vertical().offStretch(),
-                GameStyle.newSheet(game), layer);
-        root.setSize(game.bounds.width(), game.bounds.height());
+                GameStyle.newSheet(game), content)
+                .setSize(content.width(), content.height());
         root.addStyles(Style.BACKGROUND.is(Background.solid(Palette.TUSCANY)));
         root.add(new Label("Traveler's Notebook: Monster Tales").addStyles(Style.FONT.is(Typeface.PASSION_ONE.in(game).atSize(0.10f))));
         root.add(new Label("Please customize your characters:").addStyles(Style.FONT.is(Typeface.PASSION_ONE.in(game).atSize(0.05f))));

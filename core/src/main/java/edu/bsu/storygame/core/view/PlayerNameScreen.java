@@ -6,12 +6,11 @@ import playn.core.Game;
 import react.Slot;
 import react.Value;
 import react.ValueView;
-import tripleplay.game.ScreenStack;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
 import tripleplay.ui.layout.FlowLayout;
 
-public class PlayerNameScreen extends ScreenStack.UIScreen {
+public class PlayerNameScreen extends BoundedUIScreen {
 
     private final MonsterGame game;
     private final Root root;
@@ -21,11 +20,11 @@ public class PlayerNameScreen extends ScreenStack.UIScreen {
     private Button continueButton = new Button("Done");
 
     public PlayerNameScreen(final MonsterGame game) {
-        super(game.plat);
+        super(game);
         this.game = game;
         root = iface.createRoot(AxisLayout.vertical().offStretch(),
-                GameStyle.newSheet(game), layer);
-        root.setSize(game.bounds.width(), game.bounds.height());
+                GameStyle.newSheet(game), content)
+                .setSize(content.width(), content.height());
         root.addStyles(Style.BACKGROUND.is(Background.solid(Palette.TUSCANY)));
         root.add(new Label("Traveler's Notebook: Monster Tales").addStyles(Style.FONT.is(Typeface.PASSION_ONE.in(game).atSize(0.10f))));
         root.add(new Label("Please enter your names:").addStyles(Style.FONT.is(Typeface.PASSION_ONE.in(game).atSize(0.05f))));
