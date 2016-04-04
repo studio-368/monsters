@@ -20,7 +20,7 @@ public final class GameStyle {
 
     private static final float LARGE = 0.05f;
     private static final float REGULAR = 0.038f;
-    private static final float SMALL = 0.02f;
+    private static final float SMALL = 0.033f;
     private static final float TINY = 0.01f;
 
     private static final int DARK_TRANSLUCENT_GREY = Color.argb(240, 30, 30, 30);
@@ -50,6 +50,7 @@ public final class GameStyle {
         final Background palettizedSelectedButtonBg = Background.roundRect(gfx, Palette.SPROUT, cornerRadius, Palette.BLACK_PEARL, borderWidth)
                 .insets(buttonInsets);
 
+        final Font oxygenSmall = Typeface.OXYGEN.in(game).atSize(SMALL);
         final Font oxygenRegular = Typeface.OXYGEN.in(game).atSize(REGULAR);
         final Font oxygenLarge = Typeface.OXYGEN.in(game).atSize(LARGE);
         final Font oxygenLightRegular = Typeface.OXYGEN_LIGHT.in(game).atSize(REGULAR);
@@ -99,11 +100,11 @@ public final class GameStyle {
                 .add(Tabs.class,
                         Tabs.HIGHLIGHTER.is(Tabs.textColorHighlighter(0xFF000000, 0xFFFFFFFF)))
                 .add(PlayerCreationGroup.SkillButton.class,
-                        Style.FONT.is(oxygenRegular),
+                        Style.FONT.is(oxygenSmall),
                         Style.COLOR.is(Colors.BLACK),
                         Style.BACKGROUND.is(Background.roundRect(gfx, Colors.WHITE, cornerRadius, Colors.BLACK, borderWidth).insets(buttonInsets)))
                 .add(PlayerCreationGroup.SkillButton.class, Style.Mode.SELECTED,
-                        Style.FONT.is(oxygenRegular),
+                        Style.FONT.is(oxygenSmall),
                         Style.COLOR.is(Colors.WHITE),
                         Style.BACKGROUND.is(Background.roundRect(gfx, Colors.BLACK, cornerRadius, Colors.WHITE, borderWidth).insets(buttonInsets)))
                 .add(NavigationButton.class,
