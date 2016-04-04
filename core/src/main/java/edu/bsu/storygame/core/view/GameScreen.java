@@ -23,7 +23,9 @@ public final class GameScreen extends BoundedUIScreen {
 
     private final GameContext context;
 
-    private final Map<NotebookLayer, Point> restingLocations = Maps.newHashMap();
+    private final Map<Integer, Point> restingLocations = Maps.newHashMap();
+
+    private final NotebookLayer[] notebooks = new NotebookLayer[2];
 
     public GameScreen(GameContext context) {
         super(context.game);
@@ -42,12 +44,14 @@ public final class GameScreen extends BoundedUIScreen {
         final float NOTEBOOK_Y_POSITION_PERCENT = 0.75f;
         final float NOTEBOOK_WIDTH_PERCENT = 0.45f;
         final float NOTEBOOK_HEIGHT_PERCENT = 0.80f;
-        final float NOTEBOOK_GUTTER_WIDTH_PERCENT = 0.60f;
+        final float NOTEBOOK_GUTTER_WIDTH_PERCENT = 0.65f;
 
         final IDimension notebookSize = new Dimension(width * NOTEBOOK_WIDTH_PERCENT, height * NOTEBOOK_HEIGHT_PERCENT);
 
         final NotebookLayer player1Notebook = new NotebookLayer(context.players.get(0), notebookSize, context);
         final NotebookLayer player2Notebook = new NotebookLayer(context.players.get(1), notebookSize, context);
+        notebooks[0] = player1Notebook;
+        notebooks[1] = player2Notebook;
 
         final float player2NotebookX = (width - width * NOTEBOOK_GUTTER_WIDTH_PERCENT) / 2f;
         final float player1NotebookX = player2NotebookX + (width * (NOTEBOOK_GUTTER_WIDTH_PERCENT - NOTEBOOK_WIDTH_PERCENT));
@@ -56,8 +60,8 @@ public final class GameScreen extends BoundedUIScreen {
 
         Point notebook1RestingLocation = new Point(player1NotebookX, notebookY);
         Point notebook2RestingLocation = new Point(player2NotebookX, notebookY);
-        restingLocations.put(player1Notebook, notebook1RestingLocation);
-        restingLocations.put(player2Notebook, notebook2RestingLocation);
+        restingLocations.put(0, notebook1RestingLocation);
+        restingLocations.put(1, notebook2RestingLocation);
 
         content.addAt(player2Notebook, notebook2RestingLocation.x, notebook2RestingLocation.y);
         content.addAt(player1Notebook, notebook1RestingLocation.x, notebook1RestingLocation.y);
@@ -121,7 +125,13 @@ public final class GameScreen extends BoundedUIScreen {
     }
 
     private void closeNotebook(final NotebookLayer notebook) {
-        IPoint target = restingLocations.get(notebook);
+        final NotebookLayer newCurrentNotebook;
+        if(notebook.equals(notebooks[0])){
+            newCurrentNotebook = notebooks[1];
+        } else {
+            newCurrentNotebook = notebooks[0];
+        }
+        IPoint target = restingLocations.get(1);
         iface.anim.action(new Runnable() {
             @Override
             public void run() {
@@ -134,6 +144,17 @@ public final class GameScreen extends BoundedUIScreen {
                 .to(target)
                 .in(BOOK_TRANSLATION_DURATION)
                 .easeIn();
+        final IPoint newTarget = restingLocations.get(0);
+        iface.anim.tweenTranslation(newCurrentNotebook)
+                .to(newTarget)
+                .in(BOOK_TRANSLATION_DURATION)
+                .easeIn().then().action(new Runnable() {
+            @Override
+            public void run() {
+                content.remove(newCurrentNotebook);
+                content.addAt(newCurrentNotebook, newTarget.x(), newTarget.y());
+            }
+        });
     }
 
     @Override
