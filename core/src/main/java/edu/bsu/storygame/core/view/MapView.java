@@ -3,6 +3,7 @@ package edu.bsu.storygame.core.view;
 import com.google.common.collect.ImmutableMap;
 import edu.bsu.storygame.core.assets.ImageCache;
 import edu.bsu.storygame.core.model.GameContext;
+import edu.bsu.storygame.core.model.Phase;
 import edu.bsu.storygame.core.model.Region;
 import playn.core.Pointer;
 import playn.scene.ImageLayer;
@@ -43,7 +44,7 @@ public final class MapView extends ImageLayer {
             private final Point local = new Point();
             @Override
             public void onEmit(Pointer.Event event) {
-                if (event.kind.isEnd) {
+                if (event.kind.isEnd && context.phase.get().equals(Phase.MOVEMENT)) {
                     Layers.transform(new Point(event.x, event.y), context.game.rootLayer, MapView.this, local);
                     for (Rectangle r : NATURAL_COORDINATE_MAP.keySet()) {
                         if (r.contains(local.x, local.y)) {
@@ -54,4 +55,5 @@ public final class MapView extends ImageLayer {
             }
         });
     }
+
 }

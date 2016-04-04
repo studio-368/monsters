@@ -1,12 +1,10 @@
 package edu.bsu.storygame.core.view;
 
 import com.google.common.collect.Maps;
-import edu.bsu.storygame.core.model.GameContext;
-import edu.bsu.storygame.core.model.Region;
+import edu.bsu.storygame.core.model.*;
 import playn.core.Game;
 import playn.scene.GroupLayer;
 import playn.scene.Layer;
-import playn.scene.Pointer;
 import pythagoras.f.Dimension;
 import pythagoras.f.IDimension;
 import pythagoras.f.IPoint;
@@ -65,11 +63,15 @@ public final class GameScreen extends ScreenStack.UIScreen {
         restingLocations.put(player1Notebook, notebook1RestingLocation);
         restingLocations.put(player2Notebook, notebook2RestingLocation);
 
+        HandoffDialogFactory handOff = new HandoffDialogFactory(context);
+
         group.addAt(player2Notebook, notebook2RestingLocation.x, notebook2RestingLocation.y);
         group.addAt(player1Notebook, notebook1RestingLocation.x, notebook1RestingLocation.y);
 
-        player1Notebook.events().connect(new NotebookOpener(player1Notebook));
-        player2Notebook.events().connect(new NotebookOpener(player2Notebook));
+        group.add(handOff.create(iface));
+
+        context.phase.connect(new NotebookOpener(player1Notebook, context.players.get(0)));
+        context.phase.connect(new NotebookOpener(player2Notebook, context.players.get(1)));
     }
 
     private void initMapView() {
@@ -82,31 +84,36 @@ public final class GameScreen extends ScreenStack.UIScreen {
             @Override
             public void onEmit(Region region) {
                 context.game.plat.log().debug("Picked " + region);
+                initEncounter(region);
             }
         });
     }
 
-    private final class NotebookOpener implements SignalView.Listener<Object> {
-        private boolean open = false;
+    private void initEncounter(Region region) {
+        context.currentPlayer.get().location.update(region);
+        Encounter encounter = context.game.narrativeCache.state.result().get().forRegion(region).chooseOne();
+        context.encounter.update(encounter);
+        context.phase.update(Phase.ENCOUNTER);
+    }
+
+    private final class NotebookOpener implements SignalView.Listener<Phase> {
 
         private final NotebookLayer notebook;
+        private final Player player;
 
-        NotebookOpener(NotebookLayer notebook) {
+        NotebookOpener(NotebookLayer notebook, Player player) {
             this.notebook = checkNotNull(notebook);
+            this.player = checkNotNull(player);
         }
 
         @Override
-        public void onEmit(Object o) {
-            if (o instanceof Pointer.Interaction) {
-                playn.core.Pointer.Event e = ((Pointer.Interaction) o).event;
-                if (e.kind == playn.core.Pointer.Event.Kind.END) {
-                    if (open) {
-                        closeNotebook(notebook);
-                        open = false;
-                    } else {
-                        openNotebook(notebook);
-                        open = true;
-                    }
+        public void onEmit(Phase phase) {
+            if (context.currentPlayer.get().equals(player)) {
+                if (phase.equals(Phase.ENCOUNTER)) {
+                    openNotebook(notebook);
+                }
+                if (phase.equals(Phase.END_OF_ROUND)) {
+                    closeNotebook(notebook);
                 }
             }
         }
