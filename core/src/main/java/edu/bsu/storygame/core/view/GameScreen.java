@@ -3,16 +3,21 @@ package edu.bsu.storygame.core.view;
 import com.google.common.collect.Maps;
 import edu.bsu.storygame.core.model.*;
 import playn.core.Game;
+import playn.scene.GroupLayer;
 import playn.scene.Layer;
 import pythagoras.f.Dimension;
 import pythagoras.f.IDimension;
 import pythagoras.f.IPoint;
 import pythagoras.f.Point;
 import react.*;
+import tripleplay.ui.Background;
+import tripleplay.ui.Label;
+import tripleplay.ui.Style;
+import tripleplay.ui.layout.AxisLayout;
 
 import java.util.Map;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class GameScreen extends BoundedUIScreen {
 
@@ -68,6 +73,8 @@ public final class GameScreen extends BoundedUIScreen {
 
         HandoffDialogFactory handOff = new HandoffDialogFactory(context);
         content.addCenterAt(handOff.create(iface), content.width() / 2, content.height() / 2);
+
+        configureMovementBanner();
     }
 
     private void initMapView() {
@@ -83,6 +90,12 @@ public final class GameScreen extends BoundedUIScreen {
                 initEncounter(region);
             }
         });
+    }
+
+    private void configureMovementBanner() {
+        MovementPrompt movementPrompt = new MovementPrompt();
+        movementPrompt.setOrigin(Layer.Origin.TC);
+        content.addFloorAt(movementPrompt, content.width() / 2, 0);
     }
 
     private void initEncounter(Region region) {
@@ -178,5 +191,40 @@ public final class GameScreen extends BoundedUIScreen {
     @Override
     public Game game() {
         return context.game;
+    }
+
+    private final class MovementPrompt extends GroupLayer {
+        private static final String TEXT_STUB = ", pick a place!";
+        private static final int TRANSLUCENT_RED = 0xaae64650;
+        private final Label label = new Label(context.currentPlayer.get().name + TEXT_STUB);
+
+        private MovementPrompt() {
+            super(content.width() * 0.75f, content.height() * 0.10f);
+            iface.createRoot(AxisLayout.vertical(), GameStyle.newSheet(context.game), this)
+                    .setSize(width(), height())
+                    .addStyles(Style.BACKGROUND.is(Background.solid(TRANSLUCENT_RED)))
+                    .add(label);
+            context.currentPlayer.connect(new Slot<Player>() {
+                @Override
+                public void onEmit(Player player) {
+                    label.text.update(player.name + TEXT_STUB);
+                }
+            });
+            context.phase.connect(new Slot<Phase>() {
+                @Override
+                public void onEmit(Phase phase) {
+                    if (phase == Phase.MOVEMENT) {
+                        iface.anim.tweenY(MovementPrompt.this)
+                                .from(-height())
+                                .to(0)
+                                .in(500f);
+                    } else if (phase == Phase.ENCOUNTER) {
+                        iface.anim.tweenY(MovementPrompt.this)
+                                .to(-height())
+                                .in(500f);
+                    }
+                }
+            });
+        }
     }
 }
