@@ -7,6 +7,7 @@ import playn.scene.GroupLayer;
 import playn.scene.Layer;
 import pythagoras.f.Dimension;
 import pythagoras.f.IDimension;
+import react.RList;
 import react.Slot;
 import react.UnitSignal;
 import tripleplay.anim.Animator;
@@ -16,7 +17,7 @@ import tripleplay.ui.layout.AxisLayout;
 import tripleplay.ui.layout.FlowLayout;
 import tripleplay.util.Colors;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class NotebookLayer extends GroupLayer {
 
@@ -78,6 +79,7 @@ public final class NotebookLayer extends GroupLayer {
                             .addStyles(Style.HALIGN.left),
                     new ScoreLabel()
                             .addStyles(Style.HALIGN.left),
+                    new SkillGroup().addStyles(Style.HALIGN.left),
                     new Shim(0, 0).setConstraint(AxisLayout.stretched()));
         }
     }
@@ -295,6 +297,48 @@ public final class NotebookLayer extends GroupLayer {
                     }
                 });
             }
+        }
+    }
+
+    private final class SkillGroup extends Group {
+
+        private SkillGroup() {
+            super(AxisLayout.horizontal().offStretch());
+            updatePlayerSkills();
+            player.skills.connect(new RList.Listener<Skill>() {
+                @Override
+                public void onAdd(Skill skill) {
+                    SkillGroup.this.updatePlayerSkills();
+                }
+
+                @Override
+                public void onRemove(Skill skill) {
+                    SkillGroup.this.updatePlayerSkills();
+                }
+            });
+        }
+
+        private void updatePlayerSkills() {
+            this.removeAll();
+            int skillCounter = 1;
+            this.add(new Label("Skills: ")
+                    .addStyles(Style.HALIGN.left));
+            for (Skill skill : player.skills) {
+                if (!(player.skills.size() == skillCounter)) {
+                    this.add(new SkillLabel(skill), new Label(", "));
+                } else {
+                    this.add(new SkillLabel(skill));
+                }
+                skillCounter++;
+            }
+        }
+    }
+
+    private final class SkillLabel extends Label {
+
+        private SkillLabel(Skill skill) {
+            super(skill.name);
+            addStyles(Style.HALIGN.left);
         }
     }
 
