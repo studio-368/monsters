@@ -44,7 +44,7 @@ public final class GameScreen extends BoundedUIScreen {
         final float NOTEBOOK_Y_POSITION_PERCENT = 0.75f;
         final float NOTEBOOK_WIDTH_PERCENT = 0.45f;
         final float NOTEBOOK_HEIGHT_PERCENT = 0.80f;
-        final float NOTEBOOK_GUTTER_WIDTH_PERCENT = 0.60f;
+        final float NOTEBOOK_GUTTER_WIDTH_PERCENT = 0.65f;
 
         final IDimension notebookSize = new Dimension(width * NOTEBOOK_WIDTH_PERCENT, height * NOTEBOOK_HEIGHT_PERCENT);
 
