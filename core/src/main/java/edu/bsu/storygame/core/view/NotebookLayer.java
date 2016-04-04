@@ -304,21 +304,21 @@ public final class NotebookLayer extends GroupLayer {
 
         private SkillGroup() {
             super(AxisLayout.horizontal().offStretch());
-            updatePlayerSkills(player);
+            updatePlayerSkills();
             player.skills.connect(new RList.Listener<Skill>() {
                 @Override
                 public void onAdd(Skill skill) {
-                    SkillGroup.this.updatePlayerSkills(player);
+                    SkillGroup.this.updatePlayerSkills();
                 }
 
                 @Override
                 public void onRemove(Skill skill) {
-                    SkillGroup.this.updatePlayerSkills(player);
+                    SkillGroup.this.updatePlayerSkills();
                 }
             });
         }
 
-        private void updatePlayerSkills(Player player) {
+        private void updatePlayerSkills() {
             this.removeAll();
             int skillCounter = 1;
             this.add(new Label("Skills: ")
