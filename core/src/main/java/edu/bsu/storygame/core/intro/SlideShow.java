@@ -2,8 +2,11 @@ package edu.bsu.storygame.core.intro;
 
 import com.google.common.collect.ImmutableList;
 import edu.bsu.storygame.core.MonsterGame;
+import edu.bsu.storygame.core.assets.Typeface;
+import edu.bsu.storygame.core.util.IconScaler;
 import edu.bsu.storygame.core.view.BoundedUIScreen;
 import edu.bsu.storygame.core.view.GameStyle;
+import playn.core.Color;
 import playn.core.Game;
 import playn.scene.GroupLayer;
 import playn.scene.Layer;
@@ -22,13 +25,17 @@ import java.util.List;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class SlideShow {
+    public static final int POPUP_BACKGROUND = Color.rgb(240, 197, 0);
+    public static final int POPUP_FOREGROUND = Color.rgb(0, 0, 0);
 
     private final ImmutableList<SlideData> slideDataList;
     private final MonsterGame game;
     private final Stylesheet stylesheet;
+    private final IconScaler scaler;
 
     public SlideShow(MonsterGame game, SlideData... slideData) {
         this.game = checkNotNull(game);
+        this.scaler = new IconScaler(game);
         this.slideDataList = ImmutableList.copyOf(slideData);
         this.stylesheet = GameStyle.newSheet(game);
     }
@@ -87,35 +94,48 @@ public final class SlideShow {
             @Override
             public void wasShown() {
                 super.wasShown();
-
                 Button skip = new Button("Skip").onClick(new Slot<Button>() {
                     @Override
                     public void onEmit(Button button) {
                         promise.fail(null);
                     }
                 });
-
                 Root root = iface.createRoot(AxisLayout.vertical().offStretch(), stylesheet, content)
                         .setSize(content.width(), content.height())
                         .addStyles(Style.BACKGROUND.is(Background.solid(Colors.GRAY)));
 
-                Group buttonGroup = new Group(AxisLayout.horizontal()).add(skip, nextButton);
-
+                Group buttonGroup = new Group(AxisLayout.horizontal()).add(new Shim(0, 0).setConstraint(AxisLayout.stretched()), skip, nextButton);
                 if (data.imageKey != null) {
-                    root.add(new Label(Icons.image(game.imageCache.image(data.imageKey)))
+                    Icon image = scaler.scale(data.imageKey, game.bounds.width());
+                    root.add(new Label(image)
                             .setConstraint(AxisLayout.stretched(0.75f)));
-                    Group textGroup = new Group(new BorderLayout())
-                            .addStyles(Style.BACKGROUND.is(Background.solid(Colors.BLACK)))
-                            .setConstraint(AxisLayout.stretched(0.25f));
-                    textGroup.add(new Label(data.text)
-                            .addStyles(Style.COLOR.is(Colors.WHITE))
-                            .setConstraint(BorderLayout.CENTER));
-                    textGroup.add(buttonGroup.setConstraint(BorderLayout.SOUTH));
-                    root.add(textGroup);
+                    root.add(createSplitScreenGroup(buttonGroup));
                 } else {
-                    root.add(new Label(data.text));
-                    root.add(buttonGroup);
+                    root.add(createFullScreenGroup(buttonGroup));
                 }
+            }
+
+            private Group createSplitScreenGroup(Group buttonGroup){
+                Group group = new Group(new BorderLayout())
+                        .addStyles(Style.BACKGROUND.is(Background.solid(Colors.BLACK)))
+                        .setConstraint(AxisLayout.stretched(0.25f));
+                group.add(new Label(data.text)
+                        .addStyles(Style.COLOR.is(Colors.WHITE))
+                        .setConstraint(BorderLayout.CENTER));
+                group.add(buttonGroup.setConstraint(BorderLayout.SOUTH));
+                return group;
+            }
+
+            private Group createFullScreenGroup(Group buttonGroup){
+                Group group = new Group(new BorderLayout())
+                        .addStyles(Style.BACKGROUND.is(Background.solid(Colors.BLACK))).setConstraint(AxisLayout.stretched(1f));
+                group.add(new Label(data.text)
+                        .addStyles(Style.COLOR.is(Colors.WHITE),
+                                Style.FONT.is(Typeface.OXYGEN.in(game).atSize(0.15f)),
+                                Style.TEXT_WRAP.on)
+                        .setConstraint(BorderLayout.CENTER));
+                group.add(buttonGroup.setConstraint(BorderLayout.SOUTH));
+                return group;
             }
 
             private void showPopupText() {
@@ -142,8 +162,10 @@ public final class SlideShow {
                 popup.setOrigin(Layer.Origin.CENTER);
                 iface.createRoot(AxisLayout.vertical(), stylesheet, popup)
                         .setSize(popup.width(), popup.height())
-                        .addStyles(Style.BACKGROUND.is(Background.solid(Colors.CYAN)))
-                        .add(new Label(data.popupText).addStyles(Style.TEXT_WRAP.on));
+                        .addStyles(Style.BACKGROUND.is(Background.solid(POPUP_BACKGROUND)))
+                        .add(new Label(data.popupText).addStyles(Style.TEXT_WRAP.on,
+                                Style.COLOR.is(Colors.BLACK),
+                                Style.FONT.is(Typeface.OXYGEN.in(game).atSize(0.1f))));
                 return popup;
             }
 
