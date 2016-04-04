@@ -50,7 +50,7 @@
         <processorPath useClasspath="true" />
         <module name="editor" />
       </profile>
-      <profile default="false" name="Maven default annotation processors profile" enabled="true">
+      <profile default="false" name="Annotation profile for monsters-core" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -62,7 +62,7 @@
       <module name="editor" target="1.8" />
       <module name="monsters" target="1.5" />
       <module name="monsters-assets" target="1.7" />
-      <module name="monsters-core" target="1.5" />
+      <module name="monsters-core" target="1.7" />
       <module name="monsters-html" target="1.7" />
       <module name="monsters-java" target="1.7" />
       <module name="test-assets" target="1.7" />
