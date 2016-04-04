@@ -5,8 +5,7 @@ import edu.bsu.storygame.core.MonsterGame;
 import react.Slot;
 import react.Value;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 public final class GameContext {
     public final MonsterGame game;
@@ -14,6 +13,9 @@ public final class GameContext {
     public final ImmutableList<Player> players;
     public final Value<Player> currentPlayer;
     public final Value<Encounter> encounter = Value.create(null);
+    public final Value<Reaction> reaction = Value.create(null);
+    public final Value<Conclusion> conclusion = Value.create(null);
+
     public final int pointsRequiredForVictory = 5;
 
     public GameContext(MonsterGame game, Player... players) {
@@ -34,6 +36,10 @@ public final class GameContext {
             public void onEmit(Phase phase) {
                 if (phase == Phase.END_OF_ROUND) {
                     encounter.update(null);
+                    reaction.update(null);
+                    conclusion.update(null);
+                    currentPlayer.update(otherPlayer());
+                    GameContext.this.phase.update(Phase.MOVEMENT);
                 }
             }
         });

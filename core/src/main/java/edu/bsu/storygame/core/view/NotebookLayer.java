@@ -1,19 +1,22 @@
 package edu.bsu.storygame.core.view;
 
-import edu.bsu.storygame.core.model.GameContext;
-import edu.bsu.storygame.core.model.Player;
+import edu.bsu.storygame.core.assets.ImageCache;
+import edu.bsu.storygame.core.model.*;
+import edu.bsu.storygame.core.util.IconScaler;
 import playn.scene.GroupLayer;
 import playn.scene.Layer;
 import pythagoras.f.Dimension;
 import pythagoras.f.IDimension;
 import react.Slot;
+import react.UnitSignal;
 import tripleplay.anim.Animator;
 import tripleplay.game.ScreenStack;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
+import tripleplay.ui.layout.FlowLayout;
 import tripleplay.util.Colors;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 public final class NotebookLayer extends GroupLayer {
 
@@ -26,6 +29,8 @@ public final class NotebookLayer extends GroupLayer {
     private final Layer encounterPage;
     private final Layer reactionPage;
     private final Player player;
+
+    public final UnitSignal onDone = new UnitSignal();
 
     public NotebookLayer(Player player, IDimension closedSize, GameContext context) {
         super(closedSize.width() * 2, closedSize.height());
@@ -51,6 +56,7 @@ public final class NotebookLayer extends GroupLayer {
     }
 
     private abstract class PageLayer extends GroupLayer {
+
         protected final int color;
         protected final Interface iface;
 
@@ -63,6 +69,7 @@ public final class NotebookLayer extends GroupLayer {
 
 
     private final class CoverPage extends PageLayer {
+
         private CoverPage() {
             Root root = iface.createRoot(AxisLayout.vertical().offStretch(), stylesheet, this)
                     .setSize(closedSize)
@@ -76,24 +83,221 @@ public final class NotebookLayer extends GroupLayer {
     }
 
     private final class EncounterPage extends PageLayer {
+
         private EncounterPage() {
-            Root root = iface.createRoot(AxisLayout.vertical(), stylesheet, this)
+            iface.createRoot(AxisLayout.vertical(), stylesheet, this)
                     .setSize(closedSize)
-                    .addStyles(Style.BACKGROUND.is(Background.solid(color)));
-            root.add(new Label("Notes sticky goes here"),
-                    new Label("Encounter picture goes here like in old card design")
-                            .addStyles(Style.TEXT_WRAP.on));
+                    .addStyles(Style.BACKGROUND.is(Background.solid(color)))
+                    .add(new EncounterGroup());
         }
+    }
+
+    private class EncounterGroup extends Group {
+
+        public EncounterGroup() {
+            super(AxisLayout.vertical());
+            context.encounter.connect(new Slot<Encounter>() {
+                @Override
+                public void onEmit(Encounter encounter) {
+                    removeAll();
+                    if (encounter != null) {
+                        add(new EncounterImage(encounter));
+                    }
+                }
+            });
+            context.reaction.connect(new Slot<Reaction>() {
+                @Override
+                public void onEmit(Reaction reaction) {
+                    removeAll();
+                    if (reaction != null) {
+                        add(new EncounterReactionStory(reaction.story));
+                    }
+                }
+            });
+            context.conclusion.connect(new Slot<Conclusion>() {
+                @Override
+                public void onEmit(Conclusion conclusion) {
+                    removeAll();
+                    if (conclusion != null) {
+                        add(new EncounterRewardLabel(conclusion));
+                    }
+                }
+            });
+        }
+    }
+
+    private class EncounterImage extends Label {
+
+        private IconScaler scaler;
+
+        private EncounterImage(Encounter encounter) {
+
+            final float IMAGE_SIZE = 0.8f;
+
+            this.scaler = new IconScaler(context.game);
+
+            text.update(encounter.name);
+            ImageCache.Key imageKey;
+            try {
+                imageKey = ImageCache.Key.valueOf(encounter.imageKey.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                imageKey = ImageCache.Key.MISSING_IMAGE;
+            }
+            final float desiredWidth = IMAGE_SIZE * size().width();
+            Icon scaledIcon = scaler.scale(imageKey, desiredWidth);
+            icon.update(scaledIcon);
+        }
+    }
+
+    private class EncounterReactionStory extends Label {
+
+        EncounterReactionStory(Story story) {
+            super(story.text);
+        }
+
+    }
+
+    final class EncounterRewardLabel extends Label {
+        private EncounterRewardLabel(Conclusion conclusion) {
+            super();
+            StringBuilder stringBuilder = new StringBuilder();
+            if (conclusion.points > 0) {
+                stringBuilder.append("You gain ")
+                        .append(String.valueOf(conclusion.points))
+                        .append(" story points");
+            }
+            if (conclusion.skill != null) {
+                if (stringBuilder.length() > 0) {
+                    stringBuilder.append(" and the ")
+                            .append(conclusion.skill)
+                            .append(" skill");
+                } else {
+                    stringBuilder.append("You gain the ")
+                            .append(conclusion.skill.name)
+                            .append(" skill");
+                }
+            }
+            text.update(stringBuilder.toString());
+        }
+
     }
 
     private final class ReactionPage extends PageLayer {
         private ReactionPage() {
-            Root root = iface.createRoot(AxisLayout.vertical(), stylesheet, this)
+            iface.createRoot(AxisLayout.vertical(), stylesheet, this)
                     .setSize(closedSize)
-                    .addStyles(Style.BACKGROUND.is(Background.solid(color)));
-            root.add(new Label("Reaction options go here"));
+                    .addStyles(Style.BACKGROUND.is(Background.solid(color)))
+                    .add(new ReactionGroup());
+
         }
     }
+
+    private final class ReactionGroup extends Group {
+
+        public ReactionGroup() {
+            super(AxisLayout.vertical());
+            context.encounter.connect(new Slot<Encounter>() {
+                @Override
+                public void onEmit(Encounter encounter) {
+                    removeAll();
+                    if (encounter != null) {
+                        add(makeReactionButtonAreaFor(encounter));
+                    }
+                }
+            });
+            context.phase.connect(new Slot<Phase>() {
+                @Override
+                public void onEmit(Phase phase) {
+                    if (phase.equals(Phase.STORY)) {
+                        removeAll();
+                        add(makeSkillTriggersFor(context.reaction.get().story));
+                    }
+                }
+            });
+        }
+
+        private Group makeReactionButtonAreaFor(Encounter encounter) {
+            Group group = new Group(new FlowLayout());
+            for (Reaction reaction : encounter.reactions) {
+                group.add(new ReactionButton(reaction));
+            }
+            return group;
+        }
+
+        private Group makeSkillTriggersFor(Story story) {
+            Group buttonGroup = new Group(new FlowLayout());
+            for (final SkillTrigger trigger : story.triggers) {
+                if (context.currentPlayer.get().skills.contains(trigger.skill)) {
+                    Button skillButton = new TriggerButton(trigger.skill.name, trigger.conclusion);
+                    buttonGroup.add(skillButton);
+                }
+            }
+            buttonGroup.add(new TriggerButton("No skill", story.noSkill.conclusion));
+            return buttonGroup;
+        }
+
+
+        final class ReactionButton extends Button {
+            private ReactionButton(final Reaction reaction) {
+                super(reaction.name);
+                onClick(new Slot<Button>() {
+                    @Override
+                    public void onEmit(Button button) {
+                        context.reaction.update(reaction);
+                        context.phase.update(Phase.HANDOFF);
+                    }
+                });
+                context.phase.connect(new Slot<Phase>() {
+                    @Override
+                    public void onEmit(Phase phase) {
+                        setEnabled(phase.equals(Phase.ENCOUNTER));
+                    }
+                });
+            }
+        }
+
+        final class TriggerButton extends Button {
+            private TriggerButton(final String name, final Conclusion conclusion) {
+                super(name);
+                onClick(new Slot<Button>() {
+                    private final Player currentPlayer = context.currentPlayer.get();
+
+                    @Override
+                    public void onEmit(Button button) {
+                        ReactionGroup.this.removeAll();
+                        context.conclusion.update(conclusion);
+                        applyModelChanges(conclusion);
+                        add(new DoneButton());
+                    }
+
+                    private void applyModelChanges(Conclusion conclusion) {
+                        currentPlayer.storyPoints.update(
+                                currentPlayer.storyPoints.get() + conclusion.points);
+                        if (isThereASkillRewardThisPlayerDoesNotHave(conclusion)) {
+                            context.currentPlayer.get().skills.add(conclusion.skill);
+                        }
+                    }
+
+                    private boolean isThereASkillRewardThisPlayerDoesNotHave(Conclusion conclusion) {
+                        return conclusion.skill != null && !currentPlayer.skills.contains(conclusion.skill);
+                    }
+                });
+            }
+        }
+
+        final class DoneButton extends Button {
+            private DoneButton() {
+                super("Done");
+                onClick(new Slot<Button>() {
+                    @Override
+                    public void onEmit(Button button) {
+                        onDone.emit();
+                    }
+                });
+            }
+        }
+    }
+
 
     /**
      * Set the origin to the top center.

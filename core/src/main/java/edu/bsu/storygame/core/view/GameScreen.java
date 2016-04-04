@@ -1,21 +1,18 @@
 package edu.bsu.storygame.core.view;
 
 import com.google.common.collect.Maps;
-import edu.bsu.storygame.core.model.GameContext;
-import edu.bsu.storygame.core.model.Region;
+import edu.bsu.storygame.core.model.*;
 import playn.core.Game;
 import playn.scene.Layer;
-import playn.scene.Pointer;
 import pythagoras.f.Dimension;
 import pythagoras.f.IDimension;
 import pythagoras.f.IPoint;
 import pythagoras.f.Point;
-import react.SignalView;
-import react.Slot;
+import react.*;
 
 import java.util.Map;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 public final class GameScreen extends BoundedUIScreen {
 
@@ -66,8 +63,11 @@ public final class GameScreen extends BoundedUIScreen {
         content.addAt(player2Notebook, notebook2RestingLocation.x, notebook2RestingLocation.y);
         content.addAt(player1Notebook, notebook1RestingLocation.x, notebook1RestingLocation.y);
 
-        player1Notebook.events().connect(new NotebookOpener(player1Notebook));
-        player2Notebook.events().connect(new NotebookOpener(player2Notebook));
+        context.phase.connect(new NotebookOpener(player1Notebook, context.players.get(0)));
+        context.phase.connect(new NotebookOpener(player2Notebook, context.players.get(1)));
+
+        HandoffDialogFactory handOff = new HandoffDialogFactory(context);
+        content.addCenterAt(handOff.create(iface), content.width() / 2, content.height() / 2);
     }
 
     private void initMapView() {
@@ -80,33 +80,50 @@ public final class GameScreen extends BoundedUIScreen {
             @Override
             public void onEmit(Region region) {
                 context.game.plat.log().debug("Picked " + region);
+                initEncounter(region);
             }
         });
     }
 
-    private final class NotebookOpener implements SignalView.Listener<Object> {
-        private boolean open = false;
+    private void initEncounter(Region region) {
+        context.currentPlayer.get().location.update(region);
+        Encounter encounter = context.game.narrativeCache.state.result().get().forRegion(region).chooseOne();
+        context.encounter.update(encounter);
+        context.phase.update(Phase.ENCOUNTER);
+    }
+
+    private final class NotebookOpener implements SignalView.Listener<Phase> {
 
         private final NotebookLayer notebook;
+        private final Player player;
 
-        NotebookOpener(NotebookLayer notebook) {
+        NotebookOpener(final NotebookLayer notebook, Player player) {
             this.notebook = checkNotNull(notebook);
+            this.player = checkNotNull(player);
+
+            notebook.onDone.connect(new Slot<Void>() {
+                @Override
+                public void onEmit(Void aVoid) {
+                    closeNotebook(notebook).onComplete(new Slot<Try<Void>>() {
+                        @Override
+                        public void onEmit(Try<Void> voidTry) {
+                            context.phase.update(Phase.END_OF_ROUND);
+                        }
+                    });
+                }
+            });
         }
 
         @Override
-        public void onEmit(Object o) {
-            if (o instanceof Pointer.Interaction) {
-                playn.core.Pointer.Event e = ((Pointer.Interaction) o).event;
-                if (e.kind == playn.core.Pointer.Event.Kind.END) {
-                    if (open) {
-                        closeNotebook(notebook);
-                        open = false;
-                    } else {
-                        openNotebook(notebook);
-                        open = true;
-                    }
-                }
+        public void onEmit(Phase phase) {
+            if (isItMyEncounterPhase()) {
+                openNotebook(notebook);
             }
+        }
+
+        private boolean isItMyEncounterPhase() {
+            return context.currentPlayer.get().equals(player)
+                    && context.phase.get() == Phase.ENCOUNTER;
         }
     }
 
@@ -124,13 +141,9 @@ public final class GameScreen extends BoundedUIScreen {
                 });
     }
 
-    private void closeNotebook(final NotebookLayer notebook) {
-        final NotebookLayer newCurrentNotebook;
-        if(notebook.equals(notebooks[0])){
-            newCurrentNotebook = notebooks[1];
-        } else {
-            newCurrentNotebook = notebooks[0];
-        }
+    private RFuture<Void> closeNotebook(final NotebookLayer notebook) {
+        final RPromise<Void> promise = RPromise.create();
+        final NotebookLayer newCurrentNotebook = (notebook == notebooks[0]) ? notebooks[1] : notebooks[0];
         IPoint target = restingLocations.get(1);
         iface.anim.action(new Runnable() {
             @Override
@@ -151,10 +164,15 @@ public final class GameScreen extends BoundedUIScreen {
                 .easeIn().then().action(new Runnable() {
             @Override
             public void run() {
+                // Change Z-order.
+                // TODO: handle this more elegantly by changing layer depths.
                 content.remove(newCurrentNotebook);
                 content.addAt(newCurrentNotebook, newTarget.x(), newTarget.y());
+
+                promise.succeed(null);
             }
         });
+        return promise;
     }
 
     @Override
