@@ -103,7 +103,9 @@ public final class NotebookLayer extends GroupLayer {
                 public void onEmit(Encounter encounter) {
                     removeAll();
                     if (encounter != null) {
-                        add(new EncounterImage(encounter));
+                        EncounterImage encounterImage = new EncounterImage(encounter);
+                        add(encounterImage);
+
                     }
                 }
             });
@@ -145,9 +147,11 @@ public final class NotebookLayer extends GroupLayer {
             } catch (IllegalArgumentException e) {
                 imageKey = ImageCache.Key.MISSING_IMAGE;
             }
-            final float desiredWidth = IMAGE_SIZE * size().width();
+             final float desiredWidth = IMAGE_SIZE * encounterPage.width();
             Icon scaledIcon = scaler.scale(imageKey, desiredWidth);
             icon.update(scaledIcon);
+
+
         }
     }
 
