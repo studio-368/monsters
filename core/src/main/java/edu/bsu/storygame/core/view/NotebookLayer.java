@@ -98,11 +98,15 @@ public final class NotebookLayer extends GroupLayer {
 
         protected final int color;
         protected final Interface iface;
+        protected final Root root;
 
-        protected PageLayer() {
+        protected PageLayer(Layout layout) {
             super(closedSize.width(), closedSize.height());
             color = (player == context.players.get(0)) ? Colors.GREEN : Colors.CYAN;
             iface = ((ScreenStack.UIScreen) context.game.screenStack.top()).iface;
+            root = iface.createRoot(layout, stylesheet, this)
+                    .setSize(closedSize)
+                    .addStyles(Style.BACKGROUND.is(Background.solid(color)));
         }
     }
 
@@ -110,9 +114,7 @@ public final class NotebookLayer extends GroupLayer {
     private final class CoverPage extends PageLayer {
 
         private CoverPage() {
-            Root root = iface.createRoot(AxisLayout.vertical().offStretch(), stylesheet, this)
-                    .setSize(closedSize)
-                    .addStyles(Style.BACKGROUND.is(Background.solid(color)));
+            super(AxisLayout.vertical().offStretch());
             root.add(new Label(player.name + "'s Story")
                             .addStyles(Style.HALIGN.left),
                     new ScoreLabel()
@@ -170,19 +172,15 @@ public final class NotebookLayer extends GroupLayer {
 
     private final class EncounterPage extends PageLayer {
         private EncounterPage() {
-            iface.createRoot(AxisLayout.vertical(), stylesheet, this)
-                    .setSize(closedSize)
-                    .addStyles(Style.BACKGROUND.is(Background.solid(color)))
-                    .add(new Label("Encounter page"));
+            super(AxisLayout.vertical());
+            root.add(new Label("Encounter page"));
         }
     }
 
     private final class ReactionPage extends PageLayer {
         private ReactionPage() {
-            iface.createRoot(AxisLayout.vertical(), stylesheet, this)
-                    .setSize(closedSize)
-                    .addStyles(Style.BACKGROUND.is(Background.solid(color)))
-                    .add(new ReactionGroup());
+            super(AxisLayout.vertical());
+            root.add(new ReactionGroup());
         }
 
         private final class ReactionGroup extends Group {
@@ -231,18 +229,14 @@ public final class NotebookLayer extends GroupLayer {
 
     private final class StoryPage extends PageLayer {
         protected StoryPage() {
-            iface.createRoot(AxisLayout.vertical(), stylesheet, this)
-                    .setSize(width(), height())
-                    .addStyles(Style.BACKGROUND.is(Background.solid(color)))
-                    .add(new Label("Story goes here"));
+            super(AxisLayout.vertical());
+            root.add(new Label("Story goes here"));
         }
     }
 
     private final class SkillsPage extends PageLayer {
         protected SkillsPage() {
-            final Root root = iface.createRoot(AxisLayout.vertical(), stylesheet, this)
-                    .setSize(width(), height())
-                    .addStyles(Style.BACKGROUND.is(Background.solid(color)));
+            super(AxisLayout.vertical());
             context.reaction.connect(new Slot<Reaction>() {
                 @Override
                 public void onEmit(Reaction reaction) {
@@ -283,13 +277,11 @@ public final class NotebookLayer extends GroupLayer {
     }
 
     private final class ConclusionPage extends PageLayer {
-        private final Label label = new Label();
+        private final Label label = new Label().addStyles(Style.TEXT_WRAP.on);
 
         protected ConclusionPage() {
-            iface.createRoot(AxisLayout.vertical(), stylesheet, this)
-                    .setSize(width(), height())
-                    .addStyles(Style.BACKGROUND.is(Background.solid(color)))
-                    .add(label);
+            super(AxisLayout.vertical());
+            root.add(label);
             context.conclusion.connect(new SignalView.Listener<Conclusion>() {
                 @Override
                 public void onEmit(Conclusion conclusion) {
@@ -303,15 +295,13 @@ public final class NotebookLayer extends GroupLayer {
 
     private final class EndPage extends PageLayer {
         protected EndPage() {
-            iface.createRoot(AxisLayout.vertical(), stylesheet, this)
-                    .setSize(width(), height())
-                    .addStyles(Style.BACKGROUND.is(Background.solid(color)))
-                    .add(new Button("Close notebook").onClick(new Slot<Button>() {
-                        @Override
-                        public void onEmit(Button button) {
-                            onDone.emit();
-                        }
-                    }));
+            super(AxisLayout.vertical());
+            root.add(new Button("Close notebook").onClick(new Slot<Button>() {
+                @Override
+                public void onEmit(Button button) {
+                    onDone.emit();
+                }
+            }));
         }
     }
 
