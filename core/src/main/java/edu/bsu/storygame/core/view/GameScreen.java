@@ -79,7 +79,21 @@ public final class GameScreen extends BoundedUIScreen {
         HandoffDialogFactory handOff = new HandoffDialogFactory(context);
         content.addCenterAt(handOff.create(iface), content.width() / 2, content.height() / 2);
 
+        watchForPlayerWinCondition();
+
         configureMovementBanner();
+    }
+
+    private void watchForPlayerWinCondition() {
+        context.currentPlayer.get().storyPoints.connect(new Slot<Integer>() {
+            @Override
+            public void onEmit(Integer totalPoints) {
+                if (totalPoints == context.pointsRequiredForVictory) {
+                    context.game.screenStack.push(new WinScreen(context, context.currentPlayer.get())
+                            , context.game.screenStack.slide());
+                }
+            }
+        });
     }
 
     private void initMapView() {
