@@ -1,14 +1,13 @@
 package edu.bsu.storygame.core.view;
 
+import edu.bsu.storygame.core.assets.ImageCache;
 import edu.bsu.storygame.core.model.*;
+import edu.bsu.storygame.core.util.IconScaler;
 import playn.scene.GroupLayer;
 import playn.scene.Layer;
 import pythagoras.f.Dimension;
 import pythagoras.f.IDimension;
-import react.RList;
-import react.SignalView;
-import react.Slot;
-import react.UnitSignal;
+import react.*;
 import tripleplay.anim.AnimGroup;
 import tripleplay.anim.Animation;
 import tripleplay.game.ScreenStack;
@@ -173,7 +172,36 @@ public final class NotebookLayer extends GroupLayer {
     private final class EncounterPage extends PageLayer {
         private EncounterPage() {
             super(AxisLayout.vertical());
-            root.add(new Label("Encounter page"));
+            context.encounter.connect(new ValueView.Listener<Encounter>() {
+                @Override
+                public void onChange(Encounter encounter, Encounter t1) {
+                    if(encounter == null){
+                        root.removeAll();
+                    } else if (context.currentPlayer.get() == player){
+                        root.add(new Label("I encountered a "));
+                        root.add(new EncounterImage(encounter));
+                        root.add(new Label(encounter.name));
+                    }
+                }
+            });
+        }
+
+        private class EncounterImage extends Label {
+            private IconScaler scaler;
+            final float IMAGE_SIZE = 0.8f;
+
+            private EncounterImage(Encounter encounter) {
+                this.scaler = new IconScaler(context.game);
+                ImageCache.Key imageKey;
+                try {
+                    imageKey = ImageCache.Key.valueOf(encounter.imageKey.toUpperCase());
+                } catch (IllegalArgumentException e) {
+                    imageKey = ImageCache.Key.MISSING_IMAGE;
+                }
+                final float desiredWidth = IMAGE_SIZE * encounterPage.width();
+                Icon scaledIcon = scaler.scale(imageKey, desiredWidth);
+                icon.update(scaledIcon);
+            }
         }
     }
 
@@ -230,7 +258,16 @@ public final class NotebookLayer extends GroupLayer {
     private final class StoryPage extends PageLayer {
         protected StoryPage() {
             super(AxisLayout.vertical());
-            root.add(new Label("Story goes here"));
+            context.reaction.connect(new ValueView.Listener<Reaction>() {
+                @Override
+                public void onChange(Reaction reaction, Reaction t1) {
+                    if(reaction == null){
+                        root.removeAll();
+                    } else if (context.currentPlayer.get() == player){
+                        root.add(new Label(reaction.story.text).addStyles(Style.TEXT_WRAP.is(true)));
+                    }
+                }
+            });
         }
     }
 
