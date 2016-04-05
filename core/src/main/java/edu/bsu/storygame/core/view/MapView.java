@@ -82,9 +82,11 @@ public final class MapView extends ImageLayer {
     }
 
     private ImmutableList<Pin> makePinList() {
+        final float offset = context.game.bounds.percentOfHeight(0.06f);
         ImmutableList.Builder<Pin> builder = new ImmutableList.Builder<>();
-        for (Player p : context.players) {
-            Pin pin = new Pin(p);
+        for (int i = 0, limit = context.players.size(); i < limit; i++) {
+            Player p = context.players.get(i);
+            Pin pin = new Pin(p).offset(i * offset);
             builder.add(pin);
         }
         return builder.build();
@@ -103,6 +105,7 @@ public final class MapView extends ImageLayer {
         private static final float ANIMATION_DURATION = 350f;
 
         private final Point location = new Point(0, 0);
+        private float offset = 0;
         private final Texture texture;
 
         private Pin(Player player) {
@@ -150,8 +153,13 @@ public final class MapView extends ImageLayer {
             return canvas.toTexture();
         }
 
+        public Pin offset(float offset) {
+            this.offset = offset;
+            return this;
+        }
+
         public void paint(Surface surf) {
-            surf.draw(texture, location.x, location.y);
+            surf.draw(texture, location.x, location.y + offset);
         }
     }
 }
