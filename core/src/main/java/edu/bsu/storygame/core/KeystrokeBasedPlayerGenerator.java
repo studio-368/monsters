@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import edu.bsu.storygame.core.model.GameContext;
 import edu.bsu.storygame.core.model.Player;
+import edu.bsu.storygame.core.model.Region;
 import edu.bsu.storygame.core.model.Skill;
 import edu.bsu.storygame.core.view.GameScreen;
 import edu.bsu.storygame.core.view.Palette;
@@ -30,8 +31,17 @@ public class KeystrokeBasedPlayerGenerator implements SignalView.Listener<Keyboa
             @Override
             public void run() {
                 GameContext context = new GameContext(game,
-                        new Player.Builder().name("Ann").color(Palette.PLAYER_ONE).skills(makeSkillList()).build(),
-                        new Player.Builder().name("Barb").color(Palette.PLAYER_TWO).skills(makeSkillList()).build());
+                        new Player.Builder().name("Ann")
+                                .color(Palette.PLAYER_ONE)
+                                .location(Region.AFRICA)
+                                .skills(makeSkillList())
+                                .build(),
+                        new Player.Builder()
+                                .name("Barb")
+                                .color(Palette.PLAYER_TWO)
+                                .location(Region.NORTH_AMERICA)
+                                .skills(makeSkillList())
+                                .build());
                 GameScreen gameScreen = new GameScreen(context);
                 game.screenStack.push(gameScreen);
             }

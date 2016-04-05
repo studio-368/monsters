@@ -78,7 +78,7 @@ public final class GameScreen extends BoundedUIScreen {
     }
 
     private void initMapView() {
-        MapView mapView = new MapView(context);
+        MapView mapView = new MapView(context, iface.anim);
         mapView.setOrigin(Layer.Origin.CENTER);
         mapView.setScale(context.game.bounds.width() / mapView.width());
         content.addAt(mapView, context.game.bounds.width() / 2, mapView.scaledHeight() / 2);
