@@ -13,7 +13,6 @@ import tripleplay.anim.Animation;
 import tripleplay.game.ScreenStack;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
-import tripleplay.ui.layout.FlowLayout;
 import tripleplay.util.Colors;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -208,6 +207,7 @@ public final class NotebookLayer extends GroupLayer {
     private final class ReactionPage extends PageLayer {
         private ReactionPage() {
             super(AxisLayout.vertical());
+            root.add(new Label("I decided to"));
             root.add(new ReactionGroup());
         }
 
@@ -224,10 +224,11 @@ public final class NotebookLayer extends GroupLayer {
                         }
                     }
                 });
+
             }
 
             private Group makeReactionButtonAreaFor(Encounter encounter) {
-                Group group = new Group(new FlowLayout());
+                Group group = new Group(new AxisLayout.Vertical());
                 for (Reaction reaction : encounter.reactions) {
                     group.add(new ReactionButton(reaction));
                 }
