@@ -154,7 +154,7 @@ public final class GameScreen extends BoundedUIScreen {
                 .action(new Runnable() {
                     @Override
                     public void run() {
-                        notebook.open(iface.anim);
+                        notebook.open();
                     }
                 });
     }
@@ -171,7 +171,7 @@ public final class GameScreen extends BoundedUIScreen {
         iface.anim.action(new Runnable() {
             @Override
             public void run() {
-                notebook.close(iface.anim);
+                notebook.close();
             }
         }).then()
                 .delay(NotebookLayer.OPEN_CLOSE_ANIM_DURATION)
