@@ -3,6 +3,7 @@ package edu.bsu.storygame.core.view;
 import edu.bsu.storygame.core.assets.ImageCache;
 import edu.bsu.storygame.core.model.*;
 import edu.bsu.storygame.core.util.IconScaler;
+import playn.core.Font;
 import playn.scene.GroupLayer;
 import playn.scene.Layer;
 import pythagoras.f.Dimension;
@@ -103,7 +104,13 @@ public final class NotebookLayer extends GroupLayer {
                 public void onEmit(Encounter encounter) {
                     removeAll();
                     if (encounter != null) {
-                        add(new EncounterImage(encounter));
+                        Label encounterLabel = new Label("I encountered a ");
+                        add(encounterLabel);
+                        EncounterImage encounterImage = new EncounterImage(encounter);
+                        EncounterNameLabel encounterName = new EncounterNameLabel(encounter);
+                        add(encounterImage);
+                        add(encounterName);
+
                     }
                 }
             });
@@ -112,7 +119,7 @@ public final class NotebookLayer extends GroupLayer {
                 public void onEmit(Reaction reaction) {
                     removeAll();
                     if (reaction != null) {
-                        add(new EncounterReactionStory(reaction.story));
+                        add(new EncounterReactionStory(reaction.story).addStyles(Style.TEXT_WRAP.is(true)));
                     }
                 }
             });
@@ -138,16 +145,24 @@ public final class NotebookLayer extends GroupLayer {
 
             this.scaler = new IconScaler(context.game);
 
-            text.update(encounter.name);
             ImageCache.Key imageKey;
             try {
                 imageKey = ImageCache.Key.valueOf(encounter.imageKey.toUpperCase());
             } catch (IllegalArgumentException e) {
                 imageKey = ImageCache.Key.MISSING_IMAGE;
             }
-            final float desiredWidth = IMAGE_SIZE * size().width();
+             final float desiredWidth = IMAGE_SIZE * encounterPage.width();
             Icon scaledIcon = scaler.scale(imageKey, desiredWidth);
             icon.update(scaledIcon);
+
+
+        }
+    }
+
+    private class EncounterNameLabel extends Label {
+        private EncounterNameLabel(Encounter encounter){
+            text.update(encounter.name);
+
         }
     }
 
