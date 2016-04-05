@@ -80,7 +80,6 @@ public final class GameScreen extends BoundedUIScreen {
         content.addCenterAt(handOff.create(iface), content.width() / 2, content.height() / 2);
 
         watchForPlayerWinCondition();
-
         configureMovementBanner();
     }
 
