@@ -96,6 +96,15 @@ public class HandoffDialogFactory {
                 @Override
                 public void onEmit(Button button) {
                     context.phase.update(Phase.STORY);
+                    setEnabled(false);
+                }
+            });
+            context.phase.connect(new Slot<Phase>() {
+                @Override
+                public void onEmit(Phase phase) {
+                    if (phase == Phase.HANDOFF) {
+                        setEnabled(true);
+                    }
                 }
             });
         }
