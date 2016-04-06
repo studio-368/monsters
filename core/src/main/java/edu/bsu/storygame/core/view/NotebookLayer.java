@@ -315,19 +315,46 @@ public final class NotebookLayer extends GroupLayer {
     }
 
     private final class ConclusionPage extends PageLayer {
-        private final Label label = new Label().addStyles(Style.TEXT_WRAP.on);
 
         protected ConclusionPage() {
             super(AxisLayout.vertical());
-            root.add(label);
             context.conclusion.connect(new SignalView.Listener<Conclusion>() {
                 @Override
                 public void onEmit(Conclusion conclusion) {
-                    if (conclusion != null) {
-                        label.text.update(conclusion.text);
+                    if (conclusion == null) {
+                        removeAll();
+                    } else {
+                        root.add(new Label(conclusion.text).addStyles(Style.TEXT_WRAP.on));
+                        root.add(new EncounterRewardLabel(conclusion));
                     }
                 }
             });
+        }
+
+        final class EncounterRewardLabel extends Label {
+            private EncounterRewardLabel(Conclusion conclusion) {
+                super();
+                addStyles(Style.TEXT_WRAP.on);
+                StringBuilder stringBuilder = new StringBuilder();
+                if (conclusion.points > 0) {
+                    stringBuilder.append("You gain ")
+                            .append(String.valueOf(conclusion.points))
+                            .append(" story points");
+                }
+                if (conclusion.skill != null) {
+                    if (stringBuilder.length() > 0) {
+                        stringBuilder.append(" and the ")
+                                .append(conclusion.skill.name)
+                                .append(" skill");
+                    } else {
+                        stringBuilder.append("You gain the ")
+                                .append(conclusion.skill.name)
+                                .append(" skill");
+                    }
+                }
+                text.update(stringBuilder.toString());
+            }
+
         }
     }
 
