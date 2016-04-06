@@ -27,7 +27,7 @@ public final class PlayerCreationScreen extends BoundedUIScreen {
         root = iface.createRoot(AxisLayout.vertical().offStretch(),
                 GameStyle.newSheet(game), content)
                 .setSize(content.width(), content.height());
-        root.addStyles(Style.BACKGROUND.is(Background.solid(Palette.TUSCANY)));
+        root.addStyles(Style.BACKGROUND.is(Background.solid(Palette.GOLDEN_POPPY)));
         root.add(new Label("Traveler's Notebook: Monster Tales").addStyles(Style.FONT.is(Typeface.PASSION_ONE.in(game).atSize(0.10f))));
         root.add(new Label("Please customize your characters:").addStyles(Style.FONT.is(Typeface.PASSION_ONE.in(game).atSize(0.05f))));
         playerOneGroup = createPlayerGroup(Palette.PLAYER_ONE, players[0]);

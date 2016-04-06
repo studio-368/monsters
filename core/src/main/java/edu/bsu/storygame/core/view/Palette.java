@@ -7,18 +7,19 @@ import playn.core.Color;
 @SuppressWarnings("unused")
 public final class Palette {
 
-    public static final int TROPICAL_RAIN_FOREST = Color.rgb(0, 116, 93);
-    public static final int BLACK_PEARL = Color.rgb(2, 17, 24);
-    public static final int COCOA_BROWN = Color.rgb(42, 21, 0);
-    public static final int JADE = Color.rgb(0, 188, 101);
-    public static final int BLUE_LAGOON = Color.rgb(1, 78, 104);
-    public static final int NEW_AMBER = Color.rgb(107, 55, 33);
-    public static final int SPROUT = Color.rgb(173, 205, 98);
-    public static final int CARMINE = Color.rgb(36, 154, 200);
-    public static final int TUSCANY = Color.rgb(172, 92, 65);
+    public static final int ROSE = Color.rgb(218, 168, 155);
+    public static final int OBSERVATORY = Color.rgb(0, 136, 104);
+    public static final int WELL_READ = Color.rgb(140, 53, 65);
+    public static final int GOLDEN_POPPY = Color.rgb(240, 197, 0);
+    public static final int BLACKCURRANT = Color.rgb(44, 15, 55);
+    public static final int NOBEL = Color.rgb(153, 153, 153);
+    public static final int BROWN_POD = Color.rgb(66, 33, 11);
+    public static final int BLACK = Color.rgb(0, 0, 0);
+    public static final int WHITE_SMOKE = Color.rgb(242, 242, 242);
+    public static final int SWIRL = Color.rgb(216, 201, 188);
 
-    public static final int PLAYER_ONE = BLUE_LAGOON;
-    public static final int PLAYER_TWO = TROPICAL_RAIN_FOREST;
+    public static final int PLAYER_ONE = WELL_READ;
+    public static final int PLAYER_TWO = BROWN_POD;
 
     private Palette() {
     }
