@@ -5,5 +5,6 @@ public enum Phase {
     ENCOUNTER,
     HANDOFF,
     STORY,
+    CONCLUSION,
     END_OF_ROUND
 }

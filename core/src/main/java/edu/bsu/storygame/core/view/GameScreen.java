@@ -181,7 +181,7 @@ public final class GameScreen extends BoundedUIScreen {
                 .action(new Runnable() {
                     @Override
                     public void run() {
-                        notebook.open(iface.anim);
+                        notebook.open();
                     }
                 });
     }
@@ -198,7 +198,7 @@ public final class GameScreen extends BoundedUIScreen {
         iface.anim.action(new Runnable() {
             @Override
             public void run() {
-                notebook.close(iface.anim);
+                notebook.close();
             }
         }).then()
                 .delay(NotebookLayer.OPEN_CLOSE_ANIM_DURATION)
@@ -252,6 +252,7 @@ public final class GameScreen extends BoundedUIScreen {
     private final class MovementPrompt extends GroupLayer {
         private static final String TEXT_STUB = ", pick a place!";
         private static final int TRANSLUCENT_RED = 0xaae64650;
+        private static final float POPUP_DEPTH = 100;
         private final Label label = new Label(context.currentPlayer.get().name + TEXT_STUB);
 
         private MovementPrompt() {
@@ -260,6 +261,7 @@ public final class GameScreen extends BoundedUIScreen {
                     .setSize(width(), height())
                     .addStyles(Style.BACKGROUND.is(Background.solid(TRANSLUCENT_RED)))
                     .add(label);
+            setDepth(POPUP_DEPTH);
             context.currentPlayer.connect(new Slot<Player>() {
                 @Override
                 public void onEmit(Player player) {
