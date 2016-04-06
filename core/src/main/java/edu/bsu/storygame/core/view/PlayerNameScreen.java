@@ -12,11 +12,11 @@ import tripleplay.ui.layout.FlowLayout;
 
 public class PlayerNameScreen extends BoundedUIScreen {
 
+    public final ValueView<Boolean> complete = Value.create(false);
     private final MonsterGame game;
     private final Root root;
     private Field nameFieldOne;
     private Field nameFieldTwo;
-    public final ValueView<Boolean> complete = Value.create(false);
     private Button continueButton = new Button("Done");
 
     public PlayerNameScreen(final MonsterGame game) {
@@ -25,9 +25,9 @@ public class PlayerNameScreen extends BoundedUIScreen {
         root = iface.createRoot(AxisLayout.vertical().offStretch(),
                 GameStyle.newSheet(game), content)
                 .setSize(content.width(), content.height());
-        root.addStyles(Style.BACKGROUND.is(Background.solid(Palette.TUSCANY)));
-        root.add(new Label("Traveler's Notebook: Monster Tales").addStyles(Style.FONT.is(Typeface.PASSION_ONE.in(game).atSize(0.10f))));
-        root.add(new Label("Please enter your names:").addStyles(Style.FONT.is(Typeface.PASSION_ONE.in(game).atSize(0.05f))));
+        root.addStyles(Style.BACKGROUND.is(Background.solid(Palette.GOLDEN_POPPY)));
+        root.add(new Label("Traveler's Notebook: Monster Tales").addStyles(Style.FONT.is(Typeface.GAME_TEXT.in(game).atSize(0.10f))));
+        root.add(new Label("Please enter your names:").addStyles(Style.FONT.is(Typeface.GAME_TEXT.in(game).atSize(0.05f))));
         continueButton.onClick(new Slot<Button>() {
             @Override
             public void onEmit(Button button) {

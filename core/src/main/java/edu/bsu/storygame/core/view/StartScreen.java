@@ -5,7 +5,6 @@ import edu.bsu.storygame.core.assets.ImageCache;
 import edu.bsu.storygame.core.assets.Typeface;
 import edu.bsu.storygame.core.intro.SlideData;
 import edu.bsu.storygame.core.intro.SlideShow;
-import edu.bsu.storygame.core.util.IconScaler;
 import playn.core.Game;
 import react.SignalView;
 import react.Slot;
@@ -24,20 +23,14 @@ public final class StartScreen extends BoundedUIScreen {
     }
 
     private void initRoot() {
-        IconScaler scaler = new IconScaler(game);
-        Icon logo = scaler.scale(ImageCache.Key.LOGO, game.bounds.width() * 0.25f);
         iface.createRoot(AxisLayout.vertical(), GameStyle.newSheet(game), content)
                 .setSize(content.width(), content.height())
-                .addStyles(Style.BACKGROUND.is(Background.solid(Palette.TUSCANY)))
-                .add(new Label("The Nightmare Defenders need your help!")
-                                .addStyles(Style.FONT.is(Typeface.PASSION_ONE.in(game).atSize(0.08f)),
-                                        Style.TEXT_WRAP.on,
-                                        Style.COLOR.is(Palette.BLUE_LAGOON)),
-                        new Label(logo),
-                        new Label("Monsters are appearing in people's nightmares all over the world")
-                                .addStyles(Style.FONT.is(Typeface.OXYGEN.in(game).atSize(0.08f)),
-                                        Style.TEXT_WRAP.on,
-                                        Style.COLOR.is(Palette.BLUE_LAGOON)),
+                .addStyles(Style.BACKGROUND.is(Background.image(game.imageCache.image(ImageCache.Key.MAIN_MENU_BG))))
+                .add(new Shim(0, game.bounds.percentOfHeight(0.20f)),
+                        new Label("Traveler's Notebook: Monster Tales")
+                                .addStyles(Style.FONT.is(Typeface.TITLE_SCREEN.font.derive(
+                                        game.bounds.percentOfHeight(0.08f)))),
+                        new Shim(0, game.bounds.percentOfHeight(0.02f)),
                         new StartButton());
     }
 
@@ -48,7 +41,7 @@ public final class StartScreen extends BoundedUIScreen {
 
     final class StartButton extends Button {
         private StartButton() {
-            super("Join the Fight");
+            super("Begin Our Adventure!");
             onClick(new Slot<Button>() {
                 @Override
                 public void onEmit(Button button) {
