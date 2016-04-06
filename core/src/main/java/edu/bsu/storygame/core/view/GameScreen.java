@@ -87,24 +87,26 @@ public final class GameScreen extends BoundedUIScreen {
     }
 
     private void watchForPlayerWinCondition() {
-        context.currentPlayer.get().storyPoints.connect(new Slot<Integer>() {
-            @Override
-            public void onEmit(Integer totalPoints) {
-                if (totalPoints == context.pointsRequiredForVictory) {
-                    SlideShow winShow = new SlideShow(context.game,
-                            SlideData.text("Congratulations, " + context.currentPlayer.get().name + "!"),
-                            SlideData.text("You sure did find a lot of cool stories. I'll bet your new book will be amazing!")
-                                    .imageKey(ImageCache.Key.MISSING_IMAGE)
-                    );
-                    winShow.startOn(context.game.screenStack).onComplete(new SignalView.Listener<Try<Void>>() {
-                        @Override
-                        public void onEmit(Try<Void> event) {
-                            context.game.screenStack.push(new PlayAgainScreen(context.game), context.game.screenStack.slide());
-                        }
-                    });
-                }
-            }
-        });
+       for(Player player : context.players) {
+           player.storyPoints.connect(new Slot<Integer>() {
+               @Override
+               public void onEmit(Integer totalPoints) {
+                   if (totalPoints >= context.pointsRequiredForVictory) {
+                       SlideShow winShow = new SlideShow(context.game,
+                               SlideData.text("Congratulations, " + context.currentPlayer.get().name + "!"),
+                               SlideData.text("You sure did find a lot of cool stories. I'll bet your new book will be amazing!")
+                                       .imageKey(ImageCache.Key.MISSING_IMAGE)
+                       );
+                       winShow.startOn(context.game.screenStack).onComplete(new SignalView.Listener<Try<Void>>() {
+                           @Override
+                           public void onEmit(Try<Void> event) {
+                               context.game.screenStack.push(new PlayAgainScreen(context.game), context.game.screenStack.slide());
+                           }
+                       });
+                   }
+               }
+           });
+       }
     }
 
     private void initMapView() {

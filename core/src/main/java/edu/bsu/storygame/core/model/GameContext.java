@@ -16,7 +16,7 @@ public final class GameContext {
     public final Value<Reaction> reaction = Value.create(null);
     public final Value<Conclusion> conclusion = Value.create(null);
 
-    public final int pointsRequiredForVictory = 5;
+    public final int pointsRequiredForVictory = 100;
 
     public GameContext(MonsterGame game, Player... players) {
         this.game = checkNotNull(game);
