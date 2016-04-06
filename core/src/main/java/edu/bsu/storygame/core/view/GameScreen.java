@@ -87,26 +87,26 @@ public final class GameScreen extends BoundedUIScreen {
     }
 
     private void watchForPlayerWinCondition() {
-       for(Player player : context.players) {
-           player.storyPoints.connect(new Slot<Integer>() {
-               @Override
-               public void onEmit(Integer totalPoints) {
-                   if (totalPoints >= context.pointsRequiredForVictory) {
-                       SlideShow winShow = new SlideShow(context.game,
-                               SlideData.text("Congratulations, " + context.currentPlayer.get().name + "!"),
-                               SlideData.text("You sure did find a lot of cool stories. I'll bet your new book will be amazing!")
-                                       .imageKey(ImageCache.Key.MISSING_IMAGE)
-                       );
-                       winShow.startOn(context.game.screenStack).onComplete(new SignalView.Listener<Try<Void>>() {
-                           @Override
-                           public void onEmit(Try<Void> event) {
-                               context.game.screenStack.push(new PlayAgainScreen(context.game), context.game.screenStack.slide());
-                           }
-                       });
-                   }
-               }
-           });
-       }
+        for (Player player : context.players) {
+            player.storyPoints.connect(new Slot<Integer>() {
+                @Override
+                public void onEmit(Integer totalPoints) {
+                    if (totalPoints >= context.pointsRequiredForVictory) {
+                        SlideShow winShow = new SlideShow(context.game,
+                                SlideData.text("Congratulations, " + context.currentPlayer.get().name + "!"),
+                                SlideData.text("You sure did find a lot of cool stories. I'll bet your new book will be amazing!")
+                                        .imageKey(ImageCache.Key.MISSING_IMAGE)
+                        );
+                        winShow.startOn(context.game.screenStack).onComplete(new SignalView.Listener<Try<Void>>() {
+                            @Override
+                            public void onEmit(Try<Void> event) {
+                                context.game.screenStack.push(new PlayAgainScreen(context.game), context.game.screenStack.slide());
+                            }
+                        });
+                    }
+                }
+            });
+        }
     }
 
     private void initMapView() {
@@ -159,26 +159,29 @@ public final class GameScreen extends BoundedUIScreen {
 
     private RFuture<Void> animateNotebookCloseAndDropToRear(final NotebookLayer notebook) {
         final RPromise<Void> promise = RPromise.create();
-        IPoint target = new Point(content.width() * REAR_NOTEBOOK_X_PERCENT, notebookY);
+        final IPoint target = new Point(content.width() * REAR_NOTEBOOK_X_PERCENT, notebookY);
         iface.anim.action(new Runnable() {
             @Override
             public void run() {
-                notebook.close();
+                notebook.closeNotebook()
+                        .onComplete(new Slot<Try<Void>>() {
+                            @Override
+                            public void onEmit(Try<Void> voidTry) {
+                                iface.anim.tweenTranslation(notebook)
+                                        .to(target)
+                                        .in(BOOK_TRANSLATION_DURATION)
+                                        .easeIn()
+                                        .then()
+                                        .action(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                promise.succeed(null);
+                                            }
+                                        });
+                            }
+                        });
             }
-        }).then()
-                .delay(NotebookLayer.OPEN_CLOSE_ANIM_DURATION)
-                .then()
-                .tweenTranslation(notebook)
-                .to(target)
-                .in(BOOK_TRANSLATION_DURATION)
-                .easeIn()
-                .then()
-                .action(new Runnable() {
-                    @Override
-                    public void run() {
-                        promise.succeed(null);
-                    }
-                });
+        });
         return promise;
     }
 

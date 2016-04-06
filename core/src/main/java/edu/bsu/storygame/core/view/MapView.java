@@ -146,7 +146,7 @@ public final class MapView extends ImageLayer {
             Canvas canvas = context.game.plat.graphics().createCanvas(100, radius * 2);
             canvas.setFillColor(Colors.WHITE);
             canvas.fillCircle(radius, canvas.height / 2, canvas.height / 2);
-            Font font = Typeface.GAME_TEXT.font.derive(radius * 2);
+            Font font = Typeface.GAME_TEXT.font.derive(radius * 1.5f); // Leave room for descenders!
             TextFormat format = new TextFormat(font);
             TextLayout layout = context.game.plat.graphics().layoutText(name, format);
             canvas.fillText(layout, radius * 2, 0);

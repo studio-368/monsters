@@ -1,5 +1,6 @@
 package edu.bsu.storygame.core.view;
 
+import com.google.common.collect.Lists;
 import edu.bsu.storygame.core.assets.ImageCache;
 import edu.bsu.storygame.core.assets.Typeface;
 import edu.bsu.storygame.core.model.*;
@@ -14,6 +15,8 @@ import tripleplay.anim.Animation;
 import tripleplay.game.ScreenStack;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
+
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -275,6 +278,7 @@ public final class NotebookLayer extends GroupLayer {
     }
 
     private final class SkillsPage extends PageLayer {
+        private List<TriggerButton> buttons = Lists.newArrayList();
         protected SkillsPage() {
             super(AxisLayout.vertical());
             context.reaction.connect(new Slot<Reaction>() {
@@ -282,16 +286,29 @@ public final class NotebookLayer extends GroupLayer {
                 public void onEmit(Reaction reaction) {
                     if (reaction == null) {
                         root.removeAll();
+                        buttons.clear();
                     } else if (context.currentPlayer.get() == player) {
                         root.add(new Label("You used:"));
                         for (SkillTrigger skillTrigger : reaction.story.triggers) {
                             TriggerButton button = new TriggerButton(skillTrigger.skill.name, skillTrigger.conclusion);
                             button.setEnabled(context.currentPlayer.get().skills.contains(skillTrigger.skill));
                             root.add(button);
+                            buttons.add(button);
                         }
-                        Button noSkill = new TriggerButton("No Skill",
+                        TriggerButton noSkill = new TriggerButton("No Skill",
                                 context.reaction.get().story.noSkill.conclusion);
                         root.add(noSkill);
+                        buttons.add(noSkill);
+                    }
+                }
+            });
+            context.phase.connect(new Slot<Phase>() {
+                @Override
+                public void onEmit(Phase phase) {
+                    if (phase == Phase.CONCLUSION) {
+                        for (TriggerButton button : buttons) {
+                            button.setEnabled(false);
+                        }
                     }
                 }
             });
@@ -374,12 +391,22 @@ public final class NotebookLayer extends GroupLayer {
     private final class EndPage extends PageLayer {
         protected EndPage() {
             super(AxisLayout.vertical());
-            root.add(new Button("Close notebook").onClick(new Slot<Button>() {
+            final Button button = new Button("Close notebook").onClick(new Slot<Button>() {
                 @Override
                 public void onEmit(Button button) {
                     onDone.emit();
+                    button.setEnabled(false);
                 }
-            }));
+            });
+            root.add(button);
+            context.phase.connect(new Slot<Phase>() {
+                @Override
+                public void onEmit(Phase phase) {
+                    if (phase == Phase.CONCLUSION) {
+                        button.setEnabled(true);
+                    }
+                }
+            });
         }
     }
 
@@ -423,7 +450,8 @@ public final class NotebookLayer extends GroupLayer {
                 .add(movePageLeft(conclusionPage));
     }
 
-    public void close() {
+    public RFuture<Void> closeNotebook() {
+        final RPromise<Void> promise = RPromise.create();
         depthCounter = 0;
         iface.anim.add(movePageRight(conclusionPage))
                 .then()
@@ -445,8 +473,11 @@ public final class NotebookLayer extends GroupLayer {
                         for (int i = 0; i < pages.length; i++) {
                             pages[i].setDepth(pages.length - i);
                         }
+
+                        promise.succeed(null);
                     }
                 });
+        return promise;
     }
 
     private Animation movePageRight(final PageLayer layer) {
@@ -456,7 +487,7 @@ public final class NotebookLayer extends GroupLayer {
                 .then()
                 .tweenX(layer)
                 .to(centerX)
-                .in(OPEN_CLOSE_ANIM_DURATION / 6)
+                .in(OPEN_CLOSE_ANIM_DURATION / 4)
                 .easeIn()
                 .then()
                 .action(new SetDepthAndUpdateCounter(layer));

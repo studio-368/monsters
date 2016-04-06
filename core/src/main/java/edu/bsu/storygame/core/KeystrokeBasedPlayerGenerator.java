@@ -31,13 +31,13 @@ public class KeystrokeBasedPlayerGenerator implements SignalView.Listener<Keyboa
             @Override
             public void run() {
                 GameContext context = new GameContext(game,
-                        new Player.Builder().name("Ann")
+                        new Player.Builder().name("Bonnie")
                                 .color(Palette.PLAYER_ONE)
                                 .location(Region.AFRICA)
                                 .skills(makeSkillList())
                                 .build(),
                         new Player.Builder()
-                                .name("Barb")
+                                .name("Clyde")
                                 .color(Palette.PLAYER_TWO)
                                 .location(Region.NORTH_AMERICA)
                                 .skills(makeSkillList())
