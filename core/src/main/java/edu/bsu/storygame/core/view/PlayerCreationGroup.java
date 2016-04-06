@@ -101,6 +101,7 @@ public final class PlayerCreationGroup extends Group {
     final class SkillButton extends ToggleButton {
 
         private static final float PERCENT_OF_WIDTH = 0.22f;
+        private static final float PERCENT_OF_HEIGHT = 0.08f;
 
         final Skill skill;
 
@@ -108,7 +109,8 @@ public final class PlayerCreationGroup extends Group {
             super(skill.name);
             this.skill = skill;
             setConstraint(Constraints.fixedSize(
-                    game.bounds.width() * PERCENT_OF_WIDTH, 48));
+                    game.bounds.width() * PERCENT_OF_WIDTH,
+                    game.bounds.height() * PERCENT_OF_HEIGHT));
         }
 
         @Override
@@ -119,6 +121,7 @@ public final class PlayerCreationGroup extends Group {
 
     final class RegionButton extends ToggleButton {
         private static final float PERCENT_OF_WIDTH = 0.22f;
+        private static final float PERCENT_OF_HEIGHT = 0.08f;
 
         final Region region;
 
@@ -126,7 +129,8 @@ public final class PlayerCreationGroup extends Group {
             super(region.name().toLowerCase().replace("_", " "));
             this.region = region;
             setConstraint(Constraints.fixedSize(
-                    game.bounds.width() * PERCENT_OF_WIDTH, 48));
+                    game.bounds.width() * PERCENT_OF_WIDTH,
+                    game.bounds.height() * PERCENT_OF_HEIGHT));
         }
 
         @Override
