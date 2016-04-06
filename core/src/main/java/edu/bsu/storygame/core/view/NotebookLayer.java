@@ -332,7 +332,7 @@ public final class NotebookLayer extends GroupLayer {
                 @Override
                 public void onEmit(Conclusion conclusion) {
                     if (conclusion == null) {
-                        removeAll();
+                        root.removeAll();
                     } else {
                         root.add(new Label(conclusion.text).addStyles(Style.TEXT_WRAP.on));
                         root.add(new EncounterRewardLabel(conclusion));
