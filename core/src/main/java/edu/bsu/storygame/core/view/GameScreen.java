@@ -94,14 +94,12 @@ public final class GameScreen extends BoundedUIScreen {
                     SlideShow winShow = new SlideShow(context.game,
                             SlideData.text("Congratulations, " + context.currentPlayer.get().name + "!"),
                             SlideData.text("You sure did find a lot of cool stories. I'll bet your new book will be amazing!")
-                                    .imageKey(ImageCache.Key.MISSING_IMAGE),
-                            SlideData.text("You both did some pretty awesome research. If you had fun, why not play again and see what else you can find?")
-                                    .nextButtonText("Play again!")
+                                    .imageKey(ImageCache.Key.MISSING_IMAGE)
                     );
                     winShow.startOn(context.game.screenStack).onComplete(new SignalView.Listener<Try<Void>>() {
                         @Override
                         public void onEmit(Try<Void> event) {
-                            context.game.screenStack.push(new StartScreen(context.game), context.game.screenStack.slide());
+                            context.game.screenStack.push(new PlayAgainScreen(context.game), context.game.screenStack.slide());
                         }
                     });
                 }
