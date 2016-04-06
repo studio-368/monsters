@@ -423,7 +423,8 @@ public final class NotebookLayer extends GroupLayer {
                 .add(movePageLeft(conclusionPage));
     }
 
-    public void close() {
+    public RFuture<Void> closeNotebook() {
+        final RPromise<Void> promise = RPromise.create();
         depthCounter = 0;
         iface.anim.add(movePageRight(conclusionPage))
                 .then()
@@ -445,8 +446,11 @@ public final class NotebookLayer extends GroupLayer {
                         for (int i = 0; i < pages.length; i++) {
                             pages[i].setDepth(pages.length - i);
                         }
+
+                        promise.succeed(null);
                     }
                 });
+        return promise;
     }
 
     private Animation movePageRight(final PageLayer layer) {
@@ -456,7 +460,7 @@ public final class NotebookLayer extends GroupLayer {
                 .then()
                 .tweenX(layer)
                 .to(centerX)
-                .in(OPEN_CLOSE_ANIM_DURATION / 6)
+                .in(OPEN_CLOSE_ANIM_DURATION / 4)
                 .easeIn()
                 .then()
                 .action(new SetDepthAndUpdateCounter(layer));
