@@ -280,6 +280,7 @@ public final class NotebookLayer extends GroupLayer {
                     if (reaction == null) {
                         root.removeAll();
                     } else if (context.currentPlayer.get() == player) {
+                        root.add(new Label("You used:"));
                         for (SkillTrigger skillTrigger : reaction.story.triggers) {
                             SkillButton button = new SkillButton(skillTrigger);
                             button.setEnabled(context.currentPlayer.get().skills.contains(skillTrigger.skill));
