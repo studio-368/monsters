@@ -20,7 +20,7 @@ public class HandoffDialogFactory {
         this.context = checkNotNull(context);
     }
 
-    public Layer create(Interface iface) {
+    public Layer create(final Interface iface) {
         final GroupLayer layer = new GroupLayer(context.game.bounds.width(), context.game.bounds.height());
         layer.setVisible(false);
 
@@ -36,8 +36,18 @@ public class HandoffDialogFactory {
                 if (phase.equals(Phase.HANDOFF)) {
                     final String otherPlayerName = context.otherPlayer().name;
                     dialog.label.text.update("Please pass to " + otherPlayerName + ", who will read you your story!");
+                    layer.setVisible(true);
+                    iface.anim.tweenY(layer)
+                            .from(context.game.bounds.height())
+                            .to(0)
+                            .in(500f)
+                            .easeIn();
+                } else if (phase.equals(Phase.STORY)) {
+                    iface.anim.tweenY(layer)
+                            .from(0)
+                            .to(context.game.bounds.height())
+                            .easeOut();
                 }
-                layer.setVisible(phase.equals(Phase.HANDOFF));
                 ensureLayerIsOnTop();
             }
 
