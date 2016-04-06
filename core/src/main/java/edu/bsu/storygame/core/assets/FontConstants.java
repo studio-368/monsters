@@ -2,9 +2,9 @@ package edu.bsu.storygame.core.assets;
 
 public final class FontConstants {
 
-    public static final String OXYGEN_NAME = "Oxygen";
-    public static final String OXYGEN_LIGHT_NAME = "Oxygen Light";
-    public static final String PASSION_ONE_NAME = "Passion One";
+    public static final String TITLE_SCREEN_NAME = "Amarante";
+    public static final String HANDWRITING_NAME = "Handlee";
+    public static final String GAME_TEXT_NAME = "Crimson Text";
 
     private FontConstants() {}
 }

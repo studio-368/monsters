@@ -1,6 +1,7 @@
 package edu.bsu.storygame.core.view;
 
 import edu.bsu.storygame.core.assets.ImageCache;
+import edu.bsu.storygame.core.assets.Typeface;
 import edu.bsu.storygame.core.model.*;
 import edu.bsu.storygame.core.util.IconScaler;
 import playn.scene.GroupLayer;
@@ -176,9 +177,11 @@ public final class NotebookLayer extends GroupLayer {
                     if(encounter == null){
                         root.removeAll();
                     } else if (context.currentPlayer.get() == player){
-                        root.add(new Label("I encountered a "));
+                        root.add(new Label("I encountered a ").addStyles(
+                                Style.FONT.is(Typeface.HANDWRITING.in(context.game).atSize(0.045f))));
                         root.add(new EncounterImage(encounter));
-                        root.add(new Label(encounter.name));
+                        root.add(new Label(encounter.name).addStyles(
+                                Style.FONT.is(Typeface.HANDWRITING.in(context.game).atSize(0.045f))));
                     }
                 }
             });

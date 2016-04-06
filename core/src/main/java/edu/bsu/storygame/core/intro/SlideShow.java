@@ -133,7 +133,7 @@ public final class SlideShow {
                         .addStyles(Style.BACKGROUND.is(Background.solid(Colors.BLACK))).setConstraint(AxisLayout.stretched(1f));
                 group.add(new Label(data.text)
                         .addStyles(Style.COLOR.is(Colors.WHITE),
-                                Style.FONT.is(Typeface.OXYGEN.in(game).atSize(calculateSize(data.text))),
+                                Style.FONT.is(Typeface.GAME_TEXT.in(game).atSize(calculateSize(data.text))),
                                 Style.TEXT_WRAP.on)
                         .setConstraint(BorderLayout.CENTER));
                 group.add(buttonGroup.setConstraint(BorderLayout.SOUTH));
@@ -177,7 +177,7 @@ public final class SlideShow {
                         .addStyles(Style.BACKGROUND.is(Background.solid(POPUP_BACKGROUND)))
                         .add(new Label(data.popupText).addStyles(Style.TEXT_WRAP.on,
                                 Style.COLOR.is(Colors.BLACK),
-                                Style.FONT.is(Typeface.OXYGEN.in(game).atSize(0.1f))));
+                                Style.FONT.is(Typeface.HANDWRITING.in(game).atSize(0.1f))));
                 return popup;
             }
 

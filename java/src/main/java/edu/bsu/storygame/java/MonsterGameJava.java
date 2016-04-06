@@ -11,9 +11,9 @@ import pythagoras.i.IDimension;
 public class MonsterGameJava {
 
     private static final String[] FONT_SPECS = {
-            "fonts/Oxygen-Light.ttf", FontConstants.OXYGEN_LIGHT_NAME,
-            "fonts/Oxygen-Regular.ttf", FontConstants.OXYGEN_NAME,
-            "fonts/PassionOne-Regular.ttf", FontConstants.PASSION_ONE_NAME
+            "fonts/Amarante-Regular.ttf", FontConstants.TITLE_SCREEN_NAME,
+            "fonts/Handlee-Regular.ttf", FontConstants.HANDWRITING_NAME,
+            "fonts/CrimsonText-Roman.ttf", FontConstants.GAME_TEXT_NAME
     };
 
     private static final IDimension DEFAULT_SIZE = new Dimension(960, 640);
@@ -64,19 +64,6 @@ public class MonsterGameJava {
             return options;
         }
 
-        public void process(String[] args) {
-            CommandLine line;
-            try {
-                line = parse(createOptions(), args);
-            } catch (ParseException e) {
-                System.err.println("Parsing failed. Reason: " + e.getMessage());
-                return;
-            }
-            if (line.hasOption(SIZE_OPTION)) {
-                processSizeOption(line);
-            }
-        }
-
         private static void processSizeOption(CommandLine line) {
             String sizeString = line.getOptionValue(SIZE_OPTION);
             String[] separated = sizeString.split("x");
@@ -88,6 +75,19 @@ public class MonsterGameJava {
                 int h = Integer.valueOf(separated[1]);
                 size.width = w;
                 size.height = h;
+            }
+        }
+
+        public void process(String[] args) {
+            CommandLine line;
+            try {
+                line = parse(createOptions(), args);
+            } catch (ParseException e) {
+                System.err.println("Parsing failed. Reason: " + e.getMessage());
+                return;
+            }
+            if (line.hasOption(SIZE_OPTION)) {
+                processSizeOption(line);
             }
         }
     }

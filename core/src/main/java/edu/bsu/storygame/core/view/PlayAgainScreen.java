@@ -43,17 +43,17 @@ public class PlayAgainScreen extends BoundedUIScreen {
         return new Group(new FlowLayout()).add(
                 new Label("You both did some pretty awesome research!  Why not").addStyles(
                         Style.TEXT_WRAP.on,
-                        Style.FONT.is(Typeface.OXYGEN.in(game).atSize(0.1f))
+                        Style.FONT.is(Typeface.GAME_TEXT.in(game).atSize(0.1f))
                 ),
                 new Button("Play Again").onClick(new SignalView.Listener<Button>() {
                     @Override
                     public void onEmit(Button event) {
                         game.screenStack.push(new StartScreen(game), game.screenStack.slide());
                     }
-                }).addStyles(Style.FONT.is(Typeface.OXYGEN.in(game).atSize(0.1f))),
+                }).addStyles(Style.FONT.is(Typeface.GAME_TEXT.in(game).atSize(0.1f))),
                 new Label("and see what else you can find!").addStyles(
                         Style.TEXT_WRAP.on,
-                        Style.FONT.is(Typeface.OXYGEN.in(game).atSize(0.1f))
+                        Style.FONT.is(Typeface.GAME_TEXT.in(game).atSize(0.1f))
                 )
         );
     }
