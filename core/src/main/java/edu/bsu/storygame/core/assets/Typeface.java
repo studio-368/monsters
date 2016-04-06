@@ -3,13 +3,13 @@ package edu.bsu.storygame.core.assets;
 import edu.bsu.storygame.core.MonsterGame;
 import playn.core.Font;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public enum Typeface {
 
-    OXYGEN(FontConstants.OXYGEN_NAME),
-    OXYGEN_LIGHT(FontConstants.OXYGEN_LIGHT_NAME),
-    PASSION_ONE(FontConstants.PASSION_ONE_NAME);
+    TITLE_SCREEN(FontConstants.TITLE_SCREEN_NAME),
+    HANDWRITING(FontConstants.HANDWRITING_NAME),
+    GAME_TEXT(FontConstants.GAME_TEXT_NAME);
 
     /**
      * An arbitrary font size.

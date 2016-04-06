@@ -137,41 +137,6 @@ public final class GameScreen extends BoundedUIScreen {
         context.phase.update(Phase.ENCOUNTER);
     }
 
-    private final class NotebookOpener implements SignalView.Listener<Phase> {
-
-        private final NotebookLayer notebook;
-        private final Player player;
-
-        NotebookOpener(final NotebookLayer notebook, Player player) {
-            this.notebook = checkNotNull(notebook);
-            this.player = checkNotNull(player);
-
-            notebook.onDone.connect(new Slot<Void>() {
-                @Override
-                public void onEmit(Void aVoid) {
-                    closeNotebook(notebook).onComplete(new Slot<Try<Void>>() {
-                        @Override
-                        public void onEmit(Try<Void> voidTry) {
-                            context.phase.update(Phase.END_OF_ROUND);
-                        }
-                    });
-                }
-            });
-        }
-
-        @Override
-        public void onEmit(Phase phase) {
-            if (isItMyEncounterPhase()) {
-                openNotebook(notebook);
-            }
-        }
-
-        private boolean isItMyEncounterPhase() {
-            return context.currentPlayer.get().equals(player)
-                    && context.phase.get() == Phase.ENCOUNTER;
-        }
-    }
-
     private void openNotebook(final NotebookLayer notebook) {
         iface.anim.tweenTranslation(notebook)
                 .to(context.game.bounds.width() / 2, context.game.bounds.height() * 0.10f)
@@ -247,6 +212,41 @@ public final class GameScreen extends BoundedUIScreen {
     @Override
     public Game game() {
         return context.game;
+    }
+
+    private final class NotebookOpener implements SignalView.Listener<Phase> {
+
+        private final NotebookLayer notebook;
+        private final Player player;
+
+        NotebookOpener(final NotebookLayer notebook, Player player) {
+            this.notebook = checkNotNull(notebook);
+            this.player = checkNotNull(player);
+
+            notebook.onDone.connect(new Slot<Void>() {
+                @Override
+                public void onEmit(Void aVoid) {
+                    closeNotebook(notebook).onComplete(new Slot<Try<Void>>() {
+                        @Override
+                        public void onEmit(Try<Void> voidTry) {
+                            context.phase.update(Phase.END_OF_ROUND);
+                        }
+                    });
+                }
+            });
+        }
+
+        @Override
+        public void onEmit(Phase phase) {
+            if (isItMyEncounterPhase()) {
+                openNotebook(notebook);
+            }
+        }
+
+        private boolean isItMyEncounterPhase() {
+            return context.currentPlayer.get().equals(player)
+                    && context.phase.get() == Phase.ENCOUNTER;
+        }
     }
 
     private final class MovementPrompt extends GroupLayer {
