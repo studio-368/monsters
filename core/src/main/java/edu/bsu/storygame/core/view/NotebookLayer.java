@@ -13,7 +13,6 @@ import tripleplay.anim.Animation;
 import tripleplay.game.ScreenStack;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
-import tripleplay.util.Colors;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -100,7 +99,7 @@ public final class NotebookLayer extends GroupLayer {
 
         protected PageLayer(Layout layout) {
             super(closedSize.width(), closedSize.height());
-            color = (player == context.players.get(0)) ? Colors.GREEN : Colors.CYAN;
+            color = player.color;
             iface = ((ScreenStack.UIScreen) context.game.screenStack.top()).iface;
             root = iface.createRoot(layout, stylesheet, this)
                     .setSize(closedSize)
