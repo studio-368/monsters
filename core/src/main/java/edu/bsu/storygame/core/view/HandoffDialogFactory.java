@@ -1,8 +1,10 @@
 package edu.bsu.storygame.core.view;
 
+import edu.bsu.storygame.core.assets.ImageCache;
 import edu.bsu.storygame.core.model.GameContext;
 import edu.bsu.storygame.core.model.Phase;
 import playn.scene.GroupLayer;
+import playn.scene.ImageLayer;
 import playn.scene.Layer;
 import react.Slot;
 import tripleplay.ui.*;
@@ -43,6 +45,10 @@ public class HandoffDialogFactory {
                 layer.setDepth(100000);
             }
         });
+
+        final ImageLayer monsterHand = new ImageLayer(context.game.imageCache.image(ImageCache.Key.MONSTER_HAND));
+        layer.addAt(monsterHand, context.game.bounds.width() / 2, context.game.bounds.height() * 2 / 3);
+
         return layer;
     }
 
