@@ -1,5 +1,8 @@
 package edu.bsu.storygame.core.view;
 
+import edu.bsu.storygame.core.assets.ImageCache;
+import edu.bsu.storygame.core.intro.SlideData;
+import edu.bsu.storygame.core.intro.SlideShow;
 import edu.bsu.storygame.core.model.*;
 import playn.core.Game;
 import playn.scene.GroupLayer;
@@ -88,8 +91,19 @@ public final class GameScreen extends BoundedUIScreen {
             @Override
             public void onEmit(Integer totalPoints) {
                 if (totalPoints == context.pointsRequiredForVictory) {
-                    context.game.screenStack.push(new WinScreen(context, context.currentPlayer.get())
-                            , context.game.screenStack.slide());
+                    SlideShow winShow = new SlideShow(context.game,
+                            SlideData.text("Congratulations, " + context.currentPlayer.get().name + "!"),
+                            SlideData.text("You sure did find a lot of cool stories. I'll bet your new book will be amazing!")
+                                    .imageKey(ImageCache.Key.MISSING_IMAGE),
+                            SlideData.text("You both did some pretty awesome research. If you had fun, why not play again and see what else you can find?")
+                                    .nextButtonText("Play again!")
+                    );
+                    winShow.startOn(context.game.screenStack).onComplete(new SignalView.Listener<Try<Void>>() {
+                        @Override
+                        public void onEmit(Try<Void> event) {
+                            context.game.screenStack.push(new StartScreen(context.game), context.game.screenStack.slide());
+                        }
+                    });
                 }
             }
         });
