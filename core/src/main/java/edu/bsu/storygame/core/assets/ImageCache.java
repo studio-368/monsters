@@ -37,7 +37,9 @@ public class ImageCache {
         TANIWHA("taniwha.png"),
         ADZE("adze.png"),
         YOWIE("yowie.png"),
-        WENDIGO("wendigo.png");
+        WENDIGO("wendigo.png"),
+        INTRO_SCENE_2("cutscene_2.png"),
+        INTRO_SCENE_1("cutscene_1.png");
 
         private final String path;
 
