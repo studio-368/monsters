@@ -41,7 +41,7 @@ public final class Sidebar extends Group {
 
             Group textGroup = new Group(AxisLayout.vertical().offStretch())
                     .add(new NameLabel(player))
-                    .add(skillGroup = new SkillGroup(playerNumber == 0 ? Palette.SPROUT : Palette.BLACK_PEARL))
+                    .add(skillGroup = new SkillGroup(playerNumber == 0 ? Palette.ROSE : Palette.OBSERVATORY))
                     .add(new Shim(1f, 50f))
                     .add(new TurnLabel(star))
                     .setConstraint(AxisLayout.stretched());

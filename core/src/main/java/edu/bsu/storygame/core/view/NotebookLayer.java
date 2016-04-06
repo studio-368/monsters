@@ -64,7 +64,7 @@ public final class NotebookLayer extends GroupLayer {
 
         protected PageLayer() {
             super(closedSize.width(), closedSize.height());
-            color = (player == context.players.get(0)) ? Colors.GREEN : Colors.CYAN;
+            color = (player == context.players.get(0)) ? Palette.PLAYER_ONE : Palette.PLAYER_TWO;
             iface = ((ScreenStack.UIScreen) context.game.screenStack.top()).iface;
         }
     }
