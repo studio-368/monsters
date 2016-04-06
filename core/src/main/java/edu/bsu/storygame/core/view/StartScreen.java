@@ -28,16 +28,16 @@ public final class StartScreen extends BoundedUIScreen {
         Icon logo = scaler.scale(ImageCache.Key.LOGO, game.bounds.width() * 0.25f);
         iface.createRoot(AxisLayout.vertical(), GameStyle.newSheet(game), content)
                 .setSize(content.width(), content.height())
-                .addStyles(Style.BACKGROUND.is(Background.solid(Palette.TUSCANY)))
+                .addStyles(Style.BACKGROUND.is(Background.solid(Palette.GOLDEN_POPPY)))
                 .add(new Label("The Nightmare Defenders need your help!")
                                 .addStyles(Style.FONT.is(Typeface.PASSION_ONE.in(game).atSize(0.08f)),
                                         Style.TEXT_WRAP.on,
-                                        Style.COLOR.is(Palette.BLUE_LAGOON)),
+                                        Style.COLOR.is(Palette.BLACKCURRANT)),
                         new Label(logo),
                         new Label("Monsters are appearing in people's nightmares all over the world")
                                 .addStyles(Style.FONT.is(Typeface.OXYGEN.in(game).atSize(0.08f)),
                                         Style.TEXT_WRAP.on,
-                                        Style.COLOR.is(Palette.BLUE_LAGOON)),
+                                        Style.COLOR.is(Palette.BLACKCURRANT)),
                         new StartButton());
     }
 

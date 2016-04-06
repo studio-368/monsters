@@ -89,6 +89,8 @@ public final class SlideShow {
             public Slide(SlideData data) {
                 super(game);
                 this.data = checkNotNull(data);
+                if (data.nextButtonText != null)
+                    nextButton.setText(data.nextButtonText);
             }
 
             @Override
@@ -131,11 +133,21 @@ public final class SlideShow {
                         .addStyles(Style.BACKGROUND.is(Background.solid(Colors.BLACK))).setConstraint(AxisLayout.stretched(1f));
                 group.add(new Label(data.text)
                         .addStyles(Style.COLOR.is(Colors.WHITE),
-                                Style.FONT.is(Typeface.OXYGEN.in(game).atSize(0.15f)),
+                                Style.FONT.is(Typeface.OXYGEN.in(game).atSize(calculateSize(data.text))),
                                 Style.TEXT_WRAP.on)
                         .setConstraint(BorderLayout.CENTER));
                 group.add(buttonGroup.setConstraint(BorderLayout.SOUTH));
                 return group;
+            }
+
+            private float calculateSize(String text) {
+                if (text.length() > 100)
+                    return 0.09f;
+                if (text.length() > 35)
+                    return 0.15f;
+                if (text.length() > 15)
+                    return 0.20f;
+                return 0.25f;
             }
 
             private void showPopupText() {

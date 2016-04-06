@@ -13,6 +13,7 @@ public final class SlideData {
     public final String text;
     public ImageCache.Key imageKey;
     public String popupText;
+    public String nextButtonText;
 
     private SlideData(String text) {
         this.text = checkNotNull(text);
@@ -27,4 +28,10 @@ public final class SlideData {
         this.popupText = checkNotNull(text);
         return this;
     }
+
+    public SlideData nextButtonText(String text) {
+        this.nextButtonText = checkNotNull(text);
+        return this;
+    }
+
 }

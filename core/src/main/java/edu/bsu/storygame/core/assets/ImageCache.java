@@ -19,6 +19,7 @@ public class ImageCache {
 
     public enum Key {
         BACKGROUND("world_map.png"),
+        MONSTER_HAND("monster_hand.png"),
         COCKATRICE("cockatrice.png"),
         LOGO("logo.png"),
         MISSING_IMAGE("missing_image.png"),
