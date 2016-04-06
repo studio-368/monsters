@@ -282,34 +282,44 @@ public final class NotebookLayer extends GroupLayer {
                     } else if (context.currentPlayer.get() == player) {
                         root.add(new Label("You used:"));
                         for (SkillTrigger skillTrigger : reaction.story.triggers) {
-                            SkillButton button = new SkillButton(skillTrigger);
+                            TriggerButton button = new TriggerButton(skillTrigger.skill.name, skillTrigger.conclusion);
                             button.setEnabled(context.currentPlayer.get().skills.contains(skillTrigger.skill));
                             root.add(button);
                         }
-                        Button noSkill = new Button("No Skill").onClick(new Slot<Button>() {
-                            @Override
-                            public void onEmit(Button button) {
-                                context.conclusion.update(context.reaction.get().story.noSkill.conclusion);
-                                context.phase.update(Phase.CONCLUSION);
-                            }
-                        });
+                        Button noSkill = new TriggerButton("No Skill",
+                                context.reaction.get().story.noSkill.conclusion);
                         root.add(noSkill);
                     }
                 }
             });
         }
 
-        private final class SkillButton extends Button {
+        private final class TriggerButton extends Button {
 
-            public SkillButton(final SkillTrigger skillTrigger) {
-                super(skillTrigger.skill.name);
+            public TriggerButton(final String name, final Conclusion conclusion) {
+                super(name);
                 onClick(new Slot<Button>() {
                     @Override
                     public void onEmit(Button button) {
-                        context.conclusion.update(skillTrigger.conclusion);
+                        context.conclusion.update(conclusion);
+                        applyModelChanges(conclusion);
                         context.phase.update(Phase.CONCLUSION);
                     }
                 });
+            }
+
+            private void applyModelChanges(Conclusion conclusion) {
+                Player currentPlayer = context.currentPlayer.get();
+                currentPlayer.storyPoints.update(
+                        currentPlayer.storyPoints.get() + conclusion.points);
+                if (isThereASkillRewardThisPlayerDoesNotHave(conclusion)) {
+                    context.currentPlayer.get().skills.add(conclusion.skill);
+                }
+            }
+
+            private boolean isThereASkillRewardThisPlayerDoesNotHave(Conclusion conclusion) {
+                Player currentPlayer = context.currentPlayer.get();
+                return conclusion.skill != null && !currentPlayer.skills.contains(conclusion.skill);
             }
         }
     }
