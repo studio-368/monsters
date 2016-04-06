@@ -102,19 +102,19 @@ public final class GameStyle {
                 .add(PlayerCreationGroup.SkillButton.class,
                         Style.FONT.is(oxygenSmall),
                         Style.COLOR.is(Colors.BLACK),
-                        Style.BACKGROUND.is(Background.roundRect(gfx, Colors.WHITE, cornerRadius, Colors.BLACK, borderWidth).insets(buttonInsets)))
+                        Style.BACKGROUND.is(Background.roundRect(gfx, Palette.ROSE, cornerRadius, Palette.OBSERVATORY, borderWidth).insets(buttonInsets)))
                 .add(PlayerCreationGroup.SkillButton.class, Style.Mode.SELECTED,
                         Style.FONT.is(oxygenSmall),
                         Style.COLOR.is(Colors.WHITE),
-                        Style.BACKGROUND.is(Background.roundRect(gfx, Colors.BLACK, cornerRadius, Colors.WHITE, borderWidth).insets(buttonInsets)))
+                        Style.BACKGROUND.is(Background.roundRect(gfx, Palette.OBSERVATORY, cornerRadius, Palette.ROSE, borderWidth).insets(buttonInsets)))
                 .add(NavigationButton.class,
                         Style.FONT.is(oxygenLarge),
                         Style.COLOR.is(Colors.BLACK),
-                        Style.BACKGROUND.is(Background.roundRect(gfx, Colors.WHITE, cornerRadius, Colors.BLACK, borderWidth).insets(buttonInsets)))
+                        Style.BACKGROUND.is(Background.roundRect(gfx, Palette.ROSE, cornerRadius, Palette.OBSERVATORY, borderWidth).insets(buttonInsets)))
                 .add(NavigationButton.class, Style.Mode.SELECTED,
                         Style.FONT.is(oxygenLarge),
                         Style.COLOR.is(Colors.WHITE),
-                        Style.BACKGROUND.is(Background.roundRect(gfx, Colors.BLACK, cornerRadius, Colors.WHITE, borderWidth).insets(buttonInsets)))
+                        Style.BACKGROUND.is(Background.roundRect(gfx, Palette.OBSERVATORY, cornerRadius, Palette.ROSE, borderWidth).insets(buttonInsets)))
                 .add(NavigationButton.class, Style.Mode.DISABLED,
                         Style.FONT.is(oxygenLarge),
                         Style.COLOR.is(Colors.LIGHT_GRAY),
