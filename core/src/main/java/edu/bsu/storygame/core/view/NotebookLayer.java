@@ -177,7 +177,9 @@ public final class NotebookLayer extends GroupLayer {
     final class EncounterRewardLabel extends Label {
         private EncounterRewardLabel(Conclusion conclusion) {
             super();
+            addStyles(Style.TEXT_WRAP.on);
             StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(context.conclusion.get().text);
             if (conclusion.points > 0) {
                 stringBuilder.append("You gain ")
                         .append(String.valueOf(conclusion.points))
@@ -186,7 +188,7 @@ public final class NotebookLayer extends GroupLayer {
             if (conclusion.skill != null) {
                 if (stringBuilder.length() > 0) {
                     stringBuilder.append(" and the ")
-                            .append(conclusion.skill)
+                            .append(conclusion.skill.name)
                             .append(" skill");
                 } else {
                     stringBuilder.append("You gain the ")
