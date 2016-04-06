@@ -14,6 +14,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class HandoffDialogFactory {
 
+    private static final float ANIMATION_DURATION = 500f;
     private final GameContext context;
 
     public HandoffDialogFactory(GameContext context) {
@@ -40,12 +41,13 @@ public class HandoffDialogFactory {
                     iface.anim.tweenY(layer)
                             .from(context.game.bounds.height())
                             .to(0)
-                            .in(500f)
+                            .in(ANIMATION_DURATION)
                             .easeIn();
                 } else if (phase.equals(Phase.STORY)) {
                     iface.anim.tweenY(layer)
                             .from(0)
                             .to(context.game.bounds.height())
+                            .in(ANIMATION_DURATION)
                             .easeOut();
                 }
                 ensureLayerIsOnTop();
@@ -96,15 +98,6 @@ public class HandoffDialogFactory {
                 @Override
                 public void onEmit(Button button) {
                     context.phase.update(Phase.STORY);
-                    setEnabled(false);
-                }
-            });
-            context.phase.connect(new Slot<Phase>() {
-                @Override
-                public void onEmit(Phase phase) {
-                    if (phase == Phase.HANDOFF) {
-                        setEnabled(true);
-                    }
                 }
             });
         }

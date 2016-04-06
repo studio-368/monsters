@@ -322,24 +322,9 @@ public final class NotebookLayer extends GroupLayer {
                     @Override
                     public void onEmit(Button button) {
                         context.conclusion.update(conclusion);
-                        applyModelChanges(conclusion);
                         context.phase.update(Phase.CONCLUSION);
                     }
                 });
-            }
-
-            private void applyModelChanges(Conclusion conclusion) {
-                Player currentPlayer = context.currentPlayer.get();
-                currentPlayer.storyPoints.update(
-                        currentPlayer.storyPoints.get() + conclusion.points);
-                if (isThereASkillRewardThisPlayerDoesNotHave(conclusion)) {
-                    context.currentPlayer.get().skills.add(conclusion.skill);
-                }
-            }
-
-            private boolean isThereASkillRewardThisPlayerDoesNotHave(Conclusion conclusion) {
-                Player currentPlayer = context.currentPlayer.get();
-                return conclusion.skill != null && !currentPlayer.skills.contains(conclusion.skill);
             }
         }
     }
@@ -394,6 +379,7 @@ public final class NotebookLayer extends GroupLayer {
             final Button button = new Button("Close notebook").onClick(new Slot<Button>() {
                 @Override
                 public void onEmit(Button button) {
+                    applyModelChanges(context.conclusion.get());
                     onDone.emit();
                     button.setEnabled(false);
                 }
@@ -407,6 +393,21 @@ public final class NotebookLayer extends GroupLayer {
                     }
                 }
             });
+        }
+
+        private void applyModelChanges(Conclusion conclusion) {
+            Player currentPlayer = context.currentPlayer.get();
+            currentPlayer.storyPoints.update(
+                    currentPlayer.storyPoints.get() + conclusion.points);
+            if (isThereASkillRewardThisPlayerDoesNotHave(conclusion)) {
+                context.currentPlayer.get().skills.add(conclusion.skill);
+            }
+        }
+
+
+        private boolean isThereASkillRewardThisPlayerDoesNotHave(Conclusion conclusion) {
+            Player currentPlayer = context.currentPlayer.get();
+            return conclusion.skill != null && !currentPlayer.skills.contains(conclusion.skill);
         }
     }
 
