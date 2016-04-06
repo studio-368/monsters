@@ -18,6 +18,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class ImageCache {
 
     public enum Key {
+        MAIN_MENU_BG("main_menu_bg.png"),
         BACKGROUND("world_map.png"),
         MONSTER_HAND("monster_hand.png"),
         COCKATRICE("cockatrice.png"),

@@ -2,16 +2,14 @@ package edu.bsu.storygame.core.view;
 
 import edu.bsu.storygame.core.MonsterGame;
 import edu.bsu.storygame.core.assets.ImageCache;
+import edu.bsu.storygame.core.assets.Typeface;
 import edu.bsu.storygame.core.intro.SlideData;
 import edu.bsu.storygame.core.intro.SlideShow;
 import playn.core.Game;
 import react.SignalView;
 import react.Slot;
 import react.Try;
-import tripleplay.ui.Background;
-import tripleplay.ui.Button;
-import tripleplay.ui.Label;
-import tripleplay.ui.Style;
+import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
 
 public final class StartScreen extends BoundedUIScreen {
@@ -27,8 +25,12 @@ public final class StartScreen extends BoundedUIScreen {
     private void initRoot() {
         iface.createRoot(AxisLayout.vertical(), GameStyle.newSheet(game), content)
                 .setSize(content.width(), content.height())
-                .addStyles(Style.BACKGROUND.is(Background.solid(Palette.GOLDEN_POPPY)))
-                .add(new Label("Traveler's Notebook: Monster Tales"),
+                .addStyles(Style.BACKGROUND.is(Background.image(game.imageCache.image(ImageCache.Key.MAIN_MENU_BG))))
+                .add(new Shim(0, game.bounds.percentOfHeight(0.20f)),
+                        new Label("Traveler's Notebook: Monster Tales")
+                                .addStyles(Style.FONT.is(Typeface.TITLE_SCREEN.font.derive(
+                                        game.bounds.percentOfHeight(0.08f)))),
+                        new Shim(0, game.bounds.percentOfHeight(0.02f)),
                         new StartButton());
     }
 
