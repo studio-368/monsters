@@ -19,11 +19,11 @@ public class HandoffDialogFactory {
     }
 
     public Layer create(Interface iface) {
-        final GroupLayer layer = new GroupLayer(context.game.bounds.width() / 2f, context.game.bounds.height() / 2f);
+        final GroupLayer layer = new GroupLayer(context.game.bounds.width(), context.game.bounds.height());
         layer.setVisible(false);
 
         final HandoffDialog dialog = new HandoffDialog();
-        dialog.setConstraint(Constraints.fixedSize(layer.width(), layer.height()));
+        dialog.setConstraint(Constraints.fixedSize(layer.width() / 2f, layer.height() / 2f));
 
         iface.createRoot(AxisLayout.vertical(), GameStyle.newSheet(context.game), layer)
                 .setSize(layer.width(), layer.height())
@@ -47,7 +47,10 @@ public class HandoffDialogFactory {
     }
 
     final class HandoffDialog extends Group {
-        final Label label = new Label("");
+        final Label label = new Label("")
+                .addStyles(Style.TEXT_WRAP.on,
+                        Style.BACKGROUND.is(Background.blank().inset(
+                                context.game.bounds.percentOfHeight(0.08f), 0)));
 
         private HandoffDialog() {
             super(AxisLayout.vertical().stretchByDefault());
