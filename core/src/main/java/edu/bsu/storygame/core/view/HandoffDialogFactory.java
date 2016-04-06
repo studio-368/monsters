@@ -8,7 +8,7 @@ import react.Slot;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class HandoffDialogFactory {
 
@@ -33,7 +33,7 @@ public class HandoffDialogFactory {
             public void onEmit(Phase phase) {
                 if (phase.equals(Phase.HANDOFF)) {
                     final String otherPlayerName = context.otherPlayer().name;
-                    dialog.label.text.update("Hand the device to " + otherPlayerName);
+                    dialog.label.text.update("Please pass to " + otherPlayerName + ", who will read you your story!");
                 }
                 layer.setVisible(phase.equals(Phase.HANDOFF));
                 ensureLayerIsOnTop();
