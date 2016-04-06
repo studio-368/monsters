@@ -4,52 +4,132 @@
     "encounters": [
       {
         "name": "Adze",
-        "image": "",
+        "image": "adze",
         "reactions": [
           {
-            "name": "Trap",
+            "name": "TRAP",
             "story": {
               "text": "The sun is setting as you arrive at a village. An elderly woman offers you a room in her hut to sleep in. You wake up to the soft glow of a lightning bug flying around you.",
               "triggers": [
                 {
-                  "skill": "Athleticism",
+                  "skill": "Speed",
                   "conclusion": {
                     "text": "You catch the bug in a cup from the nightstand. You admire it for a second before it transforms into a vampire. You tie the monster up as a present to the villagers.",
-                    "points": 1
+                    "points": 20
                   }
                 },
                 {
                   "conclusion": {
-                    "text": "You try to catch the bug, but it's too fast. It escapes out the window.",
-                    "points": 0
+                    "text": "You try to catch the bug, but it’s too fast. It escapes out the window. ",
+                    "points": 10
                   }
                 }
               ]
             }
           },
           {
-            "name": "Kill",
+            "name": "KILL",
             "story": {
-              "text": "A sixth sense wakes you from your dreams. There's a single firefly dancing around you.The bug's light may be subtle, but it's keeping you awake. ",
+              "text": "A sixth sense wakes you from your dreams. There’s a single firefly dancing around you. The bug’s light may be subtle, but it’s keeping you awake.",
               "triggers": [
                 {
                   "conclusion": {
-                    "text": "The bug lands on the wall. You grab your shoe from the floor and strike it. Direct hit! When you pull your shoe back the bug flies away unharmed. ",
-                    "points": 0
+                    "text": "The bug lands on the wall. You grab your shoe from the floor and strike it. Direct hit! When you pull your shoe back the bug flies away unharmed.",
+                    "points": 15
                   }
                 }
               ]
             }
           },
           {
-            "name": "Ignore",
+            "name": "CLEANSE",
             "story": {
-              "text": "You decide to ignore the bug and go back to sleep. A moment later you feel the bug land on you, followed by a sharp pain. It bit you. You go to smack it but it's already gone. ",
+              "text": "A small village is in chaos. You ask what is wrong and discover that the chief’s wife was bit by an Adze and is now possessed. They ask if you can help.",
               "triggers": [
                 {
+                  "skill": "Magic",
                   "conclusion": {
-                    "text": "A strange feeling brews in the pit of your stomach as an unknown anger befalls you.",
-                    "points": 0
+                    "text": "The villager leads you to the chief’s hut. You perform a ritual to draw the evil spirit out of the woman. It takes hours and leaves you exhausted, but you do it.",
+                    "points": 15
+                  }
+                },
+                {
+                  "conclusion": {
+                    "text": "You tell them you will try your best. When you enter, the chief’s wife throws everything she can reach, driving you away.",
+                    "points": 10,
+                    "skill": "Speed"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Eloko",
+        "image": "",
+        "reactions": [
+          {
+            "name": "EXPLORE",
+            "story": {
+              "text": "You want to explore the deeper parts of a forest, and you hear of hunters with great, magical skills that can lead you through the woods.",
+              "triggers": [
+                {
+                  "skill": "Persuasion",
+                  "conclusion": {
+                    "text": "You persuade one of the hunters to guide you through the trees. The trip goes perfectly, and you bring back plenty of goods from the forest.",
+                    "points": 15
+                  }
+                },
+                {
+                  "conclusion": {
+                    "text": "Unable to find a guide, you set off into the deeper parts of the forest by yourself. You become hopelessly lost, until a hunting party finds you and leads you back to the village.",
+                    "points": 10
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "HUNT",
+            "story": {
+              "text": "You want to go hunting in the forest, but you hear warnings of mischievous creatures called eloko. You decide to go on anyway.",
+              "triggers": [
+                {
+                  "skill": "Logic",
+                  "conclusion": {
+                    "text": "You get a magical amulet from the village and head into the forest. Bells ring in your ears, but you resist the noise. You find and shoot a great buck, then head back.",
+                    "points": 15,
+                    "skill": "Stealth"
+                  }
+                },
+                {
+                  "conclusion": {
+                    "text": "You head into the forest, but you can’t find any animals.  Suddenly, you hear the sound of bells. The sound lures you even deeper into the forest, and become lost.",
+                    "points": 10
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "MAKE OFFERING",
+            "story": {
+              "text": "You hear that the eloko are the spirits of the villagers’ ancestors. You decide to calm them by making an offering in the hopes that they will leave the villagers alone. ",
+              "triggers": [
+                {
+                  "skill": "Logic",
+                  "conclusion": {
+                    "text": "You make an offering of animal meat from the forest, which seems to satisfy the eloko. They agree to leave the villagers alone.",
+                    "points": 20,
+                    "skill": "Persuasion"
+                  }
+                },
+                {
+                  "conclusion": {
+                    "text": "You offer the eloko a selection of fruit and bread from the village, but they are displeased. They threaten to eat you instead, but you run away before they can catch you.",
+                    "points": 15,
+                    "skill": "Speed"
                   }
                 }
               ]
@@ -62,132 +142,64 @@
         "image": "impundulu",
         "reactions": [
           {
-            "name": "Trap",
+            "name": "HUNT",
             "story": {
-              "text": "The bird circles around you in the sky for a while, then dives. You decide it would be a good idea to try to trap it. ",
+              "text": "The fat of the Impundulu is said to have healing powers. The village witch doctor asks you to trap the bird and get some fat from it. ",
               "triggers": [
                 {
+                  "skill": "Speed",
                   "conclusion": {
-                    "text": "The bird swoops down low, and you grab onto it. It lifts you high into the air, and you fall to the ground. You are knocked out.",
-                    "points": 0
+                    "text": "Lightning strikes the ground, and you rush over to the spot. The Impundulu is lying on the ground, dazed. You cut off some fat for the witch doctor, then run away.",
+                    "points": 20
+                  }
+                },
+                {
+                  "conclusion": {
+                    "text": "Lightning strikes, and you run as fast as you can to the Impundulu. You are not quick enough, however, and the bird flies away. You return to the village empty-handed.",
+                    "points": 10
                   }
                 }
               ]
             }
           },
           {
-            "name": "Attack",
+            "name": "FIND EGG",
             "story": {
-              "text": "The bird soars through the air with its talons bared. You only have a couple of seconds before its pointed claws slice you to ribbons.",
+              "text": "You have heard tales that the Impundulu lays a large egg underground, and those who find it will have good luck. You decide to search for it.",
+              "triggers": [
+                {
+                  "skill": "Strength",
+                  "conclusion": {
+                    "text": "You go to the location of the lightning strike and dig underground for the egg, but you accidentally break it. This is a bad omen, and will surely bring you bad luck.",
+                    "points": 15
+                  }
+                },
+                {
+                  "conclusion": {
+                    "text": "You dig in the sand and find the egg. You carefully lift it out of the hole and bring it back to the village. Such a rare find will surely bring you good fortune.",
+                    "points": 15,
+                    "skill": "Magic"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "ATTACK",
+            "story": {
+              "text": "You are walking through the desert when an Impundulu swoops down, bearing its talons. It looks like it is going to attack you.",
               "triggers": [
                 {
                   "skill": "Magic",
                   "conclusion": {
-                    "text": "You summon a huge fireball and launch it at the bird. The fire scares the giant bird, and it flies away.",
-                    "points": 1
+                    "text": "You summon a huge fireball and throw it at the Impundulu. It’s a direct hit, and the beast lets out a scream as it flies away. ",
+                    "points": 10
                   }
                 },
                 {
                   "conclusion": {
-                    "text": "The bird swoops toward you, and you take a swing at it. Unfortunately, you miss, and a bolt of lightning strikes you. You fall unconscious. ",
-                    "points": 0
-                  }
-                }
-              ]
-            }
-          },
-          {
-            "name": "Run",
-            "story": {
-              "text": "The sight of the huge bird strikes fear into your heart. You decide to try to run away before the bird can get to you.",
-              "triggers": [
-                {
-                  "conclusion": {
-                    "text": "You try to run away, but the bird sees you. Lightning strikes all around you as you run, and one of the bolts hits you. You escape, but not without some nasty burns.",
-                    "points": 0
-                  }
-                },
-                {
-                  "skill": "Athleticism",
-                  "conclusion": {
-                    "text": "You turn on your heels and sprint away, your feet flinging up dust as you run. You luckily escape the area unharmed.",
-                    "points": 0
-                  }
-                }
-              ]
-            }
-          }
-        ]
-      },
-      {
-        "name": "Ninki Nanka",
-        "image": "ninki_naka",
-        "reactions": [
-          {
-            "name": "Talk",
-            "story": {
-              "text": "You drag your feet through the murky swamp, when suddenly, the water ripples around you. A Ninki Nanka is staring you down.",
-              "triggers": [
-                {
-                  "conclusion": {
-                    "text": "You open your mouth to speak, but the creature snaps at you and roars. You start to feel sick, and run out of the swamp as fast as possible. ",
-                    "points": 0
-                  }
-                }
-              ]
-            }
-          },
-          {
-            "name": "Use Medicine",
-            "story": {
-              "text": "The villagers who asked for your help told you that being near the swamp monster would make you feel sick. They gave you medicine, just in case.",
-              "triggers": [
-                {
-                  "conclusion": {
-                    "text": "You drink the medicine they gave you. The monster sees it can't harm you and dives back into the water. \n",
-                    "points": 1
-                  }
-                }
-              ]
-            }
-          },
-          {
-            "name": "Attack",
-            "story": {
-              "text": "This thing looks mean, but you might be strong enough to fight it.",
-              "triggers": [
-                {
-                  "skill": "Weapon Use",
-                  "conclusion": {
-                    "text": "You slice at the monster with your sword but that just makes it angry. It comes completely out of the water, revealing its huge, shiny body. You run away as fast as you can.",
-                    "points": 0
-                  }
-                },
-                {
-                  "conclusion": {
-                    "text": "When you get close to the Ninki Nanka, it snaps its huge teeth at you. You can't fight it. ",
-                    "points": 0
-                  }
-                }
-              ]
-            }
-          },
-          {
-            "name": "Run",
-            "story": {
-              "text": "The Ninki Nanka may be much bigger than you are, but it looks slow. You think you can outrun it.",
-              "triggers": [
-                {
-                  "skill": "Stealth",
-                  "conclusion": {
-                    "text": "The monster is looking straight at you, but you're not sure it can actually see you. You back away slowly and the Ninki Nanka does nothing. You get away safely.",
-                    "points": 1
-                  }
-                },
-                {
-                  "conclusion": {
-                    "text": "You try to run away, but being so close to the monster makes you sick, just like the villagers warned. You get away, but it takes a while.",
-                    "points": 0
+                    "text": "You pull out a knife and slash at the creature, but it ignores the attack. It claws you as it swoops down, and you fall. The creature flies off and leaves you alone. ",
+                    "points": 15
                   }
                 }
               ]
@@ -205,56 +217,65 @@
         "image": "chinese_dragon",
         "reactions": [
           {
-            "name": "Attack",
+            "name": "FRIGHTEN",
             "story": {
-              "text": "You walk along a section of the Great Wall of China during a thunderstorm . Something massive flies above you.",
+              "text": "You walk along a section of the Great Wall of China. Something massive flies above you, creating a thunderstorm that is scaring everyone in the area.",
               "triggers": [
                 {
                   "skill": "Magic",
                   "conclusion": {
-                    "text": "You've heard that these types of dragons are the mortal enemies of tigers, so you cast a spell to summon a giant tiger. The dragon sees it and the two become locked in battle.",
-                    "points": 1
+                    "text": "You’ve heard that these types of dragons are the mortal enemies of tigers, so you cast a spell to summon a giant tiger. The dragon sees it and the two become locked in battle.",
+                    "points": 15
                   }
                 },
                 {
                   "conclusion": {
-                    "text": "You try to shoot the dragon down with a bow and arrows, but the winds from the storm are too strong.",
-                    "points": 0
+                    "text": "You try to frighten the monster off by shooting arrows at it with your bow, but this only makes it mad. It swoops down and grabs the bow from your hands. You run away.",
+                    "points": 10,
+                    "skill": "Speed"
                   }
                 }
               ]
             }
           },
           {
-            "name": "Bribe",
+            "name": "BRIBE",
             "story": {
               "text": "This dragon is causing a huge storm at the Great Wall of China. Dragons are known for being greedy, and you might just have something it wants.",
               "triggers": [
                 {
+                  "skill": "Persuasion",
                   "conclusion": {
-                    "text": "You've heard that these types of dragons revere a mystical flaming pearl. You bribe the dragon with a regular pearl in exchange for stopping the storm.",
-                    "points": 1
+                    "text": "You’ve heard that these types of dragons revere a mystical flaming pearl. You bribe the dragon with a regular pearl in exchange for stopping the storm.",
+                    "points": 15
+                  }
+                },
+                {
+                  "conclusion": {
+                    "text": "You yell to get the dragon’s attention and try to offer it your wallet. But all you have is paper money, and dragons like gold. Your wallet blows away and the storm continues.",
+                    "points": 10
                   }
                 }
               ]
             }
           },
           {
-            "name": "Run",
+            "name": "OBSERVE",
             "story": {
-              "text": "The dragon is flying so high that you think it probably can't see you. This is your chance to make your escape.",
+              "text": "An old Chinese legend says that there is a magical waterfall called The Dragon Gate. If a carp manages to leap over it, they become a dragon. You want to know if it’s true.",
               "triggers": [
                 {
-                  "skill": "Stealth",
+                  "skill": "Logic",
                   "conclusion": {
-                    "text": "You walk as carefully as you can away from the dragon. It does not see you through the clouds.",
-                    "points": 1
+                    "text": "You spend weeks training your carp. Finally, you think it is strong enough. You go to The Dragon Gate and watch you carp leap over the waterfall. It emerges as a dragon!",
+                    "points": 20
                   }
                 },
                 {
                   "conclusion": {
-                    "text": "As soon as you try to run, the dragon sees you and tries to capture you in its claws. You manage to hide in a tower until it loses interest.",
-                    "points": 0
+                    "text": "You search high and low for The Dragon Gate and a carp. You find a waterfall, but all you can get is a goldfish. You watch it swim around happily, but nothing happens.",
+                    "points": 10,
+                    "skill": "Logic"
                   }
                 }
               ]
@@ -267,63 +288,66 @@
         "image": "kappa",
         "reactions": [
           {
-            "name": "Greet",
+            "name": "GREET",
             "story": {
-              "text": "As you're sitting on the edge of a river, you see a large turtle swimming towards you. When it gets close it launches from the water to reveal it's not a turtle, but a kappa!",
+              "text": "As you’re sitting on the edge of a river, you see a large turtle swimming towards you. When it gets close it launches from the water to reveal it’s not a turtle, but a kappa!",
               "triggers": [
                 {
                   "skill": "Logic",
                   "conclusion": {
                     "text": "Remembering Japanese manners, you give the kappa a greeting bow. It returns your bow, emptying the water-filled dip on its head. It loses its strength and crawls to the water.",
-                    "points": 1
+                    "points": 20
                   }
                 },
                 {
                   "conclusion": {
                     "text": "The kappa stares at you, confused, as you wave at it. Without warning it tackles you and tries to drag you into the river. You manage to free yourself and flee.",
-                    "points": 1
+                    "points": 15,
+                    "skill": "Strength"
                   }
                 }
               ]
             }
           },
           {
-            "name": "Attack",
+            "name": "DEFEND",
             "story": {
-              "text": "The heat of the day is getting to you and you decide to splash some water from the nearby river on your face. As you kneel you're ambushed by something in the currents.",
+              "text": "The heat of the day is getting to you and you decide to splash some water from the nearby river on your face. As you kneel, you’re ambushed by something in the currents.",
               "triggers": [
                 {
-                  "skill": "Weapon Use",
+                  "skill": "Strength",
                   "conclusion": {
-                    "text": "You draw your blade, and the kappa hisses at you. It seems more disgusted at the metal you're wielding than it is of you. It backs away, returning to the water.",
-                    "points": 1
+                    "text": "You draw your blade, and the kappa hisses at you. It seems more disgusted at the metal you’re wielding than it is of you. It backs away, returning to the water.",
+                    "points": 15
                   }
                 },
                 {
                   "conclusion": {
-                    "text": "The creature is intimidating, but you don't back down. It lunges. You swing a mighty punch. You hit it in the face, the water in its head spills, and the kappa falls. ",
-                    "points": 1
+                    "text": "You run to your backpack and pull out the first thing you grab. It’s a cucumber; you throw it at the Kappa. It catches the cucumber. It seems happy as it returns to the water.",
+                    "points": 15,
+                    "skill": "Logic"
                   }
                 }
               ]
             }
           },
           {
-            "name": "Request",
+            "name": "REQUEST",
             "story": {
-              "text": "Nearby villagers have selected you to seek out the water spirit. Many have been injured, and the spirit is said to know ancient healing techniques.",
+              "text": "Nearby villagers have selected you to seek out the water spirit. Many villagers are sick, and the spirit is said to know ancient healing techniques.",
               "triggers": [
                 {
                   "skill": "Persuasion",
                   "conclusion": {
-                    "text": "The kappa returns to the river. You think you've failed until you see its shell coming back. It hands you a giant Scroll of Healing to take to the village.",
-                    "points": 1
+                    "text": "The kappa returns to the river. You think you’ve failed until you see its shell coming back. It hands you a giant Scroll of Healing to take to the village.",
+                    "points": 15,
+                    "skill": "Magic"
                   }
                 },
                 {
                   "conclusion": {
                     "text": "The kappa watches you plead for its help, but without an offering it refuses and leaves you kneeling on the edge of river.",
-                    "points": 0
+                    "points": 10
                   }
                 }
               ]
@@ -332,60 +356,61 @@
         ]
       },
       {
-        "name": "Kitsune",
+        "name": "Naga",
         "image": "",
         "reactions": [
           {
-            "name": "Talk",
+            "name": "DISCOVER",
             "story": {
-              "text": "Wishing to learn more of the world, you go in search of a rumored ancient, and powerful fox spirit in Japan.",
+              "text": "You’ve heard that at the bottom of the rivers and oceans, there are places filled with immortal snake people that live in giant, jeweled palaces.",
               "triggers": [
                 {
-                  "skill": "Persuasion",
+                  "skill": "Speed",
                   "conclusion": {
-                    "text": "You find the ancient fox; its eyes are filled with the promised wisdom. You persuade it to share some of its great knowledge.",
-                    "skill": "Magic"
+                    "text": "You dive and swim to the bottom of the river. You see the giant jeweled palace with the snake people swimming around it. You need air and have to leave.",
+                    "points": 20
                   }
                 },
                 {
                   "conclusion": {
-                    "text": "You feel great power and wisdom coming from the fox. You ask if it will share some of its vast knowledge with you. The fox sneers at you and vanishes before your eyes.",
-                    "points": 0
+                    "text": "The river is stronger than you thought. You struggle to stay above water. A hand grabs you and takes you to shore. You see the tail of a snake swimming into the water.",
+                    "points": 15
                   }
                 }
               ]
             }
           },
           {
-            "name": "Attack",
+            "name": "REQUEST",
             "story": {
-              "text": "As you enjoy a moonlit stroll, you see a light quickly approaching. Mesmerized, you watch it get closer, until you realize it's fire. You're being attacked by an angry fox spirit.",
+              "text": "You seek shelter from the drenching rains of a monsoon. You see a man under a canopy. As you get closer, you realize that the canopy is a giant snake.",
               "triggers": [
                 {
-                  "skill": "Weapon Use",
+                  "skill": "Stealth",
                   "conclusion": {
-                    "text": "You draw your sword and charge. The fox attempts to dodge, but you cut off its many tails in one powerful swing. It falls dead at your feet. ",
-                    "points": 1
+                    "text": "You sneak under the snake, careful not to catch its attention. You watch the man and realize he’s deep in meditation and doesn’t realize you’re there, either.",
+                    "points": 10
                   }
                 },
                 {
                   "conclusion": {
-                    "text": "You charge the fox foolishly. It skitters away from your attacks. A jet of flames launch from its mouth, burning you.",
-                    "points": 0
+                    "text": "The snake warns you that if you disturb the man he’s protecting, it will devour you. You promise you will be quiet and scurry out of the rain.",
+                    "points": 15,
+                    "skill": "Stealth"
                   }
                 }
               ]
             }
           },
           {
-            "name": "Leave",
+            "name": "REST",
             "story": {
-              "text": "An abandoned mansion catches your eye. Feeling adventurous, you decide to explore it. In the library, you find a fox spirit.",
+              "text": "You come to a temple, seeking water and shelter from the sun. The monks let you rest but have no water to spare, due to a drought.",
               "triggers": [
                 {
                   "conclusion": {
-                    "text": "You can sense the power of the fox and decide it's best not to disturb it. You carefully shut the library doors behind you and leave the mansion. ",
-                    "points": 1
+                    "text": "As you rest in the shade of the temple you see a eagle block out the sun and rain clouds appear. You run outside and dance in the rain, shouting praise to the eagle.",
+                    "points": 15
                   }
                 }
               ]
@@ -403,56 +428,65 @@
         "image": "bunyip",
         "reactions": [
           {
-            "name": "Hide",
+            "name": "HIDE",
             "story": {
               "text": "As you trudge through a swamp, you hear a howl that sends shivers down your spine. Wasting no time, you dive for cover.",
               "triggers": [
                 {
                   "skill": "Stealth",
                   "conclusion": {
-                    "text": "You conceal yourself in muck and shrubs. You watch from your hiding place as a giant amphibious dog walks right past you.",
-                    "points": 1
+                    "text": "You conceal yourself in muck and shrubs. You watch from your hiding place as a giant amphibious dog walks right past you. ",
+                    "points": 15
                   }
                 },
                 {
                   "conclusion": {
                     "text": "You try to cover yourself in mud and plants, but when the creature passes, you accidentally scream. You abandon your cover and run.",
-                    "points": 0
+                    "points": 10,
+                    "skill": "Speed"
                   }
                 }
               ]
             }
           },
           {
-            "name": "Attack",
+            "name": "ATTACK",
             "story": {
-              "text": "You're trekking through a swamp. You start to get a sense that something, other than the bugs biting your arm, is following you. You turn to see a large shadow trailing you.",
+              "text": "You’re trekking through a swamp. You start to get a sense that something, other than the bugs biting your arm, is following you. You turn to see a large shadow trailing you.",
               "triggers": [
                 {
-                  "skill": "Weapon Use",
+                  "skill": "Strength",
                   "conclusion": {
-                    "text": "The beast realizes it has been spotted and charges. There's barely enough time to draw your sword and fend off the creature.",
-                    "points": 1
+                    "text": "The beast realizes it has been spotted and charges. There’s barely enough time to draw your sword and fend off the creature.",
+                    "points": 15
                   }
                 },
                 {
                   "conclusion": {
-                    "text": "You don't have any weapons, but grab a thick branch as the beast charges you. You dodge its bite and smack the monster on its head. Dazed, it flees back into the swamp.",
-                    "points": 1
+                    "text": "You don’t have any weapons, but you grab a thick branch as the beast charges you. You dodge its bite and smack the monster on its head. Dazed, it flees back into the swamp. ",
+                    "points": 15
                   }
                 }
               ]
             }
           },
           {
-            "name": "Run",
+            "name": "OBSERVE",
             "story": {
-              "text": "As you make your way through the swamp you become uneasy, jumping at every turn. There's a loud snap of breaking branches behind you. ",
+              "text": "The locals warn you to avoid the swamps. When you ask why, they tell you of a giant dog-like creature that attacks anyone who trespasses.",
               "triggers": [
                 {
+                  "skill": "Magic",
                   "conclusion": {
-                    "text": "You don't bother looking behind you. Your instincts tell you to run, and you listen.",
-                    "points": 1
+                    "text": "You use your magic to look through the eyes of a bird. It doesn’t take long to spot the giant creature. It’s a wonderfully terrifying sight.",
+                    "points": 20
+                  }
+                },
+                {
+                  "conclusion": {
+                    "text": "A monster like that is exactly what you need for your book. You decide to brave the swamp. You find the creature napping in the trail. You watch it until it wakes.",
+                    "points": 15,
+                    "skill": "Stealth"
                   }
                 }
               ]
@@ -462,66 +496,45 @@
       },
       {
         "name": "Taniwha",
-        "image": "",
+        "image": "taniwha",
         "reactions": [
           {
-            "name": "Talk",
+            "name": "OFFER GIFT",
             "story": {
               "text": "You paddle your boat through a dark, gloomy river. Something moves underneath you and grabs your boat. The villagers warned you about this river guardian.",
               "triggers": [
                 {
                   "skill": "Logic",
                   "conclusion": {
-                    "text": "You've heard stories about people leaving offerings for the taniwha that guard their villages. You give the creature a traditional green twig and sweet potato.",
-                    "points": 1
+                    "text": "You’ve heard stories about people leaving offerings for the taniwha that guard their villages. You give the creature a traditional green twig and sweet potato. ",
+                    "points": 15
                   }
                 },
                 {
                   "conclusion": {
-                    "text": "Your words only seem to anger the guardian. It flips your boat over and swims away.",
-                    "points": 0
+                    "text": "You try to think of a good present for the monster, but all you have is your lunch. The monster turns up his nose at your tuna sandwich and swims away, offended.",
+                    "points": 10
                   }
                 }
               ]
             }
           },
           {
-            "name": "Attack",
+            "name": "OBSERVE",
             "story": {
-              "text": "As you paddle your boat, a creature grabs onto the edge and tries to pull you into the swamp.",
+              "text": "As you paddle your small boat through a river, you notice a Taniwha digging on the shore.",
               "triggers": [
                 {
-                  "skill": "Weapon Use",
+                  "skill": "Logic",
                   "conclusion": {
-                    "text": "You grab the spear the villagers gave you and strike the monster. It growls and quickly swims away.",
-                    "points": 1
+                    "text": "You’ve heard that Taniwha sometimes create harbours by carving-out channels in rivers. You come back every day to watch it work, until it finally finishes its masterpiece.",
+                    "points": 20
                   }
                 },
                 {
                   "conclusion": {
-                    "text": "The creature snaps its teeth at you. You don't want to go anywhere near that thing. You scream until the monster gets bored with you and swims away.",
-                    "points": 0
-                  }
-                }
-              ]
-            }
-          },
-          {
-            "name": "Run",
-            "story": {
-              "text": "The creature grabs ahold of your boat and tries to pull you under the water.",
-              "triggers": [
-                {
-                  "skill": "Athleticism",
-                  "conclusion": {
-                    "text": "You quickly dive overboard and swim to shore. The creature pursues you, but you manage to get away.",
-                    "points": 1
-                  }
-                },
-                {
-                  "conclusion": {
-                    "text": "You try to paddle away, but the taniwha grabs your boat and and traps you. You escape when it loses interest.",
-                    "points": 0
+                    "text": "You assume that the creature is looking for something, so you get down on your hands and knees and dig beside it. The monster gets angry at you and growls; you paddle away.",
+                    "points": 15
                   }
                 }
               ]
@@ -531,66 +544,67 @@
       },
       {
         "name": "Yowie",
-        "image": "",
+        "image": "yomie",
         "reactions": [
           {
-            "name": "Observe",
+            "name": "OBSERVE",
             "story": {
-              "text": "You see the yowie up ahead, skulking around in the grass. It hasn't noticed you yet, so you decide to sit back and watch what it does. ",
+              "text": "You see the yowie up ahead, skulking around in the grass. It hasn’t noticed you yet, so you decide to sit back and watch what it does. ",
               "triggers": [
                 {
                   "skill": "Stealth",
                   "conclusion": {
-                    "text": "You stand perfectly still. You watch as the yowie hunts a rabbit, then begins to feast. After a while, it walks away, and you leave.",
-                    "points": 1
+                    "text": "You stand perfectly still. You watch as the yowie hunts a rabbit, then begins to feast. After a while, it walks away, and you leave the forest behind.",
+                    "points": 15
                   }
                 },
                 {
                   "conclusion": {
-                    "text": "You try to be quiet and observe the yowie, but you fail miserably. It hears you and becomes startled. It runs off into the forest, leaving you disappointed.",
-                    "points": 0
+                    "text": "You try to be quiet, but you accidentally snap a branch and the yowie notices you. It runs toward you, and you manage to escape. ",
+                    "points": 10,
+                    "skill": "Speed"
                   }
                 }
               ]
             }
           },
           {
-            "name": "Attack",
+            "name": "COMMUNICATE",
             "story": {
-              "text": "The Yowie sees you and rears up, preparing for an attack. If you don't do anything, it will crush you with its mighty fists.",
+              "text": "The yowie turns toward you and makes a series of grunts and whoops. It sounds like it is trying to communicate with you, so you try your best to answer.",
               "triggers": [
                 {
-                  "skill": "Weapon Use",
+                  "skill": "Logic",
                   "conclusion": {
-                    "text": "It rushes at you. You pick up a stick and swing it at the monster. The creature is dazed, and runs away in fear.",
-                    "points": 1
+                    "text": "You try to match the yowie’s calls and succeed. It grabs some berries from a nearby bush and stomps up to you. It drops the berries at your feet, then runs off into the trees.",
+                    "points": 20
                   }
                 },
                 {
                   "conclusion": {
-                    "text": "The yowie rushes at you, ready to attack. It is on you before you have time to react, and it lands a heavy blow to your chest. You slam into a tree and fall unconscious.",
-                    "points": 0
+                    "text": "You wave your arms at the yowie, and it becomes startled. It begins to gather twigs and rocks off the ground and pelts them at you. You dodge the flying objects and run away. ",
+                    "points": 15
                   }
                 }
               ]
             }
           },
           {
-            "name": "Run",
+            "name": "RACE",
             "story": {
-              "text": "You walk toward the yowie, and it turns toward you and prepares to attack. Fear grips you, and you decide to get away from there as fast as possible.",
+              "text": "The yowie starts to climb a tree up ahead of you. You work your way over to a nearby tree and try to outpace it.",
               "triggers": [
                 {
-                  "skill": "Athleticism",
+                  "skill": "Speed",
                   "conclusion": {
-                    "text": "You turn on your heels and prepare to escape. As you run away, a branch snaps, alerting the monster. You easily outrun it, though.",
-                    "points": 1
+                    "text": "Your hands and feet move like lightning as you scale branch after branch. Soon enough, you watch the yowie from above as it climbs the tree, then heads back to the ground.",
+                    "points": 15
                   }
                 },
                 {
                   "conclusion": {
-                    "text": "You turn and run from the monster, and it chases you. The yowie easily catches up to you, and slams you to the ground.",
-                    "points": 0
+                    "text": "You try to race the yowie up the tree, but you struggle to get your footing on the branches. Eventually, you fall out of the tree and hit the ground, disappointed.",
+                    "points": 10
                   }
                 }
               ]
@@ -608,56 +622,65 @@
         "image": "wraith",
         "reactions": [
           {
-            "name": "Pay Respects",
+            "name": "PAY RESPECTS",
             "story": {
-              "text": "The wraith stares at you from within a lonely graveyard. It seems like it wants something from you, but you aren't sure. Perhaps there's something you can do for it.",
+              "text": "The wraith stares at you from within a lonely graveyard. It seems like it wants something from you, but you aren’t sure. Perhaps there’s something you can do for it.",
               "triggers": [
                 {
                   "skill": "Logic",
                   "conclusion": {
                     "text": "The ghost points a bony finger at a lonely patch of soil. You gather some flowers and place them on the grave. The creature seems satisfied, and disappears.",
-                    "points": 1
+                    "points": 20
                   }
                 },
                 {
                   "conclusion": {
-                    "text": "You see no way to pay respect for the dead in this cold, dark place. The wraith becomes angry and attacks. You fall unconscious.",
-                    "points": 0
+                    "text": "You see no way to pay respect for the dead in this cold, dark place. The wraith becomes angry and lets out a piercing shriek. You run away before it can do anything else.",
+                    "points": 10
                   }
                 }
               ]
             }
           },
           {
-            "name": "Attack",
+            "name": "WATCH",
             "story": {
-              "text": "The wraith screams and tenses up, preparing to attack. A thick fog blankets the graveyard and clouds your vision. You only have a few seconds to react before it gets to you.",
+              "text": "The wraith appears in the center of the old graveyard, but it hasn’t noticed you yet. You decide to watch it, and step closer to get a better look. ",
               "triggers": [
                 {
-                  "skill": "Magic",
+                  "skill": "Stealth",
                   "conclusion": {
-                    "text": "The fog thickens as the wraith comes nearer. You cast a fireball spell, and it hits the wraith's lantern. The lantern shatters, and the wraith cries out as it disappears.",
-                    "points": 1
+                    "text": "You creep closer to the wraith and watch as it floats among the tombstones. Dozens of tiny orbs of light appear around the wraith. You watch them until the sun comes up.",
+                    "points": 15,
+                    "skill": "Magic"
                   }
                 },
                 {
                   "conclusion": {
-                    "text": "You throw a punch at the wraith, but your fist does nothing to the creature. It laughs at you as it traps you in a cold embrace.",
-                    "points": 0
+                    "text": "As you step forward, your foot snaps a branch in two. The wraith notices you, and lets out a loud wail. The wraith vanishes, and its howl rings in your ears.",
+                    "points": 10
                   }
                 }
               ]
             }
           },
           {
-            "name": "Run",
+            "name": "COMMUNICATE",
             "story": {
-              "text": "Seeing the wraith makes your blood run cold. You decide that you want nothing to do with it, and resolve to run away. ",
+              "text": "The wraith looks angry as it thrashes around the graves. You decide to try and communicate with the ghostly figure in order to help it move on.",
               "triggers": [
                 {
+                  "skill": "Persuasion",
                   "conclusion": {
-                    "text": "You turn on your heels and sprint away from the lonely graves. The creature is slow, so you easily escape before it catches up to you.",
-                    "points": 0
+                    "text": "You call out to the wraith and it turns toward you. You begin to talk to it, and after a while you convince it to leave the graveyard in peace.",
+                    "points": 15
+                  }
+                },
+                {
+                  "conclusion": {
+                    "text": "You try to speak to the wraith, but your words fail to calm it down. A thick fog covers the graveyard, and you run away before anything else happens.",
+                    "points": 10,
+                    "skill": "Speed"
                   }
                 }
               ]
@@ -670,70 +693,63 @@
         "image": "nessy",
         "reactions": [
           {
-            "name": "Talk",
+            "name": "TALK",
             "story": {
-              "text": "You arrive at the shore of a vast lake. The water ripples softly in the moonlight. The ripples move closer, and a creature emerges.",
+              "text": "You arrive at the shore of a vast lake. The water ripples softly in the moonlight. The ripples move closer and a creature emerges. Everyone around you pulls out their cameras.",
               "triggers": [
                 {
                   "skill": "Persuasion",
                   "conclusion": {
-                    "text": "You quietly explain to the monster that if she continues scaring people, they will never leave her alone. She cackles like a dolphin and slowly slips back into the water.",
-                    "points": 1
+                    "text": "You quietly explain to the monster that if she continues entertaining people, they will never leave her alone. She cackles like a dolphin and slowly slips back into the water.",
+                    "points": 15
                   }
                 },
                 {
                   "conclusion": {
-                    "text": "The creature brings her face down to your level and releases a mighty roar that blows you away. You land unharmed in a tree, and run as far away from the lake as you can.",
-                    "points": 0
+                    "text": "You try to convince Nessie that she should go back into hiding, but she’s distracted by the cameras. She swims up to one photographer and gives him a giant smile.",
+                    "points": 15
                   }
                 }
               ]
             }
           },
           {
-            "name": "Attack",
+            "name": "RUN",
             "story": {
-              "text": "Surely you can outfight a water creature.",
+              "text": "You’ve heard that hunters have been trying to catch the Loch Ness Monster. The locals don’t know what to do. You think you can help her escape.",
               "triggers": [
                 {
-                  "skill": "Weapon Use",
+                  "skill": "Speed",
                   "conclusion": {
-                    "text": "You slice at her neck with your sword. The monster screeches in pain and disappears back into the water.",
-                    "points": 1
+                    "text": "You get the locals to help clear a path from the lake to the ocean. You lure Nessie on to land, and run with her all the way, making sure she doesn’t get hurt.",
+                    "points": 15
                   }
                 },
+                {
+                  "conclusion": {
+                    "text": "The locals help you clear a path from the lake to the ocean, but you’re too slow to keep up with Nessie as she runs. Instead, she lets you ride on her back!",
+                    "points": 20
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "FRIGHTEN",
+            "story": {
+              "text": "As you rest in a local restaurant, you hear that some townspeople are thinking about attacking the Loch Ness Monster. You decide you want to help her escape.",
+              "triggers": [
                 {
                   "skill": "Magic",
                   "conclusion": {
-                    "text": "Three spheres of light swirl around the monster's head and chase Nessie down into the water. You hope she will escape through the large crevice at the bottom of the lake.",
-                    "points": 1
+                    "text": "Three spheres of light swirl around the monster’s head and chase Nessie down into the water. You hope she will escape through the large crevice at the bottom of the lake.",
+                    "points": 15
                   }
                 },
                 {
                   "conclusion": {
-                    "text": "She is too fast for you. She picks you up in her mouth and shakes you back and forth until you fly out and into some nearby trees. You are uninjured, but a little dizzy.",
-                    "points": 0
-                  }
-                }
-              ]
-            }
-          },
-          {
-            "name": "Run",
-            "story": {
-              "text": "You assume that because Nessie lives in a lake, you can outrun her. ",
-              "triggers": [
-                {
-                  "skill": "Stealth",
-                  "conclusion": {
-                    "text": "Even though Nessie is a lake monster, you've read that she can run on land. You try to look small and unimportant so the monster will lose interest in you, and you escape.",
-                    "points": 1
-                  }
-                },
-                {
-                  "conclusion": {
-                    "text": "You don't realize that Nessie has been reported running on land before. You just barely get away.",
-                    "points": 0
+                    "text": "You run straight at the monster, yelling and waving your arms, but she doesn’t seem to care. You watch her swim around for a while before she dives under the water.",
+                    "points": 10
                   }
                 }
               ]
@@ -746,63 +762,43 @@
         "image": "kraken",
         "reactions": [
           {
-            "name": "Talk",
+            "name": "RUN",
             "story": {
-              "text": "The crowded beach is in chaos as people panic and run out of the deep blue water. You decide to be brave and try to talk to the monster.",
+              "text": "You stand on a beach, watching it flail. This thing is so big, you can hardly see its face behind its massive tentacles. There’s no way it can catch you.",
+              "triggers": [
+                {
+                  "skill": "Speed",
+                  "conclusion": {
+                    "text": "You sprint to a nearby lighthouse. When the monster strikes, you dive out of the way. The tentacle hits the lighthouse and is sliced in half.",
+                    "points": 20
+                  }
+                },
+                {
+                  "conclusion": {
+                    "text": "You try to run, but trip and fall on your face. Is that thing laughing at you? It picks you up in one of its tentacles and sets you on your feet, and swims away, entertained.",
+                    "points": 15
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "FEED",
+            "story": {
+              "text": "You stand on a fishing boat in the middle of the ocean. The monster is determined to flip your boat over. You can’t tell if it’s angry, or just hungry.",
               "triggers": [
                 {
                   "skill": "Persuasion",
                   "conclusion": {
-                    "text": "A tentacle wraps around you and lifts you high into the air. You remind the monster of how fish taste much better than humans, and convince it to leave the beach.",
-                    "points": 1
+                    "text": "You release all of your fish back into the water, hoping to make the monster happy. It quickly gobbles them up and swims away.",
+                    "points": 10
                   }
                 },
                 {
                   "conclusion": {
-                    "text": "You try to get close enough to talk to the creature, but it can't hear you over all of the commotion. You give up and go home.",
-                    "points": 0
-                  }
-                }
-              ]
-            }
-          },
-          {
-            "name": "Attack",
-            "story": {
-              "text": "The monster is grabbing people in its mighty tentacles and holding them high in the air. You have to help them.",
-              "triggers": [
-                {
-                  "skill": "Magic",
-                  "conclusion": {
-                    "text": "You hold out your hands and summon a ball of electricity. It shoots out of your hands and strikes the water, shocking the creature and causing it to swim away. ",
-                    "points": 1
-                  }
-                },
-                {
-                  "conclusion": {
-                    "text": "You run up to the nearest tentacle and give it a few kicks, but it flicks you away and you have no choice but to give up.",
-                    "points": 0
-                  }
-                }
-              ]
-            }
-          },
-          {
-            "name": "Run",
-            "story": {
-              "text": "This thing is so big, you can hardly see its face behind its massive tentacles. There's no way it can catch you.",
-              "triggers": [
-                {
-                  "skill": "Athleticism",
-                  "conclusion": {
-                    "text": "You sprint to a nearby lighthouse. When the monster strikes, you dive out of the way. The tentacle hits the lighthouse and is sliced in half.",
-                    "points": 1
-                  }
-                },
-                {
-                  "conclusion": {
-                    "text": "You attempt to run back up the beach, but it grabs you with a tentacle and pulls you up high into the air. It holds you there until someone else scares it away.",
-                    "points": 0
+                    "text": "You try to offer it a slice of pizza, but the creature ignores you. Instead, it grabs your first mate, and swallows him whole! The Kraken disappears back into the water.",
+                    "points": 15,
+                    "skill": "Logic"
                   }
                 }
               ]
@@ -815,56 +811,65 @@
         "image": "cockatrice",
         "reactions": [
           {
-            "name": "Observe",
+            "name": "OBSERVE",
             "story": {
               "text": "The creature is ahead of you, stomping around in the grass. You decide to hang back and observe it from a distance. ",
               "triggers": [
                 {
                   "skill": "Stealth",
                   "conclusion": {
-                    "text": "You stand perfectly still, making sure not to move a muscle. You watch as the cockatrice snaps up a nearby rabbit. What a magnificent sight!",
-                    "points": 1
+                    "text": "You stand perfectly still, making sure not to move a muscle. You watch as the cockatrice snaps up a nearby rabbit. What a magnificent sight! ",
+                    "points": 15
                   }
                 },
                 {
                   "conclusion": {
-                    "text": "You hunker down to watch the cockatrice, but you accidentally slip and fall to the ground. The creature notices you and attacks! You fall unconscious.",
-                    "points": 0
+                    "text": "You lay down on the ground, but the creature notices you. You quickly look the other way to avoid its gaze, then bolt away from the scene. ",
+                    "points": 10,
+                    "skill": "Speed"
                   }
                 }
               ]
             }
           },
           {
-            "name": "Attack",
+            "name": "TRICK",
             "story": {
-              "text": "The cockatrice notices movement behind it and starts to turn around. You must do something before it looks at you. Otherwise, you'll be turned to stone.",
+              "text": "You hear the cockatrice shuffle around and stomp toward you. You only have a moment to react before it will reach you.",
+              "triggers": [
+                {
+                  "skill": "Logic",
+                  "conclusion": {
+                    "text": "You know that the cockatrice hates its reflection. You pull out a small mirror and hold it behind your back. The cockatrice screams and runs away. ",
+                    "points": 15
+                  }
+                },
+                {
+                  "conclusion": {
+                    "text": "You don’t know what you can do to defend against the cockatrice. Seeing no other options, you decide to run away from the monster.",
+                    "points": 10,
+                    "skill": "Speed"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "ATTACK",
+            "story": {
+              "text": "The cockatrice lets out a mighty roar and runs toward you. You snap your eyes shut to avoid its gaze, then act. ",
               "triggers": [
                 {
                   "skill": "Magic",
                   "conclusion": {
-                    "text": "You use magic to create a brilliant flash of light. The cockatrice is blinded by the light and flies away, annoyed.",
-                    "points": 1
+                    "text": "You summon a blinding flash of light. The cockatrice screams and scuttles off, clearly annoyed. You open your eyes to find yourself alone in the grassy field.",
+                    "points": 20
                   }
                 },
                 {
                   "conclusion": {
-                    "text": "You run up to the creature and attack it with your fists. Your punches bounce off its scaly hide, and it turns around and attacks you. You fall unconscious.",
-                    "points": 0
-                  }
-                }
-              ]
-            }
-          },
-          {
-            "name": "Run",
-            "story": {
-              "text": "The cockatrice is lying in the grass, sleeping soundly. It has no idea you're there, and you know how dangerous it is. You decide to leave it alone.",
-              "triggers": [
-                {
-                  "conclusion": {
-                    "text": "The soft grass masks your footfalls as you run away from the sleeping cockatrice. You manage to run away without waking it up.",
-                    "points": 0
+                    "text": "You pull out a knife and slash blindly, but it’s no use. The cockatrice attacks, and you find yourself unable to move. The monster leaves, but you stay frozen for a few hours.",
+                    "points": 15
                   }
                 }
               ]
@@ -882,56 +887,58 @@
         "image": "deer_women",
         "reactions": [
           {
-            "name": "Invite",
+            "name": "INVITE",
             "story": {
-              "text": "You are dancing around a fire to tribal music. You see a woman hiding on the forest's edge and invite her to join.",
+              "text": "You are dancing around a fire to tribal music. You see a woman hiding on the forest’s edge and invite her to join.",
               "triggers": [
                 {
                   "skill": "Logic",
                   "conclusion": {
-                    "text": "As the woman nears, you notice she doesn't have feet, but deer hooves. You look away and let her enjoy a night of dancing. ",
-                    "points": 1
+                    "text": "As the woman nears, you notice she doesn’t have feet, but deer hooves. You look away and let her enjoy a night of dancing.",
+                    "points": 15
                   }
                 },
                 {
                   "conclusion": {
-                    "text": "The woman's deer hooves grab your attention. Your stares make her embarrassed and uncomfortable. She runs back to the woods. Something in the forest now feels threatening.",
-                    "points": 1
+                    "text": "The woman’s deer hooves grab your attention. Your stares make her embarrassed and uncomfortable. She runs back to the woods. Something in the forest now feels threatening.",
+                    "points": 10,
+                    "skill": "Logic"
                   }
                 }
               ]
             }
           },
           {
-            "name": "Follow",
+            "name": "FOLLOW",
             "story": {
-              "text": "Curious, you follow the woman into the forest. You catch up to her in a small clearing. She turns into a large deer and attacks. ",
+              "text": "You notice a woman watching you from the edge of a forest. Curious, you follow the woman into the forest. You catch up to her in a small clearing. She turns into a large deer and attacks. ",
               "triggers": [
                 {
                   "conclusion": {
                     "text": "You fend off the deer with a fallen branch as you back out of the forest.",
-                    "points": 1
+                    "points": 15,
+                    "skill": "Strength"
                   }
                 }
               ]
             }
           },
           {
-            "name": "Make Offering",
+            "name": "MAKE OFFERING",
             "story": {
-              "text": "A local tribe has fallen on hard times, perhaps this spirit can aid them. You are careful not to scare her into the forest.",
+              "text": "You spot a spirit in the trees. A local tribe is about to die out since its women can’t get pregnant. Perhaps the spirit can aid them. ",
               "triggers": [
                 {
                   "skill": "Persuasion",
                   "conclusion": {
-                    "text": "Deer woman are known to help women conceive. You persuade the spirit to aid the women of the village get pregnant.",
-                    "points": 1
+                    "text": "Deer woman are known to help women conceive. You persuade the spirit to aid the women of the village to get pregnant.",
+                    "points": 15
                   }
                 },
                 {
                   "conclusion": {
-                    "text": "The spirit ignores your offering. Instead, she looks longingly at the drums left by last night's fire.\n",
-                    "points": 0
+                    "text": "The spirit doesn’t seem to hear you, instead she stares the drums left by the fireside. You go over to them and play them for her. She smiles and begins to dance.",
+                    "points": 20
                   }
                 }
               ]
@@ -941,66 +948,117 @@
       },
       {
         "name": "Wendigo",
-        "image": "",
+        "image": "wendigo",
         "reactions": [
           {
-            "name": "Talk",
+            "name": "HUNT",
             "story": {
-              "text": "A village is currently under attack from a vicious wendigo. They ask you what you they should do about the monster.",
+              "text": "The village has had a shortage of food lately, and people are starving. They are concerned that someone might resort to cannibalism and become a wendigo.",
               "triggers": [
                 {
-                  "skill": "Persuasion",
+                  "skill": "Stealth",
                   "conclusion": {
-                    "text": "You warn the village that the creature is very dangerous, and advise them to move somewhere else. The villagers reluctantly agree, and start packing their things.",
-                    "points": 1
+                    "text": "You gather some villagers and go on a hunting trip. You all move quietly through the forest and hunt a lot of animals. You bring back enough meat to last the winter.",
+                    "points": 15
                   }
                 },
                 {
                   "conclusion": {
-                    "text": "You try to convince the villagers to move, but they stubbornly refuse to listen. You move on from the village and leave the villagers to their fate.",
-                    "points": 0
+                    "text": "You find people to help you hunt, but everyone makes a lot of noise and scares all the animals away. You come back to the village empty-handed, and everyone is sad. ",
+                    "points": 10
                   }
                 }
               ]
             }
           },
           {
-            "name": "Attack",
+            "name": "ATTACK",
             "story": {
-              "text": "While travelling, you find a wendigo wandering about, looking for a meal. The creature spies you and gets ready to attack. If you don't do something, you will be its next meal.",
+              "text": "While travelling, you find a wendigo wandering about, looking for a meal. The creature spies you and gets ready to attack. If you don’t act, you will be its next meal.",
               "triggers": [
                 {
                   "skill": "Magic",
                   "conclusion": {
-                    "text": "You summon a huge ball of fire and fling it at the creature. It screams in agony as it is burned, and quickly runs away from you.",
-                    "points": 1
+                    "text": "You summon a huge ball of fire and fling it at the creature. It screams in agony as it is burned, and quickly runs away from you. ",
+                    "points": 15
                   }
                 },
                 {
                   "conclusion": {
                     "text": "You try to attack the creature, but your punches do nothing. It slashes you with its claws, but you are rescued by a group of villagers walking along the road.",
-                    "points": 0
+                    "points": 20,
+                    "skill": "Logic"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Ijiraq",
+        "image": "",
+        "reactions": [
+          {
+            "name": "HUNT",
+            "story": {
+              "text": "You decide to hunt for caribou at a local forest. However, as you hunt, you feel like you are being watched. Out of the corner of your eye, you see an ijiraq.",
+              "triggers": [
+                {
+                  "skill": "Logic",
+                  "conclusion": {
+                    "text": "You manage to follow the trail back to camp, even as the ijiraq tries its best to confuse you. As you reach your campfire, the ijiraq slips away and leaves you alone.",
+                    "points": 15
+                  }
+                },
+                {
+                  "conclusion": {
+                    "text": "You search for a way to get back to camp, but the ijiraq’s influence takes hold and you wander the ice for a while. When you finally get back, you are cold and tired.",
+                    "points": 10
                   }
                 }
               ]
             }
           },
           {
-            "name": "Run",
+            "name": "DEFEND",
             "story": {
-              "text": "The wendigo sees you and gives chase, ready to tear you apart and eat you.",
+              "text": "On the way to your camp, you see a child wandering northward. He looks like he is being led by an unseen force. You run to him and offer to help, and an angry ijiraq attacks you. ",
               "triggers": [
                 {
-                  "skill": "Athleticism",
+                  "skill": "Magic",
                   "conclusion": {
-                    "text": "You sprint away from the creature as fast as you can. Before you know it, the creature is nowhere to be found. You have successfully escaped! ",
-                    "points": 1
+                    "text": "You summon a ball of lightning and blast it at the ijiraq. It shrieks and disappears, and you lead the lost child back to safety.",
+                    "points": 20
                   }
                 },
                 {
                   "conclusion": {
-                    "text": "You try to escape, but you run out of breath. You look behind you to see that the wendigo has caught up to you. You scream as it attacks you, and you fall unconscious.",
-                    "points": 0
+                    "text": "You pull out a knife and slash at the ghost, but the blade passes right through it. A fog clouds your mind, and you and the child wander the ice until help arrives.",
+                    "points": 10,
+                    "skill": "Logic"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "EXPLORE",
+            "story": {
+              "text": "You are exploring the icy tundra, far north of civilization, and you soon become lost in the endless white. You feel a nearby presence, and decide to ask the ijiraq for help. ",
+              "triggers": [
+                {
+                  "skill": "Persuasion",
+                  "conclusion": {
+                    "text": "You manage to persuade the ijiraq to help you out. It leads you the safety of your camp, then disappears with a cackle.",
+                    "points": 15
+                  }
+                },
+                {
+                  "conclusion": {
+                    "text": "The ijiraq leads you through the snow and you end up at its lair. You realize that you are in danger. You manage to slip away and find your way back, alone.",
+                    "points": 15,
+                    "skill": "Stealth"
                   }
                 }
               ]
@@ -1018,28 +1076,28 @@
         "image": "chupacabra",
         "reactions": [
           {
-            "name": "Talk",
+            "name": "DISCUSS",
             "story": {
               "text": "The sun sets on the small goat farm you promised to guard. Everything seems ok, until one of the goats suddenly drops dead. A creature the size of a small bear grins at you.",
               "triggers": [
                 {
                   "skill": "Persuasion",
                   "conclusion": {
-                    "text": "You go to the farmer's house and work out an agreement with the villagers: every day, one person will set out food or meat for the monster.",
-                    "points": 1
+                    "text": "You go to the farmer’s house and work out an agreement with the villagers: every day, one person will set out food or meat for the monster. The monster agrees.",
+                    "points": 15
                   }
                 },
                 {
                   "conclusion": {
-                    "text": "You try to talk to the chupacabra, but it is too busy drinking goat blood to hear you.",
-                    "points": 0
+                    "text": "You run back to the farmer’s house and try to convince the villagers to make peace with the monster, but they refuse. You watch them try to catch the monster all morning.",
+                    "points": 15
                   }
                 }
               ]
             }
           },
           {
-            "name": "Catch",
+            "name": "CATCH",
             "story": {
               "text": "A village asks you to help them catch a creature that has been terrorizing their goat farms. You wait until the creature appears at sunset.",
               "triggers": [
@@ -1047,34 +1105,148 @@
                   "skill": "Magic",
                   "conclusion": {
                     "text": "You summon a fiery cage to trap the monster in. In the morning, you organize a meeting with the town to figure out a peaceful solution.",
-                    "points": 1
+                    "points": 20,
+                    "skill": "Persuasion"
                   }
                 },
                 {
                   "conclusion": {
                     "text": "You run at the monster and try to grab it, but it hops away like a kangaroo and escapes into the night.",
-                    "points": 0
+                    "points": 10
                   }
                 }
               ]
             }
           },
           {
-            "name": "Run",
+            "name": "FIGHT",
             "story": {
-              "text": "You offer to help a small village protect their goats from a creature that is drinking their blood. When you actually see it, however, it is too terrifying to catch.",
+              "text": "You watch the chupacabra kill goats and suck their blood. You can’t let it keep killing all of the village’s livestock.",
               "triggers": [
                 {
-                  "skill": "Athleticism",
+                  "skill": "Strength",
                   "conclusion": {
-                    "text": "You don't like the way that thing is looking at you. You run to the farmer's house and hide there until morning.",
-                    "points": 1
+                    "text": "You summon your courage and leap at the monster. It’s fast, but you are much stronger. You wrestle it to the ground and keep it pinned long enough for help to arrive.",
+                    "points": 15
                   }
                 },
                 {
                   "conclusion": {
-                    "text": "You want to try and get away, but its menacing gaze stops you. You watch it drink the goats' blood until morning.",
-                    "points": 0
+                    "text": "You try to attack the monster, but it suddenly shapeshifts into a hairless dog and leaps away. People have blamed chupacabra sightings on these dogs, but now you know the truth. ",
+                    "points": 15,
+                    "skill": "Logic"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Huallepen",
+        "image": "",
+        "reactions": [
+          {
+            "name": "TRAP",
+            "story": {
+              "text": "You come across a pasture of deformed cattle. You ask the shepherd what what is wrong with them. He thinks there is a creature that keeps getting in the pastures at night.",
+              "triggers": [
+                {
+                  "skill": "Stealth",
+                  "conclusion": {
+                    "text": "You volunteer to help capture the creature. You hide in a bush and wait. A large cow-like creature emerges from the river. You sneak up behind it and catch it in a net.",
+                    "points": 10
+                  }
+                },
+                {
+                  "conclusion": {
+                    "text": "You and the shepherd tie a cow to a tree at sunset. You both hide in the distance and watch. When a creature emerges from the water you both run it down and catch it.",
+                    "points": 20
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "AID",
+            "story": {
+              "text": "In your travels, you meet a pregnant woman who is sitting on the side of the road crying. She explains that she got too close to a creature that cursed her child.",
+              "triggers": [
+                {
+                  "skill": "Magic",
+                  "conclusion": {
+                    "text": "You calm the woman and explain that you can help her. You can barely get her to sit still long enough to remove the curse from her.",
+                    "points": 15
+                  }
+                },
+                {
+                  "conclusion": {
+                    "text": "You spend time with the woman, trying to calm her. When she is done crying she smiles and rubs her belly. She says she will love her baby no matter what.",
+                    "points": 15,
+                    "skill": "Persuasion"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Madremonte",
+        "image": "",
+        "reactions": [
+          {
+            "name": "AID",
+            "story": {
+              "text": "You wander through the remains of a burnt forest. You find a woman crying by a dead tree.The Madremonte tells you that this forest was destroyed by a wildfire.",
+              "triggers": [
+                {
+                  "skill": "Persuasion",
+                  "conclusion": {
+                    "text": "The madremonte tells you that none of the locals have done anything to help. You call a meeting with them and convince them to help regrow the forest.",
+                    "points": 15
+                  }
+                },
+                {
+                  "conclusion": {
+                    "text": "None of the locals will help the creature, so you help her plot her revenge. The two of you set a trap outside the village; when it triggers, the village burns to the ground.",
+                    "points": 15,
+                    "skill": "Stealth"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "FIGHT",
+            "story": {
+              "text": "As you hack your way through the dense forest, you are suddenly attacked by a madremonte.",
+              "triggers": [
+                {
+                  "skill": "Strength",
+                  "conclusion": {
+                    "text": "You throw her off of your back and slice at her with your machete. She manages to escape, but not before you get in a couple hits. ",
+                    "points": 15
+                  }
+                },
+                {
+                  "conclusion": {
+                    "text": "You kick and scream as she pins you down and claws at your face. You both hear shouting in the distance; she runs away just as a group of hunters arrive to save you.",
+                    "points": 10
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "PLANT",
+            "story": {
+              "text": "While you camp in the forest, a madremonte appears and sits by your fire. She informs you that the forest is shrinking, and that soon the animals will starve.",
+              "triggers": [
+                {
+                  "conclusion": {
+                    "text": "You agree to help her plant more trees. The two of you work for days, until finally the forest is lush and beautiful again. ",
+                    "points": 20
                   }
                 }
               ]
@@ -1083,6 +1255,6 @@
         ]
       }
     ]
-
   }
 ]
+

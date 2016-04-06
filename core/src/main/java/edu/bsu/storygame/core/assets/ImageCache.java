@@ -33,7 +33,10 @@ public class ImageCache {
         CHINESE_DRAGON("chinese_dragon.png"),
         DEER_WOMEN("deer_woman.png"),
         IMPUNDULU("impundulu.png"),
-        NINKI_NAKA("ninki_naka.png");
+        TANIWHA("taniwha.png"),
+        ADZE("adze.png"),
+        YOWIE("yowie.png"),
+        WENDIGO("wendigo.png");
 
         private final String path;
 
