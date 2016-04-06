@@ -47,7 +47,11 @@ public class HandoffDialogFactory {
         });
 
         final ImageLayer monsterHand = new ImageLayer(context.game.imageCache.image(ImageCache.Key.MONSTER_HAND));
-        layer.addAt(monsterHand, context.game.bounds.width() / 2, context.game.bounds.height() * 2 / 3);
+        final float handX = context.game.bounds.width() * 3 / 5;
+        final float handY = context.game.bounds.height() * 3 / 5;
+        final float scale = (context.game.bounds.height() - handY) / monsterHand.height();
+        monsterHand.setScale(scale);
+        layer.addAt(monsterHand, handX, handY);
 
         return layer;
     }
