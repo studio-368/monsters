@@ -47,7 +47,7 @@ public final class StartScreen extends BoundedUIScreen {
                 public void onEmit(Button button) {
                     SlideShow slideShow = new SlideShow(game,
                             SlideData.text("Hello"),
-                            SlideData.text("I've heard you are good writers")
+                            SlideData.text("I've heard you are great writers")
                                     .imageKey(ImageCache.Key.INTRO_SCENE_1)
                                     .popupText("What's that?"),
                             SlideData.text("You need ideas for your next book?")
