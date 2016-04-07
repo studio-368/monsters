@@ -48,10 +48,10 @@ public final class StartScreen extends BoundedUIScreen {
                     SlideShow slideShow = new SlideShow(game,
                             SlideData.text("Hello"),
                             SlideData.text("I've heard you are good writers")
-                                    .imageKey(ImageCache.Key.MISSING_IMAGE)
+                                    .imageKey(ImageCache.Key.INTRO_SCENE_1)
                                     .popupText("What's that?"),
                             SlideData.text("You need ideas for your next book?")
-                                    .imageKey(ImageCache.Key.MISSING_IMAGE),
+                                    .imageKey(ImageCache.Key.INTRO_SCENE_2),
                             SlideData.text("How about monsters?")
                                     .imageKey(ImageCache.Key.MISSING_IMAGE),
                             SlideData.text("There's a great big world full of monster stories out there.")
