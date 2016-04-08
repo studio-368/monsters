@@ -39,7 +39,8 @@ public class ImageCache {
         YOWIE("yowie.png"),
         WENDIGO("wendigo.png"),
         INTRO_SCENE_2("intro_scene_2.png"),
-        INTRO_SCENE_1("intro_scene_1.png");
+        INTRO_SCENE_1("intro_scene_1.png"),
+        INTRO_SCENE_3("intro_scene_3.png");
 
         private final String path;
 
