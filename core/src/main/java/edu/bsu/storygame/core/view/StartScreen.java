@@ -58,9 +58,9 @@ public final class StartScreen extends BoundedUIScreen {
                                     .imageKey(ImageCache.Key.INTRO_SCENE_4)
                                     .popupText("You should explore it!"),
                             SlideData.text("Go on some adventures.")
-                                    .imageKey(ImageCache.Key.MISSING_IMAGE),
+                                    .imageKey(ImageCache.Key.INTRO_SCENE_5),
                             SlideData.text("Write everything down.")
-                                    .imageKey(ImageCache.Key.MISSING_IMAGE),
+                                    .imageKey(ImageCache.Key.INTRO_SCENE_6),
                             SlideData.text("Whoever finds the most inspiring stories wins!")
                     );
                     slideShow.startOn(game.screenStack).onComplete(new SignalView.Listener<Try<Void>>() {
