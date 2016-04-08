@@ -55,7 +55,7 @@ public final class StartScreen extends BoundedUIScreen {
                             SlideData.text("How about monsters?")
                                     .imageKey(ImageCache.Key.INTRO_SCENE_3),
                             SlideData.text("There's a great big world full of monster stories out there.")
-                                    .imageKey(ImageCache.Key.MISSING_IMAGE)
+                                    .imageKey(ImageCache.Key.INTRO_SCENE_4)
                                     .popupText("You should explore it!"),
                             SlideData.text("Go on some adventures.")
                                     .imageKey(ImageCache.Key.MISSING_IMAGE),
