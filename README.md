@@ -36,3 +36,8 @@ jar to `editor/target/editor-1.0-SNAPSHOT-jar-with-dependencies.jar`; this file 
  java -jar editor/target/editor-1.0-SNAPSHOT-jar-with-dependencies.jar
  ```
 
+# License
+
+This software is distributed under the terms of the 
+[GNU General Public License version 3](http://www.gnu.org/licenses/gpl-3.0.en.html).
+See the LICENSE file for details.
