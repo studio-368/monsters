@@ -59,7 +59,6 @@ public final class NotebookLayer extends GroupLayer {
     private final PageLayer[] pages;
     private float depthCounter = 0;
 
-
     public final UnitSignal onDone = new UnitSignal();
 
     public NotebookLayer(final Player player, IDimension closedSize, final GameContext context) {
@@ -133,8 +132,11 @@ public final class NotebookLayer extends GroupLayer {
 
     private final class CoverPage extends PageLayer {
 
+        ProgressBar progressBar;
+
         private CoverPage() {
             super(AxisLayout.vertical().offStretch());
+            configureProgressBar();
             root.add(new Label(player.name + "'s Story")
                             .addStyles(Style.HALIGN.left),
                     new ScoreLabel()
@@ -146,9 +148,11 @@ public final class NotebookLayer extends GroupLayer {
         private final class ScoreLabel extends Label {
             private ScoreLabel() {
                 super("Story Points: 0");
+                add(progressBar);
                 player.storyPoints.connect(new Slot<Integer>() {
                     @Override
                     public void onEmit(Integer integer) {
+                        progressBar.increment(integer);
                         text.update("Score: " + integer);
                     }
                 });
@@ -187,6 +191,13 @@ public final class NotebookLayer extends GroupLayer {
                     skillCounter++;
                 }
             }
+        }
+
+        private void configureProgressBar() {
+            final int max = context.pointsRequiredForVictory;
+            final float width = this.width();
+            final float height = this.height();
+            progressBar = new ProgressBar(max, width * 0.55f, height * 0.1f, context);
         }
     }
 
