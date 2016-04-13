@@ -138,19 +138,22 @@ public final class NotebookLayer extends GroupLayer {
             super(AxisLayout.vertical().offStretch());
             configureProgressBar();
             root.add(new Label(player.name + "'s Story")
-                            .addStyles(Style.HALIGN.center),
-                    new SkillGroup().addStyles(Style.HALIGN.center),
+                            .addStyles(Style.HALIGN.left),
+                    new ScoreLabel()
+                            .addStyles(Style.HALIGN.left),
+                    new SkillGroup().addStyles(Style.HALIGN.left),
                     new Shim(0, 0).setConstraint(AxisLayout.stretched()));
-            addAt(progressBar, 5, 10);
-
         }
 
         private final class ScoreLabel extends Label {
             private ScoreLabel() {
-                super();
+                super("Story Points: 0");
+                add(progressBar);
                 player.storyPoints.connect(new Slot<Integer>() {
                     @Override
                     public void onEmit(Integer integer) {
+                        progressBar.increment(integer);
+                        text.update("Score: " + integer);
                     }
                 });
             }
@@ -194,13 +197,7 @@ public final class NotebookLayer extends GroupLayer {
             final int max = context.pointsRequiredForVictory;
             final float width = this.width();
             final float height = this.height();
-            progressBar = new ProgressBar(max, width * 0.16f, height * 0.18f, context);
-            player.storyPoints.connect(new Slot<Integer>() {
-                @Override
-                public void onEmit(Integer integer) {
-                    progressBar.increment(integer);
-                }
-            });
+            progressBar = new ProgressBar(max, width * 0.55f, height * 0.1f, context);
         }
     }
 
