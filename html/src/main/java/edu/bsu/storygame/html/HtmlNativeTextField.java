@@ -37,7 +37,6 @@ public class HtmlNativeTextField implements NativeTextField {
     private final static Map<Integer, HtmlNativeTextField> map = Maps.newHashMap();
 
     private static int nextId = 0;
-    private final int id = nextId++;
     private final Field.Native field;
     private final HtmlPlatform plat;
     private final Element element;
@@ -51,6 +50,7 @@ public class HtmlNativeTextField implements NativeTextField {
     }-*/;
 
     public HtmlNativeTextField(Field.Native field, HtmlPlatform plat) {
+        final int id = nextId++;
         this.field = checkNotNull(field);
         this.plat = checkNotNull(plat);
 
@@ -71,9 +71,12 @@ public class HtmlNativeTextField implements NativeTextField {
 
     @Override
     public void focus() {
-        plat.log().debug("focus--- cannot currently handle this?");
+        plat.log().debug("focus");
+        element.focus();
     }
 
+    // This method is called by native Javascript, so the Java compiler doesn't recognize it as used.
+    @SuppressWarnings("unused")
     public static void onInput(int id) {
         log("on input: " + id);
         HtmlNativeTextField target = map.get(id);
@@ -112,12 +115,15 @@ public class HtmlNativeTextField implements NativeTextField {
     @Override
     public void add() {
         plat.log().debug("add");
-        DOM.getElementById("playn-root").insertFirst(element);
+        if (!element.hasParentElement()) {
+            DOM.getElementById("playn-root").insertFirst(element);
+            element.focus();
+        }
     }
 
     @Override
     public void remove() {
         plat.log().debug("remove");
-        DOM.getElementById("playn-root").removeChild(element);
+        element.getParentElement().removeChild(element);
     }
 }

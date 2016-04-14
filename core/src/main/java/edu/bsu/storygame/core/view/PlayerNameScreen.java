@@ -76,6 +76,7 @@ public class PlayerNameScreen extends BoundedUIScreen {
                     checkForCompletion();
                 }
             });
+            nameFieldOne.setVisible(false);
         } else {
             group.add(nameFieldTwo = new Field()
                     .setConstraint(Constraints.fixedSize(game.bounds.width() * 0.10f, game.bounds.height() * 0.08f)));
@@ -85,6 +86,7 @@ public class PlayerNameScreen extends BoundedUIScreen {
                     checkForCompletion();
                 }
             });
+            nameFieldTwo.setVisible(false);
         }
         group.addStyles(Style.BACKGROUND.is(Background.solid(color)));
         return group;
@@ -102,4 +104,17 @@ public class PlayerNameScreen extends BoundedUIScreen {
     public Game game() {
         return game;
     }
+
+    @Override
+    public void showTransitionCompleted() {
+        nameFieldOne.setVisible(true);
+        nameFieldTwo.setVisible(true);
+    }
+
+    @Override
+    public void hideTransitionStarted() {
+        Container.removeFromParent(nameFieldOne, true);
+        Container.removeFromParent(nameFieldTwo, true);
+    }
+
 }
