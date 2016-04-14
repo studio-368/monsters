@@ -30,7 +30,6 @@ import playn.scene.Pointer;
 import playn.scene.SceneGame;
 import pythagoras.f.IRectangle;
 import tripleplay.game.ScreenStack;
-import tripleplay.platform.TPPlatform;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -70,12 +69,6 @@ public class MonsterGame extends SceneGame {
         this.bounds = initAspectRatio();
         screenStack = new ScreenStack(this, rootLayer);
         screenStack.push(new LoadingScreen(this, screenStack));
-
-        if (TPPlatform.instance() != null) {
-            plat.log().debug("Has native? " + TPPlatform.instance().hasNativeTextFields());
-        } else {
-            plat.log().debug("No TPPPlatform registered. Probably running on java lwjgl and popup text, which is fine.");
-        }
     }
 
     private Pointer initInput() {
