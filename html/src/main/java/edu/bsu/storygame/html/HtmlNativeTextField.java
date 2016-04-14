@@ -69,33 +69,24 @@ public class HtmlNativeTextField implements NativeTextField {
 
     @Override
     public void setEnabled(boolean enabled) {
-        plat.log().debug("setEnabled: " + enabled);
         element.setPropertyBoolean("disabled", !enabled);
     }
 
     @Override
     public void focus() {
-        plat.log().debug("focus");
         element.focus();
     }
 
     // This method is called by native Javascript, so the Java compiler doesn't recognize it as used.
     @SuppressWarnings("unused")
     public static void onInput(int id) {
-        log("on input: " + id);
         HtmlNativeTextField target = map.get(id);
         String text = target.element.getPropertyString("value");
         target.field.field().text.update(text);
-        log("text is " + text);
     }
-
-    public static native void log(String message) /*-{
-      console.log(message);
-    }-*/;
 
     @Override
     public boolean insert(String text) {
-        plat.log().debug("insert: " + text);
         int selectionStart = Integer.parseInt(element.getAttribute("selectionStart"));
         int selectionEnd = Integer.parseInt(element.getAttribute("selectionEnd"));
         String originalText = element.getAttribute("value");
@@ -108,7 +99,6 @@ public class HtmlNativeTextField implements NativeTextField {
 
     @Override
     public void setBounds(IRectangle bounds) {
-        plat.log().debug("setBounds " + bounds);
         Style style = element.getStyle();
         style.setLeft(bounds.x(), Style.Unit.PX);
         style.setTop(bounds.y(), Style.Unit.PX);
@@ -118,7 +108,6 @@ public class HtmlNativeTextField implements NativeTextField {
 
     @Override
     public void add() {
-        plat.log().debug("add");
         if (!element.hasParentElement()) {
             DOM.getElementById("playn-root").insertFirst(element);
             element.focus();
@@ -127,7 +116,6 @@ public class HtmlNativeTextField implements NativeTextField {
 
     @Override
     public void remove() {
-        plat.log().debug("remove");
         element.getParentElement().removeChild(element);
         HtmlNativeTextField removedElement = map.remove(Integer.parseInt(element.getAttribute("id")));
         if (removedElement == null) {
