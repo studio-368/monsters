@@ -40,7 +40,7 @@ public class MonsterGameHtml implements EntryPoint {
         MonsterGame.Config gameConf = new MonsterGame.Config(plat);
         handleNarrativeOverride(gameConf);
 
-        HtmlTpPlatform tpPlatform = new HtmlTpPlatform(plat) {
+        new HtmlTpPlatform(plat) {
             {
                 TPPlatform._instance = this;
             }
