@@ -29,6 +29,8 @@ import tripleplay.ui.layout.FlowLayout;
 
 public class PlayerNameScreen extends BoundedUIScreen {
 
+    private static final float NAME_FIELD_WIDTH_PERCENT = 0.25f;
+    private static final float NAME_FIELD_HEIGHT_PERCENT = 0.08f;
     private final MonsterGame game;
     private final Root root;
     private Field nameFieldOne;
@@ -66,7 +68,8 @@ public class PlayerNameScreen extends BoundedUIScreen {
         if (player == 1) {
             color = Palette.PLAYER_ONE;
             group.add(nameFieldOne = new Field()
-                    .setConstraint(Constraints.fixedSize(game.bounds.width() * 0.10f, game.bounds.height() * 0.08f)));
+                    .setConstraint(Constraints.fixedSize(game.bounds.width() * NAME_FIELD_WIDTH_PERCENT,
+                            game.bounds.height() * NAME_FIELD_HEIGHT_PERCENT)));
             nameFieldOne.text.connect(new Slot<String>() {
                 @Override
                 public void onEmit(String s) {
@@ -76,7 +79,8 @@ public class PlayerNameScreen extends BoundedUIScreen {
             nameFieldOne.setVisible(false);
         } else {
             group.add(nameFieldTwo = new Field()
-                    .setConstraint(Constraints.fixedSize(game.bounds.width() * 0.10f, game.bounds.height() * 0.08f)));
+                    .setConstraint(Constraints.fixedSize(game.bounds.width() * NAME_FIELD_WIDTH_PERCENT,
+                            game.bounds.height() * NAME_FIELD_HEIGHT_PERCENT)));
             nameFieldTwo.text.connect(new Slot<String>() {
                 @Override
                 public void onEmit(String s) {

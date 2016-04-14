@@ -23,6 +23,7 @@ import com.google.common.collect.Maps;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.client.DOM;
+import edu.bsu.storygame.core.assets.FontConstants;
 import playn.html.HtmlPlatform;
 import pythagoras.f.IRectangle;
 import tripleplay.platform.NativeTextField;
@@ -35,6 +36,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class HtmlNativeTextField implements NativeTextField {
 
     private final static Map<Integer, HtmlNativeTextField> map = Maps.newHashMap();
+    private static final float FONT_SIZE_PERCENT_OF_FIELD_HEIGHT = 0.75f;
 
     private static int nextId = 0;
     private final Field.Native field;
@@ -58,6 +60,8 @@ public class HtmlNativeTextField implements NativeTextField {
         this.element.setAttribute("type", "text");
         this.element.setAttribute("oninput", "onTextChange(" + id + ")");
         this.element.getStyle().setPosition(Style.Position.ABSOLUTE);
+        this.element.getStyle().setProperty("font-family", FontConstants.HANDWRITING_NAME);
+        this.element.getStyle().setFontSize(field.field().size().height() * FONT_SIZE_PERCENT_OF_FIELD_HEIGHT, Style.Unit.PX);
         this.element.setAttribute("id", "" + id);
 
         map.put(id, this);
@@ -125,5 +129,10 @@ public class HtmlNativeTextField implements NativeTextField {
     public void remove() {
         plat.log().debug("remove");
         element.getParentElement().removeChild(element);
+        HtmlNativeTextField removedElement = map.remove(Integer.parseInt(element.getAttribute("id")));
+        if (removedElement == null) {
+            plat.log().warn("Attempt to remove element not in map: " + element);
+        }
+
     }
 }
