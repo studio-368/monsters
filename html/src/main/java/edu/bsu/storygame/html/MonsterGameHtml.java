@@ -25,6 +25,7 @@ import edu.bsu.storygame.core.MonsterGame;
 import edu.bsu.storygame.core.json.NarrativeParser;
 import playn.core.json.JsonParserException;
 import playn.html.HtmlPlatform;
+import tripleplay.platform.TPPlatform;
 
 public class MonsterGameHtml implements EntryPoint {
 
@@ -38,6 +39,13 @@ public class MonsterGameHtml implements EntryPoint {
         plat.assets().setPathPrefix("monsters/");
         MonsterGame.Config gameConf = new MonsterGame.Config(plat);
         handleNarrativeOverride(gameConf);
+
+        HtmlTpPlatform tpPlatform = new HtmlTpPlatform(plat) {
+            {
+                TPPlatform._instance = this;
+            }
+        };
+
         new MonsterGame(gameConf);
         plat.start();
     }
