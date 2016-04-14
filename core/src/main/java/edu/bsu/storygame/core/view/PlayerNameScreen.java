@@ -23,15 +23,12 @@ import edu.bsu.storygame.core.MonsterGame;
 import edu.bsu.storygame.core.assets.Typeface;
 import playn.core.Game;
 import react.Slot;
-import react.Value;
-import react.ValueView;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
 import tripleplay.ui.layout.FlowLayout;
 
 public class PlayerNameScreen extends BoundedUIScreen {
 
-    public final ValueView<Boolean> complete = Value.create(false);
     private final MonsterGame game;
     private final Root root;
     private Field nameFieldOne;
@@ -94,10 +91,7 @@ public class PlayerNameScreen extends BoundedUIScreen {
 
     private void checkForCompletion() {
         final boolean isComplete = !nameFieldOne.text.get().trim().isEmpty() && !nameFieldTwo.text.get().trim().isEmpty();
-        ((Value<Boolean>) complete).update(isComplete);
-        if (complete.get()) {
-            continueButton.setEnabled(true);
-        }
+        continueButton.setEnabled(isComplete);
     }
 
     @Override
