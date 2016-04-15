@@ -21,12 +21,12 @@ package edu.bsu.storygame.core;
 
 import edu.bsu.storygame.core.view.Notebook;
 import playn.core.Game;
+import playn.scene.GroupLayer;
+import playn.scene.Layer;
 import pythagoras.f.Rectangle;
 import react.Slot;
 import tripleplay.game.ScreenStack;
-import tripleplay.ui.Button;
-import tripleplay.ui.Shim;
-import tripleplay.ui.SimpleStyles;
+import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
 import tripleplay.util.Colors;
 import tripleplay.util.Layers;
@@ -47,8 +47,8 @@ public class NotebookTestScreen extends ScreenStack.UIScreen {
                 new Rectangle(game.plat.graphics().viewSize.width() / 2 - w,
                         game.plat.graphics().viewSize.height() / 2 - h / 2,
                         w * 2, h),
-                Layers.solid(Colors.YELLOW, w, h),
-                Layers.solid(Colors.RED, w, h),
+                makeTPLayer(w, h),
+                makeCheckerLayer(w, h),
                 Layers.solid(Colors.CYAN, w, h),
                 Layers.solid(Colors.BLUE, w, h),
                 Layers.solid(Colors.WHITE, w, h));
@@ -63,6 +63,25 @@ public class NotebookTestScreen extends ScreenStack.UIScreen {
                             }
                         }),
                         new Shim(0, 0).setConstraint(AxisLayout.stretched()));
+    }
+
+    private Layer makeCheckerLayer(final float w, final float h) {
+        GroupLayer product = new GroupLayer();
+        product.add(Layers.solid(Colors.LIGHT_GRAY, w, h));
+        Layer left = Layers.solid(Colors.YELLOW, w / 2, h);
+        Layer right = Layers.solid(Colors.WHITE, w / 2, h);
+        product.addAt(left, 0, 0);
+        product.addAt(right, w / 2, 0);
+        return product;
+    }
+
+    private Layer makeTPLayer(final float w, final float h) {
+        GroupLayer layer = new GroupLayer();
+        iface.createRoot(AxisLayout.vertical(), SimpleStyles.newSheet(game.plat.graphics()), layer)
+                .setSize(w, h)
+                .addStyles(Style.BACKGROUND.is(Background.solid(Colors.GREEN)))
+                .add(new Label("Dedicated to Little Debbie Snackcakes"));
+        return layer;
     }
 
     @Override

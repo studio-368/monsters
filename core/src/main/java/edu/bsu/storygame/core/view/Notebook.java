@@ -35,11 +35,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class Notebook extends GroupLayer {
 
+    private static final float FLIP_DURATION = 2000;
+
     private final MonsterGame game;
     private final Animator anim;
     private ImmutableList<Layer> layers;
     private RotateYBatch batch;
-    private final float flipDuration = 2000;
     private final IRectangle openBounds;
 
     public Notebook(MonsterGame game, Animator anim, IRectangle openBounds, Layer... layers) {
@@ -68,7 +69,7 @@ public class Notebook extends GroupLayer {
         anim.tween(batchAngle)
                 .from(0)
                 .to(FloatMath.HALF_PI)
-                .in(flipDuration / 2)
+                .in(FLIP_DURATION / 2)
                 .easeIn()
                 .then()
                 .action(new Runnable() {
@@ -83,7 +84,7 @@ public class Notebook extends GroupLayer {
                 .tween(batchAngle)
                 .from(FloatMath.HALF_PI)
                 .to(FloatMath.PI)
-                .in(flipDuration / 2)
+                .in(FLIP_DURATION / 2)
                 .easeOut();
     }
 
