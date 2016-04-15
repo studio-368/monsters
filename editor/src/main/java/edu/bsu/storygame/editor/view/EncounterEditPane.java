@@ -183,7 +183,7 @@ public class EncounterEditPane extends EditPane {
         encounterName.setText(encounter.name + " encounter");
         encounterNameTextField.setText(encounter.name);
         encounterImage.setText(encounter.image);
-        encounterReactionsList.refresh();
+        encounterReactionsList.getProperties().put("listRecreateKey", Boolean.TRUE);
     }
 
 }

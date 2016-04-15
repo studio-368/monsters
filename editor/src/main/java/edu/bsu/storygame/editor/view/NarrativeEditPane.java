@@ -51,7 +51,7 @@ public class NarrativeEditPane extends EditPane {
     }
 
     public void refresh() {
-        narrativeRegionList.refresh();
+        narrativeRegionList.getProperties().put("listRecreateKey", Boolean.TRUE);
     }
 
 

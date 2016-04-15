@@ -159,6 +159,6 @@ public class RegionEditPane extends EditPane {
     }
 
     public void refresh() {
-        regionEncountersList.refresh();
+        regionEncountersList.getProperties().put("listRecreateKey", Boolean.TRUE);
     }
 }

@@ -171,7 +171,7 @@ public class ReactionEditPane extends EditPane {
     @FXML
     private void onRenameSkill() {
         selectedSkill.skill = TextPrompt.promptFromString(selectedSkill.skill);
-        skillsList.refresh();
+        skillsList.getProperties().put("listRecreateKey", Boolean.TRUE);
     }
 
     @FXML
@@ -227,7 +227,7 @@ public class ReactionEditPane extends EditPane {
         reactionName.setText(reaction.name + " reaction");
         reactionNameTextField.setText(reaction.name);
         reactionStoryTextField.setText(reaction.story.text);
-        skillsList.refresh();
+        skillsList.getProperties().put("listRecreateKey", Boolean.TRUE);
         updateConclusionEditor();
     }
 
