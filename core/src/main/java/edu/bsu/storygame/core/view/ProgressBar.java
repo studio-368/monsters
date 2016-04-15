@@ -23,7 +23,7 @@ public class ProgressBar extends Layer {
     }
 
     public void increment(int points) {
-        value += points;
+        value = points;
         if (value > max) {
             context.game.plat.log().warn("Value (" + value + ") exceeds max (" + max + "); capping.");
             value = max;
@@ -45,7 +45,7 @@ public class ProgressBar extends Layer {
         final float percent = value / (float) max;
         surf.setFillColor(Palette.WHITE_SMOKE);
         surf.fillRect(0, 0, width(), height());
-        surf.setFillColor(Palette.ROSE);
-        surf.fillRect(0, 0, width() * percent, height());
+        surf.setFillColor(Palette.GOLDEN_POPPY);
+        surf.fillRect(0, height(), width(), -height() * percent);
     }
 }
