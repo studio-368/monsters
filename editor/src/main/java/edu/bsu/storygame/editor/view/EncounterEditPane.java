@@ -83,7 +83,7 @@ public class EncounterEditPane extends EditPane {
             parent.clearAfter(this);
             if (c.getList().size() == 1) {
                 selectedReaction = c.getList().get(0);
-                parent.editReaction(selectedReaction);
+                parent.editStory(selectedReaction);
                 setReactionButtonsDisabled(false);
             } else {
                 selectedReaction = null;

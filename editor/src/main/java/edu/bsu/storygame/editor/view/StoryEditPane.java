@@ -22,8 +22,8 @@ package edu.bsu.storygame.editor.view;
 import com.sun.javafx.collections.ObservableListWrapper;
 import edu.bsu.storygame.editor.EditorStageController;
 import edu.bsu.storygame.editor.model.Conclusion;
-import edu.bsu.storygame.editor.model.Reaction;
 import edu.bsu.storygame.editor.model.SkillTrigger;
+import edu.bsu.storygame.editor.model.Story;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
@@ -33,16 +33,12 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
-public class ReactionEditPane extends EditPane {
+public class StoryEditPane extends EditPane {
     private final EditorStageController parent;
-    private final Reaction reaction;
+    private final Story story;
 
     @FXML
-    private Label reactionName;
-    @FXML
-    private TextField reactionNameTextField;
-    @FXML
-    private TextField reactionStoryTextField;
+    private TextArea storyTextArea;
     @FXML
     private ListView<SkillTrigger> skillsList;
     @FXML
@@ -67,16 +63,16 @@ public class ReactionEditPane extends EditPane {
     private TextField newSkillTextField;
     private SkillTrigger selectedSkill = null;
 
-    public ReactionEditPane(Reaction reaction, EditorStageController parent) {
+    public StoryEditPane(Story story, EditorStageController parent) {
         this.parent = parent;
-        this.reaction = reaction;
+        this.story = story;
         loadFxml();
         configure();
-        populateReaction();
+        populateStory();
     }
 
     private void loadFxml() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/ReactionEdit.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/StoryEdit.fxml"));
         loader.setRoot(this);
         loader.setController(this);
         try {
@@ -89,8 +85,7 @@ public class ReactionEditPane extends EditPane {
     private void configure() {
         pointsChangeTextField.setText("1");
         configureUsableSkillsList();
-        bindTextField(reactionNameTextField, (o, v, n) -> onReactionNameChange());
-        bindTextField(reactionStoryTextField, (o, v, n) -> onStoryChange());
+        bindTextArea(storyTextArea, (o, v, n) -> onStoryChange());
         bindTextArea(conclusionNarrativeTextArea, (o, v, n) -> onNarrativeChange());
         bindTextField(pointsChangeTextField, (o, v, n) -> onStoryPointsChange());
         bindTextField(newSkillTextField, (o, v, n) -> onNewSkillChange());
@@ -130,7 +125,6 @@ public class ReactionEditPane extends EditPane {
             newSkillCheckBox.setSelected(false);
             newSkillTextField.clear();
         } else {
-            conclusionDescription.setText(reaction.name + " with " + selectedSkill.toString().toLowerCase());
             conclusionNarrativeTextArea.setText(selectedSkill.conclusion.text);
             conclusionNarrativeTextArea.setDisable(false);
             resultsVBox.setDisable(false);
@@ -145,8 +139,8 @@ public class ReactionEditPane extends EditPane {
         }
     }
 
-    private void populateReaction() {
-        skillsList.setItems(new ObservableListWrapper<>(reaction.story.triggers));
+    private void populateStory() {
+        skillsList.setItems(new ObservableListWrapper<>(story.triggers));
         refresh();
     }
 
@@ -175,15 +169,8 @@ public class ReactionEditPane extends EditPane {
     }
 
     @FXML
-    private void onReactionNameChange() {
-        reaction.name = reactionNameTextField.getText();
-        reactionName.setText(reaction.name);
-        parent.refresh();
-    }
-
-    @FXML
     private void onStoryChange() {
-        reaction.story.text = reactionStoryTextField.getText();
+        story.text = storyTextArea.getText();
     }
 
     @FXML
@@ -224,9 +211,7 @@ public class ReactionEditPane extends EditPane {
     }
 
     public void refresh() {
-        reactionName.setText(reaction.name + " reaction");
-        reactionNameTextField.setText(reaction.name);
-        reactionStoryTextField.setText(reaction.story.text);
+        storyTextArea.setText(story.text);
         skillsList.getProperties().put("listRecreateKey", Boolean.TRUE);
         updateConclusionEditor();
     }

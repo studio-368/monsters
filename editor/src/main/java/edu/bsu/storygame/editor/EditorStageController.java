@@ -98,8 +98,8 @@ public class EditorStageController implements Initializable {
         add(new EncounterEditPane(encounter, this));
     }
 
-    public void editReaction(Reaction reaction) {
-        add(new ReactionEditPane(reaction, this));
+    public void editStory(Reaction reaction) {
+        add(new StoryEditPane(reaction.story, this));
     }
 
 
