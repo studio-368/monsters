@@ -50,7 +50,8 @@ public class NotebookTestScreen extends ScreenStack.UIScreen {
                 Layers.solid(Colors.YELLOW, w, h),
                 Layers.solid(Colors.RED, w, h),
                 Layers.solid(Colors.CYAN, w, h),
-                Layers.solid(Colors.BLUE, w, h));
+                Layers.solid(Colors.BLUE, w, h),
+                Layers.solid(Colors.WHITE, w, h));
         layer.add(notebook);
 
         iface.createRoot(AxisLayout.vertical(), SimpleStyles.newSheet(game.plat.graphics()), layer)
