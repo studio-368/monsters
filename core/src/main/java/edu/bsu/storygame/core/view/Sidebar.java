@@ -1,14 +1,32 @@
+/*
+ * Copyright 2016 Traveler's Notebook: Monster Tales project authors
+ *
+ * This file is part of monsters
+ *
+ * monsters is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * monsters is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with monsters.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package edu.bsu.storygame.core.view;
 
+import edu.bsu.storygame.core.assets.ImageCache;
 import edu.bsu.storygame.core.model.GameContext;
 import edu.bsu.storygame.core.model.Player;
 import edu.bsu.storygame.core.model.Skill;
+import edu.bsu.storygame.core.util.IconScaler;
 import react.RList;
-import react.SignalView;
-import tripleplay.ui.Background;
-import tripleplay.ui.Group;
-import tripleplay.ui.Label;
-import tripleplay.ui.Style;
+import react.Slot;
+import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -31,28 +49,30 @@ public final class Sidebar extends Group {
     final class PlayerView extends Group {
 
         private final SkillGroup skillGroup;
-        private PointLabel pointLabel;
         private final Player player;
 
         PlayerView(int playerNumber) {
             super(AxisLayout.horizontal());
             this.player = context.players.get(playerNumber);
 
+            Icon star = new IconScaler(context.game)
+                    .scale(ImageCache.Key.STAR, context.game.bounds.width() * 0.08f);
+
             Group textGroup = new Group(AxisLayout.vertical().offStretch())
                     .add(new NameLabel(player))
-                    .add(skillGroup = new SkillGroup(playerNumber == 0 ? Palette.SPROUT : Palette.BLACK_PEARL))
+                    .add(skillGroup = new SkillGroup(playerNumber == 0 ? Palette.ROSE : Palette.OBSERVATORY))
+                    .add(new Shim(1f, 50f))
+                    .add(new TurnLabel(star))
                     .setConstraint(AxisLayout.stretched());
 
-            pointLabel = new PointLabel(player.storyPoints.get());
-
             add(textGroup,
-                    pointLabel);
+                    new PointLabel());
 
             addStyles(Style.BACKGROUND.is(Background.solid(player.color).inset(context.game.bounds.percentOfHeight(0.01f))),
                     Style.HALIGN.left,
                     Style.VALIGN.top);
+
             watchForSkillChanges();
-            watchForPointChange();
             skillGroup.updatePlayerSkills(player);
         }
 
@@ -70,15 +90,42 @@ public final class Sidebar extends Group {
             });
         }
 
-        private void watchForPointChange() {
-            player.storyPoints.connect(new SignalView.Listener<Integer>() {
-                @Override
-                public void onEmit(Integer integer) {
-                    pointLabel.updatePlayerPoints(integer);
-                }
-            });
+        final class TurnLabel extends Label {
+            private TurnLabel(Icon icon) {
+                super(icon);
+                context.currentPlayer.connect(new Slot<Player>() {
+                    @Override
+                    public void onEmit(Player player) {
+                        setVisible(player == PlayerView.this.player);
+                    }
+                });
+                setVisible(context.currentPlayer.get() == PlayerView.this.player);
+            }
+
+            @Override
+            protected Class<?> getStyleClass() {
+                return TurnLabel.class;
+            }
+        }
+
+        final class PointLabel extends Label {
+            private PointLabel() {
+                super(player.storyPoints.get().toString());
+                player.storyPoints.connect(new Slot<Integer>() {
+                    @Override
+                    public void onEmit(Integer integer) {
+                        text.update(integer.toString());
+                    }
+                });
+            }
+
+            @Override
+            protected Class<?> getStyleClass() {
+                return PointLabel.class;
+            }
         }
     }
+
 
     final class NameLabel extends Label {
         private NameLabel(Player p) {
@@ -116,21 +163,6 @@ public final class Sidebar extends Group {
             for (Skill skill : player.skills) {
                 this.add(new SkillLabel(skill).addStyles(Style.COLOR.is(textColor)));
             }
-        }
-    }
-
-    final class PointLabel extends Label {
-        private PointLabel(Integer points) {
-            super(points.toString());
-        }
-
-        private void updatePlayerPoints(Integer points) {
-            this.setText(points.toString());
-        }
-
-        @Override
-        protected Class<?> getStyleClass() {
-            return PointLabel.class;
         }
     }
 

@@ -1,3 +1,22 @@
+/*
+ * Copyright 2016 Traveler's Notebook: Monster Tales project authors
+ *
+ * This file is part of monsters
+ *
+ * monsters is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * monsters is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with monsters.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package edu.bsu.storygame.core.model;
 
 import com.google.common.collect.Lists;
@@ -15,14 +34,14 @@ public class Player {
     public final int color;
     public RList<Skill> skills;
     public Value<Integer> storyPoints = Value.create(0);
-    public final Value<Region> location = Value.create(Region.AFRICA);
-    public final Value<Boolean> hasWon = Value.create(false);
+    public Value<Region> location;
 
     public static class Builder {
 
         private String name;
         private int color;
         private List<Skill> skills;
+        private Region location;
 
         public Builder name(String name) {
             this.name = name;
@@ -41,6 +60,11 @@ public class Player {
             return this;
         }
 
+        public Builder location(Region region) {
+            this.location = region;
+            return this;
+        }
+
         public Player build() {
             return new Player(this);
         }
@@ -50,6 +74,7 @@ public class Player {
         this.name = builder.name;
         this.color = builder.color;
         this.skills = RList.create(builder.skills);
+        this.location = Value.create(builder.location);
     }
 
 }

@@ -29,14 +29,6 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="monsters-html" />
-      </profile>
-      <profile default="false" name="Annotation profile for monsters-core" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
-        <module name="monsters-core" />
       </profile>
       <profile default="false" name="Annotation profile for monsters-java" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -57,6 +49,13 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
         <module name="editor" />
+      </profile>
+      <profile default="false" name="Annotation profile for monsters-core" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="monsters-core" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

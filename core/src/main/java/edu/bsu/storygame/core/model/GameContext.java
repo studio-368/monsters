@@ -1,3 +1,22 @@
+/*
+ * Copyright 2016 Traveler's Notebook: Monster Tales project authors
+ *
+ * This file is part of monsters
+ *
+ * monsters is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * monsters is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with monsters.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package edu.bsu.storygame.core.model;
 
 import com.google.common.collect.ImmutableList;
@@ -14,7 +33,10 @@ public final class GameContext {
     public final ImmutableList<Player> players;
     public final Value<Player> currentPlayer;
     public final Value<Encounter> encounter = Value.create(null);
-    public final int pointsRequiredForVictory = 5;
+    public final Value<Reaction> reaction = Value.create(null);
+    public final Value<Conclusion> conclusion = Value.create(null);
+
+    public final int pointsRequiredForVictory = 100;
 
     public GameContext(MonsterGame game, Player... players) {
         this.game = checkNotNull(game);
@@ -34,6 +56,10 @@ public final class GameContext {
             public void onEmit(Phase phase) {
                 if (phase == Phase.END_OF_ROUND) {
                     encounter.update(null);
+                    reaction.update(null);
+                    conclusion.update(null);
+                    currentPlayer.update(otherPlayer());
+                    GameContext.this.phase.update(Phase.MOVEMENT);
                 }
             }
         });

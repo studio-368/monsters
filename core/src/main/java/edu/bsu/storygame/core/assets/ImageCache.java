@@ -1,3 +1,22 @@
+/*
+ * Copyright 2016 Traveler's Notebook: Monster Tales project authors
+ *
+ * This file is part of monsters
+ *
+ * monsters is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * monsters is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with monsters.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package edu.bsu.storygame.core.assets;
 
 import com.google.common.collect.Lists;
@@ -13,14 +32,37 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.List;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ImageCache {
 
     public enum Key {
+        MAIN_MENU_BG("main_menu_bg.png"),
+        BACKGROUND("world_map.png"),
+        MONSTER_HAND("monster_hand.png"),
         COCKATRICE("cockatrice.png"),
         LOGO("logo.png"),
-        MISSING_IMAGE("missing_image.png");
+        MISSING_IMAGE("missing_image.png"),
+        BUNYIP("bunyip.png"),
+        KAPPA("kappa.png"),
+        KRAKEN("kraken.png"),
+        NESSY("nessy.png"),
+        WRAITH("wraith.png"),
+        STAR("star.png"),
+        CHUPACABRA("chupacabra.png"),
+        CHINESE_DRAGON("chinese_dragon.png"),
+        DEER_WOMEN("deer_woman.png"),
+        IMPUNDULU("impundulu.png"),
+        TANIWHA("taniwha.png"),
+        ADZE("adze.png"),
+        YOWIE("yowie.png"),
+        WENDIGO("wendigo.png"),
+        INTRO_SCENE_2("intro_scene_2.png"),
+        INTRO_SCENE_1("intro_scene_1.png"),
+        INTRO_SCENE_3("intro_scene_3.png"),
+        INTRO_SCENE_4("intro_scene_4.png"),
+        INTRO_SCENE_5("intro_scene_5.png"),
+        INTRO_SCENE_6("intro_scene_6.png");
 
         private final String path;
 

@@ -1,3 +1,22 @@
+/*
+ * Copyright 2016 Traveler's Notebook: Monster Tales project authors
+ *
+ * This file is part of monsters
+ *
+ * monsters is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * monsters is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with monsters.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package edu.bsu.storygame.core.view;
 
 import edu.bsu.storygame.core.MonsterGame;
@@ -19,8 +38,9 @@ import tripleplay.util.Colors;
 public final class GameStyle {
 
     private static final float LARGE = 0.05f;
-    private static final float REGULAR = 0.038f;
-    private static final float SMALL = 0.02f;
+    private static final float REGULAR = 0.045f;
+    private static final float SMALL = 0.033f;
+    private static final float TINY = 0.01f;
 
     private static final int DARK_TRANSLUCENT_GREY = Color.argb(240, 30, 30, 30);
 
@@ -44,25 +64,32 @@ public final class GameStyle {
                 game.bounds.percentOfHeight(0.02f),
                 game.bounds.percentOfHeight(0.02f),
                 game.bounds.percentOfHeight(0.02f));
-        final Background palettizedButtonBg = Background.roundRect(gfx, Palette.BLACK_PEARL, cornerRadius, Palette.SPROUT, borderWidth)
+        final Background palettizedButtonBg = Background.roundRect(gfx, Palette.OBSERVATORY, cornerRadius, Palette.ROSE, borderWidth)
                 .insets(buttonInsets);
-        final Background palettizedSelectedButtonBg = Background.roundRect(gfx, Palette.SPROUT, cornerRadius, Palette.BLACK_PEARL, borderWidth)
+        final Background palettizedSelectedButtonBg = Background.roundRect(gfx, Palette.ROSE, cornerRadius, Palette.OBSERVATORY, borderWidth)
                 .insets(buttonInsets);
 
-        final Font oxygenRegular = Typeface.OXYGEN.in(game).atSize(REGULAR);
-        final Font oxygenLarge = Typeface.OXYGEN.in(game).atSize(LARGE);
-        final Font oxygenLightRegular = Typeface.OXYGEN_LIGHT.in(game).atSize(REGULAR);
-
-        final Style.Binding buttonRegularStyle = Style.BACKGROUND.is(butBg);
-        final Style.Binding buttonSelectedStyle = Style.BACKGROUND.is(butSelBg);
+        final Font gameTextSmall = Typeface.GAME_TEXT.in(game).atSize(SMALL);
+        final Font gameTextRegular = Typeface.GAME_TEXT.in(game).atSize(REGULAR);
+        final Font gameTextLarge = Typeface.GAME_TEXT.in(game).atSize(LARGE);
 
         return Stylesheet.builder()
                 .add(Label.class,
-                        Style.FONT.is(oxygenRegular))
+                        Style.FONT.is(gameTextRegular),
+                        Style.COLOR.is(Colors.WHITE))
                 .add(Button.class,
-                        buttonRegularStyle)
+                        Style.FONT.is(gameTextLarge),
+                        Style.COLOR.is(Colors.BLACK),
+                        Style.BACKGROUND.is(Background.roundRect(gfx, Palette.ROSE, cornerRadius, Palette.OBSERVATORY, borderWidth).insets(buttonInsets)))
                 .add(Button.class, Style.Mode.SELECTED,
-                        buttonSelectedStyle)
+                        Style.FONT.is(gameTextLarge),
+                        Style.COLOR.is(Colors.WHITE),
+                        Style.BACKGROUND.is(Background.roundRect(gfx, Palette.OBSERVATORY, cornerRadius, Palette.ROSE, borderWidth).insets(buttonInsets)))
+                .add(Button.class, Style.Mode.DISABLED,
+                        Style.FONT.is(gameTextLarge),
+                        Style.COLOR.is(Colors.LIGHT_GRAY),
+                        Style.BACKGROUND.is(Background.roundRect(gfx, Palette.NOBEL, cornerRadius, Palette.SWIRL, borderWidth).insets(buttonInsets)))
+
                 .add(ToggleButton.class,
                         Style.BACKGROUND.is(butBg))
                 .add(ToggleButton.class, Style.Mode.SELECTED,
@@ -75,7 +102,7 @@ public final class GameStyle {
                                 inset(3, 2, 0, 3)))
                 // flip ul and br to make Field appear recessed
                 .add(Field.class,
-                        Style.FONT.is(oxygenRegular),
+                        Style.FONT.is(gameTextRegular),
                         Style.BACKGROUND.is(Background.beveled(0xFFFFFFFF, brColor, ulColor).inset(5)),
                         Style.HALIGN.left)
                 .add(Field.class, Style.Mode.DISABLED,
@@ -90,94 +117,88 @@ public final class GameStyle {
                         Style.COLOR.is(0xFFFFFFFF))
                 .add(Tabs.class,
                         Tabs.HIGHLIGHTER.is(Tabs.textColorHighlighter(0xFF000000, 0xFFFFFFFF)))
-
-                .add(StartScreen.StartButton.class,
-                        Style.FONT.is(oxygenLarge),
-                        Style.BACKGROUND.is(Background.roundRect(gfx, Colors.WHITE, cornerRadius, Colors.BLACK, borderWidth).insets(buttonInsets)))
-                .add(StartScreen.StartButton.class, Style.Mode.SELECTED,
-                        Style.FONT.is(oxygenLarge),
-                        Style.BACKGROUND.is(Background.roundRect(gfx, Colors.BLACK, cornerRadius, Colors.WHITE, borderWidth).insets(buttonInsets)))
-
-                .add(PlayerCreationGroup.StyledLabel.class,
-                        Style.FONT.is(oxygenRegular),
-                        Style.COLOR.is(Colors.WHITE))
                 .add(PlayerCreationGroup.SkillButton.class,
-                        Style.FONT.is(oxygenLarge),
+                        Style.FONT.is(gameTextSmall),
                         Style.COLOR.is(Colors.BLACK),
-                        Style.BACKGROUND.is(Background.roundRect(gfx, Colors.WHITE, cornerRadius, Colors.BLACK, borderWidth).insets(buttonInsets)))
+                        Style.BACKGROUND.is(Background.roundRect(gfx, Palette.ROSE, cornerRadius, Palette.OBSERVATORY, borderWidth).insets(buttonInsets)))
                 .add(PlayerCreationGroup.SkillButton.class, Style.Mode.SELECTED,
-                        Style.FONT.is(oxygenLarge),
+                        Style.FONT.is(gameTextSmall),
                         Style.COLOR.is(Colors.WHITE),
-                        Style.BACKGROUND.is(Background.roundRect(gfx, Colors.BLACK, cornerRadius, Colors.WHITE, borderWidth).insets(buttonInsets)))
-                .add(PlayerCreationScreen.StartButton.class,
-                        Style.FONT.is(oxygenLarge),
+                        Style.BACKGROUND.is(Background.roundRect(gfx, Palette.OBSERVATORY, cornerRadius, Palette.ROSE, borderWidth).insets(buttonInsets)))
+                .add(NavigationButton.class,
+                        Style.FONT.is(gameTextLarge),
                         Style.COLOR.is(Colors.BLACK),
-                        Style.BACKGROUND.is(Background.roundRect(gfx, Colors.WHITE, cornerRadius, Colors.BLACK, borderWidth).insets(buttonInsets)))
-                .add(PlayerCreationScreen.StartButton.class, Style.Mode.SELECTED,
-                        Style.FONT.is(oxygenLarge),
+                        Style.BACKGROUND.is(Background.roundRect(gfx, Palette.ROSE, cornerRadius, Palette.OBSERVATORY, borderWidth).insets(buttonInsets)))
+                .add(NavigationButton.class, Style.Mode.SELECTED,
+                        Style.FONT.is(gameTextLarge),
                         Style.COLOR.is(Colors.WHITE),
-                        Style.BACKGROUND.is(Background.roundRect(gfx, Colors.BLACK, cornerRadius, Colors.WHITE, borderWidth).insets(buttonInsets)))
-                .add(PlayerCreationScreen.StartButton.class, Style.Mode.DISABLED,
-                        Style.FONT.is(oxygenLarge),
+                        Style.BACKGROUND.is(Background.roundRect(gfx, Palette.OBSERVATORY, cornerRadius, Palette.ROSE, borderWidth).insets(buttonInsets)))
+                .add(NavigationButton.class, Style.Mode.DISABLED,
+                        Style.FONT.is(gameTextLarge),
                         Style.COLOR.is(Colors.LIGHT_GRAY),
                         Style.BACKGROUND.is(Background.roundRect(gfx, Colors.GRAY, cornerRadius, Colors.LIGHT_GRAY, borderWidth).insets(buttonInsets)))
 
                 .add(Sidebar.NameLabel.class,
-                        Style.FONT.is(oxygenLarge),
+                        Style.FONT.is(gameTextLarge),
                         Style.COLOR.is(Colors.WHITE),
                         Style.HALIGN.left)
                 .add(Sidebar.SkillLabel.class,
-                        Style.FONT.is(oxygenRegular),
+                        Style.FONT.is(gameTextRegular),
                         Style.HALIGN.left)
-                .add(Sidebar.PointLabel.class,
-                        Style.FONT.is(oxygenLarge),
-                        Style.COLOR.is(Palette.SPROUT),
-                        Style.BACKGROUND.is(Background.bordered(Palette.COCOA_BROWN, Palette.SPROUT, borderWidth).insets(buttonInsets)))
+                .add(Sidebar.PlayerView.PointLabel.class,
+                        Style.FONT.is(gameTextLarge),
+                        Style.COLOR.is(Palette.ROSE),
+                        Style.BACKGROUND.is(Background.bordered(Palette.BROWN_POD, Palette.ROSE, borderWidth).insets(buttonInsets)))
 
                 .add(EncounterCardFactory.EncounterCard.class,
-                        Style.BACKGROUND.is(Background.roundRect(game.plat.graphics(), Palette.BLACK_PEARL, game.bounds.percentOfHeight(0.03f))))
+                        Style.BACKGROUND.is(Background.roundRect(game.plat.graphics(), Palette.OBSERVATORY, game.bounds.percentOfHeight(0.03f))))
                 .add(EncounterCardFactory.EncounterCard.TitleLabel.class,
-                        Style.FONT.is(Typeface.OXYGEN.in(game).atSize(LARGE)),
-                        Style.COLOR.is(Palette.TROPICAL_RAIN_FOREST),
+                        Style.FONT.is(Typeface.GAME_TEXT.in(game).atSize(LARGE)),
+                        Style.COLOR.is(Palette.NOBEL),
                         Style.BACKGROUND.is(Background.blank().inset(game.bounds.percentOfHeight(SMALL))),
-                        Style.ICON_GAP.is((int) game.bounds.percentOfHeight(SMALL)),
+                        Style.ICON_GAP.is((int) game.bounds.percentOfHeight(TINY)),
                         Style.HALIGN.center,
                         Style.ICON_POS.below)
                 .add(EncounterCardFactory.EncounterCard.InteractionArea.StyledButton.class,
-                        Style.FONT.is(oxygenLarge),
+                        Style.FONT.is(gameTextLarge),
                         Style.BACKGROUND.is(palettizedButtonBg),
-                        Style.COLOR.is(Palette.SPROUT))
+                        Style.COLOR.is(Palette.ROSE))
                 .add(EncounterCardFactory.EncounterCard.InteractionArea.StyledButton.class, Style.Mode.SELECTED,
-                        Style.FONT.is(oxygenLarge),
+                        Style.FONT.is(gameTextLarge),
                         Style.BACKGROUND.is(palettizedSelectedButtonBg),
-                        Style.COLOR.is(Palette.BLACK_PEARL))
+                        Style.COLOR.is(Palette.OBSERVATORY))
                 .add(EncounterCardFactory.EncounterCard.InteractionArea.StyledNarrativeLabel.class,
                         Style.TEXT_WRAP.on,
-                        Style.FONT.is(oxygenLightRegular),
-                        Style.COLOR.is(Palette.SPROUT),
-                        Style.BACKGROUND.is(Background.solid(Palette.BLUE_LAGOON)
-                                .inset(game.bounds.percentOfHeight(SMALL))))
+                        Style.FONT.is(gameTextRegular),
+                        Style.COLOR.is(Palette.ROSE),
+                        Style.BACKGROUND.is(Background.solid(Palette.BLACKCURRANT)
+                                .inset(game.bounds.percentOfHeight(TINY))))
                 .add(EncounterCardFactory.EncounterCard.InteractionArea.TriggerButton.class,
-                        Style.COLOR.is(Palette.SPROUT),
+                        Style.COLOR.is(Palette.ROSE),
                         Style.BACKGROUND.is(palettizedButtonBg))
                 .add(EncounterCardFactory.EncounterCard.InteractionArea.TriggerButton.class, Style.Mode.SELECTED,
-                        Style.COLOR.is(Palette.BLACK_PEARL),
+                        Style.COLOR.is(Palette.OBSERVATORY),
                         Style.BACKGROUND.is(palettizedSelectedButtonBg))
                 .add(EncounterCardFactory.EncounterCard.InteractionArea.RewardLabel.class,
-                        Style.COLOR.is(Palette.SPROUT))
+                        Style.COLOR.is(Palette.ROSE))
+                .add(EncounterCardFactory.EncounterCard.InteractionArea.DoneButton.class,
+                        Style.FONT.is(gameTextRegular),
+                        Style.BACKGROUND.is(palettizedButtonBg),
+                        Style.COLOR.is(Palette.ROSE))
+                .add(EncounterCardFactory.EncounterCard.InteractionArea.DoneButton.class, Style.Mode.SELECTED,
+                        Style.FONT.is(gameTextRegular),
+                        Style.BACKGROUND.is(palettizedSelectedButtonBg),
+                        Style.COLOR.is(Palette.OBSERVATORY))
 
                 .add(HandoffDialogFactory.HandoffDialog.class,
                         Style.BACKGROUND.is(Background.roundRect(gfx, DARK_TRANSLUCENT_GREY, cornerRadius)))
-                .add(HandoffDialogFactory.StyledLabel.class,
-                        Style.FONT.is(oxygenLarge),
-                        Style.COLOR.is(Colors.WHITE))
                 .add(HandoffDialogFactory.OkButton.class,
-                        Style.FONT.is(oxygenLarge),
-                        Style.COLOR.is(Colors.WHITE),
-                        Style.BACKGROUND.is(Background.roundRect(gfx, Palette.TUSCANY, cornerRadius, Palette.SPROUT, borderWidth)))
+                        Style.FONT.is(gameTextLarge),
+                        Style.COLOR.is(Colors.BLACK),
+                        Style.BACKGROUND.is(Background.roundRect(gfx, Palette.ROSE, cornerRadius, Palette.OBSERVATORY, borderWidth)))
                 .add(HandoffDialogFactory.OkButton.class, Style.Mode.SELECTED,
-                        Style.FONT.is(oxygenLarge),
-                        Style.COLOR.is(Palette.TUSCANY),
-                        Style.BACKGROUND.is(Background.roundRect(gfx, Palette.SPROUT, cornerRadius, Palette.TUSCANY, borderWidth)));
+                        Style.FONT.is(gameTextLarge),
+                        Style.COLOR.is(Colors.WHITE),
+                        Style.BACKGROUND.is(Background.roundRect(gfx, Palette.OBSERVATORY, cornerRadius, Palette.ROSE, borderWidth)));
     }
 }

@@ -1,3 +1,22 @@
+/*
+ * Copyright 2016 Traveler's Notebook: Monster Tales project authors
+ *
+ * This file is part of monsters
+ *
+ * monsters is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * monsters is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with monsters.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package edu.bsu.storygame.core;
 
 import com.google.common.collect.ImmutableList;
@@ -5,9 +24,10 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import edu.bsu.storygame.core.model.GameContext;
 import edu.bsu.storygame.core.model.Player;
+import edu.bsu.storygame.core.model.Region;
 import edu.bsu.storygame.core.model.Skill;
+import edu.bsu.storygame.core.view.GameScreen;
 import edu.bsu.storygame.core.view.Palette;
-import edu.bsu.storygame.core.view.SampleGameScreen;
 import playn.core.Key;
 import playn.core.Keyboard;
 import react.SignalView;
@@ -30,9 +50,19 @@ public class KeystrokeBasedPlayerGenerator implements SignalView.Listener<Keyboa
             @Override
             public void run() {
                 GameContext context = new GameContext(game,
-                        new Player.Builder().name("Ann").color(Palette.PLAYER_ONE).skills(makeSkillList()).build(),
-                        new Player.Builder().name("Barb").color(Palette.PLAYER_TWO).skills(makeSkillList()).build());
-                game.screenStack.push(new SampleGameScreen(game, context));
+                        new Player.Builder().name("Bonnie")
+                                .color(Palette.PLAYER_ONE)
+                                .location(Region.AFRICA)
+                                .skills(makeSkillList())
+                                .build(),
+                        new Player.Builder()
+                                .name("Clyde")
+                                .color(Palette.PLAYER_TWO)
+                                .location(Region.NORTH_AMERICA)
+                                .skills(makeSkillList())
+                                .build());
+                GameScreen gameScreen = new GameScreen(context);
+                game.screenStack.push(gameScreen);
             }
 
             private List<Skill> makeSkillList() {

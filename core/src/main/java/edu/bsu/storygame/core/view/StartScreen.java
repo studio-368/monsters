@@ -1,48 +1,55 @@
+/*
+ * Copyright 2016 Traveler's Notebook: Monster Tales project authors
+ *
+ * This file is part of monsters
+ *
+ * monsters is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * monsters is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with monsters.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package edu.bsu.storygame.core.view;
 
 import edu.bsu.storygame.core.MonsterGame;
 import edu.bsu.storygame.core.assets.ImageCache;
 import edu.bsu.storygame.core.assets.Typeface;
-import edu.bsu.storygame.core.util.IconScaler;
+import edu.bsu.storygame.core.intro.SlideData;
+import edu.bsu.storygame.core.intro.SlideShow;
 import playn.core.Game;
-import playn.scene.GroupLayer;
+import react.SignalView;
 import react.Slot;
-import tripleplay.game.ScreenStack;
+import react.Try;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
 
-public class StartScreen extends ScreenStack.UIScreen {
+public final class StartScreen extends BoundedUIScreen {
 
     private final MonsterGame game;
-    private Root root;
-    private final GroupLayer boundedLayer;
-
 
     public StartScreen(final MonsterGame game) {
-        super(game.plat);
+        super(game);
         this.game = game;
-        this.boundedLayer = new GroupLayer(game.bounds.width(), game.bounds.height());
-        layer.addAt(boundedLayer,
-                (game.plat.graphics().viewSize.width() - game.bounds.width()) / 2,
-                (game.plat.graphics().viewSize.height() - game.bounds.height()) / 2);
         initRoot();
     }
 
     private void initRoot() {
-        IconScaler scaler = new IconScaler(game);
-        Icon logo = scaler.scale(ImageCache.Key.LOGO, game.bounds.width() * 0.25f);
-        root = iface.createRoot(AxisLayout.vertical(), GameStyle.newSheet(game), boundedLayer)
-                .setSize(game.bounds.width(), game.bounds.height())
-                .addStyles(Style.BACKGROUND.is(Background.solid(Palette.TUSCANY)))
-                .add(new Label("The Nightmare Defenders need your help!")
-                                .addStyles(Style.FONT.is(Typeface.PASSION_ONE.in(game).atSize(0.08f)),
-                                        Style.TEXT_WRAP.on,
-                                        Style.COLOR.is(Palette.BLUE_LAGOON)),
-                        new Label(logo),
-                        new Label("Monsters are appearing in people's nightmares all over the world")
-                                .addStyles(Style.FONT.is(Typeface.OXYGEN.in(game).atSize(0.08f)),
-                                        Style.TEXT_WRAP.on,
-                                        Style.COLOR.is(Palette.BLUE_LAGOON)),
+        iface.createRoot(AxisLayout.vertical(), GameStyle.newSheet(game), content)
+                .setSize(content.width(), content.height())
+                .addStyles(Style.BACKGROUND.is(Background.image(game.imageCache.image(ImageCache.Key.MAIN_MENU_BG))))
+                .add(new Shim(0, game.bounds.percentOfHeight(0.20f)),
+                        new Label("Traveler's Notebook: Monster Tales")
+                                .addStyles(Style.FONT.is(Typeface.TITLE_SCREEN.font.derive(
+                                        game.bounds.percentOfHeight(0.08f)))),
+                        new Shim(0, game.bounds.percentOfHeight(0.02f)),
                         new StartButton());
     }
 
@@ -53,18 +60,41 @@ public class StartScreen extends ScreenStack.UIScreen {
 
     final class StartButton extends Button {
         private StartButton() {
-            super("Join the Fight");
+            super("Begin Our Adventure!");
             onClick(new Slot<Button>() {
                 @Override
                 public void onEmit(Button button) {
-                    game.screenStack.push(new PlayerCreationScreen(game), game.screenStack.slide());
+                    SlideShow slideShow = new SlideShow(game,
+                            SlideData.text("Hello"),
+                            SlideData.text("I've heard you are great writers")
+                                    .imageKey(ImageCache.Key.INTRO_SCENE_1)
+                                    .popupText("What's that?"),
+                            SlideData.text("You need ideas for your next book?")
+                                    .imageKey(ImageCache.Key.INTRO_SCENE_2),
+                            SlideData.text("How about monsters?")
+                                    .imageKey(ImageCache.Key.INTRO_SCENE_3),
+                            SlideData.text("There's a great big world full of monster stories out there.")
+                                    .imageKey(ImageCache.Key.INTRO_SCENE_4)
+                                    .popupText("You should explore it!"),
+                            SlideData.text("Go on some adventures.")
+                                    .imageKey(ImageCache.Key.INTRO_SCENE_5),
+                            SlideData.text("Write everything down.")
+                                    .imageKey(ImageCache.Key.INTRO_SCENE_6),
+                            SlideData.text("Whoever finds the most inspiring stories wins!")
+                    );
+                    slideShow.startOn(game.screenStack).onComplete(new SignalView.Listener<Try<Void>>() {
+                        @Override
+                        public void onEmit(Try<Void> voidTry) {
+                            game.screenStack.push(new PlayerNameScreen(game), game.screenStack.slide());
+                        }
+                    });
                 }
             });
         }
 
         @Override
         protected Class<?> getStyleClass() {
-            return StartButton.class;
+            return NavigationButton.class;
         }
     }
 }
