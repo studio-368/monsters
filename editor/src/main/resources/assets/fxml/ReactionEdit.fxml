@@ -97,7 +97,7 @@
                     <graphic>
                         <HBox>
                             <children>
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Modify story points: "/>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Modify inspiration points: "/>
                                 <TextField fx:id="pointsChangeTextField" onAction="#onStoryPointsChange"/>
                             </children>
                         </HBox>
