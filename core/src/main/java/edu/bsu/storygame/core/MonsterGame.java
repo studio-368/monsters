@@ -68,7 +68,7 @@ public class MonsterGame extends SceneGame {
         }
         this.bounds = initAspectRatio();
         screenStack = new ScreenStack(this, rootLayer);
-        screenStack.push(new FlipTestScreen(this));
+        screenStack.push(new NotebookTestScreen(this));
     }
 
     private Pointer initInput() {
