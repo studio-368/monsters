@@ -20,11 +20,11 @@
 package edu.bsu.storygame.core.view;
 
 import com.google.common.collect.ImmutableList;
-import playn.core.GL20;
+import edu.bsu.storygame.core.MonsterGame;
 import playn.scene.GroupLayer;
 import playn.scene.Layer;
 import pythagoras.f.FloatMath;
-import pythagoras.f.IDimension;
+import pythagoras.f.IRectangle;
 import tripleplay.anim.Animation;
 import tripleplay.anim.Animator;
 import tripleplay.shaders.RotateYBatch;
@@ -34,21 +34,21 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class Notebook extends GroupLayer {
 
-    private final GL20 gl;
+    private final MonsterGame game;
     private final Animator anim;
     private ImmutableList<Layer> layers;
     private RotateYBatch batch;
     private final Interpolator interp = Interpolator.EASE_INOUT;
     private final float duration = 2000;
 
-    public Notebook(GL20 gl, Animator anim, IDimension openSize, Layer... layers) {
-        super(openSize.width(), openSize.height());
-        this.gl = checkNotNull(gl);
+    public Notebook(MonsterGame game, Animator anim, IRectangle openBounds, Layer... layers) {
+        super(game.plat.graphics().viewSize.width(), game.plat.graphics().viewSize.height());
+        this.game = game;
         this.anim = checkNotNull(anim);
         this.layers = ImmutableList.copyOf(layers);
 
         for (int i=layers.length-1; i>=0; i--) {
-            addAt(layers[i], openSize.width()/2, 0);
+            addAt(layers[i], openBounds.x() + openBounds.width() / 2, openBounds.y());
         }
     }
 
@@ -59,7 +59,7 @@ public class Notebook extends GroupLayer {
     private void startAnimation() {
         final Layer page = layers.get(0);
 
-        batch = new RotateYBatch(gl, 0.5f, 0.5f, 1.5f);
+        batch = new RotateYBatch(game.plat.graphics().gl, 0.5f, 0.5f, 1.5f);
         page.setBatch(batch);
         updateAngle(0);
 

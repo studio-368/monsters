@@ -21,7 +21,7 @@ package edu.bsu.storygame.core;
 
 import edu.bsu.storygame.core.view.Notebook;
 import playn.core.Game;
-import pythagoras.f.Dimension;
+import pythagoras.f.Rectangle;
 import react.Slot;
 import tripleplay.game.ScreenStack;
 import tripleplay.ui.Button;
@@ -43,12 +43,15 @@ public class NotebookTestScreen extends ScreenStack.UIScreen {
     @Override
     public void wasAdded() {
         float w = 400, h = 300;
-        final Notebook notebook = new Notebook(game.plat.graphics().gl, iface.anim, new Dimension(800, 300),
+        final Notebook notebook = new Notebook(game, iface.anim,
+                new Rectangle(game.plat.graphics().viewSize.width() / 2 - w,
+                        game.plat.graphics().viewSize.height() / 2 - h / 2,
+                        w * 2, h),
                 Layers.solid(Colors.YELLOW, w, h),
                 Layers.solid(Colors.RED, w, h),
                 Layers.solid(Colors.CYAN, w, h),
                 Layers.solid(Colors.BLUE, w, h));
-        layer.addCenterAt(notebook, game.bounds.width() / 2, game.bounds.height() / 2);
+        layer.add(notebook);
 
         iface.createRoot(AxisLayout.vertical(), SimpleStyles.newSheet(game.plat.graphics()), layer)
                 .setSize(size())
