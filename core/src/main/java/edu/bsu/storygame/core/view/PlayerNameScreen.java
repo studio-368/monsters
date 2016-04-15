@@ -23,15 +23,14 @@ import edu.bsu.storygame.core.MonsterGame;
 import edu.bsu.storygame.core.assets.Typeface;
 import playn.core.Game;
 import react.Slot;
-import react.Value;
-import react.ValueView;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
 import tripleplay.ui.layout.FlowLayout;
 
 public class PlayerNameScreen extends BoundedUIScreen {
 
-    public final ValueView<Boolean> complete = Value.create(false);
+    private static final float NAME_FIELD_WIDTH_PERCENT = 0.25f;
+    private static final float NAME_FIELD_HEIGHT_PERCENT = 0.08f;
     private final MonsterGame game;
     private final Root root;
     private Field nameFieldOne;
@@ -69,22 +68,26 @@ public class PlayerNameScreen extends BoundedUIScreen {
         if (player == 1) {
             color = Palette.PLAYER_ONE;
             group.add(nameFieldOne = new Field()
-                    .setConstraint(Constraints.fixedSize(game.bounds.width() * 0.10f, game.bounds.height() * 0.08f)));
+                    .setConstraint(Constraints.fixedSize(game.bounds.width() * NAME_FIELD_WIDTH_PERCENT,
+                            game.bounds.height() * NAME_FIELD_HEIGHT_PERCENT)));
             nameFieldOne.text.connect(new Slot<String>() {
                 @Override
                 public void onEmit(String s) {
                     checkForCompletion();
                 }
             });
+            nameFieldOne.setVisible(false);
         } else {
             group.add(nameFieldTwo = new Field()
-                    .setConstraint(Constraints.fixedSize(game.bounds.width() * 0.10f, game.bounds.height() * 0.08f)));
+                    .setConstraint(Constraints.fixedSize(game.bounds.width() * NAME_FIELD_WIDTH_PERCENT,
+                            game.bounds.height() * NAME_FIELD_HEIGHT_PERCENT)));
             nameFieldTwo.text.connect(new Slot<String>() {
                 @Override
                 public void onEmit(String s) {
                     checkForCompletion();
                 }
             });
+            nameFieldTwo.setVisible(false);
         }
         group.addStyles(Style.BACKGROUND.is(Background.solid(color)));
         return group;
@@ -92,14 +95,24 @@ public class PlayerNameScreen extends BoundedUIScreen {
 
     private void checkForCompletion() {
         final boolean isComplete = !nameFieldOne.text.get().trim().isEmpty() && !nameFieldTwo.text.get().trim().isEmpty();
-        ((Value<Boolean>) complete).update(isComplete);
-        if (complete.get()) {
-            continueButton.setEnabled(true);
-        }
+        continueButton.setEnabled(isComplete);
     }
 
     @Override
     public Game game() {
         return game;
     }
+
+    @Override
+    public void showTransitionCompleted() {
+        nameFieldOne.setVisible(true);
+        nameFieldTwo.setVisible(true);
+    }
+
+    @Override
+    public void hideTransitionStarted() {
+        Container.removeFromParent(nameFieldOne, true);
+        Container.removeFromParent(nameFieldTwo, true);
+    }
+
 }
