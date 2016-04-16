@@ -19,7 +19,12 @@
 
 package edu.bsu.storygame.core;
 
-import edu.bsu.storygame.core.view.Notebook;
+import com.google.common.collect.ImmutableList;
+import edu.bsu.storygame.core.model.GameContext;
+import edu.bsu.storygame.core.model.Player;
+import edu.bsu.storygame.core.model.Skill;
+import edu.bsu.storygame.core.view.notebook.CoverPage;
+import edu.bsu.storygame.core.view.notebook.Notebook;
 import playn.core.Game;
 import playn.scene.GroupLayer;
 import playn.scene.Layer;
@@ -42,12 +47,16 @@ public class NotebookTestScreen extends ScreenStack.UIScreen {
 
     @Override
     public void wasAdded() {
+        Player p1 = new Player.Builder().name("Bonnie").color(Colors.CYAN).skills(ImmutableList.of(Skill.named("Foo"))).build();
+        Player p2 = new Player.Builder().name("Clyde").color(Colors.ORANGE).skills(ImmutableList.of(Skill.named("Foo"))).build();
+        GameContext gameContext = new GameContext(game, p1, p2);
+
         float w = 400, h = 300;
         final Notebook notebook = new Notebook(game, iface.anim,
                 new Rectangle(game.plat.graphics().viewSize.width() / 2 - w,
                         game.plat.graphics().viewSize.height() / 2 - h / 2,
                         w * 2, h),
-                makeTPLayer(w, h),
+                new CoverPage(iface, gameContext, p1),
                 makeCheckerLayer(w, h),
                 Layers.solid(Colors.CYAN, w, h),
                 Layers.solid(Colors.BLUE, w, h),

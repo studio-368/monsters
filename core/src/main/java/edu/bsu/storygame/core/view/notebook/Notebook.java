@@ -17,7 +17,7 @@
  * along with Traveler's Notebook: Monster Tales.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package edu.bsu.storygame.core.view;
+package edu.bsu.storygame.core.view.notebook;
 
 import com.google.common.collect.Lists;
 import edu.bsu.storygame.core.MonsterGame;
