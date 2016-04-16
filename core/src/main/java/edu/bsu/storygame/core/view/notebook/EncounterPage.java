@@ -26,40 +26,31 @@ import edu.bsu.storygame.core.model.GameContext;
 import edu.bsu.storygame.core.model.Player;
 import edu.bsu.storygame.core.util.IconScaler;
 import edu.bsu.storygame.core.view.GameStyle;
-import playn.scene.GroupLayer;
-import playn.scene.Layer;
-import react.Slot;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
 import tripleplay.util.Colors;
 
-public class EncounterPage extends GroupLayer {
+import static com.google.common.base.Preconditions.checkNotNull;
 
-    private final GameContext context;
-    private Root root;
+public class EncounterPage extends PageLayer {
+
 
     public EncounterPage(final Interface iface, final GameContext context, final Player player) {
-        this.context = context;
-        onAdded(new Slot<Layer>() {
-            @Override
-            public void onEmit(Layer layer) {
-                root = iface.createRoot(AxisLayout.vertical(), GameStyle.newSheet(context.game), EncounterPage.this)
-                        .addStyles(Style.BACKGROUND.is(Background.solid(Colors.GREEN)))
-                        .setSize(400, 300);
-                root.add(new Label("I encountered a ").addStyles(
-                        Style.FONT.is(Typeface.HANDWRITING.in(context.game).atSize(0.045f))));
-                Encounter encounter = context.encounter.get();
-                root.add(new EncounterImage(encounter));
-                root.add(new Label(encounter.name).addStyles(
-                        Style.FONT.is(Typeface.HANDWRITING.in(context.game).atSize(0.045f))));
-            }
-        });
-        onRemoved(new Slot<Layer>() {
-            @Override
-            public void onEmit(Layer layer) {
-                iface.removeRoot(root);
-            }
-        });
+        super(iface, context, player);
+    }
+
+    @Override
+    protected Root createRoot() {
+        root = iface.createRoot(AxisLayout.vertical(), GameStyle.newSheet(context.game), EncounterPage.this)
+                .addStyles(Style.BACKGROUND.is(Background.solid(Colors.GREEN)))
+                .setSize(400, 300);
+        root.add(new Label("I encountered a ").addStyles(
+                Style.FONT.is(Typeface.HANDWRITING.in(context.game).atSize(0.045f))));
+        Encounter encounter = checkNotNull(context.encounter.get(), "Encounter must be non-null to create this root");
+        root.add(new EncounterImage(encounter));
+        root.add(new Label(encounter.name).addStyles(
+                Style.FONT.is(Typeface.HANDWRITING.in(context.game).atSize(0.045f))));
+        return root;
     }
 
     private class EncounterImage extends Label {

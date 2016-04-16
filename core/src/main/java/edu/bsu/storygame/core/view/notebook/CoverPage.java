@@ -23,42 +23,28 @@ import edu.bsu.storygame.core.model.GameContext;
 import edu.bsu.storygame.core.model.Player;
 import edu.bsu.storygame.core.model.Skill;
 import edu.bsu.storygame.core.view.GameStyle;
-import playn.scene.GroupLayer;
-import playn.scene.Layer;
 import react.RList;
 import react.Slot;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
-public class CoverPage extends GroupLayer {
-
-    private final Player player;
-    private Root root;
+public class CoverPage extends PageLayer {
 
     public CoverPage(final Interface iface, final GameContext context, final Player player) {
-        this.player = checkNotNull(player);
-        onAdded(new Slot<Layer>() {
-            @Override
-            public void onEmit(Layer layer) {
-                root = iface.createRoot(AxisLayout.vertical(), GameStyle.newSheet(context.game), CoverPage.this)
-                        .setSize(400, 300)
-                        .addStyles(Style.BACKGROUND.is(Background.solid(player.color)))
-                        .add(new Label(player.name + "'s Story")
-                                        .addStyles(Style.HALIGN.left),
-                                new ScoreLabel()
-                                        .addStyles(Style.HALIGN.left),
-                                new SkillGroup().addStyles(Style.HALIGN.left),
-                                new Shim(0, 0).setConstraint(AxisLayout.stretched()));
-            }
-        });
-        onRemoved(new Slot<Layer>() {
-            @Override
-            public void onEmit(Layer layer) {
-                iface.disposeRoot(root);
-            }
-        });
+        super(iface, context, player);
+    }
+
+    @Override
+    protected Root createRoot() {
+        return iface.createRoot(AxisLayout.vertical(), GameStyle.newSheet(context.game), CoverPage.this)
+                .setSize(400, 300)
+                .addStyles(Style.BACKGROUND.is(Background.solid(player.color)))
+                .add(new Label(player.name + "'s Story")
+                                .addStyles(Style.HALIGN.left),
+                        new ScoreLabel()
+                                .addStyles(Style.HALIGN.left),
+                        new SkillGroup().addStyles(Style.HALIGN.left),
+                        new Shim(0, 0).setConstraint(AxisLayout.stretched()));
     }
 
     private final class ScoreLabel extends Label {
