@@ -26,22 +26,25 @@ import playn.scene.Layer;
 import pythagoras.f.FloatMath;
 import pythagoras.f.IRectangle;
 import pythagoras.f.Rectangle;
+import react.RFuture;
+import react.RPromise;
 import tripleplay.anim.Animation;
 import tripleplay.anim.Animator;
 import tripleplay.shaders.RotateYBatch;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 public class Notebook extends GroupLayer {
 
-    private static final float FLIP_DURATION = 2000;
+    private static final float FLIP_DURATION = 1000;
 
     private final MonsterGame game;
     private final Animator anim;
     private ImmutableList<Layer> layers;
     private RotateYBatch batch;
     private final IRectangle openBounds;
+    private int rightTopPageIndex = 0;
+    private boolean flipping = false;
 
     public Notebook(MonsterGame game, Animator anim, IRectangle openBounds, Layer... layers) {
         super(game.plat.graphics().viewSize.width(), game.plat.graphics().viewSize.height());
@@ -57,12 +60,17 @@ public class Notebook extends GroupLayer {
         }
     }
 
-    public void turnPage() {
-        startAnimation();
-    }
+    public RFuture<Notebook> turnPage() {
+        if (flipping) {
+            throw new IllegalStateException("Cannot run two animations concurrently");
+        } else {
+            flipping = true;
+        }
+        checkState(rightTopPageIndex < layers.size() - 1, "On last page, can not flip any more.");
 
-    private void startAnimation() {
-        Layer page = layers.get(0);
+        final RPromise<Notebook> promise = RPromise.create();
+        final Layer page = layers.get(rightTopPageIndex);
+        final Layer reverse = layers.get(rightTopPageIndex + 1);
         batch = new RotateYBatch(game.plat.graphics().gl, 0.5f, 0.5f, 1.5f);
         page.setBatch(batch);
 
@@ -75,9 +83,9 @@ public class Notebook extends GroupLayer {
                 .action(new Runnable() {
                     @Override
                     public void run() {
-                        remove(layers.get(0));
-                        addAt(layers.get(1), openBounds.x() + openBounds.width() / 2, openBounds.y());
-                        layers.get(1).setBatch(batch);
+                        remove(page);
+                        addAt(reverse, openBounds.x() + openBounds.width() / 2, openBounds.y());
+                        reverse.setBatch(batch);
                     }
                 })
                 .then()
@@ -85,7 +93,17 @@ public class Notebook extends GroupLayer {
                 .from(FloatMath.HALF_PI)
                 .to(FloatMath.PI)
                 .in(FLIP_DURATION / 2)
-                .easeOut();
+                .easeOut()
+                .then()
+                .action(new Runnable() {
+                    @Override
+                    public void run() {
+                        rightTopPageIndex += 2;
+                        flipping = false;
+                        promise.succeed(Notebook.this);
+                    }
+                });
+        return promise;
     }
 
     private final Animation.Value batchAngle = new Animation.Value() {

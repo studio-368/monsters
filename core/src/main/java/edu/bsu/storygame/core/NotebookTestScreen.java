@@ -58,8 +58,14 @@ public class NotebookTestScreen extends ScreenStack.UIScreen {
                 .setSize(size())
                 .add(new Button("Turn page").onClick(new Slot<Button>() {
                             @Override
-                            public void onEmit(Button button) {
-                                notebook.turnPage();
+                            public void onEmit(final Button button) {
+                                button.setEnabled(false);
+                                notebook.turnPage().onSuccess(new Slot<Notebook>() {
+                                    @Override
+                                    public void onEmit(Notebook layers) {
+                                        button.setEnabled(true);
+                                    }
+                                });
                             }
                         }),
                         new Shim(0, 0).setConstraint(AxisLayout.stretched()));
