@@ -27,6 +27,7 @@ import edu.bsu.storygame.core.model.Skill;
 import edu.bsu.storygame.core.view.notebook.CoverPage;
 import edu.bsu.storygame.core.view.notebook.EncounterPage;
 import edu.bsu.storygame.core.view.notebook.Notebook;
+import edu.bsu.storygame.core.view.notebook.ReactionPage;
 import playn.core.Game;
 import playn.scene.GroupLayer;
 import playn.scene.Layer;
@@ -60,9 +61,9 @@ public class NotebookTestScreen extends ScreenStack.UIScreen {
                         w * 2, h),
                 new CoverPage(iface, gameContext, gameContext.currentPlayer.get()),
                 new EncounterPage(iface, gameContext, gameContext.currentPlayer.get()),
+                new ReactionPage(iface, gameContext, gameContext.currentPlayer.get()),
                 makeCheckerLayer(w, h),
-                makeTPLayer(w, h),
-                Layers.solid(Colors.WHITE, w, h));
+                makeTPLayer(w, h));
         layer.add(notebook);
 
         iface.createRoot(AxisLayout.vertical(), SimpleStyles.newSheet(game.plat.graphics()), layer)

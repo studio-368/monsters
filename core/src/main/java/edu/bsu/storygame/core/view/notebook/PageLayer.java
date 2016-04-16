@@ -50,9 +50,13 @@ public abstract class PageLayer extends GroupLayer {
             @Override
             public void onEmit(Layer layer) {
                 iface.removeRoot(root);
+                wasRemoved();
             }
         });
     }
 
     protected abstract Root createRoot();
+
+    protected void wasRemoved() {
+    }
 }
