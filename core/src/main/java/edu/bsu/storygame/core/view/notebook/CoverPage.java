@@ -39,6 +39,7 @@ public class CoverPage extends GroupLayer {
         this.player = checkNotNull(player);
         iface.createRoot(AxisLayout.vertical(), GameStyle.newSheet(context.game), this)
                 .setSize(400, 300)
+                .addStyles(Style.BACKGROUND.is(Background.solid(player.color)))
                 .add(new Label(player.name + "'s Story")
                                 .addStyles(Style.HALIGN.left),
                         new ScoreLabel()

@@ -79,6 +79,10 @@ public class Notebook extends GroupLayer {
         addAt(layer, openBounds.x() + openBounds.width() / 2, openBounds.y());
     }
 
+    private void addAtOpenPageLocation(Layer layer) {
+        addAt(layer, openBounds.x(), openBounds.y());
+    }
+
     public RFuture<Notebook> turnPage() {
         checkState(rightPages.size() > 1, "Cannot turn last page");
 
@@ -101,10 +105,7 @@ public class Notebook extends GroupLayer {
 
         int delay = 0;
         while (!leftPages.isEmpty()) {
-            final RotateYBatch batch = new RotateYBatch(game.plat.graphics().gl, 0.5f, 0.5f, 1.5f);
             final Page page = leftPages.pop();
-            batch.angle = FloatMath.PI;
-            page.back.setBatch(batch);
             anim.delay(delay)
                     .then()
                     .action(new Runnable() {
@@ -171,7 +172,7 @@ public class Notebook extends GroupLayer {
             private final Layer facing;
             private final Layer reverse;
 
-            PageFlipAnimation(Page page, boolean open) {
+            PageFlipAnimation(Page page, final boolean open) {
                 final RotateYBatch batch = new RotateYBatch(game.plat.graphics().gl, 0.5f, 0.5f, 1.5f);
                 float startAngle;
                 float endAngle;
@@ -179,11 +180,11 @@ public class Notebook extends GroupLayer {
                     facing = page.front;
                     reverse = page.back;
                     startAngle = 0;
-                    endAngle = FloatMath.PI;
+                    endAngle = 0;
                 } else {
                     facing = page.back;
                     reverse = page.front;
-                    startAngle = FloatMath.PI;
+                    startAngle = 0;
                     endAngle = 0;
                 }
 
@@ -192,7 +193,7 @@ public class Notebook extends GroupLayer {
                 batch.angle = startAngle;
                 tween(batchAngle)
                         .from(startAngle)
-                        .to(FloatMath.HALF_PI)
+                        .to(FloatMath.HALF_PI * (open ? 1 : -1))
                         .in(FLIP_DURATION / 2)
                         .easeIn()
                         .then()
@@ -200,13 +201,19 @@ public class Notebook extends GroupLayer {
                             @Override
                             public void run() {
                                 remove(facing);
-                                addAtClosedPageLocation(reverse);
+                                if (open) {
+                                    addAtOpenPageLocation(reverse);
+                                    batch.angle = -FloatMath.HALF_PI;
+                                } else {
+                                    addAtClosedPageLocation(reverse);
+                                    batch.angle = FloatMath.HALF_PI;
+                                }
                                 reverse.setBatch(batch);
                             }
                         })
                         .then()
                         .tween(batchAngle)
-                        .from(FloatMath.HALF_PI)
+                        .from(FloatMath.HALF_PI * (open ? -1 : 1))
                         .to(endAngle)
                         .in(FLIP_DURATION / 2)
                         .easeOut();
