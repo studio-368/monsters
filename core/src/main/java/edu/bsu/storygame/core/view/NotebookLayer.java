@@ -28,9 +28,8 @@ import playn.scene.GroupLayer;
 import playn.scene.Layer;
 import pythagoras.f.Dimension;
 import pythagoras.f.IDimension;
+import pythagoras.f.Rectangle;
 import react.*;
-import tripleplay.anim.AnimGroup;
-import tripleplay.anim.Animation;
 import tripleplay.game.ScreenStack;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
@@ -39,32 +38,18 @@ import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public final class NotebookLayer extends GroupLayer {
-
-    public static final float OPEN_CLOSE_ANIM_DURATION = 400f;
-    private static final float TOP = 100;
+public final class NotebookLayer extends AbstractBook {
 
     private final IDimension closedSize;
     private final Stylesheet stylesheet;
     private final GameContext context;
-    private final PageLayer cover;
-    private final PageLayer encounterPage;
-    private final PageLayer reactionPage;
-    private final PageLayer storyPage;
-    private final PageLayer skillsPage;
-    private final PageLayer conclusionPage;
-    private final PageLayer endPage;
     private final Player player;
-    private final Interface iface;
-    private final PageLayer[] pages;
-    private float depthCounter = 0;
-
 
     public final UnitSignal onDone = new UnitSignal();
 
     public NotebookLayer(final Player player, IDimension closedSize, final GameContext context) {
-        super(closedSize.width() * 2, closedSize.height());
-        this.iface = ((ScreenStack.UIScreen) context.game.screenStack.top()).iface;
+        super(context.game, ((ScreenStack.UIScreen) context.game.screenStack.top()).iface.anim,
+                new Rectangle(0, 50, closedSize.width() * 2, closedSize.height()));
 
         this.closedSize = new Dimension(closedSize);
         this.stylesheet = GameStyle.newSheet(context.game);
@@ -73,49 +58,31 @@ public final class NotebookLayer extends GroupLayer {
 
         setOrigin(Origin.TC);
 
-        this.cover = new CoverPage();
-        this.encounterPage = new EncounterPage();
-        this.reactionPage = new ReactionPage();
-        this.storyPage = new StoryPage();
-        this.skillsPage = new SkillsPage();
-        this.conclusionPage = new ConclusionPage();
-        this.endPage = new EndPage();
-
-        pages = new PageLayer[]{
-                cover,
-                encounterPage,
-                reactionPage,
-                storyPage,
-                skillsPage,
-                conclusionPage,
-                endPage
-        };
-        addPages(pages);
-
         context.phase.connect(new Slot<Phase>() {
             @Override
             public void onEmit(Phase phase) {
                 if (player == context.currentPlayer.get()) {
                     if (phase == Phase.STORY) {
-                        turnToStory();
+                        turnPage();
                     } else if (phase == Phase.CONCLUSION) {
-                        turnToConclusion();
+                        turnPage();
                     }
                 }
             }
         });
 
-    }
-
-    private void addPages(Layer... layers) {
-        for (int i = layers.length - 1; i >= 0; i--) {
-            addAt(layers[i], closedSize.width(), 0);
-            layers[i].setDepth(layers.length - i);
-        }
+        assembleBookFrom(new Layer[]{
+                new CoverPage(),
+                new EncounterPage(),
+                new ReactionPage(),
+                new StoryPage(),
+                new SkillsPage(),
+                new ConclusionPage(),
+                new EndPage()
+        });
     }
 
     private abstract class PageLayer extends GroupLayer {
-
         protected final int color;
         protected final Interface iface;
         protected final Root root;
@@ -132,7 +99,6 @@ public final class NotebookLayer extends GroupLayer {
 
 
     private final class CoverPage extends PageLayer {
-
         private CoverPage() {
             super(AxisLayout.vertical().offStretch());
             root.add(new Label(player.name + "'s Story")
@@ -196,9 +162,9 @@ public final class NotebookLayer extends GroupLayer {
             context.encounter.connect(new ValueView.Listener<Encounter>() {
                 @Override
                 public void onChange(Encounter encounter, Encounter t1) {
-                    if(encounter == null){
+                    if (encounter == null) {
                         root.removeAll();
-                    } else if (context.currentPlayer.get() == player){
+                    } else if (context.currentPlayer.get() == player) {
                         root.add(new Label("I encountered a ").addStyles(
                                 Style.FONT.is(Typeface.HANDWRITING.in(context.game).atSize(0.045f))));
                         root.add(new EncounterImage(encounter));
@@ -221,7 +187,7 @@ public final class NotebookLayer extends GroupLayer {
                 } catch (IllegalArgumentException e) {
                     imageKey = ImageCache.Key.MISSING_IMAGE;
                 }
-                final float desiredWidth = IMAGE_SIZE * encounterPage.width();
+                final float desiredWidth = IMAGE_SIZE * EncounterPage.this.width();
                 Icon scaledIcon = scaler.scale(imageKey, desiredWidth);
                 icon.update(scaledIcon);
             }
@@ -286,9 +252,9 @@ public final class NotebookLayer extends GroupLayer {
             context.reaction.connect(new ValueView.Listener<Reaction>() {
                 @Override
                 public void onChange(Reaction reaction, Reaction t1) {
-                    if(reaction == null){
+                    if (reaction == null) {
                         root.removeAll();
-                    } else if (context.currentPlayer.get() == player){
+                    } else if (context.currentPlayer.get() == player) {
                         root.add(new Label(reaction.story.text).addStyles(Style.TEXT_WRAP.is(true)));
                     }
                 }
@@ -298,6 +264,7 @@ public final class NotebookLayer extends GroupLayer {
 
     private final class SkillsPage extends PageLayer {
         private List<TriggerButton> buttons = Lists.newArrayList();
+
         protected SkillsPage() {
             super(AxisLayout.vertical());
             context.reaction.connect(new Slot<Reaction>() {
@@ -427,117 +394,6 @@ public final class NotebookLayer extends GroupLayer {
         private boolean isThereASkillRewardThisPlayerDoesNotHave(Conclusion conclusion) {
             Player currentPlayer = context.currentPlayer.get();
             return conclusion.skill != null && !currentPlayer.skills.contains(conclusion.skill);
-        }
-    }
-
-    /**
-     * Open the book.
-     * <p/>
-     * There is not currently a real "flip" animation, and so this does a page shuffle animation instead,
-     * like a stack of loose pages.
-     */
-    public void open() {
-        depthCounter = 0;
-        iface.anim.add(movePageLeft(cover))
-                .then()
-                .add(movePageLeft(encounterPage));
-    }
-
-    private Animation movePageLeft(final PageLayer layer) {
-        AnimGroup group = new AnimGroup();
-        group.action(new SetDepthToTop(layer))
-                .then()
-                .tweenX(layer)
-                .to(0)
-                .in(OPEN_CLOSE_ANIM_DURATION)
-                .easeIn()
-                .then()
-                .action(new SetDepthAndUpdateCounter(layer));
-        return group.toAnim();
-    }
-
-    private void turnToStory() {
-        context.game.plat.log().debug("Turning to story");
-        iface.anim.add(movePageLeft(reactionPage))
-                .then()
-                .add(movePageLeft(storyPage));
-    }
-
-    private void turnToConclusion() {
-        context.game.plat.log().debug("Turning to conclusion");
-        iface.anim.add(movePageLeft(skillsPage))
-                .then()
-                .add(movePageLeft(conclusionPage));
-    }
-
-    public RFuture<Void> closeNotebook() {
-        final RPromise<Void> promise = RPromise.create();
-        depthCounter = 0;
-        iface.anim.add(movePageRight(conclusionPage))
-                .then()
-                .add(movePageRight(skillsPage))
-                .then()
-                .add(movePageRight(storyPage))
-                .then()
-                .add(movePageRight(reactionPage))
-                .then()
-                .add(movePageRight(encounterPage))
-                .then()
-                .add(movePageRight(cover))
-                .then()
-                .action(new Runnable() {
-                    @Override
-                    public void run() {
-                        // Reset depths to fix the problem that 'endPage' never moves, which
-                        // breaks my silly depthCounter approach
-                        for (int i = 0; i < pages.length; i++) {
-                            pages[i].setDepth(pages.length - i);
-                        }
-
-                        promise.succeed(null);
-                    }
-                });
-        return promise;
-    }
-
-    private Animation movePageRight(final PageLayer layer) {
-        final float centerX = width() / 2f;
-        AnimGroup group = new AnimGroup();
-        group.action(new SetDepthToTop(layer))
-                .then()
-                .tweenX(layer)
-                .to(centerX)
-                .in(OPEN_CLOSE_ANIM_DURATION / 4)
-                .easeIn()
-                .then()
-                .action(new SetDepthAndUpdateCounter(layer));
-        return group.toAnim();
-    }
-
-    private final class SetDepthToTop implements Runnable {
-        private final Layer layer;
-
-        private SetDepthToTop(Layer layer) {
-            this.layer = checkNotNull(layer);
-        }
-
-        @Override
-        public void run() {
-            layer.setDepth(TOP);
-        }
-    }
-
-    private final class SetDepthAndUpdateCounter implements Runnable {
-        private final Layer layer;
-
-        private SetDepthAndUpdateCounter(Layer layer) {
-            this.layer = checkNotNull(layer);
-        }
-
-        @Override
-        public void run() {
-            layer.setDepth(depthCounter);
-            depthCounter++;
         }
     }
 }

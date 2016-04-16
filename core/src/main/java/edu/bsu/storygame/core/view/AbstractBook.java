@@ -17,7 +17,7 @@
  * along with Traveler's Notebook: Monster Tales.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package edu.bsu.storygame.core.view.notebook;
+package edu.bsu.storygame.core.view;
 
 import com.google.common.collect.Lists;
 import edu.bsu.storygame.core.MonsterGame;
@@ -40,7 +40,7 @@ import java.util.Stack;
 
 import static com.google.common.base.Preconditions.*;
 
-public class Notebook extends GroupLayer {
+public abstract class AbstractBook extends GroupLayer {
 
     private static final float FLIP_DURATION = 1000;
     private static final float DELAY_BETWEEN_CLOSING_PAGES = 200;
@@ -51,18 +51,22 @@ public class Notebook extends GroupLayer {
     private final Stack<Page> rightPages = new Stack<>();
     private final Stack<Page> leftPages = new Stack<>();
 
-    public Notebook(MonsterGame game, Animator anim, IRectangle openBounds, Layer... layers) {
+    public AbstractBook(MonsterGame game, Animator anim, IRectangle openBounds) {
         super(game.plat.graphics().viewSize.width(), game.plat.graphics().viewSize.height());
-        checkArgument(layers.length % 2 == 1, "I demand an odd number of layers");
 
         this.game = game;
         this.openBounds = new Rectangle(openBounds);
         this.anim = checkNotNull(anim);
 
-        assembleBookFrom(layers);
+        onAdded(new Slot<Layer>() {
+            @Override
+            public void onEmit(Layer layer) {
+                checkState(!rightPages.isEmpty(), "Pages never assembled: call assembleBookFrom in constructor");
+            }
+        });
     }
 
-    private void assembleBookFrom(Layer[] layers) {
+    protected void assembleBookFrom(Layer[] layers) {
         List<Page> pages = Lists.newArrayList();
         for (int i = 0; i < layers.length; i += 2) {
             Page page = (i == layers.length - 1) ? new Page(layers[i]) : new Page(layers[i], layers[i + 1]);
@@ -83,24 +87,24 @@ public class Notebook extends GroupLayer {
         addAt(layer, openBounds.x(), openBounds.y());
     }
 
-    public RFuture<Notebook> turnPage() {
+    public RFuture<AbstractBook> turnPage() {
         checkState(rightPages.size() > 1, "Cannot turn last page");
 
-        final RPromise<Notebook> promise = RPromise.create();
+        final RPromise<AbstractBook> promise = RPromise.create();
         final Page page = rightPages.pop();
         page.turnLeft().onSuccess(new Slot<Page>() {
             @Override
             public void onEmit(Page page) {
-                promise.succeed(Notebook.this);
+                promise.succeed(AbstractBook.this);
             }
         });
         return promise;
     }
 
-    public RFuture<Notebook> closeBook() {
+    public RFuture<AbstractBook> closeBook() {
         checkState(!leftPages.isEmpty(), "Already closed");
 
-        final RPromise<Notebook> promise = RPromise.create();
+        final RPromise<AbstractBook> promise = RPromise.create();
         final List<RFuture<Page>> pageClosings = Lists.newArrayList();
 
         int delay = 0;
@@ -119,7 +123,7 @@ public class Notebook extends GroupLayer {
         RFuture.collect(pageClosings).onSuccess(new Slot<Collection<Page>>() {
             @Override
             public void onEmit(Collection<Page> pages) {
-                promise.succeed(Notebook.this);
+                promise.succeed(AbstractBook.this);
             }
         });
         return promise;

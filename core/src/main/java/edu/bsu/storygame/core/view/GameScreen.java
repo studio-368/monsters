@@ -165,7 +165,7 @@ public final class GameScreen extends BoundedUIScreen {
                 .action(new Runnable() {
                     @Override
                     public void run() {
-                        notebook.open();
+                        notebook.turnPage();
                     }
                 });
     }
@@ -182,10 +182,10 @@ public final class GameScreen extends BoundedUIScreen {
         iface.anim.action(new Runnable() {
             @Override
             public void run() {
-                notebook.closeNotebook()
-                        .onComplete(new Slot<Try<Void>>() {
+                notebook.closeBook()
+                        .onComplete(new Slot<Try<AbstractBook>>() {
                             @Override
-                            public void onEmit(Try<Void> voidTry) {
+                            public void onEmit(Try<AbstractBook> voidTry) {
                                 iface.anim.tweenTranslation(notebook)
                                         .to(target)
                                         .in(BOOK_TRANSLATION_DURATION)
