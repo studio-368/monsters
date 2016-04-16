@@ -19,6 +19,7 @@
 
 package edu.bsu.storygame.core;
 
+import edu.bsu.storygame.core.assets.AudioCache;
 import edu.bsu.storygame.core.assets.ImageCache;
 import edu.bsu.storygame.core.assets.NarrativeCache;
 import edu.bsu.storygame.core.model.Narrative;
@@ -50,6 +51,7 @@ public class MonsterGame extends SceneGame {
     }
 
     public final ImageCache imageCache;
+    public final AudioCache audioCache;
     public final GameBounds bounds;
     public final ScreenStack screenStack;
     public final NarrativeCache narrativeCache;
@@ -58,6 +60,7 @@ public class MonsterGame extends SceneGame {
     public MonsterGame(Config config) {
         super(config.platform, UPDATE_RATE_MS);
         imageCache = new ImageCache(plat.assets());
+        audioCache = new AudioCache(plat.assets());
         narrativeCache =
                 config.narrativeOverride == null
                         ? new NarrativeCache.Default(this)

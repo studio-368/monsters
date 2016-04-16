@@ -194,7 +194,7 @@ public final class NotebookLayer extends GroupLayer {
             final int max = context.pointsRequiredForVictory;
             final float width = this.width();
             final float height = this.height();
-            progressBar = new ProgressBar(max, width * 0.16f, height * 0.18f, context);
+            progressBar = new ProgressBar(max, width * 0.16f, height * 0.18f, context.game);
             player.storyPoints.connect(new Slot<Integer>() {
                 @Override
                 public void onEmit(Integer integer) {

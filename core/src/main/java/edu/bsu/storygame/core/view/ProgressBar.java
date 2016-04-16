@@ -1,6 +1,6 @@
 package edu.bsu.storygame.core.view;
 
-import edu.bsu.storygame.core.model.GameContext;
+import edu.bsu.storygame.core.MonsterGame;
 import playn.core.Surface;
 import playn.scene.Layer;
 
@@ -12,11 +12,11 @@ public class ProgressBar extends Layer {
     private final int max;
     private final float width;
     private final float height;
-    private final GameContext context;
+    private final MonsterGame game;
 
-    public ProgressBar(int max, float width, float height, GameContext context) {
+    public ProgressBar(int max, float width, float height, MonsterGame game) {
         checkArgument(max >= 0);
-        this.context = context;
+        this.game = game;
         this.max = max;
         this.width = width;
         this.height = height;
@@ -25,7 +25,7 @@ public class ProgressBar extends Layer {
     public void increment(int points) {
         value = points;
         if (value > max) {
-            context.game.plat.log().warn("Value (" + value + ") exceeds max (" + max + "); capping.");
+            game.plat.log().warn("Value (" + value + ") exceeds max (" + max + "); capping.");
             value = max;
         }
     }
