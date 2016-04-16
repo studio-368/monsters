@@ -29,6 +29,7 @@ import pythagoras.f.Rectangle;
 import react.RFuture;
 import react.RPromise;
 import react.Slot;
+import tripleplay.anim.AnimGroup;
 import tripleplay.anim.Animation;
 import tripleplay.anim.Animator;
 import tripleplay.shaders.RotateYBatch;
@@ -47,7 +48,6 @@ public class Notebook extends GroupLayer {
     private final MonsterGame game;
     private final Animator anim;
     private final IRectangle openBounds;
-    private boolean flipping = false;
     private final Stack<Page> rightPages = new Stack<>();
     private final Stack<Page> leftPages = new Stack<>();
 
@@ -80,9 +80,7 @@ public class Notebook extends GroupLayer {
     }
 
     public RFuture<Notebook> turnPage() {
-        checkState(!flipping, "Already flipping, cannot deal with it");
         checkState(rightPages.size() > 1, "Cannot turn last page");
-        flipping = true;
 
         final RPromise<Notebook> promise = RPromise.create();
         final Page page = rightPages.pop();
@@ -96,9 +94,7 @@ public class Notebook extends GroupLayer {
     }
 
     public RFuture<Notebook> closeBook() {
-        checkState(!flipping, "Animation progress, cannot deal with it");
         checkState(!leftPages.isEmpty(), "Already closed");
-        flipping = true;
 
         final RPromise<Notebook> promise = RPromise.create();
         final List<RFuture<Page>> pageClosings = Lists.newArrayList();
@@ -122,7 +118,6 @@ public class Notebook extends GroupLayer {
         RFuture.collect(pageClosings).onSuccess(new Slot<Collection<Page>>() {
             @Override
             public void onEmit(Collection<Page> pages) {
-                flipping = false;
                 promise.succeed(Notebook.this);
             }
         });
@@ -146,35 +141,11 @@ public class Notebook extends GroupLayer {
 
         RFuture<Page> turnLeft() {
             final RPromise<Page> promise = RPromise.create();
-            final RotateYBatch batch = new RotateYBatch(game.plat.graphics().gl, 0.5f, 0.5f, 1.5f);
-            front.setBatch(batch);
-
-            BatchAngleAnimator batchAngle = new BatchAngleAnimator(batch);
-            anim.tween(batchAngle)
-                    .from(0)
-                    .to(FloatMath.HALF_PI)
-                    .in(FLIP_DURATION / 2)
-                    .easeIn()
+            anim.add(new PageFlipAnimation(this, true).toAnim())
                     .then()
                     .action(new Runnable() {
                         @Override
                         public void run() {
-                            remove(front);
-                            addAtClosedPageLocation(back);
-                            back.setBatch(batch);
-                        }
-                    })
-                    .then()
-                    .tween(batchAngle)
-                    .from(FloatMath.HALF_PI)
-                    .to(FloatMath.PI)
-                    .in(FLIP_DURATION / 2)
-                    .easeOut()
-                    .then()
-                    .action(new Runnable() {
-                        @Override
-                        public void run() {
-                            flipping = false;
                             leftPages.push(Page.this);
                             promise.succeed(Page.this);
                         }
@@ -184,30 +155,7 @@ public class Notebook extends GroupLayer {
 
         RFuture<Page> turnRight() {
             final RPromise<Page> promise = RPromise.create();
-            final RotateYBatch batch = new RotateYBatch(game.plat.graphics().gl, 0.5f, 0.5f, 1.5f);
-            batch.angle = FloatMath.PI;
-            back.setBatch(batch);
-            BatchAngleAnimator batchAngle = new BatchAngleAnimator(batch);
-            anim.tween(batchAngle)
-                    .from(FloatMath.PI)
-                    .to(FloatMath.HALF_PI)
-                    .in(FLIP_DURATION / 2)
-                    .easeIn()
-                    .then()
-                    .action(new Runnable() {
-                        @Override
-                        public void run() {
-                            remove(back);
-                            addAtClosedPageLocation(front);
-                            front.setBatch(batch);
-                        }
-                    })
-                    .then()
-                    .tween(batchAngle)
-                    .from(FloatMath.HALF_PI)
-                    .to(0)
-                    .in(FLIP_DURATION / 2)
-                    .easeOut()
+            anim.add(new PageFlipAnimation(this, false).toAnim())
                     .then()
                     .action(new Runnable() {
                         @Override
@@ -218,9 +166,55 @@ public class Notebook extends GroupLayer {
                     });
             return promise;
         }
+
+        private final class PageFlipAnimation extends AnimGroup {
+            private final Layer facing;
+            private final Layer reverse;
+
+            PageFlipAnimation(Page page, boolean open) {
+                final RotateYBatch batch = new RotateYBatch(game.plat.graphics().gl, 0.5f, 0.5f, 1.5f);
+                float startAngle;
+                float endAngle;
+                if (open) {
+                    facing = page.front;
+                    reverse = page.back;
+                    startAngle = 0;
+                    endAngle = FloatMath.PI;
+                } else {
+                    facing = page.back;
+                    reverse = page.front;
+                    startAngle = FloatMath.PI;
+                    endAngle = 0;
+                }
+
+                facing.setBatch(batch);
+                BatchAngleAnimator batchAngle = new BatchAngleAnimator(batch);
+                batch.angle = startAngle;
+                tween(batchAngle)
+                        .from(startAngle)
+                        .to(FloatMath.HALF_PI)
+                        .in(FLIP_DURATION / 2)
+                        .easeIn()
+                        .then()
+                        .action(new Runnable() {
+                            @Override
+                            public void run() {
+                                remove(facing);
+                                addAtClosedPageLocation(reverse);
+                                reverse.setBatch(batch);
+                            }
+                        })
+                        .then()
+                        .tween(batchAngle)
+                        .from(FloatMath.HALF_PI)
+                        .to(endAngle)
+                        .in(FLIP_DURATION / 2)
+                        .easeOut();
+            }
+        }
     }
 
-    private final class BatchAngleAnimator implements Animation.Value {
+    private static final class BatchAngleAnimator implements Animation.Value {
 
         private final RotateYBatch batch;
 
@@ -238,5 +232,4 @@ public class Notebook extends GroupLayer {
             batch.angle = value;
         }
     }
-
 }
