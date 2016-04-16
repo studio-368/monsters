@@ -37,6 +37,7 @@ import static com.google.common.base.Preconditions.*;
 public class Notebook extends GroupLayer {
 
     private static final float FLIP_DURATION = 1000;
+    private static final float DELAY_BETWEEN_CLOSING_PAGES = 200;
 
     private final MonsterGame game;
     private final Animator anim;
@@ -61,11 +62,8 @@ public class Notebook extends GroupLayer {
     }
 
     public RFuture<Notebook> turnPage() {
-        if (flipping) {
-            throw new IllegalStateException("Cannot run two animations concurrently");
-        } else {
-            flipping = true;
-        }
+        checkState(!flipping, "Already flipping, cannot deal with it");
+        flipping = true;
         checkState(rightTopPageIndex < layers.size() - 1, "On last page, can not flip any more.");
 
         final RPromise<Notebook> promise = RPromise.create();
@@ -74,6 +72,7 @@ public class Notebook extends GroupLayer {
         batch = new RotateYBatch(game.plat.graphics().gl, 0.5f, 0.5f, 1.5f);
         page.setBatch(batch);
 
+        BatchAngleAnimator batchAngle = new BatchAngleAnimator(batch);
         anim.tween(batchAngle)
                 .from(0)
                 .to(FloatMath.HALF_PI)
@@ -106,7 +105,63 @@ public class Notebook extends GroupLayer {
         return promise;
     }
 
-    private final Animation.Value batchAngle = new Animation.Value() {
+    public void closeBook() {
+        checkState(!flipping, "Animation progress, cannot deal with it");
+        checkState(rightTopPageIndex != 0, "Already closed");
+        flipping = true;
+
+        int delay = 0;
+        for (int pageIndex = rightTopPageIndex - 1; pageIndex >= 0; pageIndex -= 2) {
+            final RotateYBatch batch = new RotateYBatch(game.plat.graphics().gl, 0.5f, 0.5f, 1.5f);
+            batch.angle = FloatMath.PI;
+            final Layer page = layers.get(pageIndex);
+            final Layer reverse = layers.get(pageIndex - 1);
+            page.setBatch(batch);
+            BatchAngleAnimator batchAngle = new BatchAngleAnimator(batch);
+            anim.delay(delay)
+                    .then()
+                    .tween(batchAngle)
+                    .from(FloatMath.PI)
+                    .to(FloatMath.HALF_PI)
+                    .in(FLIP_DURATION / 2)
+                    .easeIn()
+                    .then()
+                    .action(new Runnable() {
+                        @Override
+                        public void run() {
+                            remove(page);
+                            addAt(reverse, openBounds.x() + openBounds.width() / 2, openBounds.y());
+                            reverse.setBatch(batch);
+                        }
+                    })
+                    .then()
+                    .tween(batchAngle)
+                    .from(FloatMath.HALF_PI)
+                    .to(0)
+                    .in(FLIP_DURATION / 2)
+                    .easeOut()
+                    .then()
+                    .action(new Runnable() {
+                        @Override
+                        public void run() {
+                            rightTopPageIndex -= 2;
+                            if (rightTopPageIndex == 0) {
+                                flipping = false;
+                            }
+                        }
+                    });
+            delay += DELAY_BETWEEN_CLOSING_PAGES;
+        }
+    }
+
+    private final class BatchAngleAnimator implements Animation.Value {
+
+        private final RotateYBatch batch;
+
+        BatchAngleAnimator(RotateYBatch batch) {
+            this.batch = checkNotNull(batch);
+        }
+
         @Override
         public float initial() {
             return 0;
@@ -116,5 +171,6 @@ public class Notebook extends GroupLayer {
         public void set(float value) {
             batch.angle = value;
         }
-    };
+    }
+
 }

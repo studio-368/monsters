@@ -68,6 +68,12 @@ public class NotebookTestScreen extends ScreenStack.UIScreen {
                                 });
                             }
                         }),
+                        new Button("Close book").onClick(new Slot<Button>() {
+                            @Override
+                            public void onEmit(Button button) {
+                                notebook.closeBook();
+                            }
+                        }),
                         new Shim(0, 0).setConstraint(AxisLayout.stretched()));
     }
 
