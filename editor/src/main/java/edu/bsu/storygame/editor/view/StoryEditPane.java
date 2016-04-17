@@ -171,6 +171,7 @@ public class StoryEditPane extends EditPane {
     @FXML
     private void onStoryChange() {
         story.text = storyTextArea.getText();
+        parent.refresh();
     }
 
     @FXML

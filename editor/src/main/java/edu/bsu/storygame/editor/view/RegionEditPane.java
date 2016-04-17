@@ -27,11 +27,12 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Optional;
 
 public class RegionEditPane extends EditPane {
     private final Region region;
@@ -122,7 +123,7 @@ public class RegionEditPane extends EditPane {
 
     @FXML
     private void onEncounterDelete() {
-        if (confirm("Are you sure you want to delete this?")) {
+        if (parent.confirm("Are you sure you want to delete this?")) {
             regionEncountersList.getItems().remove(selectedEncounter);
             refresh();
         }
@@ -146,16 +147,6 @@ public class RegionEditPane extends EditPane {
         list.add(index + 1, encounter);
         parent.refresh();
         regionEncountersList.getSelectionModel().selectIndices(index + 1);
-    }
-
-    private boolean confirm(String prompt) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation");
-        alert.setHeaderText(null);
-        alert.setContentText(prompt);
-
-        Optional<ButtonType> result = alert.showAndWait();
-        return result.isPresent() && result.get() == ButtonType.OK;
     }
 
     public void refresh() {

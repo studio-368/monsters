@@ -19,14 +19,13 @@
 
 package edu.bsu.storygame.editor;
 
-import edu.bsu.storygame.editor.model.Encounter;
-import edu.bsu.storygame.editor.model.Narrative;
-import edu.bsu.storygame.editor.model.Reaction;
-import edu.bsu.storygame.editor.model.Region;
+import edu.bsu.storygame.editor.model.*;
 import edu.bsu.storygame.editor.view.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
@@ -35,6 +34,7 @@ import react.Slot;
 import react.Value;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class EditorStageController implements Initializable {
@@ -98,8 +98,12 @@ public class EditorStageController implements Initializable {
         add(new EncounterEditPane(encounter, this));
     }
 
-    public void editStory(Reaction reaction) {
-        add(new StoryEditPane(reaction.story, this));
+    public void editReaction(Reaction reaction) {
+        add(new ReactionEditPane(reaction, this));
+    }
+
+    public void editStory(Story story) {
+        add(new StoryEditPane(story, this));
     }
 
 
@@ -134,5 +138,15 @@ public class EditorStageController implements Initializable {
         int endIndex = editArea.getChildren().size();
         if (startIndex != 0 && endIndex - startIndex > 0)
             editArea.getChildren().remove(startIndex, endIndex);
+    }
+
+    public boolean confirm(String prompt) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText(null);
+        alert.setContentText(prompt);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.isPresent() && result.get() == ButtonType.OK;
     }
 }

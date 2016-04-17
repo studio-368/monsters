@@ -23,16 +23,18 @@ import com.sun.javafx.collections.ObservableListWrapper;
 import edu.bsu.storygame.editor.EditorStageController;
 import edu.bsu.storygame.editor.model.Encounter;
 import edu.bsu.storygame.editor.model.Reaction;
-import edu.bsu.storygame.editor.model.Story;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 
 import java.io.IOException;
-import java.util.Optional;
+import java.util.ArrayList;
 
 public class EncounterEditPane extends EditPane {
 
@@ -83,7 +85,7 @@ public class EncounterEditPane extends EditPane {
             parent.clearAfter(this);
             if (c.getList().size() == 1) {
                 selectedReaction = c.getList().get(0);
-                parent.editStory(selectedReaction);
+                parent.editReaction(selectedReaction);
                 setReactionButtonsDisabled(false);
             } else {
                 selectedReaction = null;
@@ -129,14 +131,14 @@ public class EncounterEditPane extends EditPane {
     private void onReactionAdd() {
         String reactionName = TextPrompt.emptyPrompt();
         if (reactionName == null) return;
-        Reaction reaction = new Reaction(reactionName, Story.emptyStory());
+        Reaction reaction = new Reaction(reactionName, new ArrayList<>());
         encounterReactionsList.getItems().add(reaction);
         parent.refresh();
     }
 
     @FXML
     private void onReactionDelete() {
-        if (confirm("Are you sure you want to delete this?")) {
+        if (parent.confirm("Are you sure you want to delete this?")) {
             encounterReactionsList.getItems().remove(selectedReaction);
             refresh();
         }
@@ -167,16 +169,6 @@ public class EncounterEditPane extends EditPane {
         list.add(index + 1, oldReaction);
         parent.refresh();
         encounterReactionsList.getSelectionModel().selectIndices(index + 1);
-    }
-
-    private boolean confirm(String prompt) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation");
-        alert.setHeaderText(null);
-        alert.setContentText(prompt);
-
-        Optional<ButtonType> result = alert.showAndWait();
-        return result.isPresent() && result.get() == ButtonType.OK;
     }
 
     public void refresh() {
