@@ -92,6 +92,22 @@ public final class NotebookLayer extends AbstractBook {
             root = iface.createRoot(layout, stylesheet, this)
                     .setSize(closedSize)
                     .addStyles(Style.BACKGROUND.is(Background.solid(color)));
+
+            iface.removeRoot(root);
+
+            onAdded(new Slot<Layer>() {
+                @Override
+                public void onEmit(Layer layer) {
+                    iface.addRoot(root);
+                    PageLayer.this.add(root.layer);
+                }
+            });
+            onRemoved(new Slot<Layer>() {
+                @Override
+                public void onEmit(Layer layer) {
+                    iface.removeRoot(root);
+                }
+            });
         }
     }
 
