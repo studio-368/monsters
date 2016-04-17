@@ -108,17 +108,25 @@ public abstract class AbstractBook extends GroupLayer {
 
         int delay = 0;
         while (!leftPages.isEmpty()) {
+            final RPromise<Page> turned = RPromise.create();
+            pageClosings.add(turned);
             final Page page = leftPages.pop();
             anim.delay(delay)
                     .then()
                     .action(new Runnable() {
                         @Override
                         public void run() {
-                            pageClosings.add(page.turnRight());
+                            page.turnRight().onSuccess(new Slot<Page>() {
+                                @Override
+                                public void onEmit(Page page) {
+                                    turned.succeed(page);
+                                }
+                            });
                         }
                     });
             delay += DELAY_BETWEEN_CLOSING_PAGES;
         }
+
         RFuture.collect(pageClosings).onSuccess(new Slot<Collection<Page>>() {
             @Override
             public void onEmit(Collection<Page> pages) {
@@ -144,13 +152,13 @@ public abstract class AbstractBook extends GroupLayer {
         }
 
         RFuture<Page> turnLeft() {
+            leftPages.push(this);
             final RPromise<Page> promise = RPromise.create();
             anim.add(new PageFlipAnimation(this, true).toAnim())
                     .then()
                     .action(new Runnable() {
                         @Override
                         public void run() {
-                            leftPages.push(Page.this);
                             promise.succeed(Page.this);
                         }
                     });
@@ -158,13 +166,13 @@ public abstract class AbstractBook extends GroupLayer {
         }
 
         RFuture<Page> turnRight() {
+            rightPages.push(this);
             final RPromise<Page> promise = RPromise.create();
             anim.add(new PageFlipAnimation(this, false).toAnim())
                     .then()
                     .action(new Runnable() {
                         @Override
                         public void run() {
-                            rightPages.push(Page.this);
                             promise.succeed(Page.this);
                         }
                     });
