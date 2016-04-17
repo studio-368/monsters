@@ -56,8 +56,6 @@ public final class NotebookLayer extends AbstractBook {
         this.context = checkNotNull(context);
         this.player = checkNotNull(player);
 
-        setOrigin(Origin.TC);
-
         context.phase.connect(new Slot<Phase>() {
             @Override
             public void onEmit(Phase phase) {

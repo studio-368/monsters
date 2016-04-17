@@ -158,7 +158,7 @@ public final class GameScreen extends BoundedUIScreen {
 
     private void openNotebook(final NotebookLayer notebook) {
         iface.anim.tweenTranslation(notebook)
-                .to(context.game.bounds.width() / 2, context.game.bounds.height() * 0.10f)
+                .to(content.width() / 2, content.height() * 0.10f)
                 .in(BOOK_TRANSLATION_DURATION)
                 .easeIn()
                 .then()

@@ -52,8 +52,7 @@ public abstract class AbstractBook extends GroupLayer {
     private final Stack<Page> leftPages = new Stack<>();
 
     public AbstractBook(MonsterGame game, Animator anim, IRectangle openBounds) {
-        super(game.plat.graphics().viewSize.width(), game.plat.graphics().viewSize.height());
-
+        setOrigin(Origin.TC);
         this.game = game;
         this.openBounds = new Rectangle(openBounds);
         this.anim = checkNotNull(anim);
@@ -80,11 +79,11 @@ public abstract class AbstractBook extends GroupLayer {
     }
 
     private void addAtClosedPageLocation(Layer layer) {
-        addAt(layer, openBounds.x() + openBounds.width() / 2, openBounds.y());
+        addAt(layer, openBounds.x(), openBounds.y());
     }
 
     private void addAtOpenPageLocation(Layer layer) {
-        addAt(layer, openBounds.x(), openBounds.y());
+        addAt(layer, openBounds.x() - openBounds.width() / 2, openBounds.y());
     }
 
     public RFuture<AbstractBook> turnPage() {
