@@ -76,10 +76,10 @@ public class AudioCache {
 
     public final RFuture<AudioCache> state = RPromise.create();
 
-    public Sound sound(AudioKey key) {
-        checkNotNull(key);
-        Sound sound = map.get(key);
-        checkNotNull(sound, "Sound not cached: " + key.name());
+    public Sound sound(AudioKey audioKey) {
+        checkNotNull(audioKey);
+        Sound sound = map.get(audioKey);
+        checkNotNull(sound, "Sound not cached: " + audioKey.name());
         return sound;
     }
 

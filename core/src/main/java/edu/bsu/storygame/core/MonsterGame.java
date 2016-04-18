@@ -50,8 +50,8 @@ public class MonsterGame extends SceneGame {
         }
     }
 
-    public final ImageCache imageCache;
     public final AudioCache audioCache;
+    public final ImageCache imageCache;
     public final GameBounds bounds;
     public final ScreenStack screenStack;
     public final NarrativeCache narrativeCache;
@@ -59,8 +59,8 @@ public class MonsterGame extends SceneGame {
 
     public MonsterGame(Config config) {
         super(config.platform, UPDATE_RATE_MS);
-        imageCache = new ImageCache(plat.assets());
         audioCache = new AudioCache(plat.assets());
+        imageCache = new ImageCache(plat.assets());
         narrativeCache =
                 config.narrativeOverride == null
                         ? new NarrativeCache.Default(this)
