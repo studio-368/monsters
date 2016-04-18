@@ -48,4 +48,23 @@ public class StoryDeck implements Iterable<Story> {
     public Iterator<Story> iterator() {
         return stories.iterator();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        StoryDeck stories1 = (StoryDeck) o;
+
+        if (!stories.equals(stories1.stories)) return false;
+        return unreadStories.equals(stories1.unreadStories);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = stories.hashCode();
+        result = 31 * result + unreadStories.hashCode();
+        return result;
+    }
 }
