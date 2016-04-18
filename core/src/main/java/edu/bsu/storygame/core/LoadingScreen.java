@@ -20,6 +20,7 @@
 package edu.bsu.storygame.core;
 
 import com.google.common.collect.Lists;
+import edu.bsu.storygame.core.assets.AudioCache;
 import edu.bsu.storygame.core.assets.ImageCache;
 import edu.bsu.storygame.core.model.Narrative;
 import edu.bsu.storygame.core.view.GameStyle;
@@ -49,8 +50,7 @@ public class LoadingScreen extends ScreenStack.UIScreen {
     public LoadingScreen(final MonsterGame game, final ScreenStack screenStack) {
         super(game.plat);
         this.game = checkNotNull(game);
-
-        List<RFuture<Boolean>> futures = Lists.newArrayListWithCapacity(2);
+        List<RFuture<Boolean>> futures = Lists.newArrayListWithCapacity(3);
         futures.add(game.imageCache.state.map(new Function<ImageCache, Boolean>() {
             @Override
             public Boolean apply(ImageCache imageCache) {
@@ -60,6 +60,12 @@ public class LoadingScreen extends ScreenStack.UIScreen {
         futures.add(game.narrativeCache.state.map(new Function<Narrative, Boolean>() {
             @Override
             public Boolean apply(Narrative narrative) {
+                return true;
+            }
+        }));
+        futures.add(game.audioCache.state.map(new Function<AudioCache, Boolean>() {
+            @Override
+            public Boolean apply(AudioCache audioCache) {
                 return true;
             }
         }));
