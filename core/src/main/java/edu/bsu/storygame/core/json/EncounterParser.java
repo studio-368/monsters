@@ -44,7 +44,7 @@ public final class EncounterParser {
             try {
                 Json.Array array = jsonReaction.getArray("stories");
                 for(int storyIndex = 0; storyIndex < array.length(); storyIndex++){
-                    Reaction reaction = Reaction.create(reactionName).story(parseStory(array.getObject(storyIndex)));
+                    Reaction reaction = Reaction.create(reactionName).story(parseStory(array.getObject(storyIndex))).build();
                     encounterBuilder.reaction(reaction);
                 }
             } catch (Exception e) {

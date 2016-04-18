@@ -41,8 +41,12 @@ public final class Reaction {
             this.name = checkNotNull(name);
         }
 
-        public Reaction story(Story story) {
+        public Builder story(Story story) {
             this.stories.add(checkNotNull(story));
+            return this;
+        }
+
+        public Reaction build() {
             return new Reaction(this);
         }
     }
