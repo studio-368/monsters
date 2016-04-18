@@ -50,8 +50,8 @@ public class MonsterGame extends SceneGame {
         }
     }
 
-    public final AudioCache audioCache;
     public final ImageCache imageCache;
+    public final AudioCache audioCache;
     public final GameBounds bounds;
     public final ScreenStack screenStack;
     public final NarrativeCache narrativeCache;

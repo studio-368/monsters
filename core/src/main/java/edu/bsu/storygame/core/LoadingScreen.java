@@ -57,15 +57,15 @@ public class LoadingScreen extends ScreenStack.UIScreen {
                 return true;
             }
         }));
-        futures.add(game.audioCache.state.map(new Function<AudioCache, Boolean>() {
-            @Override
-            public Boolean apply(AudioCache audioCache) {
-                return true;
-            }
-        }));
         futures.add(game.narrativeCache.state.map(new Function<Narrative, Boolean>() {
             @Override
             public Boolean apply(Narrative narrative) {
+                return true;
+            }
+        }));
+        futures.add(game.audioCache.state.map(new Function<AudioCache, Boolean>() {
+            @Override
+            public Boolean apply(AudioCache audioCache) {
                 return true;
             }
         }));
@@ -91,6 +91,7 @@ public class LoadingScreen extends ScreenStack.UIScreen {
                 .add(new Label("Loading...")
                         .addStyles(Style.COLOR.is(Colors.WHITE)));
     }
+
     @Override
     public Game game() {
         return game;

@@ -41,10 +41,10 @@ public class AudioCache {
         PAGE_FLIP("placeholder"),
         CLICK("placeholder");
 
-        private final String path;
+        private final String relativePath;
 
-        AudioKey(String path) {
-            this.path = "sounds/" + path;
+        AudioKey(String relativePath) {
+            this.relativePath = "sounds/" + relativePath;
         }
     }
 
@@ -53,7 +53,7 @@ public class AudioCache {
     public AudioCache(Assets assets) {
         List<RFuture<Sound>> futures = Lists.newArrayListWithCapacity(AudioKey.values().length);
         for (final AudioKey key : AudioKey.values()) {
-            final Sound sound = assets.getSound(key.path);
+            final Sound sound = assets.getSound(key.relativePath);
             sound.state.onSuccess(new Slot<Sound>() {
                 @Override
                 public void onEmit(Sound sound) {
