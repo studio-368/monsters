@@ -25,11 +25,34 @@ import edu.bsu.storygame.core.MonsterGame;
 import edu.bsu.storygame.core.json.NarrativeParser;
 import playn.core.json.JsonParserException;
 import playn.html.HtmlPlatform;
+import react.UnitSlot;
 import tripleplay.platform.TPPlatform;
 
 public class MonsterGameHtml implements EntryPoint {
 
     private HtmlPlatform plat;
+
+    private final UnitSlot trackGameStartEvent = new UnitSlot() {
+        @Override
+        public void onEmit() {
+            sendTrackingEvent("start");
+        }
+    };
+
+    private final UnitSlot trackGameEndEvent = new UnitSlot() {
+        @Override
+        public void onEmit() {
+            sendTrackingEvent("end");
+        }
+    };
+
+    private static native void sendTrackingEvent(String action) /*-{
+            ga('send', {
+              hitType: 'event',
+              eventCategory: 'game',
+              eventAction:  action
+            });
+        }-*/;
 
     @Override
     public void onModuleLoad() {
@@ -46,7 +69,11 @@ public class MonsterGameHtml implements EntryPoint {
             }
         };
 
-        new MonsterGame(gameConf);
+        MonsterGame game = new MonsterGame(gameConf);
+        game.onGameStart.connect(trackGameStartEvent);
+        game.onGameEnd.connect(trackGameEndEvent);
+
+
         plat.start();
     }
 

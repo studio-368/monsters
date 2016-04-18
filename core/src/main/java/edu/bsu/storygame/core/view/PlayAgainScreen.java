@@ -34,7 +34,6 @@ public class PlayAgainScreen extends BoundedUIScreen {
 
     private final MonsterGame game;
     private final Stylesheet stylesheet;
-    private Root root;
 
     public PlayAgainScreen(MonsterGame game) {
         super(game);
@@ -44,7 +43,7 @@ public class PlayAgainScreen extends BoundedUIScreen {
     }
 
     private void initRoot() {
-        root = iface.createRoot(AxisLayout.vertical(), stylesheet, content)
+        iface.createRoot(AxisLayout.vertical(), stylesheet, content)
                 .setSize(content.width(), content.height())
                 .add(createLayout());
     }
@@ -84,6 +83,12 @@ public class PlayAgainScreen extends BoundedUIScreen {
                         Style.COLOR.is(Colors.WHITE)
                 )
         );
+    }
+
+    @Override
+    public void wasShown() {
+        super.wasShown();
+        game.onGameEnd.emit();
     }
 
     @Override
