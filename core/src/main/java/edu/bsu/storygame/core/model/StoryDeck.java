@@ -40,7 +40,7 @@ public class StoryDeck implements Iterable<Story> {
 
     public Story chooseOne() {
         if (unreadStories.size() > 0)
-            return unreadStories.remove(random.nextInt(unreadStories.size()));
+            return unreadStories.remove(0);
         return stories.get(random.nextInt(stories.size()));
     }
 
