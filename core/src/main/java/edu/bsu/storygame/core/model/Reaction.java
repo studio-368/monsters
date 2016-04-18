@@ -48,11 +48,11 @@ public final class Reaction {
     }
 
     public final String name;
-    public final List<Story> stories;
+    public final StoryDeck stories;
 
     private Reaction(Builder builder) {
         this.name = builder.name;
-        this.stories = builder.stories;
+        this.stories = new StoryDeck(builder.stories);
     }
 
     @Override

@@ -266,6 +266,7 @@ public final class NotebookLayer extends GroupLayer {
                         @Override
                         public void onEmit(Button button) {
                             context.reaction.update(reaction);
+                            context.story.update(reaction.stories.chooseOne());
                             context.phase.update(Phase.HANDOFF);
                         }
                     });
@@ -287,9 +288,11 @@ public final class NotebookLayer extends GroupLayer {
                 @Override
                 public void onChange(Reaction reaction, Reaction t1) {
                     if(reaction == null){
+                        context.story.update(null);
                         root.removeAll();
                     } else if (context.currentPlayer.get() == player){
-                        root.add(new Label(reaction.stories.get(0).text).addStyles(Style.TEXT_WRAP.is(true)));
+                        context.story.update(reaction.stories.chooseOne());
+                        root.add(new Label(context.story.get().text).addStyles(Style.TEXT_WRAP.is(true)));
                     }
                 }
             });
@@ -308,14 +311,14 @@ public final class NotebookLayer extends GroupLayer {
                         buttons.clear();
                     } else if (context.currentPlayer.get() == player) {
                         root.add(new Label("You used:"));
-                        for (SkillTrigger skillTrigger : reaction.stories.get(0).triggers) {
+                        for (SkillTrigger skillTrigger : context.story.get().triggers) {
                             TriggerButton button = new TriggerButton(skillTrigger.skill.name, skillTrigger.conclusion);
                             button.setEnabled(context.currentPlayer.get().skills.contains(skillTrigger.skill));
                             root.add(button);
                             buttons.add(button);
                         }
                         TriggerButton noSkill = new TriggerButton("No Skill",
-                                context.reaction.get().stories.get(0).noSkill.conclusion);
+                                context.story.get().noSkill.conclusion);
                         root.add(noSkill);
                         buttons.add(noSkill);
                     }

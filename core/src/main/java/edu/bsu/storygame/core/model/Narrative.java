@@ -62,8 +62,10 @@ public final class Narrative {
         for (EncounterDeck deck : map.values()) {
             for (Encounter encounter : deck) {
                 for (Reaction reaction : encounter.reactions) {
-                    for (SkillTrigger trigger : reaction.stories.get(0).triggers) {
-                        result.add(trigger.skill);
+                    for (Story story : reaction.stories) {
+                        for (SkillTrigger trigger : story.triggers) {
+                            result.add(trigger.skill);
+                        }
                     }
                 }
             }
