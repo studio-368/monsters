@@ -47,7 +47,7 @@ public class MonsterGameHtml implements EntryPoint {
     };
 
     private static native void sendTrackingEvent(String action) /*-{
-            ga('send', {
+           $wnd.ga('send', {
               hitType: 'event',
               eventCategory: 'game',
               eventAction:  action
