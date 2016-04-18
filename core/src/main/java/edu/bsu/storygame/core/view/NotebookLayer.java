@@ -289,7 +289,7 @@ public final class NotebookLayer extends GroupLayer {
                     if(reaction == null){
                         root.removeAll();
                     } else if (context.currentPlayer.get() == player){
-                        root.add(new Label(reaction.story.text).addStyles(Style.TEXT_WRAP.is(true)));
+                        root.add(new Label(reaction.stories.get(0).text).addStyles(Style.TEXT_WRAP.is(true)));
                     }
                 }
             });
@@ -308,14 +308,14 @@ public final class NotebookLayer extends GroupLayer {
                         buttons.clear();
                     } else if (context.currentPlayer.get() == player) {
                         root.add(new Label("You used:"));
-                        for (SkillTrigger skillTrigger : reaction.story.triggers) {
+                        for (SkillTrigger skillTrigger : reaction.stories.get(0).triggers) {
                             TriggerButton button = new TriggerButton(skillTrigger.skill.name, skillTrigger.conclusion);
                             button.setEnabled(context.currentPlayer.get().skills.contains(skillTrigger.skill));
                             root.add(button);
                             buttons.add(button);
                         }
                         TriggerButton noSkill = new TriggerButton("No Skill",
-                                context.reaction.get().story.noSkill.conclusion);
+                                context.reaction.get().stories.get(0).noSkill.conclusion);
                         root.add(noSkill);
                         buttons.add(noSkill);
                     }

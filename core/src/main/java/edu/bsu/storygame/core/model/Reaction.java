@@ -21,6 +21,8 @@ package edu.bsu.storygame.core.model;
 
 import com.google.common.base.MoreObjects;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -33,31 +35,31 @@ public final class Reaction {
 
     public static final class Builder {
         private final String name;
-        private Story story;
+        private List<Story> stories = new ArrayList<>();
 
         private Builder(String name) {
             this.name = checkNotNull(name);
         }
 
         public Reaction story(Story story) {
-            this.story = checkNotNull(story);
+            this.stories.add(checkNotNull(story));
             return new Reaction(this);
         }
     }
 
     public final String name;
-    public final Story story;
+    public final List<Story> stories;
 
     private Reaction(Builder builder) {
         this.name = builder.name;
-        this.story = builder.story;
+        this.stories = builder.stories;
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("name", name)
-                .add("story", story)
+                .add("stories", stories.toString())
                 .toString();
     }
 
@@ -68,7 +70,7 @@ public final class Reaction {
         } else if (obj instanceof Reaction) {
             Reaction other = (Reaction) obj;
             return Objects.equals(this.name, other.name)
-                    && Objects.equals(this.story, other.story);
+                    && Objects.equals(this.stories, other.stories);
         } else {
             return false;
         }
@@ -76,6 +78,6 @@ public final class Reaction {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, story);
+        return Objects.hash(name, stories);
     }
 }

@@ -150,45 +150,6 @@ public final class GameStyle {
                         Style.COLOR.is(Palette.ROSE),
                         Style.BACKGROUND.is(Background.bordered(Palette.BROWN_POD, Palette.ROSE, borderWidth).insets(buttonInsets)))
 
-                .add(EncounterCardFactory.EncounterCard.class,
-                        Style.BACKGROUND.is(Background.roundRect(game.plat.graphics(), Palette.OBSERVATORY, game.bounds.percentOfHeight(0.03f))))
-                .add(EncounterCardFactory.EncounterCard.TitleLabel.class,
-                        Style.FONT.is(Typeface.GAME_TEXT.in(game).atSize(LARGE)),
-                        Style.COLOR.is(Palette.NOBEL),
-                        Style.BACKGROUND.is(Background.blank().inset(game.bounds.percentOfHeight(SMALL))),
-                        Style.ICON_GAP.is((int) game.bounds.percentOfHeight(TINY)),
-                        Style.HALIGN.center,
-                        Style.ICON_POS.below)
-                .add(EncounterCardFactory.EncounterCard.InteractionArea.StyledButton.class,
-                        Style.FONT.is(gameTextLarge),
-                        Style.BACKGROUND.is(palettizedButtonBg),
-                        Style.COLOR.is(Palette.ROSE))
-                .add(EncounterCardFactory.EncounterCard.InteractionArea.StyledButton.class, Style.Mode.SELECTED,
-                        Style.FONT.is(gameTextLarge),
-                        Style.BACKGROUND.is(palettizedSelectedButtonBg),
-                        Style.COLOR.is(Palette.OBSERVATORY))
-                .add(EncounterCardFactory.EncounterCard.InteractionArea.StyledNarrativeLabel.class,
-                        Style.TEXT_WRAP.on,
-                        Style.FONT.is(gameTextRegular),
-                        Style.COLOR.is(Palette.ROSE),
-                        Style.BACKGROUND.is(Background.solid(Palette.BLACKCURRANT)
-                                .inset(game.bounds.percentOfHeight(TINY))))
-                .add(EncounterCardFactory.EncounterCard.InteractionArea.TriggerButton.class,
-                        Style.COLOR.is(Palette.ROSE),
-                        Style.BACKGROUND.is(palettizedButtonBg))
-                .add(EncounterCardFactory.EncounterCard.InteractionArea.TriggerButton.class, Style.Mode.SELECTED,
-                        Style.COLOR.is(Palette.OBSERVATORY),
-                        Style.BACKGROUND.is(palettizedSelectedButtonBg))
-                .add(EncounterCardFactory.EncounterCard.InteractionArea.RewardLabel.class,
-                        Style.COLOR.is(Palette.ROSE))
-                .add(EncounterCardFactory.EncounterCard.InteractionArea.DoneButton.class,
-                        Style.FONT.is(gameTextRegular),
-                        Style.BACKGROUND.is(palettizedButtonBg),
-                        Style.COLOR.is(Palette.ROSE))
-                .add(EncounterCardFactory.EncounterCard.InteractionArea.DoneButton.class, Style.Mode.SELECTED,
-                        Style.FONT.is(gameTextRegular),
-                        Style.BACKGROUND.is(palettizedSelectedButtonBg),
-                        Style.COLOR.is(Palette.OBSERVATORY))
 
                 .add(HandoffDialogFactory.HandoffDialog.class,
                         Style.BACKGROUND.is(Background.roundRect(gfx, DARK_TRANSLUCENT_GREY, cornerRadius)))
