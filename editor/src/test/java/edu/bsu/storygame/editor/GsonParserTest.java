@@ -23,7 +23,6 @@ import com.google.common.collect.Lists;
 import com.google.common.io.Resources;
 import edu.bsu.storygame.core.json.NarrativeParser;
 import edu.bsu.storygame.editor.model.*;
-import org.junit.Ignore;
 import org.junit.Test;
 import playn.core.json.JsonParserException;
 import playn.java.JavaPlatform;
@@ -87,7 +86,6 @@ public class GsonParserTest {
         assertEquals(NARRATIVE_TEST, narrative);
     }
 
-    @Ignore("The NarrativeParser has not yet been updated.")
     @Test
     public void testParserGeneratesAcceptableJson() {
         JavaPlatform.Headless plat = new JavaPlatform.Headless(new JavaPlatform.Config());
