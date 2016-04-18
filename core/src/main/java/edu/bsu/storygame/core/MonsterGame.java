@@ -29,6 +29,7 @@ import playn.scene.Mouse;
 import playn.scene.Pointer;
 import playn.scene.SceneGame;
 import pythagoras.f.IRectangle;
+import react.UnitSignal;
 import tripleplay.game.ScreenStack;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -54,6 +55,9 @@ public class MonsterGame extends SceneGame {
     public final ScreenStack screenStack;
     public final NarrativeCache narrativeCache;
     public final Pointer pointer;
+
+    public final UnitSignal onGameStart = new UnitSignal();
+    public final UnitSignal onGameEnd = new UnitSignal();
 
     public MonsterGame(Config config) {
         super(config.platform, UPDATE_RATE_MS);

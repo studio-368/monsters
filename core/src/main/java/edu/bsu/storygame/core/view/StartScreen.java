@@ -64,6 +64,7 @@ public final class StartScreen extends BoundedUIScreen {
             onClick(new Slot<Button>() {
                 @Override
                 public void onEmit(Button button) {
+                    game.onGameStart.emit();
                     SlideShow slideShow = new SlideShow(game,
                             SlideData.text("Hello"),
                             SlideData.text("I've heard you are great writers")
