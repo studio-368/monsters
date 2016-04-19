@@ -1,3 +1,22 @@
+/*
+ * Copyright 2016 Traveler's Notebook: Monster Tales project authors
+ *
+ * This file is part of monsters
+ *
+ * monsters is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * monsters is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with monsters.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package edu.bsu.storygame.html;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -6,10 +25,34 @@ import edu.bsu.storygame.core.MonsterGame;
 import edu.bsu.storygame.core.json.NarrativeParser;
 import playn.core.json.JsonParserException;
 import playn.html.HtmlPlatform;
+import react.UnitSlot;
+import tripleplay.platform.TPPlatform;
 
 public class MonsterGameHtml implements EntryPoint {
 
     private HtmlPlatform plat;
+
+    private final UnitSlot trackGameStartEvent = new UnitSlot() {
+        @Override
+        public void onEmit() {
+            sendTrackingEvent("start");
+        }
+    };
+
+    private final UnitSlot trackGameEndEvent = new UnitSlot() {
+        @Override
+        public void onEmit() {
+            sendTrackingEvent("end");
+        }
+    };
+
+    private static native void sendTrackingEvent(String action) /*-{
+           $wnd.ga('send', {
+              hitType: 'event',
+              eventCategory: 'game',
+              eventAction:  action
+            });
+        }-*/;
 
     @Override
     public void onModuleLoad() {
@@ -19,7 +62,18 @@ public class MonsterGameHtml implements EntryPoint {
         plat.assets().setPathPrefix("monsters/");
         MonsterGame.Config gameConf = new MonsterGame.Config(plat);
         handleNarrativeOverride(gameConf);
-        new MonsterGame(gameConf);
+
+        new HtmlTpPlatform(plat) {
+            {
+                TPPlatform._instance = this;
+            }
+        };
+
+        MonsterGame game = new MonsterGame(gameConf);
+        game.onGameStart.connect(trackGameStartEvent);
+        game.onGameEnd.connect(trackGameEndEvent);
+
+
         plat.start();
     }
 

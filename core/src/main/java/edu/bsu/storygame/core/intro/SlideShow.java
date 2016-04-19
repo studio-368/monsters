@@ -1,3 +1,22 @@
+/*
+ * Copyright 2016 Traveler's Notebook: Monster Tales project authors
+ *
+ * This file is part of monsters
+ *
+ * monsters is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * monsters is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with monsters.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package edu.bsu.storygame.core.intro;
 
 import com.google.common.collect.ImmutableList;
@@ -89,6 +108,8 @@ public final class SlideShow {
             public Slide(SlideData data) {
                 super(game);
                 this.data = checkNotNull(data);
+                if (data.nextButtonText != null)
+                    nextButton.setText(data.nextButtonText);
             }
 
             @Override
@@ -131,11 +152,21 @@ public final class SlideShow {
                         .addStyles(Style.BACKGROUND.is(Background.solid(Colors.BLACK))).setConstraint(AxisLayout.stretched(1f));
                 group.add(new Label(data.text)
                         .addStyles(Style.COLOR.is(Colors.WHITE),
-                                Style.FONT.is(Typeface.OXYGEN.in(game).atSize(0.15f)),
+                                Style.FONT.is(Typeface.GAME_TEXT.in(game).atSize(calculateSize(data.text))),
                                 Style.TEXT_WRAP.on)
                         .setConstraint(BorderLayout.CENTER));
                 group.add(buttonGroup.setConstraint(BorderLayout.SOUTH));
                 return group;
+            }
+
+            private float calculateSize(String text) {
+                if (text.length() > 100)
+                    return 0.09f;
+                if (text.length() > 35)
+                    return 0.15f;
+                if (text.length() > 15)
+                    return 0.20f;
+                return 0.25f;
             }
 
             private void showPopupText() {
@@ -165,7 +196,7 @@ public final class SlideShow {
                         .addStyles(Style.BACKGROUND.is(Background.solid(POPUP_BACKGROUND)))
                         .add(new Label(data.popupText).addStyles(Style.TEXT_WRAP.on,
                                 Style.COLOR.is(Colors.BLACK),
-                                Style.FONT.is(Typeface.OXYGEN.in(game).atSize(0.1f))));
+                                Style.FONT.is(Typeface.HANDWRITING.in(game).atSize(0.1f))));
                 return popup;
             }
 

@@ -1,6 +1,27 @@
+/*
+ * Copyright 2016 Traveler's Notebook: Monster Tales project authors
+ *
+ * This file is part of monsters
+ *
+ * monsters is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * monsters is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with monsters.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package edu.bsu.storygame.core.view;
 
-import com.google.common.collect.Maps;
+import edu.bsu.storygame.core.assets.ImageCache;
+import edu.bsu.storygame.core.intro.SlideData;
+import edu.bsu.storygame.core.intro.SlideShow;
 import edu.bsu.storygame.core.model.*;
 import playn.core.Game;
 import playn.scene.GroupLayer;
@@ -10,12 +31,11 @@ import pythagoras.f.IDimension;
 import pythagoras.f.IPoint;
 import pythagoras.f.Point;
 import react.*;
+import tripleplay.anim.AnimGroup;
 import tripleplay.ui.Background;
 import tripleplay.ui.Label;
 import tripleplay.ui.Style;
 import tripleplay.ui.layout.AxisLayout;
-
-import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -23,11 +43,24 @@ public final class GameScreen extends BoundedUIScreen {
 
     private static final float BOOK_TRANSLATION_DURATION = 400f;
 
+    private static final float NOTEBOOK_Y_PERCENT = 0.75f;
+    private static final float REAR_NOTEBOOK_X_PERCENT = 0.10f;
+    private static final float FRONT_NOTEBOOK_X_PERCENT = 0.45f;
+    private static final float REAR_NOTEBOOK_DEPTH = 2;
+    private static final float FRONT_NOTEBOOK_DEPTH = 4;
+
     private final GameContext context;
 
-    private final Map<Integer, Point> restingLocations = Maps.newHashMap();
+    private NotebookLayer player1Notebook;
+    private NotebookLayer player2Notebook;
 
-    private final NotebookLayer[] notebooks = new NotebookLayer[2];
+    /**
+     * The notebook's resting y position.
+     * <p/>
+     * This is semantically a constant, but it cannot be final since this cannot be known until {@link #wasAdded()}}
+     * is called. Hence, it should be written once and then only read.
+     */
+    private float notebookY;
 
     public GameScreen(GameContext context) {
         super(context.game);
@@ -43,30 +76,24 @@ public final class GameScreen extends BoundedUIScreen {
         final float width = content.width();
         final float height = content.height();
 
-        final float NOTEBOOK_Y_POSITION_PERCENT = 0.75f;
         final float NOTEBOOK_WIDTH_PERCENT = 0.45f;
         final float NOTEBOOK_HEIGHT_PERCENT = 0.80f;
-        final float NOTEBOOK_GUTTER_WIDTH_PERCENT = 0.65f;
 
         final IDimension notebookSize = new Dimension(width * NOTEBOOK_WIDTH_PERCENT, height * NOTEBOOK_HEIGHT_PERCENT);
 
-        final NotebookLayer player1Notebook = new NotebookLayer(context.players.get(0), notebookSize, context);
-        final NotebookLayer player2Notebook = new NotebookLayer(context.players.get(1), notebookSize, context);
-        notebooks[0] = player1Notebook;
-        notebooks[1] = player2Notebook;
+        player1Notebook = new NotebookLayer(context.players.get(0), notebookSize, context);
+        player2Notebook = new NotebookLayer(context.players.get(1), notebookSize, context);
 
-        final float player2NotebookX = (width - width * NOTEBOOK_GUTTER_WIDTH_PERCENT) / 2f;
-        final float player1NotebookX = player2NotebookX + (width * (NOTEBOOK_GUTTER_WIDTH_PERCENT - NOTEBOOK_WIDTH_PERCENT));
+        player1Notebook.setDepth(FRONT_NOTEBOOK_DEPTH);
+        player2Notebook.setDepth(REAR_NOTEBOOK_DEPTH);
 
-        final float notebookY = height * NOTEBOOK_Y_POSITION_PERCENT;
+        final float player2NotebookX = content.width() * REAR_NOTEBOOK_X_PERCENT;
+        final float player1NotebookX = content.width() * FRONT_NOTEBOOK_X_PERCENT;
 
-        Point notebook1RestingLocation = new Point(player1NotebookX, notebookY);
-        Point notebook2RestingLocation = new Point(player2NotebookX, notebookY);
-        restingLocations.put(0, notebook1RestingLocation);
-        restingLocations.put(1, notebook2RestingLocation);
+        notebookY = height * NOTEBOOK_Y_PERCENT;
 
-        content.addAt(player2Notebook, notebook2RestingLocation.x, notebook2RestingLocation.y);
-        content.addAt(player1Notebook, notebook1RestingLocation.x, notebook1RestingLocation.y);
+        content.addAt(player2Notebook, player2NotebookX, notebookY);
+        content.addAt(player1Notebook, player1NotebookX, notebookY);
 
         context.phase.connect(new NotebookOpener(player1Notebook, context.players.get(0)));
         context.phase.connect(new NotebookOpener(player2Notebook, context.players.get(1)));
@@ -74,11 +101,35 @@ public final class GameScreen extends BoundedUIScreen {
         HandoffDialogFactory handOff = new HandoffDialogFactory(context);
         content.addCenterAt(handOff.create(iface), content.width() / 2, content.height() / 2);
 
+        watchForPlayerWinCondition();
         configureMovementBanner();
     }
 
+    private void watchForPlayerWinCondition() {
+        for (Player player : context.players) {
+            player.storyPoints.connect(new Slot<Integer>() {
+                @Override
+                public void onEmit(Integer totalPoints) {
+                    if (totalPoints >= context.pointsRequiredForVictory) {
+                        SlideShow winShow = new SlideShow(context.game,
+                                SlideData.text("Congratulations, " + context.currentPlayer.get().name + "!"),
+                                SlideData.text("You sure did find a lot of cool stories. I'll bet your new book will be amazing!")
+                                        .imageKey(ImageCache.Key.MISSING_IMAGE)
+                        );
+                        winShow.startOn(context.game.screenStack).onComplete(new SignalView.Listener<Try<Void>>() {
+                            @Override
+                            public void onEmit(Try<Void> event) {
+                                context.game.screenStack.push(new PlayAgainScreen(context.game), context.game.screenStack.slide());
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    }
+
     private void initMapView() {
-        MapView mapView = new MapView(context);
+        MapView mapView = new MapView(context, iface.anim);
         mapView.setOrigin(Layer.Origin.CENTER);
         mapView.setScale(context.game.bounds.width() / mapView.width());
         content.addAt(mapView, context.game.bounds.width() / 2, mapView.scaledHeight() / 2);
@@ -103,6 +154,86 @@ public final class GameScreen extends BoundedUIScreen {
         Encounter encounter = context.game.narrativeCache.state.result().get().forRegion(region).chooseOne();
         context.encounter.update(encounter);
         context.phase.update(Phase.ENCOUNTER);
+    }
+
+    private void openNotebook(final NotebookLayer notebook) {
+        iface.anim.tweenTranslation(notebook)
+                .to(context.game.bounds.width() / 2, context.game.bounds.height() * 0.10f)
+                .in(BOOK_TRANSLATION_DURATION)
+                .easeIn()
+                .then()
+                .action(new Runnable() {
+                    @Override
+                    public void run() {
+                        notebook.open();
+                    }
+                });
+    }
+
+    private RFuture<Void> closeNotebook(final NotebookLayer notebook) {
+        final NotebookLayer otherNotebook = notebook == player1Notebook ? player2Notebook : player1Notebook;
+        animateRearNotebookToFront(otherNotebook, notebook);
+        return animateNotebookCloseAndDropToRear(notebook);
+    }
+
+    private RFuture<Void> animateNotebookCloseAndDropToRear(final NotebookLayer notebook) {
+        final RPromise<Void> promise = RPromise.create();
+        final IPoint target = new Point(content.width() * REAR_NOTEBOOK_X_PERCENT, notebookY);
+        iface.anim.action(new Runnable() {
+            @Override
+            public void run() {
+                notebook.closeNotebook()
+                        .onComplete(new Slot<Try<Void>>() {
+                            @Override
+                            public void onEmit(Try<Void> voidTry) {
+                                iface.anim.tweenTranslation(notebook)
+                                        .to(target)
+                                        .in(BOOK_TRANSLATION_DURATION)
+                                        .easeIn()
+                                        .then()
+                                        .action(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                promise.succeed(null);
+                                            }
+                                        });
+                            }
+                        });
+            }
+        });
+        return promise;
+    }
+
+    private void animateRearNotebookToFront(final NotebookLayer rear, final NotebookLayer front) {
+        final float dipAmount = content.height() * 0.18f;
+        AnimGroup group = new AnimGroup();
+        group.tweenX(rear)
+                .to(content.width() * FRONT_NOTEBOOK_X_PERCENT)
+                .in(BOOK_TRANSLATION_DURATION);
+        group.tweenY(rear)
+                .from(notebookY)
+                .to(notebookY + dipAmount)
+                .in(BOOK_TRANSLATION_DURATION / 2)
+                .easeOut()
+                .then()
+                .action(new Runnable() {
+                    @Override
+                    public void run() {
+                        front.setDepth(REAR_NOTEBOOK_DEPTH);
+                        rear.setDepth(FRONT_NOTEBOOK_DEPTH);
+                    }
+                })
+                .then()
+                .tweenY(rear)
+                .to(notebookY)
+                .in(BOOK_TRANSLATION_DURATION / 2)
+                .easeIn();
+        iface.anim.add(group.toAnim());
+    }
+
+    @Override
+    public Game game() {
+        return context.game;
     }
 
     private final class NotebookOpener implements SignalView.Listener<Phase> {
@@ -140,62 +271,10 @@ public final class GameScreen extends BoundedUIScreen {
         }
     }
 
-    private void openNotebook(final NotebookLayer notebook) {
-        iface.anim.tweenTranslation(notebook)
-                .to(context.game.bounds.width() / 2, context.game.bounds.height() * 0.10f)
-                .in(BOOK_TRANSLATION_DURATION)
-                .easeIn()
-                .then()
-                .action(new Runnable() {
-                    @Override
-                    public void run() {
-                        notebook.open(iface.anim);
-                    }
-                });
-    }
-
-    private RFuture<Void> closeNotebook(final NotebookLayer notebook) {
-        final RPromise<Void> promise = RPromise.create();
-        final NotebookLayer newCurrentNotebook = (notebook == notebooks[0]) ? notebooks[1] : notebooks[0];
-        IPoint target = restingLocations.get(1);
-        iface.anim.action(new Runnable() {
-            @Override
-            public void run() {
-                notebook.close(iface.anim);
-            }
-        }).then()
-                .delay(NotebookLayer.OPEN_CLOSE_ANIM_DURATION)
-                .then()
-                .tweenTranslation(notebook)
-                .to(target)
-                .in(BOOK_TRANSLATION_DURATION)
-                .easeIn();
-        final IPoint newTarget = restingLocations.get(0);
-        iface.anim.tweenTranslation(newCurrentNotebook)
-                .to(newTarget)
-                .in(BOOK_TRANSLATION_DURATION)
-                .easeIn().then().action(new Runnable() {
-            @Override
-            public void run() {
-                // Change Z-order.
-                // TODO: handle this more elegantly by changing layer depths.
-                content.remove(newCurrentNotebook);
-                content.addAt(newCurrentNotebook, newTarget.x(), newTarget.y());
-
-                promise.succeed(null);
-            }
-        });
-        return promise;
-    }
-
-    @Override
-    public Game game() {
-        return context.game;
-    }
-
     private final class MovementPrompt extends GroupLayer {
         private static final String TEXT_STUB = ", pick a place!";
         private static final int TRANSLUCENT_RED = 0xaae64650;
+        private static final float POPUP_DEPTH = 100;
         private final Label label = new Label(context.currentPlayer.get().name + TEXT_STUB);
 
         private MovementPrompt() {
@@ -204,6 +283,7 @@ public final class GameScreen extends BoundedUIScreen {
                     .setSize(width(), height())
                     .addStyles(Style.BACKGROUND.is(Background.solid(TRANSLUCENT_RED)))
                     .add(label);
+            setDepth(POPUP_DEPTH);
             context.currentPlayer.connect(new Slot<Player>() {
                 @Override
                 public void onEmit(Player player) {

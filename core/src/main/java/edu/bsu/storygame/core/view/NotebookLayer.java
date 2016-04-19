@@ -1,53 +1,110 @@
+/*
+ * Copyright 2016 Traveler's Notebook: Monster Tales project authors
+ *
+ * This file is part of monsters
+ *
+ * monsters is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * monsters is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with monsters.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package edu.bsu.storygame.core.view;
 
+import com.google.common.collect.Lists;
 import edu.bsu.storygame.core.assets.ImageCache;
+import edu.bsu.storygame.core.assets.Typeface;
 import edu.bsu.storygame.core.model.*;
 import edu.bsu.storygame.core.util.IconScaler;
-import playn.core.Font;
 import playn.scene.GroupLayer;
 import playn.scene.Layer;
 import pythagoras.f.Dimension;
 import pythagoras.f.IDimension;
-import react.RList;
-import react.Slot;
-import react.UnitSignal;
-import tripleplay.anim.Animator;
+import react.*;
+import tripleplay.anim.AnimGroup;
+import tripleplay.anim.Animation;
 import tripleplay.game.ScreenStack;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
-import tripleplay.ui.layout.FlowLayout;
-import tripleplay.util.Colors;
+
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class NotebookLayer extends GroupLayer {
 
     public static final float OPEN_CLOSE_ANIM_DURATION = 400f;
+    private static final float TOP = 100;
 
     private final IDimension closedSize;
     private final Stylesheet stylesheet;
     private final GameContext context;
-    private final Layer cover;
-    private final Layer encounterPage;
-    private final Layer reactionPage;
+    private final PageLayer cover;
+    private final PageLayer encounterPage;
+    private final PageLayer reactionPage;
+    private final PageLayer storyPage;
+    private final PageLayer skillsPage;
+    private final PageLayer conclusionPage;
+    private final PageLayer endPage;
     private final Player player;
+    private final Interface iface;
+    private final PageLayer[] pages;
+    private float depthCounter = 0;
+
 
     public final UnitSignal onDone = new UnitSignal();
 
-    public NotebookLayer(Player player, IDimension closedSize, GameContext context) {
+    public NotebookLayer(final Player player, IDimension closedSize, final GameContext context) {
         super(closedSize.width() * 2, closedSize.height());
+        this.iface = ((ScreenStack.UIScreen) context.game.screenStack.top()).iface;
+
         this.closedSize = new Dimension(closedSize);
         this.stylesheet = GameStyle.newSheet(context.game);
         this.context = checkNotNull(context);
         this.player = checkNotNull(player);
 
-        setHandleToTopCenter();
+        setOrigin(Origin.TC);
 
         this.cover = new CoverPage();
         this.encounterPage = new EncounterPage();
         this.reactionPage = new ReactionPage();
+        this.storyPage = new StoryPage();
+        this.skillsPage = new SkillsPage();
+        this.conclusionPage = new ConclusionPage();
+        this.endPage = new EndPage();
 
-        addPages(cover, encounterPage, reactionPage);
+        pages = new PageLayer[]{
+                cover,
+                encounterPage,
+                reactionPage,
+                storyPage,
+                skillsPage,
+                conclusionPage,
+                endPage
+        };
+        addPages(pages);
+
+        context.phase.connect(new Slot<Phase>() {
+            @Override
+            public void onEmit(Phase phase) {
+                if (player == context.currentPlayer.get()) {
+                    if (phase == Phase.STORY) {
+                        turnToStory();
+                    } else if (phase == Phase.CONCLUSION) {
+                        turnToConclusion();
+                    }
+                }
+            }
+        });
+
     }
 
     private void addPages(Layer... layers) {
@@ -61,11 +118,15 @@ public final class NotebookLayer extends GroupLayer {
 
         protected final int color;
         protected final Interface iface;
+        protected final Root root;
 
-        protected PageLayer() {
+        protected PageLayer(Layout layout) {
             super(closedSize.width(), closedSize.height());
-            color = (player == context.players.get(0)) ? Colors.GREEN : Colors.CYAN;
+            color = player.color;
             iface = ((ScreenStack.UIScreen) context.game.screenStack.top()).iface;
+            root = iface.createRoot(layout, stylesheet, this)
+                    .setSize(closedSize)
+                    .addStyles(Style.BACKGROUND.is(Background.solid(color)));
         }
     }
 
@@ -73,9 +134,7 @@ public final class NotebookLayer extends GroupLayer {
     private final class CoverPage extends PageLayer {
 
         private CoverPage() {
-            Root root = iface.createRoot(AxisLayout.vertical().offStretch(), stylesheet, this)
-                    .setSize(closedSize)
-                    .addStyles(Style.BACKGROUND.is(Background.solid(color)));
+            super(AxisLayout.vertical().offStretch());
             root.add(new Label(player.name + "'s Story")
                             .addStyles(Style.HALIGN.left),
                     new ScoreLabel()
@@ -83,291 +142,292 @@ public final class NotebookLayer extends GroupLayer {
                     new SkillGroup().addStyles(Style.HALIGN.left),
                     new Shim(0, 0).setConstraint(AxisLayout.stretched()));
         }
+
+        private final class ScoreLabel extends Label {
+            private ScoreLabel() {
+                super("Story Points: 0");
+                player.storyPoints.connect(new Slot<Integer>() {
+                    @Override
+                    public void onEmit(Integer integer) {
+                        text.update("Score: " + integer);
+                    }
+                });
+            }
+        }
+
+        private final class SkillGroup extends Group {
+
+            private SkillGroup() {
+                super(AxisLayout.horizontal().offStretch());
+                updatePlayerSkills();
+                player.skills.connect(new RList.Listener<Skill>() {
+                    @Override
+                    public void onAdd(Skill skill) {
+                        SkillGroup.this.updatePlayerSkills();
+                    }
+
+                    @Override
+                    public void onRemove(Skill skill) {
+                        SkillGroup.this.updatePlayerSkills();
+                    }
+                });
+            }
+
+            private void updatePlayerSkills() {
+                this.removeAll();
+                int skillCounter = 1;
+                this.add(new Label("Skills: ")
+                        .addStyles(Style.HALIGN.left));
+                for (Skill skill : player.skills) {
+                    if (!(player.skills.size() == skillCounter)) {
+                        this.add(new Label(skill.name), new Label(", "));
+                    } else {
+                        this.add(new Label(skill.name));
+                    }
+                    skillCounter++;
+                }
+            }
+        }
     }
 
     private final class EncounterPage extends PageLayer {
-
         private EncounterPage() {
-            iface.createRoot(AxisLayout.vertical(), stylesheet, this)
-                    .setSize(closedSize)
-                    .addStyles(Style.BACKGROUND.is(Background.solid(color)))
-                    .add(new EncounterGroup());
-        }
-    }
-
-    private class EncounterGroup extends Group {
-
-        public EncounterGroup() {
             super(AxisLayout.vertical());
-            context.encounter.connect(new Slot<Encounter>() {
+            context.encounter.connect(new ValueView.Listener<Encounter>() {
                 @Override
-                public void onEmit(Encounter encounter) {
-                    removeAll();
-                    if (encounter != null) {
-                        Label encounterLabel = new Label("I encountered a ");
-                        add(encounterLabel);
-                        EncounterImage encounterImage = new EncounterImage(encounter);
-                        EncounterNameLabel encounterName = new EncounterNameLabel(encounter);
-                        add(encounterImage);
-                        add(encounterName);
-
-                    }
-                }
-            });
-            context.reaction.connect(new Slot<Reaction>() {
-                @Override
-                public void onEmit(Reaction reaction) {
-                    removeAll();
-                    if (reaction != null) {
-                        add(new EncounterReactionStory(reaction.story).addStyles(Style.TEXT_WRAP.is(true)));
-                    }
-                }
-            });
-            context.conclusion.connect(new Slot<Conclusion>() {
-                @Override
-                public void onEmit(Conclusion conclusion) {
-                    removeAll();
-                    if (conclusion != null) {
-                        add(new EncounterRewardLabel(conclusion));
+                public void onChange(Encounter encounter, Encounter t1) {
+                    if(encounter == null){
+                        root.removeAll();
+                    } else if (context.currentPlayer.get() == player){
+                        root.add(new Label("I encountered a ").addStyles(
+                                Style.FONT.is(Typeface.HANDWRITING.in(context.game).atSize(0.045f))));
+                        root.add(new EncounterImage(encounter));
+                        root.add(new Label(encounter.name).addStyles(
+                                Style.FONT.is(Typeface.HANDWRITING.in(context.game).atSize(0.045f))));
                     }
                 }
             });
         }
-    }
 
-    private class EncounterImage extends Label {
-
-        private IconScaler scaler;
-
-        private EncounterImage(Encounter encounter) {
-
+        private class EncounterImage extends Label {
+            private IconScaler scaler;
             final float IMAGE_SIZE = 0.8f;
 
-            this.scaler = new IconScaler(context.game);
-
-            ImageCache.Key imageKey;
-            try {
-                imageKey = ImageCache.Key.valueOf(encounter.imageKey.toUpperCase());
-            } catch (IllegalArgumentException e) {
-                imageKey = ImageCache.Key.MISSING_IMAGE;
-            }
-             final float desiredWidth = IMAGE_SIZE * encounterPage.width();
-            Icon scaledIcon = scaler.scale(imageKey, desiredWidth);
-            icon.update(scaledIcon);
-
-
-        }
-    }
-
-    private class EncounterNameLabel extends Label {
-        private EncounterNameLabel(Encounter encounter){
-            text.update(encounter.name);
-
-        }
-    }
-
-    private class EncounterReactionStory extends Label {
-
-        EncounterReactionStory(Story story) {
-            super(story.text);
-        }
-
-    }
-
-    final class EncounterRewardLabel extends Label {
-        private EncounterRewardLabel(Conclusion conclusion) {
-            super();
-            StringBuilder stringBuilder = new StringBuilder();
-            if (conclusion.points > 0) {
-                stringBuilder.append("You gain ")
-                        .append(String.valueOf(conclusion.points))
-                        .append(" story points");
-            }
-            if (conclusion.skill != null) {
-                if (stringBuilder.length() > 0) {
-                    stringBuilder.append(" and the ")
-                            .append(conclusion.skill)
-                            .append(" skill");
-                } else {
-                    stringBuilder.append("You gain the ")
-                            .append(conclusion.skill.name)
-                            .append(" skill");
+            private EncounterImage(Encounter encounter) {
+                this.scaler = new IconScaler(context.game);
+                ImageCache.Key imageKey;
+                try {
+                    imageKey = ImageCache.Key.valueOf(encounter.imageKey.toUpperCase());
+                } catch (IllegalArgumentException e) {
+                    imageKey = ImageCache.Key.MISSING_IMAGE;
                 }
+                final float desiredWidth = IMAGE_SIZE * encounterPage.width();
+                Icon scaledIcon = scaler.scale(imageKey, desiredWidth);
+                icon.update(scaledIcon);
             }
-            text.update(stringBuilder.toString());
         }
-
     }
 
     private final class ReactionPage extends PageLayer {
         private ReactionPage() {
-            iface.createRoot(AxisLayout.vertical(), stylesheet, this)
-                    .setSize(closedSize)
-                    .addStyles(Style.BACKGROUND.is(Background.solid(color)))
-                    .add(new ReactionGroup());
+            super(AxisLayout.vertical());
+            root.add(new Label("I decided to"));
+            root.add(new ReactionGroup());
+        }
 
+        private final class ReactionGroup extends Group {
+
+            public ReactionGroup() {
+                super(AxisLayout.vertical());
+                context.encounter.connect(new Slot<Encounter>() {
+                    @Override
+                    public void onEmit(Encounter encounter) {
+                        removeAll();
+                        if (encounter != null) {
+                            add(makeReactionButtonAreaFor(encounter));
+                        }
+                    }
+                });
+
+            }
+
+            private Group makeReactionButtonAreaFor(Encounter encounter) {
+                Group group = new Group(new AxisLayout.Vertical());
+                for (Reaction reaction : encounter.reactions) {
+                    group.add(new ReactionButton(reaction));
+                }
+                return group;
+            }
+
+            final class ReactionButton extends Button {
+                private ReactionButton(final Reaction reaction) {
+                    super(reaction.name);
+                    onClick(new Slot<Button>() {
+                        @Override
+                        public void onEmit(Button button) {
+                            context.reaction.update(reaction);
+                            context.phase.update(Phase.HANDOFF);
+                        }
+                    });
+                    context.phase.connect(new Slot<Phase>() {
+                        @Override
+                        public void onEmit(Phase phase) {
+                            setEnabled(phase.equals(Phase.ENCOUNTER));
+                        }
+                    });
+                }
+            }
         }
     }
 
-    private final class ReactionGroup extends Group {
-
-        public ReactionGroup() {
+    private final class StoryPage extends PageLayer {
+        protected StoryPage() {
             super(AxisLayout.vertical());
-            context.encounter.connect(new Slot<Encounter>() {
+            context.reaction.connect(new ValueView.Listener<Reaction>() {
                 @Override
-                public void onEmit(Encounter encounter) {
-                    removeAll();
-                    if (encounter != null) {
-                        add(makeReactionButtonAreaFor(encounter));
+                public void onChange(Reaction reaction, Reaction t1) {
+                    if(reaction == null){
+                        root.removeAll();
+                    } else if (context.currentPlayer.get() == player){
+                        root.add(new Label(reaction.story.text).addStyles(Style.TEXT_WRAP.is(true)));
+                    }
+                }
+            });
+        }
+    }
+
+    private final class SkillsPage extends PageLayer {
+        private List<TriggerButton> buttons = Lists.newArrayList();
+        protected SkillsPage() {
+            super(AxisLayout.vertical());
+            context.reaction.connect(new Slot<Reaction>() {
+                @Override
+                public void onEmit(Reaction reaction) {
+                    if (reaction == null) {
+                        root.removeAll();
+                        buttons.clear();
+                    } else if (context.currentPlayer.get() == player) {
+                        root.add(new Label("You used:"));
+                        for (SkillTrigger skillTrigger : reaction.story.triggers) {
+                            TriggerButton button = new TriggerButton(skillTrigger.skill.name, skillTrigger.conclusion);
+                            button.setEnabled(context.currentPlayer.get().skills.contains(skillTrigger.skill));
+                            root.add(button);
+                            buttons.add(button);
+                        }
+                        TriggerButton noSkill = new TriggerButton("No Skill",
+                                context.reaction.get().story.noSkill.conclusion);
+                        root.add(noSkill);
+                        buttons.add(noSkill);
                     }
                 }
             });
             context.phase.connect(new Slot<Phase>() {
                 @Override
                 public void onEmit(Phase phase) {
-                    if (phase.equals(Phase.STORY)) {
-                        removeAll();
-                        add(makeSkillTriggersFor(context.reaction.get().story));
-                    }
-                }
-            });
-        }
-
-        private Group makeReactionButtonAreaFor(Encounter encounter) {
-            Group group = new Group(new FlowLayout());
-            for (Reaction reaction : encounter.reactions) {
-                group.add(new ReactionButton(reaction));
-            }
-            return group;
-        }
-
-        private Group makeSkillTriggersFor(Story story) {
-            Group buttonGroup = new Group(new FlowLayout());
-            for (final SkillTrigger trigger : story.triggers) {
-                if (context.currentPlayer.get().skills.contains(trigger.skill)) {
-                    Button skillButton = new TriggerButton(trigger.skill.name, trigger.conclusion);
-                    buttonGroup.add(skillButton);
-                }
-            }
-            buttonGroup.add(new TriggerButton("No skill", story.noSkill.conclusion));
-            return buttonGroup;
-        }
-
-
-        final class ReactionButton extends Button {
-            private ReactionButton(final Reaction reaction) {
-                super(reaction.name);
-                onClick(new Slot<Button>() {
-                    @Override
-                    public void onEmit(Button button) {
-                        context.reaction.update(reaction);
-                        context.phase.update(Phase.HANDOFF);
-                    }
-                });
-                context.phase.connect(new Slot<Phase>() {
-                    @Override
-                    public void onEmit(Phase phase) {
-                        setEnabled(phase.equals(Phase.ENCOUNTER));
-                    }
-                });
-            }
-        }
-
-        final class TriggerButton extends Button {
-            private TriggerButton(final String name, final Conclusion conclusion) {
-                super(name);
-                onClick(new Slot<Button>() {
-                    private final Player currentPlayer = context.currentPlayer.get();
-
-                    @Override
-                    public void onEmit(Button button) {
-                        ReactionGroup.this.removeAll();
-                        context.conclusion.update(conclusion);
-                        applyModelChanges(conclusion);
-                        add(new DoneButton());
-                    }
-
-                    private void applyModelChanges(Conclusion conclusion) {
-                        currentPlayer.storyPoints.update(
-                                currentPlayer.storyPoints.get() + conclusion.points);
-                        if (isThereASkillRewardThisPlayerDoesNotHave(conclusion)) {
-                            context.currentPlayer.get().skills.add(conclusion.skill);
+                    if (phase == Phase.CONCLUSION) {
+                        for (TriggerButton button : buttons) {
+                            button.setEnabled(false);
                         }
                     }
-
-                    private boolean isThereASkillRewardThisPlayerDoesNotHave(Conclusion conclusion) {
-                        return conclusion.skill != null && !currentPlayer.skills.contains(conclusion.skill);
-                    }
-                });
-            }
-        }
-
-        final class DoneButton extends Button {
-            private DoneButton() {
-                super("Done");
-                onClick(new Slot<Button>() {
-                    @Override
-                    public void onEmit(Button button) {
-                        onDone.emit();
-                    }
-                });
-            }
-        }
-    }
-
-    private final class SkillGroup extends Group {
-
-        private SkillGroup() {
-            super(AxisLayout.horizontal().offStretch());
-            updatePlayerSkills();
-            player.skills.connect(new RList.Listener<Skill>() {
-                @Override
-                public void onAdd(Skill skill) {
-                    SkillGroup.this.updatePlayerSkills();
-                }
-
-                @Override
-                public void onRemove(Skill skill) {
-                    SkillGroup.this.updatePlayerSkills();
                 }
             });
         }
 
-        private void updatePlayerSkills() {
-            this.removeAll();
-            int skillCounter = 1;
-            this.add(new Label("Skills: ")
-                    .addStyles(Style.HALIGN.left));
-            for (Skill skill : player.skills) {
-                if (!(player.skills.size() == skillCounter)) {
-                    this.add(new SkillLabel(skill), new Label(", "));
-                } else {
-                    this.add(new SkillLabel(skill));
-                }
-                skillCounter++;
+        private final class TriggerButton extends Button {
+
+            public TriggerButton(final String name, final Conclusion conclusion) {
+                super(name);
+                onClick(new Slot<Button>() {
+                    @Override
+                    public void onEmit(Button button) {
+                        context.conclusion.update(conclusion);
+                        context.phase.update(Phase.CONCLUSION);
+                    }
+                });
             }
         }
     }
 
-    private final class SkillLabel extends Label {
+    private final class ConclusionPage extends PageLayer {
 
-        private SkillLabel(Skill skill) {
-            super(skill.name);
-            addStyles(Style.HALIGN.left);
+        protected ConclusionPage() {
+            super(AxisLayout.vertical());
+            context.conclusion.connect(new SignalView.Listener<Conclusion>() {
+                @Override
+                public void onEmit(Conclusion conclusion) {
+                    if (conclusion == null) {
+                        root.removeAll();
+                    } else {
+                        root.add(new Label(conclusion.text).addStyles(Style.TEXT_WRAP.on));
+                        root.add(new EncounterRewardLabel(conclusion));
+                    }
+                }
+            });
+        }
+
+        final class EncounterRewardLabel extends Label {
+            private EncounterRewardLabel(Conclusion conclusion) {
+                super();
+                addStyles(Style.TEXT_WRAP.on);
+                StringBuilder stringBuilder = new StringBuilder();
+                if (conclusion.points > 0) {
+                    stringBuilder.append("You gain ")
+                            .append(String.valueOf(conclusion.points))
+                            .append(" story points");
+                }
+                if (conclusion.skill != null) {
+                    if (stringBuilder.length() > 0) {
+                        stringBuilder.append(" and the ")
+                                .append(conclusion.skill.name)
+                                .append(" skill");
+                    } else {
+                        stringBuilder.append("You gain the ")
+                                .append(conclusion.skill.name)
+                                .append(" skill");
+                    }
+                }
+                text.update(stringBuilder.toString());
+            }
+
         }
     }
 
+    private final class EndPage extends PageLayer {
+        protected EndPage() {
+            super(AxisLayout.vertical());
+            final Button button = new Button("Close notebook").onClick(new Slot<Button>() {
+                @Override
+                public void onEmit(Button button) {
+                    applyModelChanges(context.conclusion.get());
+                    onDone.emit();
+                    button.setEnabled(false);
+                }
+            });
+            root.add(button);
+            context.phase.connect(new Slot<Phase>() {
+                @Override
+                public void onEmit(Phase phase) {
+                    if (phase == Phase.CONCLUSION) {
+                        button.setEnabled(true);
+                    }
+                }
+            });
+        }
 
-    /**
-     * Set the origin to the top center.
-     * <p/>
-     * The origin acts as a handle for agents outside of this layer. When they
-     * set this layer's translation, it's with respect to this origin value. By
-     * setting this to the top-center, we are always thinking of holding the book
-     * from the spine, whether it is open or closed.
-     */
-    private void setHandleToTopCenter() {
-        setOrigin(Origin.TC);
+        private void applyModelChanges(Conclusion conclusion) {
+            Player currentPlayer = context.currentPlayer.get();
+            currentPlayer.storyPoints.update(
+                    currentPlayer.storyPoints.get() + conclusion.points);
+            if (isThereASkillRewardThisPlayerDoesNotHave(conclusion)) {
+                context.currentPlayer.get().skills.add(conclusion.skill);
+            }
+        }
+
+
+        private boolean isThereASkillRewardThisPlayerDoesNotHave(Conclusion conclusion) {
+            Player currentPlayer = context.currentPlayer.get();
+            return conclusion.skill != null && !currentPlayer.skills.contains(conclusion.skill);
+        }
     }
 
     /**
@@ -375,64 +435,109 @@ public final class NotebookLayer extends GroupLayer {
      * <p/>
      * There is not currently a real "flip" animation, and so this does a page shuffle animation instead,
      * like a stack of loose pages.
-     *
-     * @param anim the animator
      */
-    public void open(Animator anim) {
-        anim.tweenX(cover)
+    public void open() {
+        depthCounter = 0;
+        iface.anim.add(movePageLeft(cover))
+                .then()
+                .add(movePageLeft(encounterPage));
+    }
+
+    private Animation movePageLeft(final PageLayer layer) {
+        AnimGroup group = new AnimGroup();
+        group.action(new SetDepthToTop(layer))
+                .then()
+                .tweenX(layer)
                 .to(0)
                 .in(OPEN_CLOSE_ANIM_DURATION)
                 .easeIn()
                 .then()
-                .action(new LayerOnTop(encounterPage))
-                .then()
-                .tweenX(encounterPage)
-                .to(0)
-                .in(OPEN_CLOSE_ANIM_DURATION)
-                .easeIn();
+                .action(new SetDepthAndUpdateCounter(layer));
+        return group.toAnim();
     }
 
-    public void close(Animator anim) {
+    private void turnToStory() {
+        context.game.plat.log().debug("Turning to story");
+        iface.anim.add(movePageLeft(reactionPage))
+                .then()
+                .add(movePageLeft(storyPage));
+    }
+
+    private void turnToConclusion() {
+        context.game.plat.log().debug("Turning to conclusion");
+        iface.anim.add(movePageLeft(skillsPage))
+                .then()
+                .add(movePageLeft(conclusionPage));
+    }
+
+    public RFuture<Void> closeNotebook() {
+        final RPromise<Void> promise = RPromise.create();
+        depthCounter = 0;
+        iface.anim.add(movePageRight(conclusionPage))
+                .then()
+                .add(movePageRight(skillsPage))
+                .then()
+                .add(movePageRight(storyPage))
+                .then()
+                .add(movePageRight(reactionPage))
+                .then()
+                .add(movePageRight(encounterPage))
+                .then()
+                .add(movePageRight(cover))
+                .then()
+                .action(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Reset depths to fix the problem that 'endPage' never moves, which
+                        // breaks my silly depthCounter approach
+                        for (int i = 0; i < pages.length; i++) {
+                            pages[i].setDepth(pages.length - i);
+                        }
+
+                        promise.succeed(null);
+                    }
+                });
+        return promise;
+    }
+
+    private Animation movePageRight(final PageLayer layer) {
         final float centerX = width() / 2f;
-        anim.tweenX(encounterPage)
+        AnimGroup group = new AnimGroup();
+        group.action(new SetDepthToTop(layer))
+                .then()
+                .tweenX(layer)
                 .to(centerX)
-                .in(OPEN_CLOSE_ANIM_DURATION)
+                .in(OPEN_CLOSE_ANIM_DURATION / 4)
                 .easeIn()
                 .then()
-                .action(new LayerOnTop(cover))
-                .then()
-                .tweenX(cover)
-                .to(centerX)
-                .in(OPEN_CLOSE_ANIM_DURATION)
-                .easeIn();
+                .action(new SetDepthAndUpdateCounter(layer));
+        return group.toAnim();
     }
 
-    private final class ScoreLabel extends Label {
-        private ScoreLabel() {
-            super("Story Points: 0");
-            player.storyPoints.connect(new Slot<Integer>() {
-                @Override
-                public void onEmit(Integer integer) {
-                    text.update("Score: " + integer);
-                }
-            });
-        }
-    }
-
-    /**
-     * Raises a layer's z-depth above those of its neighboring pages, so that it renders on top of them.
-     */
-    private static final class LayerOnTop implements Runnable {
-
+    private final class SetDepthToTop implements Runnable {
         private final Layer layer;
 
-        private LayerOnTop(Layer layer) {
+        private SetDepthToTop(Layer layer) {
             this.layer = checkNotNull(layer);
         }
 
         @Override
         public void run() {
-            layer.setDepth(layer.depth() + 2);
+            layer.setDepth(TOP);
+        }
+    }
+
+    private final class SetDepthAndUpdateCounter implements Runnable {
+        private final Layer layer;
+
+        private SetDepthAndUpdateCounter(Layer layer) {
+            this.layer = checkNotNull(layer);
+        }
+
+        @Override
+        public void run() {
+            layer.setDepth(depthCounter);
+            depthCounter++;
         }
     }
 }

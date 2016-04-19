@@ -1,3 +1,22 @@
+/*
+ * Copyright 2016 Traveler's Notebook: Monster Tales project authors
+ *
+ * This file is part of monsters
+ *
+ * monsters is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * monsters is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with monsters.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package edu.bsu.storygame.core.view;
 
 import com.google.common.collect.Lists;
@@ -101,6 +120,7 @@ public final class PlayerCreationGroup extends Group {
     final class SkillButton extends ToggleButton {
 
         private static final float PERCENT_OF_WIDTH = 0.22f;
+        private static final float PERCENT_OF_HEIGHT = 0.08f;
 
         final Skill skill;
 
@@ -108,7 +128,8 @@ public final class PlayerCreationGroup extends Group {
             super(skill.name);
             this.skill = skill;
             setConstraint(Constraints.fixedSize(
-                    game.bounds.width() * PERCENT_OF_WIDTH, 48));
+                    game.bounds.width() * PERCENT_OF_WIDTH,
+                    game.bounds.height() * PERCENT_OF_HEIGHT));
         }
 
         @Override
@@ -119,6 +140,7 @@ public final class PlayerCreationGroup extends Group {
 
     final class RegionButton extends ToggleButton {
         private static final float PERCENT_OF_WIDTH = 0.22f;
+        private static final float PERCENT_OF_HEIGHT = 0.08f;
 
         final Region region;
 
@@ -126,7 +148,8 @@ public final class PlayerCreationGroup extends Group {
             super(region.name().toLowerCase().replace("_", " "));
             this.region = region;
             setConstraint(Constraints.fixedSize(
-                    game.bounds.width() * PERCENT_OF_WIDTH, 48));
+                    game.bounds.width() * PERCENT_OF_WIDTH,
+                    game.bounds.height() * PERCENT_OF_HEIGHT));
         }
 
         @Override
