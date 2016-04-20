@@ -1,20 +1,20 @@
 /*
  * Copyright 2016 Traveler's Notebook: Monster Tales project authors
  *
- * This file is part of monsters
+ * This file is part of Traveler's Notebook: Monster Tales
  *
- * monsters is free software: you can redistribute it and/or modify
+ * Traveler's Notebook: Monster Tales is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * monsters is distributed in the hope that it will be useful,
+ * Traveler's Notebook: Monster Tales is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with monsters.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Traveler's Notebook: Monster Tales.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package edu.bsu.storygame.core;
@@ -41,9 +41,11 @@ import tripleplay.util.Colors;
 import java.util.Collection;
 import java.util.List;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 public class LoadingScreen extends ScreenStack.UIScreen {
+
+    private static final int NUMBER_OF_CACHES = 3;
 
     private final MonsterGame game;
     private Root root;
@@ -54,7 +56,7 @@ public class LoadingScreen extends ScreenStack.UIScreen {
         this.game = checkNotNull(game);
         configureProgressBar();
 
-        List<RFuture<Boolean>> futures = Lists.newArrayListWithCapacity(3);
+        List<RFuture<Boolean>> futures = Lists.newArrayListWithCapacity(NUMBER_OF_CACHES);
         futures.add(game.imageCache.state.map(new Function<ImageCache, Boolean>() {
             @Override
             public Boolean apply(ImageCache imageCache) {
@@ -100,14 +102,11 @@ public class LoadingScreen extends ScreenStack.UIScreen {
     }
 
     private void configureProgressBar() {
-        final int numberOfCaches = 3;
         final float width = this.size().width();
         final float height = this.size().height();
-        progressBar = new ProgressBar(numberOfCaches, width * 0.55f, height * 0.02f, game, ProgressBar.FillType.HORIZONTAL);
+        progressBar = new ProgressBar(NUMBER_OF_CACHES, width * 0.55f, height * 0.02f, game, ProgressBar.FillType.HORIZONTAL);
         layer.addCenterAt(progressBar, width / 2, height * 3 / 5);
     }
-
-
 
     @Override
     public Game game() {
