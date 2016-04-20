@@ -62,7 +62,17 @@ public class ImageCache {
         INTRO_SCENE_3("intro_scene_3.png"),
         INTRO_SCENE_4("intro_scene_4.png"),
         INTRO_SCENE_5("intro_scene_5.png"),
-        INTRO_SCENE_6("intro_scene_6.png");
+        INTRO_SCENE_6("intro_scene_6.png"),
+        PAGE_1("pages/page_1.png"),
+        PAGE_2("pages/page_2.png"),
+        PAGE_3("pages/page_3.png"),
+        PAGE_4("pages/page_4.png"),
+        PAGE_5("pages/page_5.png"),
+        PAGE_6("pages/page_6.png"),
+        PAGE_7("pages/page_7.png"),
+        PAGE_8("pages/page_8.png"),
+        PAGE_9("pages/page_9.png"),
+        PAGE_10("pages/page_10.png");
 
         private final String path;
 
