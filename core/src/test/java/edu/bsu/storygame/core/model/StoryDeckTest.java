@@ -16,10 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with Traveler's Notebook: Monster Tales.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package edu.bsu.storygame.core.model;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -49,5 +53,19 @@ public class StoryDeckTest {
 
     private void initializeDeck() {
         deck = new StoryDeck(STORY_LIST);
+    }
+
+    @Test
+    public void testChooseOne_canStillSeeAllStoriesAfterExhaustingDeck() {
+        initializeDeck();
+        for (int i = 0; i < STORY_LIST.size(); i++) {
+            deck.chooseOne();
+        }
+        List<Story> secondPassStories = Lists.newArrayList();
+        for (int i = 0; i < STORY_LIST.size(); i++) {
+            secondPassStories.add(deck.chooseOne());
+        }
+        assertTrue("Not all stories were encountered in the second pass through the deck",
+                secondPassStories.containsAll(STORY_LIST));
     }
 }

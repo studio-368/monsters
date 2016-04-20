@@ -43,10 +43,12 @@ public class StoryDeck implements Iterable<Story> {
     }
 
     public Story chooseOne() {
-        if (unreadStories.size() > 0) {
+        if (!unreadStories.isEmpty()) {
             return unreadStories.remove(0);
+        } else {
+            unreadStories.addAll(this.stories);
+            return chooseOne();
         }
-        return stories.get(RANDOM.nextInt(stories.size()));
     }
 
     @Override
