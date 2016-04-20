@@ -142,18 +142,6 @@ public final class NotebookLayer extends GroupLayer {
                     new SkillGroup().addStyles(Style.HALIGN.center),
                     new Shim(0, 0).setConstraint(AxisLayout.stretched()));
             addAt(progressBar, 5, 10);
-
-        }
-
-        private final class ScoreLabel extends Label {
-            private ScoreLabel() {
-                super();
-                player.storyPoints.connect(new Slot<Integer>() {
-                    @Override
-                    public void onEmit(Integer integer) {
-                    }
-                });
-            }
         }
 
         private final class SkillGroup extends Group {
@@ -194,11 +182,11 @@ public final class NotebookLayer extends GroupLayer {
             final int max = context.pointsRequiredForVictory;
             final float width = this.width();
             final float height = this.height();
-            progressBar = new ProgressBar(max, width * 0.16f, height * 0.18f, context);
+            progressBar = new ProgressBar(max, width * 0.1f, height * 0.18f, context.game, ProgressBar.FillType.VERTICAL);
             player.storyPoints.connect(new Slot<Integer>() {
                 @Override
                 public void onEmit(Integer integer) {
-                    progressBar.increment(integer);
+                    progressBar.increment(context.conclusion.get().points);
                 }
             });
         }
