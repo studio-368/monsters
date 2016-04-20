@@ -19,6 +19,8 @@
 
 package edu.bsu.storygame.editor.model;
 
+import com.google.common.collect.Lists;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,12 +29,18 @@ public class Story {
     public List<SkillTrigger> triggers;
 
     public static Story emptyStory() {
-        return new Story("", new ArrayList<>());
+        return new Story("", Lists.newArrayList(
+                new SkillTrigger("No skill", Conclusion.emptyConclusion())));
     }
 
     public Story(String text, List<SkillTrigger> triggers) {
         this.text = text;
         this.triggers = new ArrayList<>(triggers);
+    }
+
+    @Override
+    public String toString() {
+        return text;
     }
 
     @Override

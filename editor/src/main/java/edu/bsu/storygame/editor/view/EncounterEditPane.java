@@ -23,19 +23,20 @@ import com.sun.javafx.collections.ObservableListWrapper;
 import edu.bsu.storygame.editor.EditorStageController;
 import edu.bsu.storygame.editor.model.Encounter;
 import edu.bsu.storygame.editor.model.Reaction;
-import edu.bsu.storygame.editor.model.Story;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 
 import java.io.IOException;
-import java.util.Optional;
+import java.util.ArrayList;
 
-public class EncounterEditPane extends GridPane {
+public class EncounterEditPane extends EditPane {
 
     private final Encounter encounter;
     private final EditorStageController parent;
@@ -81,12 +82,14 @@ public class EncounterEditPane extends GridPane {
 
     private void configure() {
         encounterReactionsList.getSelectionModel().getSelectedItems().addListener((ListChangeListener<Reaction>) c -> {
-            if (c.getList().size() == 0) {
+            parent.clearAfter(this);
+            if (c.getList().size() == 1) {
+                selectedReaction = c.getList().get(0);
+                parent.editReaction(selectedReaction);
+                setReactionButtonsDisabled(false);
+            } else {
                 selectedReaction = null;
                 setReactionButtonsDisabled(true);
-            } else {
-                selectedReaction = c.getList().get(0);
-                setReactionButtonsDisabled(false);
             }
         });
         bindTextField(encounterNameTextField, (v, o, n) -> onNameChange());
@@ -108,16 +111,15 @@ public class EncounterEditPane extends GridPane {
     }
 
     private void populate() {
-        encounterName.setText(encounter.name + " encounter");
-        encounterNameTextField.setText(encounter.name);
         encounterReactionsList.setItems(new ObservableListWrapper<>(encounter.reactions));
-        encounterImage.setText(encounter.image);
+        refresh();
     }
 
     @FXML
     private void onNameChange() {
         encounter.name = encounterNameTextField.getText();
         encounterName.setText(encounter.name + " encounter");
+        parent.refresh();
     }
 
     @FXML
@@ -129,14 +131,14 @@ public class EncounterEditPane extends GridPane {
     private void onReactionAdd() {
         String reactionName = TextPrompt.emptyPrompt();
         if (reactionName == null) return;
-        Reaction reaction = new Reaction(reactionName, Story.emptyStory());
+        Reaction reaction = new Reaction(reactionName, new ArrayList<>());
         encounterReactionsList.getItems().add(reaction);
-        refresh();
+        parent.refresh();
     }
 
     @FXML
     private void onReactionDelete() {
-        if (confirm("Are you sure you want to delete this?")) {
+        if (parent.confirm("Are you sure you want to delete this?")) {
             encounterReactionsList.getItems().remove(selectedReaction);
             refresh();
         }
@@ -146,7 +148,7 @@ public class EncounterEditPane extends GridPane {
     @FXML
     private void onReactionRename() {
         selectedReaction.name = TextPrompt.promptFromString(selectedReaction.name);
-        refresh();
+        parent.refresh();
     }
 
     @FXML
@@ -155,7 +157,7 @@ public class EncounterEditPane extends GridPane {
         int index = list.indexOf(selectedReaction);
         Reaction oldReaction = list.remove(index);
         list.add(index - 1, oldReaction);
-        refresh();
+        parent.refresh();
         encounterReactionsList.getSelectionModel().selectIndices(index - 1);
     }
 
@@ -165,23 +167,15 @@ public class EncounterEditPane extends GridPane {
         int index = list.indexOf(selectedReaction);
         Reaction oldReaction = list.remove(index);
         list.add(index + 1, oldReaction);
-        refresh();
+        parent.refresh();
         encounterReactionsList.getSelectionModel().selectIndices(index + 1);
     }
 
-    private boolean confirm(String prompt) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation");
-        alert.setHeaderText(null);
-        alert.setContentText(prompt);
-
-        Optional<ButtonType> result = alert.showAndWait();
-        return result.get() == ButtonType.OK;
-    }
-
-    private void refresh() {
-        parent.refresh();
-        encounterReactionsList.refresh();
+    public void refresh() {
+        encounterName.setText(encounter.name + " encounter");
+        encounterNameTextField.setText(encounter.name);
+        encounterImage.setText(encounter.image);
+        encounterReactionsList.getProperties().put("listRecreateKey", Boolean.TRUE);
     }
 
 }
