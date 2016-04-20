@@ -8,43 +8,47 @@
         "reactions": [
           {
             "name": "Fight",
-            "story": {
-              "text": "Story 1",
-              "triggers": [
-                {
-                  "skill": "Logic",
-                  "conclusion": {
-                    "text": "Conclusion 1",
-                    "points": 1
+            "stories": [
+              {
+                "text": "Story 1",
+                "triggers": [
+                  {
+                    "skill": "Logic",
+                    "conclusion": {
+                      "text": "Conclusion 1",
+                      "points": 1
+                    }
+                  },
+                  {
+                    "conclusion": {
+                      "text": "Conclusion 2"
+                    }
                   }
-                },
-                {
-                  "conclusion": {
-                    "text": "Conclusion 2"
-                  }
-                }
-              ]
-            }
+                ]
+              }
+            ]
           },
           {
             "name": "Hide",
-            "story": {
-              "text": "Story 2",
-              "triggers": [
-                {
-                  "skill": "Logic",
-                  "conclusion": {
-                    "text": "Conclusion 1-A",
-                    "points": 1
+            "stories": [
+              {
+                "text": "Story 2",
+                "triggers": [
+                  {
+                    "skill": "Logic",
+                    "conclusion": {
+                      "text": "Conclusion 1-A",
+                      "points": 1
+                    }
+                  },
+                  {
+                    "conclusion": {
+                      "text": "Conclusion 2-B"
+                    }
                   }
-                },
-                {
-                  "conclusion": {
-                    "text": "Conclusion 2-B"
-                  }
-                }
-              ]
-            }
+                ]
+              }
+            ]
           }
         ]
       }

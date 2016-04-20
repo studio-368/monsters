@@ -19,18 +19,21 @@
 
 package edu.bsu.storygame.editor.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Reaction {
 
     public String name;
-    public Story story;
+    public List<Story> stories;
 
     public static Reaction emptyReaction() {
-        return new Reaction("", Story.emptyStory());
+        return new Reaction("", new ArrayList<>());
     }
 
-    public Reaction(String name, Story story) {
+    public Reaction(String name, List<Story> stories) {
         this.name = name;
-        this.story = story;
+        this.stories = stories;
     }
 
     @Override
@@ -46,14 +49,14 @@ public class Reaction {
         Reaction reaction = (Reaction) o;
 
         if (name != null ? !name.equals(reaction.name) : reaction.name != null) return false;
-        return story != null ? story.equals(reaction.story) : reaction.story == null;
+        return stories != null ? stories.equals(reaction.stories) : reaction.stories == null;
 
     }
 
     @Override
     public int hashCode() {
         int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (story != null ? story.hashCode() : 0);
+        result = 31 * result + (stories != null ? stories.hashCode() : 0);
         return result;
     }
 }

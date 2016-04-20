@@ -34,13 +34,13 @@ public class EncounterMatchingTestJson {
                                 .trigger(SkillTrigger.skill(LOGIC)
                                         .conclusion(new Conclusion.Builder().text("Conclusion 1").points(1).build()))
                                 .trigger(new NoSkillTrigger(new Conclusion.Builder().text("Conclusion 2").skill(Skill.named("RewardSkill")).build()))
-                                .build()))
+                                .build()).build())
                 .reaction(Reaction.create("Hide")
                         .story(Story.withText("Story 2")
                                 .trigger(new NoSkillTrigger(new Conclusion.Builder().text("Conclusion 1-A").points(1).skill(Skill.named("RewardSkill-2")).build()))
                                 .trigger(SkillTrigger.skill(MAGIC)
                                         .conclusion(new Conclusion.Builder().text("Conclusion 2-B").build()))
-                                .build()))
+                                .build()).build())
                 .build();
     }
 

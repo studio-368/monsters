@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright 2016 Traveler's Notebook: Monster Tales project authors
+  ~
+  ~ This file is part of monsters
+  ~
+  ~ monsters is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ monsters is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with monsters.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<fx:root hgap="5.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+         type="javafx.scene.layout.GridPane" vgap="5.0" xmlns="http://javafx.com/javafx/8"
+         xmlns:fx="http://javafx.com/fxml/1">
+    <columnConstraints>
+        <ColumnConstraints halignment="LEFT" hgrow="NEVER" minWidth="10.0"/>
+        <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" minWidth="10.0"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" valignment="TOP" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="35.0" valignment="TOP" vgrow="ALWAYS"/>
+        <RowConstraints minHeight="10.0" valignment="TOP" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" valignment="TOP" vgrow="NEVER"/>
+        <RowConstraints minHeight="10.0" valignment="TOP" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" valignment="TOP" vgrow="ALWAYS"/>
+        <RowConstraints maxHeight="60.0" minHeight="10.0" valignment="TOP" vgrow="NEVER"/>
+    </rowConstraints>
+    <children>
+        <Label text="Story" GridPane.columnSpan="2147483647">
+            <font>
+                <Font name="System Bold" size="18.0"/>
+            </font>
+        </Label>
+        <Label text="Usable skills:" textOverrun="CLIP" wrapText="true" GridPane.rowIndex="2"/>
+        <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
+            <children>
+                <ListView fx:id="skillsList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                          prefHeight="150.0" prefWidth="200.0"/>
+                <HBox spacing="5.0">
+                    <children>
+                        <Button fx:id="addSkillButton" mnemonicParsing="false" onAction="#onAddSkill" text="Add"/>
+                        <Button fx:id="renameSkillButton" disable="true" mnemonicParsing="false"
+                                onAction="#onRenameSkill" text="Rename"/>
+                        <Button fx:id="removeSkillButton" disable="true" mnemonicParsing="false"
+                                onAction="#onRemoveSkill" text="Remove"/>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+        <Label text="Select a skill to edit below" wrapText="true" GridPane.columnIndex="1"
+               GridPane.columnSpan="2147483647" GridPane.rowIndex="3"/>
+        <Separator GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="4"
+                   GridPane.valignment="CENTER"/>
+        <Label fx:id="conclusionDescription" text="Action with Skill against Monster" GridPane.columnSpan="2147483647"
+               GridPane.rowIndex="5">
+            <font>
+                <Font name="System Bold" size="14.0"/>
+            </font>
+        </Label>
+        <Label text="Narrative:" GridPane.rowIndex="6"/>
+        <TextArea fx:id="conclusionNarrativeTextArea" disable="true" maxWidth="1.7976931348623157E308" prefHeight="75.0"
+                  prefWidth="200.0" wrapText="true" GridPane.columnIndex="1" GridPane.columnSpan="2147483647"
+                  GridPane.rowIndex="6"/>
+        <Label text="Results:" GridPane.rowIndex="7"/>
+        <VBox fx:id="resultsVBox" disable="true" spacing="3.0" GridPane.columnIndex="1" GridPane.columnSpan="2147483647"
+              GridPane.rowIndex="7">
+            <children>
+                <CheckBox fx:id="pointsCheckBox" mnemonicParsing="false" onAction="#onStoryPointsChange"
+                          GridPane.columnIndex="1" GridPane.rowIndex="7">
+                    <graphic>
+                        <HBox>
+                            <children>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Modify inspiration points: "/>
+                                <TextField fx:id="pointsChangeTextField" onAction="#onStoryPointsChange"/>
+                            </children>
+                        </HBox>
+                    </graphic>
+                </CheckBox>
+                <CheckBox fx:id="newSkillCheckBox" mnemonicParsing="false">
+                    <graphic>
+                        <HBox>
+                            <children>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Gain new skill: "/>
+                                <TextField fx:id="newSkillTextField"/>
+                            </children>
+                        </HBox>
+                    </graphic>
+                </CheckBox>
+            </children>
+        </VBox>
+        <Label text="Story:" GridPane.rowIndex="1"/>
+        <TextArea fx:id="storyTextArea" maxWidth="1.7976931348623157E308" prefHeight="75.0" prefWidth="200.0"
+                  wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+    </children>
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+    </padding>
+</fx:root>

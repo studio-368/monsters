@@ -42,8 +42,11 @@ public final class EncounterParser {
             Json.Object jsonReaction = jsonReactions.getObject(i);
             String reactionName = jsonReaction.getString("name");
             try {
-                Reaction reaction = Reaction.create(reactionName).story(parseStory(jsonReaction.getObject("story")));
-                encounterBuilder.reaction(reaction);
+                Json.Array array = jsonReaction.getArray("stories");
+                for(int storyIndex = 0; storyIndex < array.length(); storyIndex++){
+                    Reaction reaction = Reaction.create(reactionName).story(parseStory(array.getObject(storyIndex))).build();
+                    encounterBuilder.reaction(reaction);
+                }
             } catch (Exception e) {
                 throw new IllegalStateException("Failed to parse encounter " + name, e);
             }

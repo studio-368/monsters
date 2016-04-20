@@ -37,11 +37,11 @@ import static org.junit.Assert.fail;
 public class GsonParserTest {
 
     private static final GsonParser parser = new GsonParser();
-    public static final String JSON_TEST = loadStringFromFile("assets/json/test-json.json");
-    public static final Narrative NARRATIVE_TEST = new Narrative(Lists.newArrayList(
+    private static final String JSON_TEST = loadStringFromFile("assets/json/test-json.json");
+    private static final Narrative NARRATIVE_TEST = new Narrative(Lists.newArrayList(
             new Region("Africa", Lists.newArrayList(
                     new Encounter("Cockatrice", "pic", Lists.newArrayList(
-                            new Reaction("Fight", new Story(
+                            new Reaction("Fight", Lists.newArrayList(new Story(
                                     "Story 1",
                                     Lists.newArrayList(
                                             new SkillTrigger(
@@ -53,8 +53,8 @@ public class GsonParserTest {
                                                     new Conclusion("Conclusion 2")
                                             )
                                     )
-                            )),
-                            new Reaction("Hide", new Story(
+                            ))),
+                            new Reaction("Hide", Lists.newArrayList(new Story(
                                     "Story 2",
                                     Lists.newArrayList(
                                             new SkillTrigger(
@@ -67,7 +67,7 @@ public class GsonParserTest {
                                             )
                                     )
                             ))
-                    ))
+                            )))
             ))
     ));
 
