@@ -24,6 +24,7 @@ import edu.bsu.storygame.core.assets.ImageCache;
 import edu.bsu.storygame.core.assets.Typeface;
 import edu.bsu.storygame.core.model.*;
 import edu.bsu.storygame.core.util.IconScaler;
+import playn.core.Image;
 import playn.scene.GroupLayer;
 import playn.scene.Layer;
 import pythagoras.f.Dimension;
@@ -34,8 +35,10 @@ import tripleplay.anim.Animation;
 import tripleplay.game.ScreenStack;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
+import tripleplay.util.Colors;
 
 import java.util.List;
+import java.util.Random;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -116,25 +119,27 @@ public final class NotebookLayer extends GroupLayer {
 
     private abstract class PageLayer extends GroupLayer {
 
-        protected final int color;
         protected final Interface iface;
         protected final Root root;
 
         protected PageLayer(Layout layout) {
             super(closedSize.width(), closedSize.height());
-            color = player.color;
             iface = ((ScreenStack.UIScreen) context.game.screenStack.top()).iface;
             root = iface.createRoot(layout, stylesheet, this)
                     .setSize(closedSize)
-                    .addStyles(Style.BACKGROUND.is(Background.solid(color)));
+                    .addStyles(Style.BACKGROUND.is(Background.image(new NotebookImageLoader().load())));
         }
     }
 
 
     private final class CoverPage extends PageLayer {
+        protected final int color;
 
         private CoverPage() {
+
             super(AxisLayout.vertical().offStretch());
+            color = player.color;
+            root.addStyles(Style.BACKGROUND.is(Background.solid(color)));
             root.add(new Label(player.name + "'s Story")
                             .addStyles(Style.HALIGN.left),
                     new ScoreLabel()
@@ -200,10 +205,12 @@ public final class NotebookLayer extends GroupLayer {
                         root.removeAll();
                     } else if (context.currentPlayer.get() == player){
                         root.add(new Label("I encountered a ").addStyles(
-                                Style.FONT.is(Typeface.HANDWRITING.in(context.game).atSize(0.045f))));
+                                Style.FONT.is(Typeface.HANDWRITING.in(context.game).atSize(0.045f)),
+                                Style.COLOR.is(Colors.BLACK)));
                         root.add(new EncounterImage(encounter));
                         root.add(new Label(encounter.name).addStyles(
-                                Style.FONT.is(Typeface.HANDWRITING.in(context.game).atSize(0.045f))));
+                                Style.FONT.is(Typeface.HANDWRITING.in(context.game).atSize(0.045f)),
+                                Style.COLOR.is(Colors.BLACK)));
                     }
                 }
             });
@@ -231,7 +238,7 @@ public final class NotebookLayer extends GroupLayer {
     private final class ReactionPage extends PageLayer {
         private ReactionPage() {
             super(AxisLayout.vertical());
-            root.add(new Label("I decided to"));
+            root.add(new Label("I decided to").addStyles(Style.COLOR.is(Colors.BLACK)));
             root.add(new ReactionGroup());
         }
 
@@ -289,7 +296,9 @@ public final class NotebookLayer extends GroupLayer {
                     if(reaction == null){
                         root.removeAll();
                     } else if (context.currentPlayer.get() == player){
-                        root.add(new Label(reaction.story.text).addStyles(Style.TEXT_WRAP.is(true)));
+                        root.add(new Label(reaction.story.text).addStyles(
+                                Style.TEXT_WRAP.is(true),
+                                Style.COLOR.is(Colors.BLACK)));
                     }
                 }
             });
@@ -307,7 +316,7 @@ public final class NotebookLayer extends GroupLayer {
                         root.removeAll();
                         buttons.clear();
                     } else if (context.currentPlayer.get() == player) {
-                        root.add(new Label("You used:"));
+                        root.add(new Label("You used:").addStyles(Style.COLOR.is(Colors.BLACK)));
                         for (SkillTrigger skillTrigger : reaction.story.triggers) {
                             TriggerButton button = new TriggerButton(skillTrigger.skill.name, skillTrigger.conclusion);
                             button.setEnabled(context.currentPlayer.get().skills.contains(skillTrigger.skill));
@@ -358,7 +367,9 @@ public final class NotebookLayer extends GroupLayer {
                     if (conclusion == null) {
                         root.removeAll();
                     } else {
-                        root.add(new Label(conclusion.text).addStyles(Style.TEXT_WRAP.on));
+                        root.add(new Label(conclusion.text).addStyles(
+                                Style.TEXT_WRAP.on,
+                                Style.COLOR.is(Colors.BLACK)));
                         root.add(new EncounterRewardLabel(conclusion));
                     }
                 }
@@ -368,7 +379,8 @@ public final class NotebookLayer extends GroupLayer {
         final class EncounterRewardLabel extends Label {
             private EncounterRewardLabel(Conclusion conclusion) {
                 super();
-                addStyles(Style.TEXT_WRAP.on);
+                addStyles(Style.TEXT_WRAP.on,
+                        Style.COLOR.is(Colors.BLACK));
                 StringBuilder stringBuilder = new StringBuilder();
                 if (conclusion.points > 0) {
                     stringBuilder.append("You gain ")
@@ -540,4 +552,27 @@ public final class NotebookLayer extends GroupLayer {
             depthCounter++;
         }
     }
+
+    private final class NotebookImageLoader {
+
+        private final Random random = new Random();
+        private final ImageCache.Key[] keys = {
+                ImageCache.Key.PAGE_1,
+                ImageCache.Key.PAGE_2,
+                ImageCache.Key.PAGE_3,
+                ImageCache.Key.PAGE_4,
+                ImageCache.Key.PAGE_5,
+                ImageCache.Key.PAGE_6,
+                ImageCache.Key.PAGE_7,
+                ImageCache.Key.PAGE_8,
+                ImageCache.Key.PAGE_9,
+                ImageCache.Key.PAGE_10
+        };
+
+        private Image load() {
+            int index = random.nextInt(keys.length);
+            return context.game.imageCache.image(keys[index]);
+        }
+    }
+
 }
