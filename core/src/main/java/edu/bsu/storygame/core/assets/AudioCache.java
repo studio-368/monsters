@@ -74,7 +74,7 @@ public class AudioCache {
     public Sound sound(AudioKey audioKey) {
         checkNotNull(audioKey);
         Sound sound = map.get(audioKey);
-        checkNotNull(sound, "Sound not cached: " + audioKey.name());
+        checkState(sound.isLoaded(), "Sound not cached: " + audioKey.name());
         return sound;
     }
 

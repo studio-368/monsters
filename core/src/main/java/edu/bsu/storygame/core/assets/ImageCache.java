@@ -98,7 +98,7 @@ public class ImageCache {
     public Image image(Key key) {
         checkNotNull(key);
         Image image = map.get(key);
-        checkNotNull(image, "Image not cached: " + key.name());
+        checkState(image.isLoaded(), "Image not cached: " + key.name());
         return image;
     }
 
