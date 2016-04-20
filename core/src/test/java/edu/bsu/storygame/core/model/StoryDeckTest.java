@@ -23,6 +23,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -67,5 +68,10 @@ public class StoryDeckTest {
         }
         assertTrue("Not all stories were encountered in the second pass through the deck",
                 secondPassStories.containsAll(STORY_LIST));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreate_mustHaveAtLeastOneStory() {
+        new StoryDeck(new ArrayList<Story>());
     }
 }

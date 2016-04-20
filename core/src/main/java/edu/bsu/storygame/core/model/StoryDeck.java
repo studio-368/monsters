@@ -23,15 +23,20 @@ import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import edu.bsu.storygame.core.util.Shuffler;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
+import static com.google.common.base.Preconditions.*;
 
 public class StoryDeck implements Iterable<Story> {
 
     private final ImmutableList<Story> stories;
     private final List<Story> unreadStories = new ArrayList<>();
-    private transient static final Random RANDOM = new Random();
 
     public StoryDeck(Collection<Story> stories) {
+        checkArgument(!stories.isEmpty());
         List<Story> shufflableList = new ArrayList<>(stories);
         Shuffler.shuffle(shufflableList);
         this.stories = ImmutableList.copyOf(shufflableList);
