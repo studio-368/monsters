@@ -27,6 +27,8 @@ import edu.bsu.storygame.core.view.GameStyle;
 import edu.bsu.storygame.core.view.ProgressBar;
 import edu.bsu.storygame.core.view.StartScreen;
 import playn.core.Game;
+import playn.core.Image;
+import playn.core.Sound;
 import react.Function;
 import react.RFuture;
 import react.Slot;
@@ -54,9 +56,11 @@ public class LoadingScreen extends ScreenStack.UIScreen {
     public LoadingScreen(final MonsterGame game, final ScreenStack screenStack) {
         super(game.plat);
         this.game = checkNotNull(game);
+
         configureProgressBar();
 
         List<RFuture<Boolean>> futures = Lists.newArrayListWithCapacity(NUMBER_OF_CACHES);
+
         futures.add(game.imageCache.state.map(new Function<ImageCache, Boolean>() {
             @Override
             public Boolean apply(ImageCache imageCache) {
@@ -102,10 +106,48 @@ public class LoadingScreen extends ScreenStack.UIScreen {
     }
 
     private void configureProgressBar() {
+        final int numberOfAssets = ImageCache.Key.values().length
+                + AudioCache.AudioKey.values().length
+                + 1; // narrative cache
         final float width = this.size().width();
         final float height = this.size().height();
-        progressBar = new ProgressBar(NUMBER_OF_CACHES, width * 0.55f, height * 0.02f, game, ProgressBar.FillType.HORIZONTAL);
+        progressBar = new ProgressBar(numberOfAssets, width * 0.55f, height * 0.02f, game, ProgressBar.FillType.HORIZONTAL);
         layer.addCenterAt(progressBar, width / 2, height * 3 / 5);
+
+        trackIndividualImageAssets();
+        trackIndividualAudioAssets();
+        trackNarrativeAsset();
+    }
+
+    private void trackIndividualImageAssets() {
+        for (ImageCache.Key key : ImageCache.Key.values()) {
+            game.imageCache.stateOf(key).onSuccess(new Slot<Image>() {
+                @Override
+                public void onEmit(Image image) {
+                    progressBar.increment(1);
+                }
+            });
+        }
+    }
+
+    private void trackIndividualAudioAssets() {
+        for (AudioCache.AudioKey key : AudioCache.AudioKey.values()) {
+            game.audioCache.stateOf(key).onSuccess(new Slot<Sound>() {
+                @Override
+                public void onEmit(Sound sound) {
+                    progressBar.increment(1);
+                }
+            });
+        }
+    }
+
+    private void trackNarrativeAsset() {
+        game.narrativeCache.state.onComplete(new Slot<Try<Narrative>>() {
+            @Override
+            public void onEmit(Try<Narrative> narrativeTry) {
+                progressBar.increment(1);
+            }
+        });
     }
 
     @Override

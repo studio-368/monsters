@@ -32,7 +32,7 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.List;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 public class AudioCache {
 
@@ -54,12 +54,7 @@ public class AudioCache {
         List<RFuture<Sound>> futures = Lists.newArrayListWithCapacity(AudioKey.values().length);
         for (final AudioKey key : AudioKey.values()) {
             final Sound sound = assets.getSound(key.relativePath);
-            sound.state.onSuccess(new Slot<Sound>() {
-                @Override
-                public void onEmit(Sound sound) {
-                    map.put(key, sound);
-                }
-            });
+            map.put(key, sound);
             futures.add(sound.state);
         }
         RFuture.collect(futures).onComplete(new Slot<Try<Collection<Sound>>>() {
@@ -81,6 +76,10 @@ public class AudioCache {
         Sound sound = map.get(audioKey);
         checkNotNull(sound, "Sound not cached: " + audioKey.name());
         return sound;
+    }
+
+    public RFuture<Sound> stateOf(AudioKey key) {
+        return map.get(key).state;
     }
 
 }
