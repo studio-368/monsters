@@ -1,39 +1,53 @@
 /*
  * Copyright 2016 Traveler's Notebook: Monster Tales project authors
  *
- * This file is part of monsters
+ * This file is part of Traveler's Notebook: Monster Tales
  *
- * monsters is free software: you can redistribute it and/or modify
+ * Traveler's Notebook: Monster Tales is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * monsters is distributed in the hope that it will be useful,
+ * Traveler's Notebook: Monster Tales is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with monsters.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Traveler's Notebook: Monster Tales.  If not, see <http://www.gnu.org/licenses/>.
  */
 package edu.bsu.storygame.core.model;
 
+import com.google.common.collect.ImmutableList;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class StoryDeckTest {
-    private static final Reaction REACTION = Reaction.create("react").story(
+
+    private static final ImmutableList<Story> STORY_LIST = ImmutableList.of(
             Story.withText("Story 1").trigger(new NoSkillTrigger(
-                    new Conclusion.Builder().text("Conclusion 1").build())).build()
-    ).story(
+                    new Conclusion.Builder().text("Conclusion 1").build())).build(),
             Story.withText("Story 2").trigger(new NoSkillTrigger(
-                    new Conclusion.Builder().text("Conclusion 2").build())).build()
-    ).build();
+                    new Conclusion.Builder().text("Conclusion 2").build())).build());
+    private static final int ITERATIONS_FOR_STOCHASTIC_TEST = 50;
+
+    private StoryDeck deck;
 
     @Test
-    public void testStoriesChosenInOrder() {
-        assertEquals(REACTION.stories.chooseOne().text, "Story 1");
-        assertEquals(REACTION.stories.chooseOne().text, "Story 2");
+    public void testChooseOne_initialOrderIsRandom() {
+        initializeDeck();
+        Story firstStoryFirstTime = deck.chooseOne();
+        for (int i = 0; i < ITERATIONS_FOR_STOCHASTIC_TEST; i++) {
+            initializeDeck();
+            if (!deck.chooseOne().equals(firstStoryFirstTime)) {
+                return;
+            }
+        }
+        fail("The order of stories never changed.");
+    }
+
+    private void initializeDeck() {
+        deck = new StoryDeck(STORY_LIST);
     }
 }
