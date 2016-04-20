@@ -19,25 +19,23 @@
 
 package edu.bsu.storygame.editor;
 
-import edu.bsu.storygame.editor.model.Encounter;
-import edu.bsu.storygame.editor.model.Narrative;
-import edu.bsu.storygame.editor.model.Reaction;
-import edu.bsu.storygame.editor.model.Region;
+import edu.bsu.storygame.editor.model.*;
 import edu.bsu.storygame.editor.view.*;
-import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import react.Slot;
 import react.Value;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.Stack;
 
 public class EditorStageController implements Initializable {
 
@@ -47,18 +45,21 @@ public class EditorStageController implements Initializable {
     private MenuItem fileSaveMenuItem;
     @FXML
     public MenuItem textSaveMenuItem;
-    @FXML
-    private TreeView<String> narrativeTree;
+    private VBox editArea = new VBox();
+    private ScrollPane editScrollBar = new ScrollPane(editArea);
+
+    {
+        editScrollBar.setFitToWidth(true);
+    }
     private EmptyDocumentPane emptyDocumentPane = new EmptyDocumentPane(this);
-    private final Stack<Pane> editStack = new Stack<>();
 
     private final GsonParser parser = new GsonParser();
     private final Value<Narrative> narrative = Value.create(null);
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        rootNode.setCenter(editScrollBar);
         configureNarrativeListener();
-        configureItemSelection();
     }
 
     private void configureNarrativeListener() {
@@ -71,15 +72,11 @@ public class EditorStageController implements Initializable {
         narrative.updateForce(null);
     }
 
-    public void updateNarrativeView() {
-        if (narrative.get() == null) {
+    private void updateNarrativeView() {
+        if (narrative.get() == null)
             configureNoDocument();
-            return;
-        }
-        TreeItemWrapper<Narrative> root = TreeItemWrapper.wrap(narrative.get());
-        narrativeTree.setRoot(root);
-        narrativeTree.setShowRoot(false);
-        configureDocumentOpened();
+        else
+            configureDocumentOpened();
     }
 
     private void configureNoDocument() {
@@ -87,38 +84,28 @@ public class EditorStageController implements Initializable {
     }
 
     private void configureDocumentOpened() {
+        clear();
+        editArea.getChildren().clear();
+        add(new NarrativeEditPane(narrative.get(), this));
         textSaveMenuItem.setDisable(false);
     }
 
-    private void configureItemSelection() {
-        narrativeTree.getSelectionModel().getSelectedItems().addListener((ListChangeListener<TreeItem<String>>) c -> {
-            if (c.getList().size() == 0) return;
-            Object selectedObject = ((TreeItemWrapper<Object>) c.getList().get(0)).reference;
-            if (selectedObject instanceof Region) {
-                editRegion((Region) selectedObject);
-            } else if (selectedObject instanceof Encounter) {
-                editEncounter((Encounter) selectedObject);
-            } else if (selectedObject instanceof Reaction) {
-                editReaction((Reaction) selectedObject);
-            }
-        });
+    public void editRegion(Region region) {
+        add(new RegionEditPane(region, this));
     }
 
-    private void editRegion(Region region) {
-        setEditPane(new RegionEditPane(region, this));
+    public void editEncounter(Encounter encounter) {
+        add(new EncounterEditPane(encounter, this));
     }
 
-    private void editEncounter(Encounter encounter) {
-        setEditPane(new EncounterEditPane(encounter, this));
+    public void editReaction(Reaction reaction) {
+        add(new ReactionEditPane(reaction, this));
     }
 
-    private void editReaction(Reaction reaction) {
-        setEditPane(new ReactionEditPane(reaction, this));
+    public void editStory(Story story) {
+        add(new StoryEditPane(story, this));
     }
 
-    private void setEditPane(Pane pane) {
-        rootNode.setCenter(pane);
-    }
 
     @FXML
     public void openFromText() {
@@ -134,6 +121,32 @@ public class EditorStageController implements Initializable {
     }
 
     public void refresh() {
-        updateNarrativeView();
+        for (Node node : editArea.getChildren())
+            ((EditPane) node).refresh();
+    }
+
+    public void add(EditPane pane) {
+        editArea.getChildren().add(pane);
+    }
+
+    private void clear() {
+        editArea.getChildren().clear();
+    }
+
+    public void clearAfter(EditPane pane) {
+        int startIndex = editArea.getChildren().indexOf(pane) + 1;
+        int endIndex = editArea.getChildren().size();
+        if (startIndex != 0 && endIndex - startIndex > 0)
+            editArea.getChildren().remove(startIndex, endIndex);
+    }
+
+    public boolean confirm(String prompt) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText(null);
+        alert.setContentText(prompt);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.isPresent() && result.get() == ButtonType.OK;
     }
 }

@@ -4,7 +4,7 @@
   "reactions": [
     {
       "name": "Fight",
-      "story": {
+      "stories": [{
         "text": "Story 1",
         "triggers": [
           {
@@ -21,11 +21,11 @@
             }
           }
         ]
-      }
+      }]
     },
     {
       "name": "Hide",
-      "story": {
+      "stories": [{
         "text": "Story 2",
         "triggers": [
           {
@@ -42,7 +42,7 @@
             }
           }
         ]
-      }
+      }]
     }
   ]
 }

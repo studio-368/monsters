@@ -34,6 +34,7 @@ public final class GameContext {
     public final Value<Player> currentPlayer;
     public final Value<Encounter> encounter = Value.create(null);
     public final Value<Reaction> reaction = Value.create(null);
+    public final Value<Story> story = Value.create(null);
     public final Value<Conclusion> conclusion = Value.create(null);
 
     public final int pointsRequiredForVictory = 100;
@@ -57,6 +58,7 @@ public final class GameContext {
                 if (phase == Phase.END_OF_ROUND) {
                     encounter.update(null);
                     reaction.update(null);
+                    story.update(null);
                     conclusion.update(null);
                     currentPlayer.update(otherPlayer());
                     GameContext.this.phase.update(Phase.MOVEMENT);
