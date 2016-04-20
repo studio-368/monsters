@@ -34,6 +34,7 @@ import tripleplay.anim.Animation;
 import tripleplay.game.ScreenStack;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
+import tripleplay.ui.layout.TableLayout;
 
 import java.util.List;
 
@@ -144,10 +145,17 @@ public final class NotebookLayer extends GroupLayer {
             addAt(progressBar, 5, 10);
         }
 
+        private final class SkillColumn extends TableLayout.Column {
+            protected SkillColumn(Style.HAlign hAlign, boolean stretch, float weight, float minWidth) {
+                super(hAlign, stretch, weight, minWidth);
+            }
+        }
+
         private final class SkillGroup extends Group {
 
             private SkillGroup() {
-                super(AxisLayout.horizontal().offStretch());
+                super(new TableLayout(new SkillColumn(Style.HAlign.RIGHT, true, .1f, 10f),
+                        new SkillColumn(Style.HAlign.LEFT, true, .1f, 10f)));
                 updatePlayerSkills();
                 player.skills.connect(new RList.Listener<Skill>() {
                     @Override
@@ -164,16 +172,8 @@ public final class NotebookLayer extends GroupLayer {
 
             private void updatePlayerSkills() {
                 this.removeAll();
-                int skillCounter = 1;
-                this.add(new Label("Skills: ")
-                        .addStyles(Style.HALIGN.left));
                 for (Skill skill : player.skills) {
-                    if (!(player.skills.size() == skillCounter)) {
-                        this.add(new Label(skill.name), new Label(", "));
-                    } else {
-                        this.add(new Label(skill.name));
-                    }
-                    skillCounter++;
+                    this.add(new Label("* " + skill.name));
                 }
             }
         }
