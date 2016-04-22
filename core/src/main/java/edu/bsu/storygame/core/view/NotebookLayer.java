@@ -20,6 +20,7 @@
 package edu.bsu.storygame.core.view;
 
 import com.google.common.collect.Lists;
+import edu.bsu.storygame.core.assets.AudioRandomizer;
 import edu.bsu.storygame.core.assets.ImageCache;
 import edu.bsu.storygame.core.assets.Typeface;
 import edu.bsu.storygame.core.model.*;
@@ -64,6 +65,7 @@ public final class NotebookLayer extends GroupLayer {
     private final PageLayer[] pages;
     private float depthCounter = 0;
 
+    private final AudioRandomizer audioRandomizer = new AudioRandomizer();
     private final NotebookImageLoader notebookImageLoader;
 
     public final UnitSignal onDone = new UnitSignal();
@@ -491,6 +493,7 @@ public final class NotebookLayer extends GroupLayer {
     }
 
     private Animation movePageLeft(final PageLayer layer) {
+        context.game.audioCache.playSound(audioRandomizer.getKey(AudioRandomizer.Event.PAGE_FLIP));
         AnimGroup group = new AnimGroup();
         group.action(new SetDepthToTop(layer))
                 .then()

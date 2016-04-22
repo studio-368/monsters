@@ -43,7 +43,7 @@ import tripleplay.util.Colors;
 import java.util.Collection;
 import java.util.List;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class LoadingScreen extends ScreenStack.UIScreen {
 
@@ -107,7 +107,7 @@ public class LoadingScreen extends ScreenStack.UIScreen {
 
     private void configureProgressBar() {
         final int numberOfAssets = ImageCache.Key.values().length
-                + AudioCache.AudioKey.values().length
+                + AudioCache.Key.values().length
                 + 1; // narrative cache
         final float width = this.size().width();
         final float height = this.size().height();
@@ -131,7 +131,7 @@ public class LoadingScreen extends ScreenStack.UIScreen {
     }
 
     private void trackIndividualAudioAssets() {
-        for (AudioCache.AudioKey key : AudioCache.AudioKey.values()) {
+        for (AudioCache.Key key : AudioCache.Key.values()) {
             game.audioCache.stateOf(key).onSuccess(new Slot<Sound>() {
                 @Override
                 public void onEmit(Sound sound) {

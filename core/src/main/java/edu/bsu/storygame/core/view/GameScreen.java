@@ -19,6 +19,7 @@
 
 package edu.bsu.storygame.core.view;
 
+import edu.bsu.storygame.core.assets.AudioCache;
 import edu.bsu.storygame.core.assets.ImageCache;
 import edu.bsu.storygame.core.intro.SlideData;
 import edu.bsu.storygame.core.intro.SlideShow;
@@ -156,6 +157,7 @@ public final class GameScreen extends BoundedUIScreen {
     }
 
     private void openNotebook(final NotebookLayer notebook) {
+        context.game.audioCache.playSound(AudioCache.Key.OPEN_BOOK);
         iface.anim.tweenTranslation(notebook)
                 .to(context.game.bounds.width() / 2, context.game.bounds.height() * 0.10f)
                 .in(BOOK_TRANSLATION_DURATION)
@@ -186,7 +188,8 @@ public final class GameScreen extends BoundedUIScreen {
                             public void onEmit(Try<Void> voidTry) {
                                 final NotebookLayer otherNotebook = notebook == player1Notebook ? player2Notebook : player1Notebook;
                                 animateRearNotebookToFront(otherNotebook, notebook);
-                                iface.anim.tweenTranslation(notebook)
+                                iface.anim.gosiajgaoighjsag
+                                        .tweenTranslation(notebook)
                                         .to(target)
                                         .in(BOOK_TRANSLATION_DURATION)
                                         .easeIn()
