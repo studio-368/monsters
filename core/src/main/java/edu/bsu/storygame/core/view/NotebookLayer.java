@@ -63,12 +63,13 @@ public final class NotebookLayer extends GroupLayer {
     private final PageLayer[] pages;
     private float depthCounter = 0;
 
-    private final NotebookImageLoader notebookImageLoader = new NotebookImageLoader();
+    private final NotebookImageLoader notebookImageLoader;
 
     public final UnitSignal onDone = new UnitSignal();
 
     public NotebookLayer(final Player player, IDimension closedSize, final GameContext context) {
         super(closedSize.width() * 2, closedSize.height());
+        this.notebookImageLoader = new NotebookImageLoader(context.game.imageCache);
         this.iface = ((ScreenStack.UIScreen) context.game.screenStack.top()).iface;
 
         this.closedSize = new Dimension(closedSize);
@@ -586,9 +587,14 @@ public final class NotebookLayer extends GroupLayer {
         }
     }
 
-    private final class NotebookImageLoader {
+    private static final class NotebookImageLoader {
 
-        private int index = 0;
+        private static int index = 0;
+        private final ImageCache cache;
+
+        public NotebookImageLoader(ImageCache cache) {
+            this.cache = checkNotNull(cache);
+        }
 
         private final ImageCache.Key[] keys = {
                 ImageCache.Key.PAGE_1,
@@ -606,7 +612,7 @@ public final class NotebookLayer extends GroupLayer {
             if (index == keys.length) {
                 index = 0;
             }
-            return context.game.imageCache.image(keys[index++]);
+            return cache.image(keys[index++]);
         }
     }
 
