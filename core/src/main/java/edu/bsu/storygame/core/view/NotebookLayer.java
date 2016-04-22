@@ -34,6 +34,7 @@ import tripleplay.anim.Animation;
 import tripleplay.game.ScreenStack;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
+import tripleplay.ui.layout.TableLayout;
 
 import java.util.List;
 
@@ -58,7 +59,6 @@ public final class NotebookLayer extends GroupLayer {
     private final Interface iface;
     private final PageLayer[] pages;
     private float depthCounter = 0;
-
 
     public final UnitSignal onDone = new UnitSignal();
 
@@ -133,32 +133,29 @@ public final class NotebookLayer extends GroupLayer {
 
     private final class CoverPage extends PageLayer {
 
+        ProgressBar progressBar;
+
         private CoverPage() {
             super(AxisLayout.vertical().offStretch());
+            configureProgressBar();
             root.add(new Label(player.name + "'s Story")
-                            .addStyles(Style.HALIGN.left),
-                    new ScoreLabel()
-                            .addStyles(Style.HALIGN.left),
-                    new SkillGroup().addStyles(Style.HALIGN.left),
+                            .addStyles(Style.HALIGN.center),
+                    new SkillGroup().addStyles(Style.HALIGN.center),
                     new Shim(0, 0).setConstraint(AxisLayout.stretched()));
+            addAt(progressBar, 5, 10);
         }
 
-        private final class ScoreLabel extends Label {
-            private ScoreLabel() {
-                super("Story Points: 0");
-                player.storyPoints.connect(new Slot<Integer>() {
-                    @Override
-                    public void onEmit(Integer integer) {
-                        text.update("Score: " + integer);
-                    }
-                });
+        private final class SkillColumn extends TableLayout.Column {
+            protected SkillColumn(Style.HAlign hAlign, boolean stretch, float weight, float minWidth) {
+                super(hAlign, stretch, weight, minWidth);
             }
         }
 
         private final class SkillGroup extends Group {
 
             private SkillGroup() {
-                super(AxisLayout.horizontal().offStretch());
+                super(new TableLayout(new SkillColumn(Style.HAlign.RIGHT, true, .1f, 10f),
+                        new SkillColumn(Style.HAlign.LEFT, true, .1f, 10f)));
                 updatePlayerSkills();
                 player.skills.connect(new RList.Listener<Skill>() {
                     @Override
@@ -175,18 +172,23 @@ public final class NotebookLayer extends GroupLayer {
 
             private void updatePlayerSkills() {
                 this.removeAll();
-                int skillCounter = 1;
-                this.add(new Label("Skills: ")
-                        .addStyles(Style.HALIGN.left));
                 for (Skill skill : player.skills) {
-                    if (!(player.skills.size() == skillCounter)) {
-                        this.add(new Label(skill.name), new Label(", "));
-                    } else {
-                        this.add(new Label(skill.name));
-                    }
-                    skillCounter++;
+                    this.add(new Label("* " + skill.name));
                 }
             }
+        }
+
+        private void configureProgressBar() {
+            final int max = context.pointsRequiredForVictory;
+            final float width = this.width();
+            final float height = this.height();
+            progressBar = new ProgressBar(max, width * 0.1f, height * 0.18f, context.game, ProgressBar.FillType.VERTICAL);
+            player.storyPoints.connect(new Slot<Integer>() {
+                @Override
+                public void onEmit(Integer integer) {
+                    progressBar.increment(context.conclusion.get().points);
+                }
+            });
         }
     }
 
@@ -266,6 +268,7 @@ public final class NotebookLayer extends GroupLayer {
                         @Override
                         public void onEmit(Button button) {
                             context.reaction.update(reaction);
+                            context.story.update(reaction.stories.chooseOne());
                             context.phase.update(Phase.HANDOFF);
                         }
                     });
@@ -287,9 +290,11 @@ public final class NotebookLayer extends GroupLayer {
                 @Override
                 public void onChange(Reaction reaction, Reaction t1) {
                     if(reaction == null){
+                        context.story.update(null);
                         root.removeAll();
                     } else if (context.currentPlayer.get() == player){
-                        root.add(new Label(reaction.story.text).addStyles(Style.TEXT_WRAP.is(true)));
+                        context.story.update(reaction.stories.chooseOne());
+                        root.add(new Label(context.story.get().text).addStyles(Style.TEXT_WRAP.is(true)));
                     }
                 }
             });
@@ -308,14 +313,14 @@ public final class NotebookLayer extends GroupLayer {
                         buttons.clear();
                     } else if (context.currentPlayer.get() == player) {
                         root.add(new Label("You used:"));
-                        for (SkillTrigger skillTrigger : reaction.story.triggers) {
+                        for (SkillTrigger skillTrigger : context.story.get().triggers) {
                             TriggerButton button = new TriggerButton(skillTrigger.skill.name, skillTrigger.conclusion);
                             button.setEnabled(context.currentPlayer.get().skills.contains(skillTrigger.skill));
                             root.add(button);
                             buttons.add(button);
                         }
                         TriggerButton noSkill = new TriggerButton("No Skill",
-                                context.reaction.get().story.noSkill.conclusion);
+                                context.story.get().noSkill.conclusion);
                         root.add(noSkill);
                         buttons.add(noSkill);
                     }

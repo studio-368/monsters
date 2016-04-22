@@ -23,100 +23,53 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
-<fx:root xmlns:fx="http://javafx.com/fxml/1" hgap="5.0" type="javafx.scene.layout.GridPane" vgap="5.0"
-         xmlns="http://javafx.com/javafx/8">
+<fx:root hgap="5.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
+         minWidth="-Infinity" type="javafx.scene.layout.GridPane" vgap="5.0" xmlns="http://javafx.com/javafx/8"
+         xmlns:fx="http://javafx.com/fxml/1">
     <columnConstraints>
-        <ColumnConstraints halignment="LEFT" hgrow="NEVER" minWidth="10.0"/>
-        <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0"/>
+        <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="10.0"/>
+        <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0"/>
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="SOMETIMES"/>
-        <RowConstraints minHeight="10.0" valignment="TOP" vgrow="SOMETIMES"/>
-        <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES"/>
-        <RowConstraints minHeight="35.0" valignment="TOP" vgrow="ALWAYS"/>
-        <RowConstraints minHeight="10.0" valignment="TOP" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" vgrow="NEVER"/>
         <RowConstraints minHeight="10.0" valignment="TOP" vgrow="NEVER"/>
-        <RowConstraints minHeight="10.0" valignment="TOP" vgrow="SOMETIMES"/>
-        <RowConstraints minHeight="10.0" valignment="TOP" vgrow="ALWAYS"/>
-        <RowConstraints maxHeight="60.0" minHeight="10.0" valignment="TOP" vgrow="NEVER"/>
+        <RowConstraints minHeight="10.0" valignment="TOP" vgrow="NEVER"/>
     </rowConstraints>
     <children>
-        <Label fx:id="reactionName" text="Reaction Name" GridPane.columnSpan="2147483647">
+        <Label fx:id="reactionNameLabel" text="Reaction name" GridPane.columnSpan="2147483647">
             <font>
                 <Font name="System Bold" size="18.0"/>
             </font>
-        </Label>
-        <Label text="Name:" textOverrun="CLIP" GridPane.rowIndex="1">
             <GridPane.margin>
-                <Insets top="5.0"/>
+                <Insets/>
             </GridPane.margin>
         </Label>
-        <TextField fx:id="reactionNameTextField" onAction="#onReactionNameChange" GridPane.columnIndex="1"
+        <Label text="Name:" GridPane.rowIndex="1">
+            <GridPane.margin>
+                <Insets/>
+            </GridPane.margin>
+        </Label>
+        <TextField fx:id="reactionNameTextField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1"
                    GridPane.rowIndex="1">
             <GridPane.margin>
-                <Insets top="5.0"/>
+                <Insets/>
             </GridPane.margin>
         </TextField>
-        <Label text="Usable skills:" textOverrun="CLIP" wrapText="true" GridPane.rowIndex="3"/>
-        <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.vgrow="ALWAYS">
+        <Label text="Stories:" GridPane.rowIndex="2"/>
+        <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
             <children>
-                <ListView fx:id="skillsList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                          prefHeight="150.0" prefWidth="200.0"/>
-                <HBox spacing="5.0">
+                <Label fx:id="storyCountLabel" text="x stories total"/>
+                <ListView fx:id="storyListView" maxHeight="-Infinity" maxWidth="1.7976931348623157E308"
+                          prefHeight="100.0"/>
+                <HBox alignment="TOP_CENTER" spacing="5.0">
                     <children>
-                        <Button fx:id="addSkillButton" mnemonicParsing="false" onAction="#onAddSkill" text="Add"/>
-                        <Button fx:id="renameSkillButton" disable="true" mnemonicParsing="false"
-                                onAction="#onRenameSkill" text="Rename"/>
-                        <Button fx:id="removeSkillButton" disable="true" mnemonicParsing="false"
-                                onAction="#onRemoveSkill" text="Remove"/>
+                        <Button mnemonicParsing="false" onAction="#onNewStory" text="New stories"/>
+                        <Button fx:id="deleteStoryButton" disable="true" mnemonicParsing="false"
+                                onAction="#onDeleteStory" text="Delete stories..."/>
                     </children>
                 </HBox>
             </children>
         </VBox>
-        <Label text="Select a skill to edit below" wrapText="true" GridPane.columnIndex="1"
-               GridPane.columnSpan="2147483647" GridPane.rowIndex="4"/>
-        <Separator GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="5"
-                   GridPane.valignment="CENTER"/>
-        <Label fx:id="conclusionDescription" text="Action with Skill against Monster" GridPane.columnSpan="2147483647"
-               GridPane.rowIndex="6">
-            <font>
-                <Font name="System Bold" size="14.0"/>
-            </font>
-        </Label>
-        <Label text="Narrative:" GridPane.rowIndex="7"/>
-        <TextArea fx:id="conclusionNarrativeTextArea" disable="true" prefHeight="75.0" prefWidth="200.0"
-                  GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="7" wrapText="true"/>
-        <Label text="Results:" GridPane.rowIndex="8"/>
-        <VBox fx:id="resultsVBox" disable="true" spacing="3.0" GridPane.columnIndex="1" GridPane.columnSpan="2147483647"
-              GridPane.rowIndex="8">
-            <children>
-                <CheckBox fx:id="pointsCheckBox" mnemonicParsing="false" onAction="#onStoryPointsChange"
-                          GridPane.columnIndex="1" GridPane.rowIndex="7">
-                    <graphic>
-                        <HBox>
-                            <children>
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Modify story points: "/>
-                                <TextField fx:id="pointsChangeTextField" onAction="#onStoryPointsChange"/>
-                            </children>
-                        </HBox>
-                    </graphic>
-                </CheckBox>
-                <CheckBox fx:id="newSkillCheckBox" mnemonicParsing="false">
-                    <graphic>
-                        <HBox>
-                            <children>
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Gain new skill: "/>
-                                <TextField fx:id="newSkillTextField"/>
-                            </children>
-                        </HBox>
-                    </graphic>
-                </CheckBox>
-            </children>
-        </VBox>
-        <Label text="Story:" GridPane.rowIndex="2"/>
-        <TextField fx:id="reactionStoryTextField" onAction="#onStoryChange" GridPane.columnIndex="1"
-                   GridPane.rowIndex="2"/>
     </children>
     <padding>
         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
