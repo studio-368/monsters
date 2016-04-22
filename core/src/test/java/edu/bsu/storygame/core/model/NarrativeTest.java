@@ -32,19 +32,19 @@ public class NarrativeTest {
     @Test
     public void testCreate() {
         Narrative narrative =
-                new Narrative.Builder().put(Region.AFRICA,
+                new Narrative.Builder().put(Region.Africa,
                         EncounterDeck.fromArray(new Encounter[]{
                                 EncounterMatchingTestJson.create(),
                                 EncounterMatchingTestJson.create()
                         }))
                         .build();
-        assertEquals(2, narrative.forRegion(Region.AFRICA).size());
+        assertEquals(2, narrative.forRegion(Region.Africa).size());
     }
 
     @Test
     public void testSkills() {
         Narrative narrative =
-                new Narrative.Builder().put(Region.AFRICA,
+                new Narrative.Builder().put(Region.Africa,
                         EncounterDeck.fromArray(new Encounter[]{
                                 EncounterMatchingTestJson.create(),
                                 EncounterMatchingTestJson.create()

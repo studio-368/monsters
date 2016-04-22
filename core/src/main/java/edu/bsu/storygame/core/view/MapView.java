@@ -50,24 +50,24 @@ public final class MapView extends ImageLayer {
      * The mapping of rectangular regions in the unscaled source image to their regions.
      */
     private static final Map<Rectangle, Region> NATURAL_COORDINATE_MAP = ImmutableMap.<Rectangle, Region>builder()
-            .put(new Rectangle(496, 226, 186, 290), Region.AFRICA)
-            .put(new Rectangle(682, 69, 299, 232), Region.ASIA)
-            .put(new Rectangle(906, 370, 220, 194), Region.OCEANIA)
-            .put(new Rectangle(513, 91, 123, 101), Region.EUROPE)
-            .put(new Rectangle(117, 78, 266, 214), Region.NORTH_AMERICA)
-            .put(new Rectangle(117, 300, 300, 214), Region.SOUTH_AMERICA)
+            .put(new Rectangle(496, 226, 186, 290), Region.Africa)
+            .put(new Rectangle(682, 69, 299, 232), Region.Asia)
+            .put(new Rectangle(906, 370, 220, 194), Region.Oceania)
+            .put(new Rectangle(513, 91, 123, 101), Region.Europe)
+            .put(new Rectangle(117, 78, 266, 214), Region.North_America)
+            .put(new Rectangle(117, 300, 300, 214), Region.South_America)
             .build();
 
     /**
      * Pin locations in "natural" unscaled coordinates
      */
     private static final Map<Region, IPoint> NATURAL_PIN_LOCATIONS = ImmutableMap.<Region, IPoint>builder()
-            .put(Region.AFRICA, new Point(611, 307))
-            .put(Region.ASIA, new Point(879, 158))
-            .put(Region.OCEANIA, new Point(973, 425))
-            .put(Region.EUROPE, new Point(568, 111))
-            .put(Region.NORTH_AMERICA, new Point(196, 137))
-            .put(Region.SOUTH_AMERICA, new Point(327, 369))
+            .put(Region.Africa, new Point(611, 307))
+            .put(Region.Asia, new Point(879, 158))
+            .put(Region.Oceania, new Point(973, 425))
+            .put(Region.Europe, new Point(568, 111))
+            .put(Region.North_America, new Point(196, 137))
+            .put(Region.South_America, new Point(327, 369))
             .build();
 
     public final SignalView<Region> pick = Signal.create();

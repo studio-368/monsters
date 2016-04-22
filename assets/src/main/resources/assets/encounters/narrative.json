@@ -7,7 +7,7 @@
         "image": "adze",
         "reactions": [
           {
-            "name": "TRAP",
+            "name": "Trap",
             "stories": [
               {
                 "text": "The sun is setting as you arrive at a village. An elderly woman offers you a room in her hut to sleep in. You wake up to the soft glow of a lightning bug flying around you.",
@@ -30,7 +30,7 @@
             ]
           },
           {
-            "name": "KILL",
+            "name": "Kill",
             "stories": [
               {
                 "text": "A sixth sense wakes you from your dreams. There’s a single firefly dancing around you. The bug’s light may be subtle, but it’s keeping you awake.",
@@ -46,7 +46,7 @@
             ]
           },
           {
-            "name": "CLEANSE",
+            "name": "Cleanse",
             "stories": [
               {
                 "text": "A small village is in chaos. You ask what is wrong and discover that the chief’s wife was bit by an Adze and is now possessed. They ask if you can help.",
@@ -76,7 +76,7 @@
         "image": "",
         "reactions": [
           {
-            "name": "EXPLORE",
+            "name": "Explore",
             "stories": [
               {
                 "text": "You want to explore the deeper parts of a forest, and you hear of hunters with great, magical skills that can lead you through the woods.",
@@ -99,7 +99,7 @@
             ]
           },
           {
-            "name": "HUNT",
+            "name": "Hunt",
             "stories": [
               {
                 "text": "You want to go hunting in the forest, but you hear warnings of mischievous creatures called eloko. You decide to go on anyway.",
@@ -123,7 +123,7 @@
             ]
           },
           {
-            "name": "MAKE OFFERING",
+            "name": "Make Offering",
             "stories": [
               {
                 "text": "You hear that the eloko are the spirits of the villagers’ ancestors. You decide to calm them by making an offering in the hopes that they will leave the villagers alone. ",
@@ -154,7 +154,7 @@
         "image": "impundulu",
         "reactions": [
           {
-            "name": "HUNT",
+            "name": "Hunt",
             "stories": [
               {
                 "text": "The fat of the Impundulu is said to have healing powers. The village witch doctor asks you to trap the bird and get some fat from it. ",
@@ -177,7 +177,7 @@
             ]
           },
           {
-            "name": "FIND EGG",
+            "name": "Find Egg",
             "stories": [
               {
                 "text": "You have heard tales that the Impundulu lays a large egg underground, and those who find it will have good luck. You decide to search for it.",
@@ -201,7 +201,7 @@
             ]
           },
           {
-            "name": "ATTACK",
+            "name": "Attack",
             "stories": [
               {
                 "text": "You are walking through the desert when an Impundulu swoops down, bearing its talons. It looks like it is going to attack you.",
@@ -235,7 +235,7 @@
         "image": "chinese_dragon",
         "reactions": [
           {
-            "name": "FRIGHTEN",
+            "name": "Frighten",
             "stories": [
               {
                 "text": "You walk along a section of the Great Wall of China. Something massive flies above you, creating a thunderstorm that is scaring everyone in the area.",
@@ -259,7 +259,7 @@
             ]
           },
           {
-            "name": "BRIBE",
+            "name": "Bribe",
             "stories": [
               {
                 "text": "This dragon is causing a huge storm at the Great Wall of China. Dragons are known for being greedy, and you might just have something it wants.",
@@ -282,7 +282,7 @@
             ]
           },
           {
-            "name": "OBSERVE",
+            "name": "Observe",
             "stories": [
               {
                 "text": "An old Chinese legend says that there is a magical waterfall called The Dragon Gate. If a carp manages to leap over it, they become a dragon. You want to know if it’s true.",
@@ -312,7 +312,7 @@
         "image": "kappa",
         "reactions": [
           {
-            "name": "GREET",
+            "name": "Greet",
             "stories": [
               {
                 "text": "As you’re sitting on the edge of a river, you see a large turtle swimming towards you. When it gets close it launches from the water to reveal it’s not a turtle, but a kappa!",
@@ -336,7 +336,7 @@
             ]
           },
           {
-            "name": "DEFEND",
+            "name": "Defend",
             "stories": [
               {
                 "text": "The heat of the day is getting to you and you decide to splash some water from the nearby river on your face. As you kneel, you’re ambushed by something in the currents.",
@@ -360,7 +360,7 @@
             ]
           },
           {
-            "name": "REQUEST",
+            "name": "Request",
             "stories": [
               {
                 "text": "Nearby villagers have selected you to seek out the water spirit. Many villagers are sick, and the spirit is said to know ancient healing techniques.",
@@ -390,7 +390,7 @@
         "image": "",
         "reactions": [
           {
-            "name": "DISCOVER",
+            "name": "Discover",
             "stories": [
               {
                 "text": "You’ve heard that at the bottom of the rivers and oceans, there are places filled with immortal snake people that live in giant, jeweled palaces.",
@@ -413,7 +413,7 @@
             ]
           },
           {
-            "name": "REQUEST",
+            "name": "Request",
             "stories": [
               {
                 "text": "You seek shelter from the drenching rains of a monsoon. You see a man under a canopy. As you get closer, you realize that the canopy is a giant snake.",
@@ -437,7 +437,7 @@
             ]
           },
           {
-            "name": "REST",
+            "name": "Rest",
             "stories": [
               {
                 "text": "You come to a temple, seeking water and shelter from the sun. The monks let you rest but have no water to spare, due to a drought.",
@@ -464,7 +464,7 @@
         "image": "bunyip",
         "reactions": [
           {
-            "name": "HIDE",
+            "name": "Hide",
             "stories": [
               {
                 "text": "As you trudge through a swamp, you hear a howl that sends shivers down your spine. Wasting no time, you dive for cover.",
@@ -488,7 +488,7 @@
             ]
           },
           {
-            "name": "ATTACK",
+            "name": "Attack",
             "stories": [
               {
                 "text": "You’re trekking through a swamp. You start to get a sense that something, other than the bugs biting your arm, is following you. You turn to see a large shadow trailing you.",
@@ -511,7 +511,7 @@
             ]
           },
           {
-            "name": "OBSERVE",
+            "name": "Observe",
             "stories": [
               {
                 "text": "The locals warn you to avoid the swamps. When you ask why, they tell you of a giant dog-like creature that attacks anyone who trespasses.",
@@ -541,7 +541,7 @@
         "image": "taniwha",
         "reactions": [
           {
-            "name": "OFFER GIFT",
+            "name": "Offer Gift",
             "stories": [
               {
                 "text": "You paddle your boat through a dark, gloomy river. Something moves underneath you and grabs your boat. The villagers warned you about this river guardian.",
@@ -564,7 +564,7 @@
             ]
           },
           {
-            "name": "OBSERVE",
+            "name": "Observe",
             "stories": [
               {
                 "text": "As you paddle your small boat through a river, you notice a Taniwha digging on the shore.",
@@ -593,7 +593,7 @@
         "image": "yomie",
         "reactions": [
           {
-            "name": "OBSERVE",
+            "name": "Observe",
             "stories": [
               {
                 "text": "You see the yowie up ahead, skulking around in the grass. It hasn’t noticed you yet, so you decide to sit back and watch what it does. ",
@@ -617,7 +617,7 @@
             ]
           },
           {
-            "name": "COMMUNICATE",
+            "name": "Communicate",
             "stories": [
               {
                 "text": "The yowie turns toward you and makes a series of grunts and whoops. It sounds like it is trying to communicate with you, so you try your best to answer.",
@@ -640,7 +640,7 @@
             ]
           },
           {
-            "name": "RACE",
+            "name": "Race",
             "stories": [
               {
                 "text": "The yowie starts to climb a tree up ahead of you. You work your way over to a nearby tree and try to outpace it.",
@@ -674,7 +674,7 @@
         "image": "wraith",
         "reactions": [
           {
-            "name": "PAY RESPECTS",
+            "name": "Pay Respects",
             "stories": [
               {
                 "text": "The wraith stares at you from within a lonely graveyard. It seems like it wants something from you, but you aren’t sure. Perhaps there’s something you can do for it.",
@@ -697,7 +697,7 @@
             ]
           },
           {
-            "name": "WATCH",
+            "name": "Watch",
             "stories": [
               {
                 "text": "The wraith appears in the center of the old graveyard, but it hasn’t noticed you yet. You decide to watch it, and step closer to get a better look. ",
@@ -721,7 +721,7 @@
             ]
           },
           {
-            "name": "COMMUNICATE",
+            "name": "Communicate",
             "stories": [
               {
                 "text": "The wraith looks angry as it thrashes around the graves. You decide to try and communicate with the ghostly figure in order to help it move on.",
@@ -751,7 +751,7 @@
         "image": "nessy",
         "reactions": [
           {
-            "name": "TALK",
+            "name": "Talk",
             "stories": [
               {
                 "text": "You arrive at the shore of a vast lake. The water ripples softly in the moonlight. The ripples move closer and a creature emerges. Everyone around you pulls out their cameras.",
@@ -774,7 +774,7 @@
             ]
           },
           {
-            "name": "RUN",
+            "name": "Run",
             "stories": [
               {
                 "text": "You’ve heard that hunters have been trying to catch the Loch Ness Monster. The locals don’t know what to do. You think you can help her escape.",
@@ -797,7 +797,7 @@
             ]
           },
           {
-            "name": "FRIGHTEN",
+            "name": "Frighten",
             "stories": [
               {
                 "text": "As you rest in a local restaurant, you hear that some townspeople are thinking about attacking the Loch Ness Monster. You decide you want to help her escape.",
@@ -826,7 +826,7 @@
         "image": "kraken",
         "reactions": [
           {
-            "name": "RUN",
+            "name": "Run",
             "stories": [
               {
                 "text": "You stand on a beach, watching it flail. This thing is so big, you can hardly see its face behind its massive tentacles. There’s no way it can catch you.",
@@ -849,7 +849,7 @@
             ]
           },
           {
-            "name": "FEED",
+            "name": "Feed",
             "stories": [
               {
                 "text": "You stand on a fishing boat in the middle of the ocean. The monster is determined to flip your boat over. You can’t tell if it’s angry, or just hungry.",
@@ -879,7 +879,7 @@
         "image": "cockatrice",
         "reactions": [
           {
-            "name": "OBSERVE",
+            "name": "Observe",
             "stories": [
               {
                 "text": "The creature is ahead of you, stomping around in the grass. You decide to hang back and observe it from a distance. ",
@@ -903,7 +903,7 @@
             ]
           },
           {
-            "name": "TRICK",
+            "name": "Trick",
             "stories": [
               {
                 "text": "You hear the cockatrice shuffle around and stomp toward you. You only have a moment to react before it will reach you.",
@@ -927,7 +927,7 @@
             ]
           },
           {
-            "name": "ATTACK",
+            "name": "Attack",
             "stories": [
               {
                 "text": "The cockatrice lets out a mighty roar and runs toward you. You snap your eyes shut to avoid its gaze, then act. ",
@@ -961,7 +961,7 @@
         "image": "deer_women",
         "reactions": [
           {
-            "name": "INVITE",
+            "name": "Invite",
             "stories": [
               {
                 "text": "You are dancing around a fire to tribal music. You see a woman hiding on the forest’s edge and invite her to join.",
@@ -985,7 +985,7 @@
             ]
           },
           {
-            "name": "FOLLOW",
+            "name": "Follow",
             "stories": [
               {
                 "text": "You notice a woman watching you from the edge of a forest. Curious, you follow the woman into the forest. You catch up to her in a small clearing. She turns into a large deer and attacks. ",
@@ -1002,7 +1002,7 @@
             ]
           },
           {
-            "name": "MAKE OFFERING",
+            "name": "Make Offering",
             "stories": [
               {
                 "text": "You spot a spirit in the trees. A local tribe is about to die out since its women can’t get pregnant. Perhaps the spirit can aid them. ",
@@ -1031,7 +1031,7 @@
         "image": "wendigo",
         "reactions": [
           {
-            "name": "HUNT",
+            "name": "Hunt",
             "stories": [
               {
                 "text": "The village has had a shortage of food lately, and people are starving. They are concerned that someone might resort to cannibalism and become a wendigo.",
@@ -1054,7 +1054,7 @@
             ]
           },
           {
-            "name": "ATTACK",
+            "name": "Attack",
             "stories": [
               {
                 "text": "While travelling, you find a wendigo wandering about, looking for a meal. The creature spies you and gets ready to attack. If you don’t act, you will be its next meal.",
@@ -1084,7 +1084,7 @@
         "image": "",
         "reactions": [
           {
-            "name": "HUNT",
+            "name": "Hunt",
             "stories": [
               {
                 "text": "You decide to hunt for caribou at a local forest. However, as you hunt, you feel like you are being watched. Out of the corner of your eye, you see an ijiraq.",
@@ -1107,7 +1107,7 @@
             ]
           },
           {
-            "name": "DEFEND",
+            "name": "Defend",
             "stories": [
               {
                 "text": "On the way to your camp, you see a child wandering northward. He looks like he is being led by an unseen force. You run to him and offer to help, and an angry ijiraq attacks you. ",
@@ -1131,7 +1131,7 @@
             ]
           },
           {
-            "name": "EXPLORE",
+            "name": "Explore",
             "stories": [
               {
                 "text": "You are exploring the icy tundra, far north of civilization, and you soon become lost in the endless white. You feel a nearby presence, and decide to ask the ijiraq for help. ",
@@ -1166,7 +1166,7 @@
         "image": "chupacabra",
         "reactions": [
           {
-            "name": "DISCUSS",
+            "name": "Discuss",
             "stories": [
               {
                 "text": "The sun sets on the small goat farm you promised to guard. Everything seems ok, until one of the goats suddenly drops dead. A creature the size of a small bear grins at you.",
@@ -1189,7 +1189,7 @@
             ]
           },
           {
-            "name": "CATCH",
+            "name": "Catch",
             "stories": [
               {
                 "text": "A village asks you to help them catch a creature that has been terrorizing their goat farms. You wait until the creature appears at sunset.",
@@ -1213,7 +1213,7 @@
             ]
           },
           {
-            "name": "FIGHT",
+            "name": "Fight",
             "stories": [
               {
                 "text": "You watch the chupacabra kill goats and suck their blood. You can’t let it keep killing all of the village’s livestock.",
@@ -1243,7 +1243,7 @@
         "image": "",
         "reactions": [
           {
-            "name": "TRAP",
+            "name": "Trap",
             "stories": [
               {
                 "text": "You come across a pasture of deformed cattle. You ask the shepherd what what is wrong with them. He thinks there is a creature that keeps getting in the pastures at night.",
@@ -1266,7 +1266,7 @@
             ]
           },
           {
-            "name": "AID",
+            "name": "Aid",
             "stories": [
               {
                 "text": "In your travels, you meet a pregnant woman who is sitting on the side of the road crying. She explains that she got too close to a creature that cursed her child.",
@@ -1296,7 +1296,7 @@
         "image": "",
         "reactions": [
           {
-            "name": "AID",
+            "name": "Aid",
             "stories": [
               {
                 "text": "You wander through the remains of a burnt forest. You find a woman crying by a dead tree.The Madremonte tells you that this forest was destroyed by a wildfire.",
@@ -1320,7 +1320,7 @@
             ]
           },
           {
-            "name": "FIGHT",
+            "name": "Fight",
             "stories": [
               {
                 "text": "As you hack your way through the dense forest, you are suddenly attacked by a madremonte.",
@@ -1343,7 +1343,7 @@
             ]
           },
           {
-            "name": "PLANT",
+            "name": "Plant",
             "stories": [
               {
                 "text": "While you camp in the forest, a madremonte appears and sits by your fire. She informs you that the forest is shrinking, and that soon the animals will starve.",

@@ -52,13 +52,13 @@ public class KeystrokeBasedPlayerGenerator implements SignalView.Listener<Keyboa
                 GameContext context = new GameContext(game,
                         new Player.Builder().name("Bonnie")
                                 .color(Palette.PLAYER_ONE)
-                                .location(Region.AFRICA)
+                                .location(Region.Africa)
                                 .skills(makeSkillList())
                                 .build(),
                         new Player.Builder()
                                 .name("Clyde")
                                 .color(Palette.PLAYER_TWO)
-                                .location(Region.NORTH_AMERICA)
+                                .location(Region.North_America)
                                 .skills(makeSkillList())
                                 .build());
                 GameScreen gameScreen = new GameScreen(context);
