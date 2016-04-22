@@ -596,7 +596,6 @@ public final class NotebookLayer extends GroupLayer {
                 ImageCache.Key.PAGE_3,
                 ImageCache.Key.PAGE_4,
                 ImageCache.Key.PAGE_5,
-                ImageCache.Key.PAGE_6,
                 ImageCache.Key.PAGE_7,
                 ImageCache.Key.PAGE_8,
                 ImageCache.Key.PAGE_9,

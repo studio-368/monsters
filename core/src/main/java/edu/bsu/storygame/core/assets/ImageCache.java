@@ -70,7 +70,6 @@ public class ImageCache {
         PAGE_3("pages/page_3.png"),
         PAGE_4("pages/page_4.png"),
         PAGE_5("pages/page_5.png"),
-        PAGE_6("pages/page_6.png"),
         PAGE_7("pages/page_7.png"),
         PAGE_8("pages/page_8.png"),
         PAGE_9("pages/page_9.png"),
