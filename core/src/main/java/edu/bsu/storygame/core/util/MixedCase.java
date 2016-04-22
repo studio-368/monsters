@@ -37,6 +37,6 @@ public final class MixedCase {
     }
 
     private static boolean isCapitalizationTrigger(char character) {
-        return Character.isWhitespace(character) || character == '_';
+        return character == ' ' || character == '_';
     }
 }
