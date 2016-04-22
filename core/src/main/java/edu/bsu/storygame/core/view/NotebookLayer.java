@@ -24,6 +24,7 @@ import edu.bsu.storygame.core.assets.ImageCache;
 import edu.bsu.storygame.core.assets.Typeface;
 import edu.bsu.storygame.core.model.*;
 import edu.bsu.storygame.core.util.IconScaler;
+import playn.core.Canvas;
 import playn.core.Image;
 import playn.scene.GroupLayer;
 import playn.scene.Layer;
@@ -135,19 +136,45 @@ public final class NotebookLayer extends GroupLayer {
 
     private final class CoverPage extends PageLayer {
         protected final int color;
+        private boolean oddNumberedCreation;
 
         ProgressBar progressBar;
 
         private CoverPage() {
             super(AxisLayout.vertical().offStretch());
             color = player.color;
-            root.addStyles(Style.BACKGROUND.is(Background.solid(color)));
+            Image coverPage = createTintedCoverPage();
+            root.addStyles(Style.BACKGROUND.is(Background.image(coverPage)));
             configureProgressBar();
             root.add(new Label(player.name + "'s Story")
                             .addStyles(Style.HALIGN.center),
                     new SkillGroup().addStyles(Style.HALIGN.center),
                     new Shim(0, 0).setConstraint(AxisLayout.stretched()));
             addAt(progressBar, 5, 10);
+        }
+
+        private Image createTintedCoverPage() {
+            Image greyscaleBackground;
+            if (oddNumberedCreation) {
+                greyscaleBackground = context.game.imageCache.image(ImageCache.Key.COVER_1);
+                oddNumberedCreation = false;
+            } else {
+                greyscaleBackground = context.game.imageCache.image(ImageCache.Key.COVER_2);
+                oddNumberedCreation = true;
+            }
+            final int width = greyscaleBackground.pixelWidth();
+            final int height = greyscaleBackground.pixelHeight();
+
+            Canvas canvas = context.game.plat.graphics().createCanvas(width, height);
+
+            int[] pixels = new int[width * height];
+            greyscaleBackground.getRgb(0, 0, width, height, pixels, 0, width);
+            for (int i = 0; i < pixels.length; i++) {
+                pixels[i] = Colors.blend(color, pixels[i], 0.7f);
+            }
+            Image result = canvas.image;
+            result.setRgb(0, 0, width, height, pixels, 0, width);
+            return result;
         }
 
         private final class SkillColumn extends TableLayout.Column {
@@ -203,9 +230,9 @@ public final class NotebookLayer extends GroupLayer {
             context.encounter.connect(new ValueView.Listener<Encounter>() {
                 @Override
                 public void onChange(Encounter encounter, Encounter t1) {
-                    if(encounter == null){
+                    if (encounter == null) {
                         root.removeAll();
-                    } else if (context.currentPlayer.get() == player){
+                    } else if (context.currentPlayer.get() == player) {
                         root.add(new Label("I encountered a ").addStyles(
                                 Style.FONT.is(Typeface.HANDWRITING.in(context.game).atSize(0.045f)),
                                 Style.COLOR.is(Colors.BLACK)));
@@ -296,10 +323,10 @@ public final class NotebookLayer extends GroupLayer {
             context.reaction.connect(new ValueView.Listener<Reaction>() {
                 @Override
                 public void onChange(Reaction reaction, Reaction t1) {
-                    if(reaction == null){
+                    if (reaction == null) {
                         context.story.update(null);
                         root.removeAll();
-                    } else if (context.currentPlayer.get() == player){
+                    } else if (context.currentPlayer.get() == player) {
                         context.story.update(reaction.stories.chooseOne());
                         root.add(new Label(context.story.get().text).addStyles(
                                 Style.TEXT_WRAP.is(true),
@@ -312,6 +339,7 @@ public final class NotebookLayer extends GroupLayer {
 
     private final class SkillsPage extends PageLayer {
         private List<TriggerButton> buttons = Lists.newArrayList();
+
         protected SkillsPage() {
             super(AxisLayout.vertical());
             context.reaction.connect(new Slot<Reaction>() {
