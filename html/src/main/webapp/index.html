@@ -35,12 +35,36 @@
             src: url(monsters/fonts/Handlee-Regular.ttf);
         }
         html,body {
-          width: 100%;
-          height: 100%;
+            width: 100%;
+            height: 100%;
+            align: center;
+        }
+        .center {
+            color: white;
+            text-align: center;
+            display: block;
+        }
+        li {
+            color: white;
+        }
+        img {
+            top: 15px;
+            right:15px;
+            position: absolute;
+        }
+        h4 {
+            font-size: 1.5em
+        }
+        h1 {
+            font-size: 4em;
+            margin: 25px;
+        }
+        h3 {
+            font-size: 2em;
         }
         #playn-root {
-          width: 100%;
-          height: 100%;
+            width: 100%;
+            height: 100%;
         }
     </style>
     <meta name="apple-mobile-web-app-capable" content="yes"/>
@@ -52,14 +76,58 @@
 
   ga('create', 'UA-11642955-19', 'auto');
   ga('send', 'pageview');
-</script>
+
+
+
+
+    </script>
 </head>
 <body bgcolor="black">
-<div id="playn-root">
-    <span style="font-family:'Amarante';">&nbsp;</span>
-    <span style="font-family:'Crimson Text'">&nbsp;</span>
-    <span style="font-family:'Handlee'">&nbsp;</span>
-</div>
-<script src="monsters/monsters.nocache.js"></script>
+<h3 class="center"> Traveler's Notebook </h3>
+<h1 class="center">Monster Tales</h1>
+<button style="position:relative; margin: 0px auto; display:block"
+        onclick="location.href='game.html'">Play the Game!
+</button>
+<img src="ESRB.png">
+<h4 style="color:white">ABOUT</h4>
+<p class="center"> Studio 368 consists of an interdisciplinary team of ten students
+    representing Animation, Computer Science, Creative Writing, Philosophy, and Telecommunication majors and one faculty
+    mentor. We work together in a studio space three times a week in two hour
+    chunks, for one semester. Instead of dividing tasks based on a person&#39;s skill set, we instead
+    encourage members of our team to work on a volunteer basis, choosing what parts of the process they would like to
+    pursue. Tasks include writing copy, generating code, playtesting, debugging, designing font stacks and color
+    palettes, creating art, etc.
+</p>
+<p class="center">
+    We recommend at least a 4th grade reading level.
+</p>
+<h4 style="color:white">GOALS</h4>
+<p style="color:white">Our three main goals for the semester were to create a game that:</p>
+<ol>
+    <li style="color:white">Promotes cultural empathy</li>
+    <li style="color:white">Incorporates narrative as the driving factor in gameplay</li>
+    <li style="color:white">Includes a technology component (digital or hybrid game design)
+    </li>
+</ol>
+<p style="color:white">Our three secondary goals were to create a game that:</p>
+<ol>
+    <li>Encourages cooperative play</li>
+    <li>Supports a variety of reading levels</li>
+    <li>Develops oratory skills</li>
+</ol>
+<h4 style="color:white"> THE CREATORS OF STUDIO 368</h4>
+<ul>
+    <li>Nicholas Boyer</li>
+    <li>Ashley Cox</li>
+    <li>Paco DeArmond</li>
+    <li>Paul Gestwicki</li>
+    <li>Jessica Lohse</li>
+    <li>Jack McGinnis</li>
+    <li>Lucas Miller</li>
+    <li>Kay Rittichier</li>
+    <li>Josh Schoen</li>
+    <li>Brennan Wade</li>
+    <li>Caleb Woods</li>
+</ul>
 </body>
 </html>
