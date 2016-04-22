@@ -591,6 +591,7 @@ public final class NotebookLayer extends GroupLayer {
     private final class NotebookImageLoader {
 
         private final List<ImageCache.Key> keys = Lists.newLinkedList();
+        private ImageCache.Key previousKey = null;
 
         public NotebookImageLoader() {
             fillKeysList();
@@ -600,7 +601,13 @@ public final class NotebookLayer extends GroupLayer {
             for (ImageCache.Key key : ImageCache.PAGE_KEYS) {
                 keys.add(key);
             }
-            Shuffler.shuffle(keys);
+            shuffleUntilFirstItemIsNotTheLastItemReturned();
+        }
+
+        private void shuffleUntilFirstItemIsNotTheLastItemReturned() {
+            do {
+                Shuffler.shuffle(keys);
+            } while (keys.get(0) == previousKey);
         }
 
 
@@ -608,7 +615,8 @@ public final class NotebookLayer extends GroupLayer {
             if (keys.isEmpty()) {
                 fillKeysList();
             }
-            return context.game.imageCache.image(keys.remove(0));
+            previousKey = keys.remove(0);
+            return context.game.imageCache.image(previousKey);
         }
     }
 
