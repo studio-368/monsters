@@ -1,20 +1,20 @@
 /*
  * Copyright 2016 Traveler's Notebook: Monster Tales project authors
  *
- * This file is part of monsters
+ * This file is part of Traveler's Notebook: Monster Tales
  *
- * monsters is free software: you can redistribute it and/or modify
+ * Traveler's Notebook: Monster Tales is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * monsters is distributed in the hope that it will be useful,
+ * Traveler's Notebook: Monster Tales is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with monsters.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Traveler's Notebook: Monster Tales.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package edu.bsu.storygame.core.view;
@@ -35,13 +35,12 @@ import tripleplay.anim.Animation;
 import tripleplay.game.ScreenStack;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
-import tripleplay.util.Colors;
 import tripleplay.ui.layout.TableLayout;
+import tripleplay.util.Colors;
 
 import java.util.List;
-import java.util.Random;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 public final class NotebookLayer extends GroupLayer {
 
@@ -62,6 +61,8 @@ public final class NotebookLayer extends GroupLayer {
     private final Interface iface;
     private final PageLayer[] pages;
     private float depthCounter = 0;
+
+    private final NotebookImageLoader notebookImageLoader = new NotebookImageLoader();
 
     public final UnitSignal onDone = new UnitSignal();
 
@@ -127,7 +128,7 @@ public final class NotebookLayer extends GroupLayer {
             iface = ((ScreenStack.UIScreen) context.game.screenStack.top()).iface;
             root = iface.createRoot(layout, stylesheet, this)
                     .setSize(closedSize)
-                    .addStyles(Style.BACKGROUND.is(Background.image(new NotebookImageLoader().load())));
+                    .addStyles(Style.BACKGROUND.is(Background.image(notebookImageLoader.next())));
         }
     }
 
@@ -138,7 +139,6 @@ public final class NotebookLayer extends GroupLayer {
         ProgressBar progressBar;
 
         private CoverPage() {
-
             super(AxisLayout.vertical().offStretch());
             color = player.color;
             root.addStyles(Style.BACKGROUND.is(Background.solid(color)));
@@ -560,7 +560,8 @@ public final class NotebookLayer extends GroupLayer {
 
     private final class NotebookImageLoader {
 
-        private final Random random = new Random();
+        private int index = 0;
+
         private final ImageCache.Key[] keys = {
                 ImageCache.Key.PAGE_1,
                 ImageCache.Key.PAGE_2,
@@ -574,9 +575,11 @@ public final class NotebookLayer extends GroupLayer {
                 ImageCache.Key.PAGE_10
         };
 
-        private Image load() {
-            int index = random.nextInt(keys.length);
-            return context.game.imageCache.image(keys[index]);
+        private Image next() {
+            if (index == keys.length) {
+                index = 0;
+            }
+            return context.game.imageCache.image(keys[index++]);
         }
     }
 
