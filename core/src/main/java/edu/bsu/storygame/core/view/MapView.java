@@ -120,6 +120,7 @@ public final class MapView extends ImageLayer {
     }
 
     private final class Pin {
+        private static final float CANVAS_WIDTH_PERCENT_OF_HEIGHT = 0.40f;
         private static final float PIN_RADIUS_PERCENT = 0.02f;
         private static final float ANIMATION_DURATION = 350f;
 
@@ -162,7 +163,8 @@ public final class MapView extends ImageLayer {
 
         private Texture createPinTexture(String name) {
             final float radius = context.game.bounds.percentOfHeight(PIN_RADIUS_PERCENT);
-            Canvas canvas = context.game.plat.graphics().createCanvas(100, radius * 2);
+            final float canvasWidth = context.game.bounds.percentOfHeight(CANVAS_WIDTH_PERCENT_OF_HEIGHT);
+            Canvas canvas = context.game.plat.graphics().createCanvas(canvasWidth, radius * 2);
             canvas.setFillColor(Colors.WHITE);
             canvas.fillCircle(radius, canvas.height / 2, canvas.height / 2);
             Font font = Typeface.GAME_TEXT.font.derive(radius * 1.5f); // Leave room for descenders!

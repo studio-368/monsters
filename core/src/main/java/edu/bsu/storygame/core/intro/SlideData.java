@@ -1,27 +1,27 @@
 /*
  * Copyright 2016 Traveler's Notebook: Monster Tales project authors
  *
- * This file is part of monsters
+ * This file is part of Traveler's Notebook: Monster Tales
  *
- * monsters is free software: you can redistribute it and/or modify
+ * Traveler's Notebook: Monster Tales is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * monsters is distributed in the hope that it will be useful,
+ * Traveler's Notebook: Monster Tales is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with monsters.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Traveler's Notebook: Monster Tales.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package edu.bsu.storygame.core.intro;
 
 import edu.bsu.storygame.core.assets.ImageCache;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 public final class SlideData {
 
@@ -32,7 +32,6 @@ public final class SlideData {
     public final String text;
     public ImageCache.Key imageKey;
     public String popupText;
-    public String nextButtonText;
 
     private SlideData(String text) {
         this.text = checkNotNull(text);
@@ -47,10 +46,4 @@ public final class SlideData {
         this.popupText = checkNotNull(text);
         return this;
     }
-
-    public SlideData nextButtonText(String text) {
-        this.nextButtonText = checkNotNull(text);
-        return this;
-    }
-
 }
