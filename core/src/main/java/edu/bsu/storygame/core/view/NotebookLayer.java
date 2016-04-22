@@ -24,6 +24,7 @@ import edu.bsu.storygame.core.assets.ImageCache;
 import edu.bsu.storygame.core.assets.Typeface;
 import edu.bsu.storygame.core.model.*;
 import edu.bsu.storygame.core.util.IconScaler;
+import edu.bsu.storygame.core.util.Shuffler;
 import playn.core.Canvas;
 import playn.core.Image;
 import playn.scene.GroupLayer;
@@ -41,7 +42,7 @@ import tripleplay.util.Colors;
 
 import java.util.List;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class NotebookLayer extends GroupLayer {
 
@@ -69,7 +70,7 @@ public final class NotebookLayer extends GroupLayer {
 
     public NotebookLayer(final Player player, IDimension closedSize, final GameContext context) {
         super(closedSize.width() * 2, closedSize.height());
-        this.notebookImageLoader = new NotebookImageLoader(context.game.imageCache);
+        this.notebookImageLoader = new NotebookImageLoader();
         this.iface = ((ScreenStack.UIScreen) context.game.screenStack.top()).iface;
 
         this.closedSize = new Dimension(closedSize);
@@ -587,32 +588,27 @@ public final class NotebookLayer extends GroupLayer {
         }
     }
 
-    private static final class NotebookImageLoader {
+    private final class NotebookImageLoader {
 
-        private static int index = 0;
-        private final ImageCache cache;
+        private final List<ImageCache.Key> keys = Lists.newLinkedList();
 
-        public NotebookImageLoader(ImageCache cache) {
-            this.cache = checkNotNull(cache);
+        public NotebookImageLoader() {
+            fillKeysList();
         }
 
-        private final ImageCache.Key[] keys = {
-                ImageCache.Key.PAGE_1,
-                ImageCache.Key.PAGE_2,
-                ImageCache.Key.PAGE_3,
-                ImageCache.Key.PAGE_4,
-                ImageCache.Key.PAGE_5,
-                ImageCache.Key.PAGE_7,
-                ImageCache.Key.PAGE_8,
-                ImageCache.Key.PAGE_9,
-                ImageCache.Key.PAGE_10
-        };
+        private void fillKeysList() {
+            for (ImageCache.Key key : ImageCache.PAGE_KEYS) {
+                keys.add(key);
+            }
+            Shuffler.shuffle(keys);
+        }
+
 
         private Image next() {
-            if (index == keys.length) {
-                index = 0;
+            if (keys.isEmpty()) {
+                fillKeysList();
             }
-            return cache.image(keys[index++]);
+            return context.game.imageCache.image(keys.remove(0));
         }
     }
 

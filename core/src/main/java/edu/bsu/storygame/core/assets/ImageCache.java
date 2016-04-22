@@ -19,6 +19,7 @@
 
 package edu.bsu.storygame.core.assets;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import playn.core.Assets;
@@ -32,7 +33,8 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.List;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 public class ImageCache {
 
@@ -81,6 +83,10 @@ public class ImageCache {
             this.path = "images/" + relativePath;
         }
     }
+
+    public static final ImmutableList<Key> PAGE_KEYS =
+            ImmutableList.of(Key.PAGE_1, Key.PAGE_2, Key.PAGE_3, Key.PAGE_4, Key.PAGE_5,
+                    Key.PAGE_7, Key.PAGE_8, Key.PAGE_9, Key.PAGE_10);
 
     private final EnumMap<Key, Image> map = Maps.newEnumMap(Key.class);
 
