@@ -154,8 +154,8 @@ public final class NotebookLayer extends GroupLayer {
         private final class SkillGroup extends Group {
 
             private SkillGroup() {
-                super(new TableLayout(new SkillColumn(Style.HAlign.RIGHT, true, .1f, 10f),
-                        new SkillColumn(Style.HAlign.LEFT, true, .1f, 10f)));
+                super(new TableLayout(new SkillColumn(Style.HAlign.CENTER, true, .03f, .1f),
+                        new SkillColumn(Style.HAlign.LEFT, true, .01f, .1f)));
                 updatePlayerSkills();
                 player.skills.connect(new RList.Listener<Skill>() {
                     @Override
