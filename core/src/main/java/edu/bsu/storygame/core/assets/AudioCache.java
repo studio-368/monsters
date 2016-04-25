@@ -32,27 +32,40 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.List;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 public class AudioCache {
 
-    public enum AudioKey {
+    public enum Key {
 
-        PAGE_FLIP("test"),
-        CLICK("test");
+        PAGE_FLIP_1("page-flip1"),
+        PAGE_FLIP_2("page-flip2"),
+        PAGE_FLIP_3("page-flip3"),
+        CLICK("click"),
+        OPEN_BOOK("book-open"),
+        CLOSE_BOOK("book-close"),
+        TRAVEL_1("travel1"),
+        TRAVEL_2("travel2"),
+        HANDOFF_SLIDE_1("handoff-slide1"),
+        HANDOFF_SLIDE_2("handoff-slide2"),
+        HANDOFF_SLIDE_3("handoff-slide3"),
+        HANDOFF_SLIDE_4("handoff-slide4"),
+        TOGGLE_UP("toggle-up"),
+        TOGGLE_DOWN("toggle-down");
 
         private final String relativePath;
 
-        AudioKey(String relativePath) {
+        Key(String relativePath) {
             this.relativePath = "sounds/" + relativePath;
         }
     }
 
-    private final EnumMap<AudioKey, Sound> map = Maps.newEnumMap(AudioKey.class);
+    private final EnumMap<Key, Sound> map = Maps.newEnumMap(Key.class);
 
     public AudioCache(Assets assets) {
-        List<RFuture<Sound>> futures = Lists.newArrayListWithCapacity(AudioKey.values().length);
-        for (final AudioKey key : AudioKey.values()) {
+        List<RFuture<Sound>> futures = Lists.newArrayListWithCapacity(Key.values().length);
+        for (final Key key : Key.values()) {
             final Sound sound = assets.getSound(key.relativePath);
             map.put(key, sound);
             futures.add(sound.state);
@@ -71,14 +84,18 @@ public class AudioCache {
 
     public final RFuture<AudioCache> state = RPromise.create();
 
-    public Sound sound(AudioKey audioKey) {
-        checkNotNull(audioKey);
-        Sound sound = map.get(audioKey);
-        checkState(sound.isLoaded(), "Sound not cached: " + audioKey.name());
+    public Sound getSound(Key key) {
+        checkNotNull(key);
+        Sound sound = map.get(key);
+        checkState(sound.isLoaded(), "Sound not cached: " + key.name());
         return sound;
     }
 
-    public RFuture<Sound> stateOf(AudioKey key) {
+    public boolean playSound(Key key) {
+        return getSound(key).play();
+    }
+
+    public RFuture<Sound> stateOf(Key key) {
         return map.get(key).state;
     }
 

@@ -21,6 +21,7 @@ package edu.bsu.storygame.core.view;
 
 import com.google.common.collect.Lists;
 import edu.bsu.storygame.core.MonsterGame;
+import edu.bsu.storygame.core.assets.AudioCache;
 import edu.bsu.storygame.core.model.Region;
 import edu.bsu.storygame.core.model.Skill;
 import edu.bsu.storygame.core.util.MixedCase;
@@ -131,6 +132,15 @@ public final class PlayerCreationGroup extends Group {
             setConstraint(Constraints.fixedSize(
                     game.bounds.width() * PERCENT_OF_WIDTH,
                     game.bounds.height() * PERCENT_OF_HEIGHT));
+            this.clicked().connect(new Slot<ToggleButton>() {
+                @Override
+                public void onEmit(ToggleButton toggleButton) {
+                    if (toggleButton.selected().get())
+                        game.audioCache.playSound(AudioCache.Key.TOGGLE_DOWN);
+                    else
+                        game.audioCache.playSound(AudioCache.Key.TOGGLE_UP);
+                }
+            });
         }
 
         @Override
@@ -151,6 +161,15 @@ public final class PlayerCreationGroup extends Group {
             setConstraint(Constraints.fixedSize(
                     game.bounds.width() * PERCENT_OF_WIDTH,
                     game.bounds.height() * PERCENT_OF_HEIGHT));
+            this.clicked().connect(new Slot<ToggleButton>() {
+                @Override
+                public void onEmit(ToggleButton toggleButton) {
+                    if (toggleButton.selected().get())
+                        game.audioCache.playSound(AudioCache.Key.TOGGLE_DOWN);
+                    else
+                        game.audioCache.playSound(AudioCache.Key.TOGGLE_UP);
+                }
+            });
         }
 
         @Override

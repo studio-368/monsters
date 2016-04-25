@@ -19,6 +19,8 @@
 
 package edu.bsu.storygame.core.view;
 
+import edu.bsu.storygame.core.assets.AudioCache;
+import edu.bsu.storygame.core.assets.AudioRandomizer;
 import edu.bsu.storygame.core.assets.ImageCache;
 import edu.bsu.storygame.core.intro.SlideData;
 import edu.bsu.storygame.core.intro.SlideShow;
@@ -36,7 +38,7 @@ import tripleplay.ui.Label;
 import tripleplay.ui.Style;
 import tripleplay.ui.layout.AxisLayout;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class GameScreen extends BoundedUIScreen {
 
@@ -49,6 +51,7 @@ public final class GameScreen extends BoundedUIScreen {
     private static final float FRONT_NOTEBOOK_DEPTH = 4;
 
     private final GameContext context;
+    private final AudioRandomizer audioRandomizer = new AudioRandomizer();
 
     private NotebookLayer player1Notebook;
     private NotebookLayer player2Notebook;
@@ -149,6 +152,8 @@ public final class GameScreen extends BoundedUIScreen {
     }
 
     private void initEncounter(Region region) {
+        if (!context.currentPlayer.get().location.get().equals(region))
+            context.game.audioCache.playSound(audioRandomizer.getKey(AudioRandomizer.Event.TRAVEL));
         context.currentPlayer.get().location.update(region);
         Encounter encounter = context.game.narrativeCache.state.result().get().forRegion(region).chooseOne();
         context.encounter.update(encounter);
@@ -156,7 +161,11 @@ public final class GameScreen extends BoundedUIScreen {
     }
 
     private void openNotebook(final NotebookLayer notebook) {
-        iface.anim.tweenTranslation(notebook)
+        iface.anim.delay(500f)
+                .then()
+                .play(context.game.audioCache.getSound(AudioCache.Key.OPEN_BOOK))
+                .then()
+                .tweenTranslation(notebook)
                 .to(context.game.bounds.width() / 2, context.game.bounds.height() * 0.10f)
                 .in(BOOK_TRANSLATION_DURATION)
                 .easeIn()
