@@ -1,20 +1,20 @@
 /*
  * Copyright 2016 Traveler's Notebook: Monster Tales project authors
  *
- * This file is part of monsters
+ * This file is part of Traveler's Notebook: Monster Tales
  *
- * monsters is free software: you can redistribute it and/or modify
+ * Traveler's Notebook: Monster Tales is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * monsters is distributed in the hope that it will be useful,
+ * Traveler's Notebook: Monster Tales is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with monsters.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Traveler's Notebook: Monster Tales.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package edu.bsu.storygame.core.view;
@@ -31,13 +31,12 @@ import pythagoras.f.IDimension;
 import pythagoras.f.IPoint;
 import pythagoras.f.Point;
 import react.*;
-import tripleplay.anim.AnimGroup;
 import tripleplay.ui.Background;
 import tripleplay.ui.Label;
 import tripleplay.ui.Style;
 import tripleplay.ui.layout.AxisLayout;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 public final class GameScreen extends BoundedUIScreen {
 
@@ -168,6 +167,11 @@ public final class GameScreen extends BoundedUIScreen {
                         notebook.open();
                     }
                 });
+        final NotebookLayer otherNotebook = notebook == player1Notebook ? player2Notebook : player1Notebook;
+        iface.anim.tweenY(otherNotebook)
+                .to(context.game.bounds.height())
+                .in(BOOK_TRANSLATION_DURATION)
+                .easeIn();
     }
 
     private RFuture<Void> closeNotebook(final NotebookLayer notebook) {
@@ -205,30 +209,13 @@ public final class GameScreen extends BoundedUIScreen {
     }
 
     private void animateRearNotebookToFront(final NotebookLayer rear, final NotebookLayer front) {
-        final float dipAmount = content.height() * 0.18f;
-        AnimGroup group = new AnimGroup();
-        group.tweenX(rear)
-                .to(content.width() * FRONT_NOTEBOOK_X_PERCENT)
-                .in(BOOK_TRANSLATION_DURATION);
-        group.tweenY(rear)
-                .from(notebookY)
-                .to(notebookY + dipAmount)
-                .in(BOOK_TRANSLATION_DURATION / 2)
-                .easeOut()
-                .then()
-                .action(new Runnable() {
-                    @Override
-                    public void run() {
-                        front.setDepth(REAR_NOTEBOOK_DEPTH);
-                        rear.setDepth(FRONT_NOTEBOOK_DEPTH);
-                    }
-                })
-                .then()
-                .tweenY(rear)
+        rear.setTx(content.width() * FRONT_NOTEBOOK_X_PERCENT);
+        front.setDepth(REAR_NOTEBOOK_DEPTH);
+        rear.setDepth(FRONT_NOTEBOOK_DEPTH);
+        iface.anim.tweenY(rear)
                 .to(notebookY)
-                .in(BOOK_TRANSLATION_DURATION / 2)
-                .easeIn();
-        iface.anim.add(group.toAnim());
+                .in(BOOK_TRANSLATION_DURATION)
+                .easeOut();
     }
 
     @Override
