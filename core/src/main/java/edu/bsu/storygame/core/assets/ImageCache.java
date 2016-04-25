@@ -51,6 +51,7 @@ public class ImageCache {
         KAPPA("kappa.png"),
         KRAKEN("kraken.png"),
         NESSY("nessy.png"),
+        POSTED_NOTE("posted_note.png"),
         WRAITH("wraith.png"),
         STAR("star.png"),
         CHUPACABRA("chupacabra.png"),

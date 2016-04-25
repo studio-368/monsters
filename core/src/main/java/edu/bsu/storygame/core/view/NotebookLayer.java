@@ -24,6 +24,7 @@ import edu.bsu.storygame.core.assets.ImageCache;
 import edu.bsu.storygame.core.assets.Typeface;
 import edu.bsu.storygame.core.model.*;
 import edu.bsu.storygame.core.util.IconScaler;
+import edu.bsu.storygame.core.util.MixedCase;
 import edu.bsu.storygame.core.util.Shuffler;
 import playn.core.Canvas;
 import playn.core.Image;
@@ -42,7 +43,7 @@ import tripleplay.util.Colors;
 
 import java.util.List;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 public final class NotebookLayer extends GroupLayer {
 
@@ -122,7 +123,6 @@ public final class NotebookLayer extends GroupLayer {
     }
 
     private abstract class PageLayer extends GroupLayer {
-
         protected final Interface iface;
         protected final Root root;
 
@@ -232,9 +232,10 @@ public final class NotebookLayer extends GroupLayer {
             context.encounter.connect(new ValueView.Listener<Encounter>() {
                 @Override
                 public void onChange(Encounter encounter, Encounter t1) {
-                    if (encounter == null) {
+                    if(encounter == null){
                         root.removeAll();
-                    } else if (context.currentPlayer.get() == player) {
+                    } else if (context.currentPlayer.get() == player){
+                        root.add(createReminderPostedNote());
                         root.add(new Label("I encountered a ").addStyles(
                                 Style.FONT.is(Typeface.HANDWRITING.in(context.game).atSize(0.045f)),
                                 Style.COLOR.is(Colors.BLACK)));
@@ -247,9 +248,43 @@ public final class NotebookLayer extends GroupLayer {
             });
         }
 
+        private Root createReminderPostedNote(){
+            Image image = context.game.imageCache.image(ImageCache.Key.POSTED_NOTE);
+            Root root = iface.createRoot(AxisLayout.vertical(), stylesheet, new GroupLayer(image.width(), image.height()))
+                    .addStyles(Style.BACKGROUND.is(Background.image(image).inset(20,10)))
+                    .add(new Label("Reminder").addStyles(
+                    Style.COLOR.is(Colors.BLACK),Style.UNDERLINE.is(true),
+                    Style.FONT.is(Typeface.HANDWRITING.in(context.game).atSize(0.03f))));
+                    root = addPlayersSkillsToNote(root);
+                    root.add(new Label("Current points: "+ player.storyPoints.get()).addStyles(Style.TEXT_WRAP.on,
+                            Style.COLOR.is(Colors.BLACK),
+                            Style.FONT.is(Typeface.HANDWRITING.in(context.game).atSize(0.027f))));
+            return root;
+        }
+
+        private Root addPlayersSkillsToNote(Root root){
+            root.add(new Label("Skills:").addStyles(
+                    Style.COLOR.is(Colors.BLACK),
+                    Style.FONT.is(Typeface.HANDWRITING.in(context.game).atSize(0.027f))));
+            for(int i = 0; i < player.skills.size(); i++){
+                if (player.skills.size() - (i) > 1){
+                    root.add(new Label("* " + player.skills.get(i).name + "  * " + player.skills.get(i+1).name).addStyles(Style.TEXT_WRAP.on,
+                            Style.COLOR.is(Colors.BLACK),
+                            Style.FONT.is(Typeface.HANDWRITING.in(context.game).atSize(0.02f))));
+                            i++;
+                        }
+                else{
+                    root.add(new Label("* " + player.skills.get(i).name).addStyles(Style.TEXT_WRAP.on,
+                            Style.COLOR.is(Colors.BLACK),
+                            Style.FONT.is(Typeface.HANDWRITING.in(context.game).atSize(0.02f))));
+                    }
+                }
+            return root;
+        }
+
         private class EncounterImage extends Label {
             private IconScaler scaler;
-            final float IMAGE_SIZE = 0.8f;
+            final float IMAGE_SIZE = 0.7f;
 
             private EncounterImage(Encounter encounter) {
                 this.scaler = new IconScaler(context.game);
@@ -299,7 +334,7 @@ public final class NotebookLayer extends GroupLayer {
 
             final class ReactionButton extends Button {
                 private ReactionButton(final Reaction reaction) {
-                    super(reaction.name);
+                    super(MixedCase.convert(reaction.name));
                     onClick(new Slot<Button>() {
                         @Override
                         public void onEmit(Button button) {
@@ -351,7 +386,7 @@ public final class NotebookLayer extends GroupLayer {
                         root.removeAll();
                         buttons.clear();
                     } else if (context.currentPlayer.get() == player) {
-                        root.add(new Label("You used:").addStyles(Style.COLOR.is(Colors.BLACK)));
+                        root.add(createInstructionPostedNote("Ask " + context.currentPlayer.get().name + " which skill was used."));
                         for (SkillTrigger skillTrigger : context.story.get().triggers) {
                             TriggerButton button = new TriggerButton(skillTrigger.skill.name, skillTrigger.conclusion);
                             button.setEnabled(context.currentPlayer.get().skills.contains(skillTrigger.skill));
@@ -365,6 +400,7 @@ public final class NotebookLayer extends GroupLayer {
                     }
                 }
             });
+
             context.phase.connect(new Slot<Phase>() {
                 @Override
                 public void onEmit(Phase phase) {
@@ -375,6 +411,15 @@ public final class NotebookLayer extends GroupLayer {
                     }
                 }
             });
+        }
+
+        private Root createInstructionPostedNote(String text){
+            Image image = context.game.imageCache.image(ImageCache.Key.POSTED_NOTE);
+            return iface.createRoot(AxisLayout.vertical(), stylesheet,  new GroupLayer())
+                    .addStyles(Style.BACKGROUND.is(Background.image(image).inset(10,35)))
+                    .add(new Label(text).addStyles(Style.TEXT_WRAP.on,
+                            Style.COLOR.is(Colors.BLACK),
+                            Style.FONT.is(Typeface.HANDWRITING.in(context.game).atSize(0.035f))));
         }
 
         private final class TriggerButton extends Button {
@@ -442,7 +487,7 @@ public final class NotebookLayer extends GroupLayer {
     private final class EndPage extends PageLayer {
         protected EndPage() {
             super(AxisLayout.vertical());
-            final Button button = new Button("Close notebook").onClick(new Slot<Button>() {
+            final Button button = new Button("Close Notebook").onClick(new Slot<Button>() {
                 @Override
                 public void onEmit(Button button) {
                     applyModelChanges(context.conclusion.get());

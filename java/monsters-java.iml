@@ -10,6 +10,13 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: io.playn:playn-java-lwjgl2:2.0-rc3" level="project" />
+    <orderEntry type="library" name="Maven: io.playn:playn-scene:2.0-rc3" level="project" />
+    <orderEntry type="library" name="Maven: com.threerings:tripleplay:2.0-rc3" level="project" />
+    <orderEntry type="library" name="Maven: io.playn:playn-java-lwjgl2:2.0-rc3" level="project" />
+    <orderEntry type="library" name="Maven: io.playn:playn-scene:2.0-rc3" level="project" />
+    <orderEntry type="library" name="Maven: com.threerings:tripleplay:2.0-rc3" level="project" />
+    <orderEntry type="library" name="Maven: io.playn:playn-java-lwjgl2:2.0-rc3" level="project" />
     <orderEntry type="module" module-name="monsters-core" />
     <orderEntry type="library" name="Maven: io.playn:playn-scene:2.0-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: io.playn:playn-core:2.0-SNAPSHOT" level="project" />
