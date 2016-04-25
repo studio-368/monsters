@@ -1,6 +1,6 @@
-# Nightmare Defenders
+# Traveler's Notebook: Monster Tales
 
-_Nightmare Defenders_ is a narrative-rich two-player video game based around three primary design goals:
+_Traveler's Notebook: Monster Takes_ is a narrative-rich two-player video game based around three primary design goals:
  * Use narrative as the primary focus of gameplay
  * Incorporate modern technology into the narrative-rich genre
  * Encourage cultural literacy
