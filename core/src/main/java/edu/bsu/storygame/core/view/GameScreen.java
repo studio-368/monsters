@@ -175,12 +175,6 @@ public final class GameScreen extends BoundedUIScreen {
     }
 
     private RFuture<Void> closeNotebook(final NotebookLayer notebook) {
-        final NotebookLayer otherNotebook = notebook == player1Notebook ? player2Notebook : player1Notebook;
-        animateRearNotebookToFront(otherNotebook, notebook);
-        return animateNotebookCloseAndDropToRear(notebook);
-    }
-
-    private RFuture<Void> animateNotebookCloseAndDropToRear(final NotebookLayer notebook) {
         final RPromise<Void> promise = RPromise.create();
         final IPoint target = new Point(content.width() * REAR_NOTEBOOK_X_PERCENT, notebookY);
         iface.anim.action(new Runnable() {
@@ -190,6 +184,8 @@ public final class GameScreen extends BoundedUIScreen {
                         .onComplete(new Slot<Try<Void>>() {
                             @Override
                             public void onEmit(Try<Void> voidTry) {
+                                final NotebookLayer otherNotebook = notebook == player1Notebook ? player2Notebook : player1Notebook;
+                                animateRearNotebookToFront(otherNotebook, notebook);
                                 iface.anim.tweenTranslation(notebook)
                                         .to(target)
                                         .in(BOOK_TRANSLATION_DURATION)
