@@ -23,7 +23,6 @@ import com.google.common.collect.Lists;
 import edu.bsu.storygame.core.assets.AudioCache;
 import edu.bsu.storygame.core.assets.ImageCache;
 import edu.bsu.storygame.core.model.Narrative;
-import edu.bsu.storygame.core.view.GameStyle;
 import edu.bsu.storygame.core.view.ProgressBar;
 import edu.bsu.storygame.core.view.StartScreen;
 import playn.core.Game;
@@ -36,6 +35,7 @@ import react.Try;
 import tripleplay.game.ScreenStack;
 import tripleplay.ui.Label;
 import tripleplay.ui.Root;
+import tripleplay.ui.SimpleStyles;
 import tripleplay.ui.Style;
 import tripleplay.ui.layout.AxisLayout;
 import tripleplay.util.Colors;
@@ -99,7 +99,7 @@ public class LoadingScreen extends ScreenStack.UIScreen {
                     }
                 });
 
-        root = iface.createRoot(AxisLayout.vertical(), GameStyle.newSheet(game), layer)
+        root = iface.createRoot(AxisLayout.vertical(), SimpleStyles.newSheet(game.plat.graphics()), layer)
                 .setSize(size())
                 .add(new Label("Loading...")
                         .addStyles(Style.COLOR.is(Colors.WHITE)));

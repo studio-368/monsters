@@ -20,6 +20,7 @@
 package edu.bsu.storygame.core.view;
 
 import edu.bsu.storygame.core.MonsterGame;
+import edu.bsu.storygame.core.assets.AudioCache;
 import edu.bsu.storygame.core.assets.Typeface;
 import playn.core.Color;
 import playn.core.Font;
@@ -73,6 +74,7 @@ public final class GameStyle {
         final Font gameTextRegular = Typeface.GAME_TEXT.in(game).atSize(REGULAR);
         final Font gameTextLarge = Typeface.GAME_TEXT.in(game).atSize(LARGE);
 
+
         return Stylesheet.builder()
                 .add(Label.class,
                         Style.FONT.is(gameTextRegular),
@@ -80,7 +82,8 @@ public final class GameStyle {
                 .add(Button.class,
                         Style.FONT.is(gameTextLarge),
                         Style.COLOR.is(Colors.BLACK),
-                        Style.BACKGROUND.is(Background.roundRect(gfx, Palette.ROSE, cornerRadius, Palette.OBSERVATORY, borderWidth).insets(buttonInsets)))
+                        Style.BACKGROUND.is(Background.roundRect(gfx, Palette.ROSE, cornerRadius, Palette.OBSERVATORY, borderWidth).insets(buttonInsets)),
+                        Style.ACTION_SOUND.is(game.audioCache.getSound(AudioCache.Key.CLICK)))
                 .add(Button.class, Style.Mode.SELECTED,
                         Style.FONT.is(gameTextLarge),
                         Style.COLOR.is(Colors.WHITE),

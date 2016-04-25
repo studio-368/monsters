@@ -42,14 +42,16 @@ public class AudioCache {
         PAGE_FLIP_1("page-flip1"),
         PAGE_FLIP_2("page-flip2"),
         PAGE_FLIP_3("page-flip3"),
-        CLICK("test"),
+        CLICK("click"),
         OPEN_BOOK("book-open"),
         CLOSE_BOOK("book-close"),
         TRAVEL("travel"),
         HANDOFF_SLIDE_1("handoff-slide1"),
         HANDOFF_SLIDE_2("handoff-slide2"),
         HANDOFF_SLIDE_3("handoff-slide3"),
-        HANDOFF_SLIDE_4("handoff-slide4");
+        HANDOFF_SLIDE_4("handoff-slide4"),
+        TOGGLE_UP("toggle-up"),
+        TOGGLE_DOWN("toggle-down");
 
         private final String relativePath;
 
