@@ -24,6 +24,7 @@ import edu.bsu.storygame.core.assets.ImageCache;
 import edu.bsu.storygame.core.assets.Typeface;
 import edu.bsu.storygame.core.model.*;
 import edu.bsu.storygame.core.util.IconScaler;
+import edu.bsu.storygame.core.util.MixedCase;
 import edu.bsu.storygame.core.util.Shuffler;
 import playn.core.Canvas;
 import playn.core.Image;
@@ -333,7 +334,7 @@ public final class NotebookLayer extends GroupLayer {
 
             final class ReactionButton extends Button {
                 private ReactionButton(final Reaction reaction) {
-                    super(reaction.name);
+                    super(MixedCase.convert(reaction.name));
                     onClick(new Slot<Button>() {
                         @Override
                         public void onEmit(Button button) {
@@ -486,7 +487,7 @@ public final class NotebookLayer extends GroupLayer {
     private final class EndPage extends PageLayer {
         protected EndPage() {
             super(AxisLayout.vertical());
-            final Button button = new Button("Close notebook").onClick(new Slot<Button>() {
+            final Button button = new Button("Close Notebook").onClick(new Slot<Button>() {
                 @Override
                 public void onEmit(Button button) {
                     applyModelChanges(context.conclusion.get());
