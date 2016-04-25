@@ -30,7 +30,8 @@ import java.util.Random;
 public class AudioRandomizer {
     public enum Event {
         PAGE_FLIP(AudioCache.Key.PAGE_FLIP_1, AudioCache.Key.PAGE_FLIP_2, AudioCache.Key.PAGE_FLIP_3),
-        HANDOFF_SLIDE(AudioCache.Key.HANDOFF_SLIDE_1, AudioCache.Key.HANDOFF_SLIDE_2, AudioCache.Key.HANDOFF_SLIDE_3, AudioCache.Key.HANDOFF_SLIDE_4);
+        HANDOFF_SLIDE(AudioCache.Key.HANDOFF_SLIDE_1, AudioCache.Key.HANDOFF_SLIDE_2, AudioCache.Key.HANDOFF_SLIDE_3, AudioCache.Key.HANDOFF_SLIDE_4),
+        TRAVEL(AudioCache.Key.TRAVEL_1, AudioCache.Key.TRAVEL_2);
 
         private final ImmutableList<AudioCache.Key> keys;
 

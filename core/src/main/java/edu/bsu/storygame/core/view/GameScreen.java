@@ -20,6 +20,7 @@
 package edu.bsu.storygame.core.view;
 
 import edu.bsu.storygame.core.assets.AudioCache;
+import edu.bsu.storygame.core.assets.AudioRandomizer;
 import edu.bsu.storygame.core.assets.ImageCache;
 import edu.bsu.storygame.core.intro.SlideData;
 import edu.bsu.storygame.core.intro.SlideShow;
@@ -50,6 +51,7 @@ public final class GameScreen extends BoundedUIScreen {
     private static final float FRONT_NOTEBOOK_DEPTH = 4;
 
     private final GameContext context;
+    private final AudioRandomizer audioRandomizer = new AudioRandomizer();
 
     private NotebookLayer player1Notebook;
     private NotebookLayer player2Notebook;
@@ -151,7 +153,7 @@ public final class GameScreen extends BoundedUIScreen {
 
     private void initEncounter(Region region) {
         if (!context.currentPlayer.get().location.get().equals(region))
-            context.game.audioCache.playSound(AudioCache.Key.TRAVEL);
+            context.game.audioCache.playSound(audioRandomizer.getKey(AudioRandomizer.Event.TRAVEL));
         context.currentPlayer.get().location.update(region);
         Encounter encounter = context.game.narrativeCache.state.result().get().forRegion(region).chooseOne();
         context.encounter.update(encounter);
