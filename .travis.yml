@@ -6,7 +6,6 @@ before_install:
 - sudo apt-get update && sudo apt-get install oracle-java8-installer
 - java -version
 script:
-- bash ./install-playn-snapshot.sh
 - mvn install
 - mvn -Phtml clean package
 - if [ "$TRAVIS_BRANCH" == "master" ]; then bash ./deploy.sh; fi
