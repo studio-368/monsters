@@ -38,7 +38,7 @@ import tripleplay.ui.Label;
 import tripleplay.ui.Style;
 import tripleplay.ui.layout.AxisLayout;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class GameScreen extends BoundedUIScreen {
 
@@ -195,8 +195,7 @@ public final class GameScreen extends BoundedUIScreen {
                             public void onEmit(Try<Void> voidTry) {
                                 final NotebookLayer otherNotebook = notebook == player1Notebook ? player2Notebook : player1Notebook;
                                 animateRearNotebookToFront(otherNotebook, notebook);
-                                iface.anim.gosiajgaoighjsag
-                                        .tweenTranslation(notebook)
+                                iface.anim.tweenTranslation(notebook)
                                         .to(target)
                                         .in(BOOK_TRANSLATION_DURATION)
                                         .easeIn()

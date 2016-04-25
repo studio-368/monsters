@@ -20,6 +20,7 @@
 package edu.bsu.storygame.core.view;
 
 import com.google.common.collect.Lists;
+import edu.bsu.storygame.core.assets.AudioCache;
 import edu.bsu.storygame.core.assets.AudioRandomizer;
 import edu.bsu.storygame.core.assets.ImageCache;
 import edu.bsu.storygame.core.assets.Typeface;
@@ -523,7 +524,9 @@ public final class NotebookLayer extends GroupLayer {
     public RFuture<Void> closeNotebook() {
         final RPromise<Void> promise = RPromise.create();
         depthCounter = 0;
-        iface.anim.add(movePageRight(conclusionPage))
+        iface.anim.play(context.game.audioCache.getSound(AudioCache.Key.CLOSE_BOOK))
+                .then()
+                .add(movePageRight(conclusionPage))
                 .then()
                 .add(movePageRight(skillsPage))
                 .then()
