@@ -24,6 +24,7 @@ import edu.bsu.storygame.core.assets.ImageCache;
 import edu.bsu.storygame.core.assets.Typeface;
 import edu.bsu.storygame.core.model.*;
 import edu.bsu.storygame.core.util.IconScaler;
+import playn.core.Image;
 import playn.scene.GroupLayer;
 import playn.scene.Layer;
 import pythagoras.f.Dimension;
@@ -35,6 +36,7 @@ import tripleplay.game.ScreenStack;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
 import tripleplay.ui.layout.TableLayout;
+import tripleplay.util.Colors;
 
 import java.util.List;
 
@@ -104,8 +106,8 @@ public final class NotebookLayer extends GroupLayer {
                 }
             }
         });
-
     }
+
 
     private void addPages(Layer... layers) {
         for (int i = layers.length - 1; i >= 0; i--) {
@@ -201,6 +203,7 @@ public final class NotebookLayer extends GroupLayer {
                     if(encounter == null){
                         root.removeAll();
                     } else if (context.currentPlayer.get() == player){
+                        root.add(createReminderPostedNote());
                         root.add(new Label("I encountered a ").addStyles(
                                 Style.FONT.is(Typeface.HANDWRITING.in(context.game).atSize(0.045f))));
                         root.add(new EncounterImage(encounter));
@@ -211,9 +214,43 @@ public final class NotebookLayer extends GroupLayer {
             });
         }
 
+        private Root createReminderPostedNote(){
+            Image image = context.game.imageCache.image(ImageCache.Key.POSTED_NOTE);
+            Root root = iface.createRoot(AxisLayout.vertical(), stylesheet, new GroupLayer(image.width(), image.height()))
+                    .addStyles(Style.BACKGROUND.is(Background.image(image).inset(20,10)))
+                    .add(new Label("Reminder").addStyles(
+                    Style.COLOR.is(Colors.BLACK),Style.UNDERLINE.is(true),
+                    Style.FONT.is(Typeface.HANDWRITING.in(context.game).atSize(0.03f))));
+                    root = addPlayersSkillsToNote(root);
+                    root.add(new Label("Current points: "+ player.storyPoints.get()).addStyles(Style.TEXT_WRAP.on,
+                            Style.COLOR.is(Colors.BLACK),
+                            Style.FONT.is(Typeface.HANDWRITING.in(context.game).atSize(0.027f))));
+            return root;
+        }
+
+        private Root addPlayersSkillsToNote(Root root){
+            root.add(new Label("Skills:").addStyles(
+                    Style.COLOR.is(Colors.BLACK),
+                    Style.FONT.is(Typeface.HANDWRITING.in(context.game).atSize(0.027f))));
+            for(int i = 0; i < player.skills.size(); i++){
+                if (player.skills.size() - (i) > 1){
+                    root.add(new Label("* " + player.skills.get(i).name + "  * " + player.skills.get(i+1).name).addStyles(Style.TEXT_WRAP.on,
+                            Style.COLOR.is(Colors.BLACK),
+                            Style.FONT.is(Typeface.HANDWRITING.in(context.game).atSize(0.02f))));
+                            i++;
+                        }
+                else{
+                    root.add(new Label("* " + player.skills.get(i).name).addStyles(Style.TEXT_WRAP.on,
+                            Style.COLOR.is(Colors.BLACK),
+                            Style.FONT.is(Typeface.HANDWRITING.in(context.game).atSize(0.02f))));
+                    }
+                }
+            return root;
+        }
+
         private class EncounterImage extends Label {
             private IconScaler scaler;
-            final float IMAGE_SIZE = 0.8f;
+            final float IMAGE_SIZE = 0.7f;
 
             private EncounterImage(Encounter encounter) {
                 this.scaler = new IconScaler(context.game);
@@ -312,7 +349,7 @@ public final class NotebookLayer extends GroupLayer {
                         root.removeAll();
                         buttons.clear();
                     } else if (context.currentPlayer.get() == player) {
-                        root.add(new Label("You used:"));
+                        root.add(createInstructionPostedNote("Ask " + context.currentPlayer.get().name + " which skill was used."));
                         for (SkillTrigger skillTrigger : context.story.get().triggers) {
                             TriggerButton button = new TriggerButton(skillTrigger.skill.name, skillTrigger.conclusion);
                             button.setEnabled(context.currentPlayer.get().skills.contains(skillTrigger.skill));
@@ -326,6 +363,7 @@ public final class NotebookLayer extends GroupLayer {
                     }
                 }
             });
+
             context.phase.connect(new Slot<Phase>() {
                 @Override
                 public void onEmit(Phase phase) {
@@ -336,6 +374,15 @@ public final class NotebookLayer extends GroupLayer {
                     }
                 }
             });
+        }
+
+        private Root createInstructionPostedNote(String text){
+            Image image = context.game.imageCache.image(ImageCache.Key.POSTED_NOTE);
+            return iface.createRoot(AxisLayout.vertical(), stylesheet,  new GroupLayer())
+                    .addStyles(Style.BACKGROUND.is(Background.image(image).inset(10,35)))
+                    .add(new Label(text).addStyles(Style.TEXT_WRAP.on,
+                            Style.COLOR.is(Colors.BLACK),
+                            Style.FONT.is(Typeface.HANDWRITING.in(context.game).atSize(0.035f))));
         }
 
         private final class TriggerButton extends Button {
