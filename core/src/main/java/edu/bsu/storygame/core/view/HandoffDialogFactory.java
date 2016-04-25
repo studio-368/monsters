@@ -19,6 +19,8 @@
 
 package edu.bsu.storygame.core.view;
 
+import edu.bsu.storygame.core.assets.AudioCache;
+import edu.bsu.storygame.core.assets.AudioRandomizer;
 import edu.bsu.storygame.core.assets.ImageCache;
 import edu.bsu.storygame.core.model.GameContext;
 import edu.bsu.storygame.core.model.Phase;
@@ -35,6 +37,7 @@ public class HandoffDialogFactory {
 
     private static final float ANIMATION_DURATION = 500f;
     private final GameContext context;
+    private final AudioRandomizer audioRandomizer = new AudioRandomizer();
 
     public HandoffDialogFactory(GameContext context) {
         this.context = checkNotNull(context);
@@ -57,13 +60,17 @@ public class HandoffDialogFactory {
                     final String otherPlayerName = context.otherPlayer().name;
                     dialog.label.text.update("Please pass to " + otherPlayerName + ", who will read you your story!");
                     layer.setVisible(true);
-                    iface.anim.tweenY(layer)
+                    iface.anim.play(context.game.audioCache.getSound(audioRandomizer.getKey(AudioRandomizer.Event.HANDOFF_SLIDE)))
+                            .then()
+                            .tweenY(layer)
                             .from(context.game.bounds.height())
                             .to(0)
                             .in(ANIMATION_DURATION)
                             .easeIn();
                 } else if (phase.equals(Phase.STORY)) {
-                    iface.anim.tweenY(layer)
+                    iface.anim.play(context.game.audioCache.getSound(AudioCache.Key.HANDOFF_SLIDE_4))
+                            .then()
+                            .tweenY(layer)
                             .from(0)
                             .to(context.game.bounds.height())
                             .in(ANIMATION_DURATION)

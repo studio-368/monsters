@@ -122,7 +122,7 @@ public final class MapView extends ImageLayer {
     private final class Pin {
         private static final float CANVAS_WIDTH_PERCENT_OF_HEIGHT = 0.40f;
         private static final float PIN_RADIUS_PERCENT = 0.02f;
-        private static final float ANIMATION_DURATION = 350f;
+        private static final float ANIMATION_DURATION = 700f;
 
         private final Point location = new Point(0, 0);
         private final Texture texture;

@@ -150,6 +150,8 @@ public final class GameScreen extends BoundedUIScreen {
     }
 
     private void initEncounter(Region region) {
+        if (!context.currentPlayer.get().location.get().equals(region))
+            context.game.audioCache.playSound(AudioCache.Key.TRAVEL);
         context.currentPlayer.get().location.update(region);
         Encounter encounter = context.game.narrativeCache.state.result().get().forRegion(region).chooseOne();
         context.encounter.update(encounter);
@@ -157,8 +159,11 @@ public final class GameScreen extends BoundedUIScreen {
     }
 
     private void openNotebook(final NotebookLayer notebook) {
-        context.game.audioCache.playSound(AudioCache.Key.OPEN_BOOK);
-        iface.anim.tweenTranslation(notebook)
+        iface.anim.delay(500f)
+                .then()
+                .play(context.game.audioCache.getSound(AudioCache.Key.OPEN_BOOK))
+                .then()
+                .tweenTranslation(notebook)
                 .to(context.game.bounds.width() / 2, context.game.bounds.height() * 0.10f)
                 .in(BOOK_TRANSLATION_DURATION)
                 .easeIn()
