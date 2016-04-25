@@ -45,7 +45,7 @@ public final class NarrativeParser {
         for (int i = 0, limit = array.length(); i < limit; i++) {
             Json.Object obj = array.getObject(i);
             String regionName = obj.getString("region");
-            Region region = Region.valueOf(ScreamingCapitalizer.convert(regionName));
+            Region region = Region.valueOf(regionName);
             Json.Array encounters = obj.getArray("encounters");
             EncounterDeck deck = parseEncounterDeck(encounters);
             narrativeBuilder.put(region, deck);

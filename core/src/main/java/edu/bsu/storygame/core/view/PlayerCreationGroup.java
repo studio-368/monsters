@@ -145,7 +145,7 @@ public final class PlayerCreationGroup extends Group {
         final Region region;
 
         RegionButton(Region region) {
-            super(region.name().toLowerCase().replace("_", " "));
+            super(region.name().replace("_", " "));
             this.region = region;
             setConstraint(Constraints.fixedSize(
                     game.bounds.width() * PERCENT_OF_WIDTH,
