@@ -39,7 +39,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class KeystrokeBasedPlayerGenerator implements SignalView.Listener<Keyboard.Event> {
 
     private static final ImmutableList<Skill> SAMPLE_SKILLS = ImmutableList.of(
-            Skill.named("Weapon use"),
+            Skill.named("Strength"),
             Skill.named("Magic")
     );
 

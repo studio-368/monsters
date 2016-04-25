@@ -17,33 +17,26 @@
  * along with Traveler's Notebook: Monster Tales.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package edu.bsu.storygame.core.intro;
+package edu.bsu.storygame.core.util;
 
-import edu.bsu.storygame.core.assets.ImageCache;
+import org.junit.Test;
 
-import static com.google.common.base.Preconditions.*;
+import static org.junit.Assert.assertEquals;
 
-public final class SlideData {
+public class MixedCaseTest {
 
-    public static SlideData text(String text) {
-        return new SlideData(text);
+    @Test
+    public void testConvert_hello() {
+        assertEquals("Hello", MixedCase.convert("hello"));
     }
 
-    public final String text;
-    public ImageCache.Key imageKey;
-    public String popupText;
-
-    private SlideData(String text) {
-        this.text = checkNotNull(text);
+    @Test
+    public void testConvert_twoWords_spaceSeparation() {
+        assertEquals("Two Words", MixedCase.convert("two words"));
     }
 
-    public SlideData imageKey(ImageCache.Key key) {
-        this.imageKey = checkNotNull(key);
-        return this;
-    }
-
-    public SlideData popupText(String text) {
-        this.popupText = checkNotNull(text);
-        return this;
+    @Test
+    public void testConvert_twoWords_underscoreSeparation() {
+        assertEquals("Two Words", MixedCase.convert("TWO_WORDS"));
     }
 }

@@ -25,6 +25,9 @@ import edu.bsu.storygame.core.assets.Typeface;
 import edu.bsu.storygame.core.model.*;
 import edu.bsu.storygame.core.util.IconScaler;
 import playn.core.Image;
+import edu.bsu.storygame.core.util.Shuffler;
+import playn.core.Canvas;
+import playn.core.Image;
 import playn.scene.GroupLayer;
 import playn.scene.Layer;
 import pythagoras.f.Dimension;
@@ -62,10 +65,13 @@ public final class NotebookLayer extends GroupLayer {
     private final PageLayer[] pages;
     private float depthCounter = 0;
 
+    private final NotebookImageLoader notebookImageLoader;
+
     public final UnitSignal onDone = new UnitSignal();
 
     public NotebookLayer(final Player player, IDimension closedSize, final GameContext context) {
         super(closedSize.width() * 2, closedSize.height());
+        this.notebookImageLoader = new NotebookImageLoader();
         this.iface = ((ScreenStack.UIScreen) context.game.screenStack.top()).iface;
 
         this.closedSize = new Dimension(closedSize);
@@ -106,8 +112,8 @@ public final class NotebookLayer extends GroupLayer {
                 }
             }
         });
-    }
 
+    }
 
     private void addPages(Layer... layers) {
         for (int i = layers.length - 1; i >= 0; i--) {
@@ -124,27 +130,55 @@ public final class NotebookLayer extends GroupLayer {
 
         protected PageLayer(Layout layout) {
             super(closedSize.width(), closedSize.height());
-            color = player.color;
             iface = ((ScreenStack.UIScreen) context.game.screenStack.top()).iface;
             root = iface.createRoot(layout, stylesheet, this)
                     .setSize(closedSize)
-                    .addStyles(Style.BACKGROUND.is(Background.solid(color)));
+                    .addStyles(Style.BACKGROUND.is(Background.image(notebookImageLoader.next())));
         }
     }
 
 
     private final class CoverPage extends PageLayer {
+        protected final int color;
+        private boolean oddNumberedCreation;
 
         ProgressBar progressBar;
 
         private CoverPage() {
             super(AxisLayout.vertical().offStretch());
+            color = player.color;
+            Image coverPage = createTintedCoverPage();
+            root.addStyles(Style.BACKGROUND.is(Background.image(coverPage)));
             configureProgressBar();
             root.add(new Label(player.name + "'s Story")
                             .addStyles(Style.HALIGN.center),
                     new SkillGroup().addStyles(Style.HALIGN.center),
                     new Shim(0, 0).setConstraint(AxisLayout.stretched()));
             addAt(progressBar, 5, 10);
+        }
+
+        private Image createTintedCoverPage() {
+            Image greyscaleBackground;
+            if (oddNumberedCreation) {
+                greyscaleBackground = context.game.imageCache.image(ImageCache.Key.COVER_1);
+                oddNumberedCreation = false;
+            } else {
+                greyscaleBackground = context.game.imageCache.image(ImageCache.Key.COVER_2);
+                oddNumberedCreation = true;
+            }
+            final int width = greyscaleBackground.pixelWidth();
+            final int height = greyscaleBackground.pixelHeight();
+
+            Canvas canvas = context.game.plat.graphics().createCanvas(width, height);
+
+            int[] pixels = new int[width * height];
+            greyscaleBackground.getRgb(0, 0, width, height, pixels, 0, width);
+            for (int i = 0; i < pixels.length; i++) {
+                pixels[i] = Colors.blend(color, pixels[i], 0.7f);
+            }
+            Image result = canvas.image;
+            result.setRgb(0, 0, width, height, pixels, 0, width);
+            return result;
         }
 
         private final class SkillColumn extends TableLayout.Column {
@@ -156,8 +190,8 @@ public final class NotebookLayer extends GroupLayer {
         private final class SkillGroup extends Group {
 
             private SkillGroup() {
-                super(new TableLayout(new SkillColumn(Style.HAlign.RIGHT, true, .1f, 10f),
-                        new SkillColumn(Style.HAlign.LEFT, true, .1f, 10f)));
+                super(new TableLayout(new SkillColumn(Style.HAlign.CENTER, true, .03f, .1f),
+                        new SkillColumn(Style.HAlign.LEFT, true, .01f, .1f)));
                 updatePlayerSkills();
                 player.skills.connect(new RList.Listener<Skill>() {
                     @Override
@@ -205,10 +239,12 @@ public final class NotebookLayer extends GroupLayer {
                     } else if (context.currentPlayer.get() == player){
                         root.add(createReminderPostedNote());
                         root.add(new Label("I encountered a ").addStyles(
-                                Style.FONT.is(Typeface.HANDWRITING.in(context.game).atSize(0.045f))));
+                                Style.FONT.is(Typeface.HANDWRITING.in(context.game).atSize(0.045f)),
+                                Style.COLOR.is(Colors.BLACK)));
                         root.add(new EncounterImage(encounter));
                         root.add(new Label(encounter.name).addStyles(
-                                Style.FONT.is(Typeface.HANDWRITING.in(context.game).atSize(0.045f))));
+                                Style.FONT.is(Typeface.HANDWRITING.in(context.game).atSize(0.045f)),
+                                Style.COLOR.is(Colors.BLACK)));
                     }
                 }
             });
@@ -270,7 +306,7 @@ public final class NotebookLayer extends GroupLayer {
     private final class ReactionPage extends PageLayer {
         private ReactionPage() {
             super(AxisLayout.vertical());
-            root.add(new Label("I decided to"));
+            root.add(new Label("I decided to").addStyles(Style.COLOR.is(Colors.BLACK)));
             root.add(new ReactionGroup());
         }
 
@@ -326,12 +362,14 @@ public final class NotebookLayer extends GroupLayer {
             context.reaction.connect(new ValueView.Listener<Reaction>() {
                 @Override
                 public void onChange(Reaction reaction, Reaction t1) {
-                    if(reaction == null){
+                    if (reaction == null) {
                         context.story.update(null);
                         root.removeAll();
-                    } else if (context.currentPlayer.get() == player){
+                    } else if (context.currentPlayer.get() == player) {
                         context.story.update(reaction.stories.chooseOne());
-                        root.add(new Label(context.story.get().text).addStyles(Style.TEXT_WRAP.is(true)));
+                        root.add(new Label(context.story.get().text).addStyles(
+                                Style.TEXT_WRAP.is(true),
+                                Style.COLOR.is(Colors.BLACK)));
                     }
                 }
             });
@@ -340,6 +378,7 @@ public final class NotebookLayer extends GroupLayer {
 
     private final class SkillsPage extends PageLayer {
         private List<TriggerButton> buttons = Lists.newArrayList();
+
         protected SkillsPage() {
             super(AxisLayout.vertical());
             context.reaction.connect(new Slot<Reaction>() {
@@ -410,7 +449,9 @@ public final class NotebookLayer extends GroupLayer {
                     if (conclusion == null) {
                         root.removeAll();
                     } else {
-                        root.add(new Label(conclusion.text).addStyles(Style.TEXT_WRAP.on));
+                        root.add(new Label(conclusion.text).addStyles(
+                                Style.TEXT_WRAP.on,
+                                Style.COLOR.is(Colors.BLACK)));
                         root.add(new EncounterRewardLabel(conclusion));
                     }
                 }
@@ -420,7 +461,8 @@ public final class NotebookLayer extends GroupLayer {
         final class EncounterRewardLabel extends Label {
             private EncounterRewardLabel(Conclusion conclusion) {
                 super();
-                addStyles(Style.TEXT_WRAP.on);
+                addStyles(Style.TEXT_WRAP.on,
+                        Style.COLOR.is(Colors.BLACK));
                 StringBuilder stringBuilder = new StringBuilder();
                 if (conclusion.points > 0) {
                     stringBuilder.append("You gain ")
@@ -592,4 +634,37 @@ public final class NotebookLayer extends GroupLayer {
             depthCounter++;
         }
     }
+
+    private final class NotebookImageLoader {
+
+        private final List<ImageCache.Key> keys = Lists.newLinkedList();
+        private ImageCache.Key previousKey = null;
+
+        public NotebookImageLoader() {
+            fillKeysList();
+        }
+
+        private void fillKeysList() {
+            for (ImageCache.Key key : ImageCache.PAGE_KEYS) {
+                keys.add(key);
+            }
+            shuffleUntilFirstItemIsNotTheLastItemReturned();
+        }
+
+        private void shuffleUntilFirstItemIsNotTheLastItemReturned() {
+            do {
+                Shuffler.shuffle(keys);
+            } while (keys.get(0) == previousKey);
+        }
+
+
+        private Image next() {
+            if (keys.isEmpty()) {
+                fillKeysList();
+            }
+            previousKey = keys.remove(0);
+            return context.game.imageCache.image(previousKey);
+        }
+    }
+
 }

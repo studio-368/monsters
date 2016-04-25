@@ -19,6 +19,7 @@
 
 package edu.bsu.storygame.core.assets;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import playn.core.Assets;
@@ -32,12 +33,15 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.List;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 public class ImageCache {
 
     public enum Key {
         MAIN_MENU_BG("main_menu_bg.png"),
+        COVER_1("cover_1.png"),
+        COVER_2("cover_2.png"),
         BACKGROUND("world_map.png"),
         MONSTER_HAND("monster_hand.png"),
         COCKATRICE("cockatrice.png"),
@@ -63,7 +67,16 @@ public class ImageCache {
         INTRO_SCENE_3("intro_scene_3.png"),
         INTRO_SCENE_4("intro_scene_4.png"),
         INTRO_SCENE_5("intro_scene_5.png"),
-        INTRO_SCENE_6("intro_scene_6.png");
+        INTRO_SCENE_6("intro_scene_6.png"),
+        PAGE_1("pages/page_1.png"),
+        PAGE_2("pages/page_2.png"),
+        PAGE_3("pages/page_3.png"),
+        PAGE_4("pages/page_4.png"),
+        PAGE_5("pages/page_5.png"),
+        PAGE_7("pages/page_7.png"),
+        PAGE_8("pages/page_8.png"),
+        PAGE_9("pages/page_9.png"),
+        PAGE_10("pages/page_10.png");
 
         private final String path;
 
@@ -71,6 +84,10 @@ public class ImageCache {
             this.path = "images/" + relativePath;
         }
     }
+
+    public static final ImmutableList<Key> PAGE_KEYS =
+            ImmutableList.of(Key.PAGE_1, Key.PAGE_2, Key.PAGE_3, Key.PAGE_4, Key.PAGE_5,
+                    Key.PAGE_7, Key.PAGE_8, Key.PAGE_9, Key.PAGE_10);
 
     private final EnumMap<Key, Image> map = Maps.newEnumMap(Key.class);
 
