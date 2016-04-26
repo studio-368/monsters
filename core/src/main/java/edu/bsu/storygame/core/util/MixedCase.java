@@ -17,33 +17,26 @@
  * along with Traveler's Notebook: Monster Tales.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package edu.bsu.storygame.core.intro;
+package edu.bsu.storygame.core.util;
 
-import edu.bsu.storygame.core.assets.ImageCache;
-
-import static com.google.common.base.Preconditions.*;
-
-public final class SlideData {
-
-    public static SlideData text(String text) {
-        return new SlideData(text);
+public final class MixedCase {
+    public static String convert(String s) {
+        StringBuilder builder = new StringBuilder();
+        boolean capitalizeNext = true;
+        for (int i = 0, limit = s.length(); i < limit; i++) {
+            char character = s.charAt(i);
+            if (isCapitalizationTrigger(character)) {
+                builder.append(' ');
+                capitalizeNext = true;
+            } else {
+                builder.append(capitalizeNext ? Character.toUpperCase(character) : Character.toLowerCase(character));
+                capitalizeNext = false;
+            }
+        }
+        return builder.toString();
     }
 
-    public final String text;
-    public ImageCache.Key imageKey;
-    public String popupText;
-
-    private SlideData(String text) {
-        this.text = checkNotNull(text);
-    }
-
-    public SlideData imageKey(ImageCache.Key key) {
-        this.imageKey = checkNotNull(key);
-        return this;
-    }
-
-    public SlideData popupText(String text) {
-        this.popupText = checkNotNull(text);
-        return this;
+    private static boolean isCapitalizationTrigger(char character) {
+        return character == ' ' || character == '_';
     }
 }

@@ -21,8 +21,10 @@ package edu.bsu.storygame.core.view;
 
 import com.google.common.collect.Lists;
 import edu.bsu.storygame.core.MonsterGame;
+import edu.bsu.storygame.core.assets.AudioCache;
 import edu.bsu.storygame.core.model.Region;
 import edu.bsu.storygame.core.model.Skill;
+import edu.bsu.storygame.core.util.MixedCase;
 import react.RList;
 import react.Slot;
 import react.Value;
@@ -125,11 +127,20 @@ public final class PlayerCreationGroup extends Group {
         final Skill skill;
 
         SkillButton(Skill skill) {
-            super(skill.name);
+            super(MixedCase.convert(skill.name));
             this.skill = skill;
             setConstraint(Constraints.fixedSize(
                     game.bounds.width() * PERCENT_OF_WIDTH,
                     game.bounds.height() * PERCENT_OF_HEIGHT));
+            this.clicked().connect(new Slot<ToggleButton>() {
+                @Override
+                public void onEmit(ToggleButton toggleButton) {
+                    if (toggleButton.selected().get())
+                        game.audioCache.playSound(AudioCache.Key.TOGGLE_DOWN);
+                    else
+                        game.audioCache.playSound(AudioCache.Key.TOGGLE_UP);
+                }
+            });
         }
 
         @Override
@@ -145,11 +156,20 @@ public final class PlayerCreationGroup extends Group {
         final Region region;
 
         RegionButton(Region region) {
-            super(region.name().toLowerCase().replace("_", " "));
+            super(MixedCase.convert(region.name()));
             this.region = region;
             setConstraint(Constraints.fixedSize(
                     game.bounds.width() * PERCENT_OF_WIDTH,
                     game.bounds.height() * PERCENT_OF_HEIGHT));
+            this.clicked().connect(new Slot<ToggleButton>() {
+                @Override
+                public void onEmit(ToggleButton toggleButton) {
+                    if (toggleButton.selected().get())
+                        game.audioCache.playSound(AudioCache.Key.TOGGLE_DOWN);
+                    else
+                        game.audioCache.playSound(AudioCache.Key.TOGGLE_UP);
+                }
+            });
         }
 
         @Override
