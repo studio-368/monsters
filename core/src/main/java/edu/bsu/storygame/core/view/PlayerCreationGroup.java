@@ -45,8 +45,8 @@ public final class PlayerCreationGroup extends Group {
     public final ValueView<Boolean> complete = Value.create(false);
 
     private final MonsterGame game;
-    private final BiSelector biselector = new BiSelector();
-    private final Selector selector = new Selector();
+    private final BiSelector skillSelector = new BiSelector();
+    private final Selector regionSelector = new Selector();
 
     public PlayerCreationGroup(MonsterGame game, String playerName) {
         super(AxisLayout.vertical().offStretch());
@@ -59,28 +59,29 @@ public final class PlayerCreationGroup extends Group {
     }
 
     private void watchForFormCompletion() {
-        selector.selected.connect(new Slot<Element<?>>() {
+        regionSelector.selected.connect(new Slot<Element<?>>() {
             @Override
             public void onEmit(Element<?> element) {
-                checkForCompletion();
+                updateCompleteValue();
             }
         });
-        biselector.selections.connect(new RList.Listener<ToggleButton>() {
+        skillSelector.selections.connect(new RList.Listener<ToggleButton>() {
             @Override
             public void onAdd(ToggleButton elem) {
-                checkForCompletion();
+                updateCompleteValue();
             }
 
             @Override
             public void onRemove(ToggleButton elem) {
-                checkForCompletion();
+                updateCompleteValue();
             }
         });
     }
 
-    private void checkForCompletion() {
-        final boolean isComplete = biselector.size() == NUMBER_OF_SKILLS
-                && ((RegionButton) selector.selected.get()).region != null;
+    private void updateCompleteValue() {
+        final boolean areAllSkillsSelected = skillSelector.size() == NUMBER_OF_SKILLS;
+        final boolean isARegionSelected = regionSelector.selected.get() != null;
+        final boolean isComplete = areAllSkillsSelected && isARegionSelected;
         ((Value<Boolean>) complete).update(isComplete);
     }
 
@@ -89,7 +90,7 @@ public final class PlayerCreationGroup extends Group {
         Group group = new Group(new FlowLayout());
         for (Skill skill : skillSet) {
             SkillButton skillButton = new SkillButton(skill);
-            biselector.add(skillButton);
+            skillSelector.add(skillButton);
             group.add(skillButton);
         }
         return group;
@@ -99,7 +100,7 @@ public final class PlayerCreationGroup extends Group {
         Group group = new Group(new FlowLayout());
         for (Region region : Region.values()) {
             RegionButton regionButton = new RegionButton(region);
-            selector.add(regionButton);
+            regionSelector.add(regionButton);
             group.add(regionButton);
         }
         return group;
@@ -107,7 +108,7 @@ public final class PlayerCreationGroup extends Group {
 
     public List<Skill> getSelectedSkills() {
         List<Skill> result = Lists.newArrayList();
-        for (ToggleButton button : biselector.selections()) {
+        for (ToggleButton button : skillSelector.selections()) {
             Skill skill = ((SkillButton) button).skill;
             result.add(skill);
         }
@@ -115,11 +116,29 @@ public final class PlayerCreationGroup extends Group {
     }
 
     public Region getSelectedRegion() {
-        return ((RegionButton) selector.selected.get()).region;
+        return ((RegionButton) regionSelector.selected.get()).region;
     }
 
+    private abstract class AudibleButton extends ToggleButton {
+        protected AudibleButton(String text) {
+            super(text);
+            configureAudioFeedback();
+        }
 
-    final class SkillButton extends ToggleButton {
+        private void configureAudioFeedback() {
+            clicked().connect(new Slot<ToggleButton>() {
+                @Override
+                public void onEmit(ToggleButton toggleButton) {
+                    if (toggleButton.selected().get())
+                        game.audioCache.playSound(AudioCache.Key.TOGGLE_DOWN);
+                    else
+                        game.audioCache.playSound(AudioCache.Key.TOGGLE_UP);
+                }
+            });
+        }
+    }
+
+    final class SkillButton extends AudibleButton {
 
         private static final float PERCENT_OF_WIDTH = 0.22f;
         private static final float PERCENT_OF_HEIGHT = 0.08f;
@@ -132,15 +151,6 @@ public final class PlayerCreationGroup extends Group {
             setConstraint(Constraints.fixedSize(
                     game.bounds.width() * PERCENT_OF_WIDTH,
                     game.bounds.height() * PERCENT_OF_HEIGHT));
-            this.clicked().connect(new Slot<ToggleButton>() {
-                @Override
-                public void onEmit(ToggleButton toggleButton) {
-                    if (toggleButton.selected().get())
-                        game.audioCache.playSound(AudioCache.Key.TOGGLE_DOWN);
-                    else
-                        game.audioCache.playSound(AudioCache.Key.TOGGLE_UP);
-                }
-            });
         }
 
         @Override
@@ -149,7 +159,7 @@ public final class PlayerCreationGroup extends Group {
         }
     }
 
-    final class RegionButton extends ToggleButton {
+    final class RegionButton extends AudibleButton {
         private static final float PERCENT_OF_WIDTH = 0.22f;
         private static final float PERCENT_OF_HEIGHT = 0.08f;
 
@@ -161,15 +171,6 @@ public final class PlayerCreationGroup extends Group {
             setConstraint(Constraints.fixedSize(
                     game.bounds.width() * PERCENT_OF_WIDTH,
                     game.bounds.height() * PERCENT_OF_HEIGHT));
-            this.clicked().connect(new Slot<ToggleButton>() {
-                @Override
-                public void onEmit(ToggleButton toggleButton) {
-                    if (toggleButton.selected().get())
-                        game.audioCache.playSound(AudioCache.Key.TOGGLE_DOWN);
-                    else
-                        game.audioCache.playSound(AudioCache.Key.TOGGLE_UP);
-                }
-            });
         }
 
         @Override
