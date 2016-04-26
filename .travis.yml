@@ -8,7 +8,7 @@ before_install:
 script:
 - mvn install
 - mvn -Phtml clean package
-- if [ "$TRAVIS_BRANCH" == "master" -a "$TRAVIS_PULL_REQUEST" != "false" ]; then bash ./deploy.sh; fi
+- if [ "$TRAVIS_BRANCH" == "master" ]; then bash ./deploy.sh; fi
 env:
   global:
   - GH_REF: github.com/spring-studio-2016/monsters
