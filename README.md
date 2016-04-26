@@ -16,7 +16,7 @@ with primary focus on the HTML target.
 The project is configured for development using IntelliJ IDEA Community Edition.
 
 ### Continuous Integration
-The latest build of the master branch can be found at [http://spring-studio-2016.github.io/monsters](http://spring-studio-2016.github.io/monsters).
+The latest build of the master branch can be found at [http://studio-368.github.io/monsters](http://studio-368.github.io/monsters).
 
 ### Narrative Override
 The default narrative is supplied by the asset file `narrative.json`.

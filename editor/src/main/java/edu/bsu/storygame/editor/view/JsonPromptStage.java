@@ -116,7 +116,7 @@ public class JsonPromptStage extends Stage {
     private void displayTestLink() {
         testLink.setOnAction(event -> {
             try {
-                Desktop.getDesktop().browse(new URL("http://spring-studio-2016.github.io/monsters/?override").toURI());
+                Desktop.getDesktop().browse(new URL("http://studio-368.github.io/monsters/?override").toURI());
             } catch (Exception e) {
                 e.printStackTrace();
             }
