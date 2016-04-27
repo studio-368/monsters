@@ -145,6 +145,7 @@ public final class NotebookLayer extends GroupLayer {
         protected final int color;
 
         ProgressBar progressBar;
+        Layer pointsLayer;
 
         private CoverPage() {
             super(AxisLayout.vertical().offStretch());
@@ -157,18 +158,20 @@ public final class NotebookLayer extends GroupLayer {
                     new SkillGroup().addStyles(Style.HALIGN.center),
                     new Shim(0, 0).setConstraint(AxisLayout.stretched()));
             addAt(progressBar, 5, 10);
-            Layer layer = createPointLayer(context.game, 0xFF000000);
-            this.addAt(layer, 7, 15);
+            add(pointsLayer = new ImageLayer());
+            setPointLayer(context.game, 0xFF000000, 0);
         }
 
-        private Layer createPointLayer(MonsterGame game, int color) {
+        private void setPointLayer(MonsterGame game, int color, int points) {
+            remove(pointsLayer);
             Graphics gfx = context.game.plat.graphics();
             Font font = Typeface.GAME_TEXT.font;
             TextFormat format = new TextFormat(font);
-            TextLayout textLayout = gfx.layoutText("Points", format);
+            TextLayout textLayout = gfx.layoutText("Points: \n" + points, format);
             Canvas canvas = game.plat.graphics().createCanvas(textLayout.size);
             canvas.setFillColor(color).fillText(textLayout, 0, 0);
-            return new ImageLayer(canvas.toTexture());
+            pointsLayer = new ImageLayer(canvas.toTexture());
+            addAt(pointsLayer, 7, 11);
         }
 
         private Image createTintedCoverPage() {
@@ -218,11 +221,12 @@ public final class NotebookLayer extends GroupLayer {
             final int max = context.pointsRequiredForVictory;
             final float width = this.width();
             final float height = this.height();
-            progressBar = new ProgressBar(max, width * 0.1f, height * 0.18f, context.game, ProgressBar.FillType.VERTICAL);
+            progressBar = new ProgressBar(max, width * 0.15f, height * 0.18f, context.game, ProgressBar.FillType.VERTICAL);
             player.storyPoints.connect(new Slot<Integer>() {
                 @Override
                 public void onEmit(Integer integer) {
                     progressBar.increment(context.conclusion.get().points);
+                    setPointLayer(context.game, 0xFF000000, integer);
                 }
             });
         }
