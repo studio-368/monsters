@@ -20,6 +20,7 @@
 package edu.bsu.storygame.core.view;
 
 import com.google.common.collect.Lists;
+import edu.bsu.storygame.core.MonsterGame;
 import edu.bsu.storygame.core.assets.AudioCache;
 import edu.bsu.storygame.core.assets.AudioRandomizer;
 import edu.bsu.storygame.core.assets.ImageCache;
@@ -28,9 +29,9 @@ import edu.bsu.storygame.core.model.*;
 import edu.bsu.storygame.core.util.IconScaler;
 import edu.bsu.storygame.core.util.MixedCase;
 import edu.bsu.storygame.core.util.Shuffler;
-import playn.core.Canvas;
-import playn.core.Image;
+import playn.core.*;
 import playn.scene.GroupLayer;
+import playn.scene.ImageLayer;
 import playn.scene.Layer;
 import pythagoras.f.Dimension;
 import pythagoras.f.IDimension;
@@ -156,6 +157,18 @@ public final class NotebookLayer extends GroupLayer {
                     new SkillGroup().addStyles(Style.HALIGN.center),
                     new Shim(0, 0).setConstraint(AxisLayout.stretched()));
             addAt(progressBar, 5, 10);
+            Layer layer = createPointLayer(context.game, 0xFF000000);
+            this.addAt(layer, 7, 15);
+        }
+
+        private Layer createPointLayer(MonsterGame game, int color) {
+            Graphics gfx = context.game.plat.graphics();
+            Font font = Typeface.GAME_TEXT.font;
+            TextFormat format = new TextFormat(font);
+            TextLayout textLayout = gfx.layoutText("Points", format);
+            Canvas canvas = game.plat.graphics().createCanvas(textLayout.size);
+            canvas.setFillColor(color).fillText(textLayout, 0, 0);
+            return new ImageLayer(canvas.toTexture());
         }
 
         private Image createTintedCoverPage() {
