@@ -139,7 +139,6 @@ public final class GameScreen extends BoundedUIScreen {
         mapView.pick.connect(new Slot<Region>() {
             @Override
             public void onEmit(Region region) {
-                context.game.plat.log().debug("Picked " + region);
                 initEncounter(region);
             }
         });
