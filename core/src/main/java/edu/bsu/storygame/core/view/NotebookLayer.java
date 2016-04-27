@@ -141,7 +141,6 @@ public final class NotebookLayer extends GroupLayer {
 
     private final class CoverPage extends PageLayer {
         protected final int color;
-        private boolean oddNumberedCreation;
 
         ProgressBar progressBar;
 
@@ -159,27 +158,13 @@ public final class NotebookLayer extends GroupLayer {
         }
 
         private Image createTintedCoverPage() {
-            Image greyscaleBackground;
-            if (oddNumberedCreation) {
-                greyscaleBackground = context.game.imageCache.image(ImageCache.Key.COVER_1);
-                oddNumberedCreation = false;
+            Image cover;
+            if (color == Palette.PLAYER_ONE) {
+                cover = context.game.imageCache.image(ImageCache.Key.COVER_1);
             } else {
-                greyscaleBackground = context.game.imageCache.image(ImageCache.Key.COVER_2);
-                oddNumberedCreation = true;
+                cover = context.game.imageCache.image(ImageCache.Key.COVER_2);
             }
-            final int width = greyscaleBackground.pixelWidth();
-            final int height = greyscaleBackground.pixelHeight();
-
-            Canvas canvas = context.game.plat.graphics().createCanvas(width, height);
-
-            int[] pixels = new int[width * height];
-            greyscaleBackground.getRgb(0, 0, width, height, pixels, 0, width);
-            for (int i = 0; i < pixels.length; i++) {
-                pixels[i] = Colors.blend(color, pixels[i], 0.7f);
-            }
-            Image result = canvas.image;
-            result.setRgb(0, 0, width, height, pixels, 0, width);
-            return result;
+            return cover;
         }
 
         private final class SkillColumn extends TableLayout.Column {
