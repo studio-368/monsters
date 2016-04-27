@@ -52,6 +52,7 @@ public final class NotebookLayer extends GroupLayer {
 
     public static final float OPEN_CLOSE_ANIM_DURATION = 400f;
     private static final float TOP = 100;
+    private static final String BULLET_AND_SPACE = "\u2022 ";
 
     private final IDimension closedSize;
     private final Stylesheet stylesheet;
@@ -223,7 +224,7 @@ public final class NotebookLayer extends GroupLayer {
             private void updatePlayerSkills() {
                 this.removeAll();
                 for (Skill skill : player.skills) {
-                    this.add(new Label("* " + skill.name));
+                    this.add(new Label(BULLET_AND_SPACE + skill.name));
                 }
             }
         }
@@ -284,13 +285,13 @@ public final class NotebookLayer extends GroupLayer {
                     Style.FONT.is(Typeface.HANDWRITING.in(context.game).atSize(0.027f))));
             for(int i = 0; i < player.skills.size(); i++){
                 if (player.skills.size() - (i) > 1){
-                    root.add(new Label("* " + player.skills.get(i).name + "  * " + player.skills.get(i+1).name).addStyles(Style.TEXT_WRAP.on,
+                    root.add(new Label(BULLET_AND_SPACE + player.skills.get(i).name + "  " + BULLET_AND_SPACE + player.skills.get(i + 1).name).addStyles(Style.TEXT_WRAP.on,
                             Style.COLOR.is(Colors.BLACK),
                             Style.FONT.is(Typeface.HANDWRITING.in(context.game).atSize(0.02f))));
                             i++;
                         }
                 else{
-                    root.add(new Label("* " + player.skills.get(i).name).addStyles(Style.TEXT_WRAP.on,
+                    root.add(new Label(BULLET_AND_SPACE + player.skills.get(i).name).addStyles(Style.TEXT_WRAP.on,
                             Style.COLOR.is(Colors.BLACK),
                             Style.FONT.is(Typeface.HANDWRITING.in(context.game).atSize(0.02f))));
                     }
