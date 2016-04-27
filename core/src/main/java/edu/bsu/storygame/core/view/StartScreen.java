@@ -60,7 +60,7 @@ public final class StartScreen extends BoundedUIScreen {
 
     final class StartButton extends Button {
         private StartButton() {
-            super("Open the game!");
+            super("Begin Our Adventure!");
             onClick(new Slot<Button>() {
                 @Override
                 public void onEmit(Button button) {
