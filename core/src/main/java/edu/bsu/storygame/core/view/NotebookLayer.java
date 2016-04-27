@@ -46,7 +46,7 @@ import tripleplay.util.Colors;
 
 import java.util.List;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class NotebookLayer extends GroupLayer {
 
@@ -157,7 +157,7 @@ public final class NotebookLayer extends GroupLayer {
                             .addStyles(Style.HALIGN.center),
                     new SkillGroup().addStyles(Style.HALIGN.center),
                     new Shim(0, 0).setConstraint(AxisLayout.stretched()));
-            addAt(progressBar, 5, 10);
+            addAt(progressBar, this.width() * 1 / 25, this.height() * 1 / 25);
             add(pointsLayer = new ImageLayer());
             setPointLayer(context.game, 0xFF000000, 0);
         }
@@ -171,7 +171,7 @@ public final class NotebookLayer extends GroupLayer {
             Canvas canvas = game.plat.graphics().createCanvas(textLayout.size);
             canvas.setFillColor(color).fillText(textLayout, 0, 0);
             pointsLayer = new ImageLayer(canvas.toTexture());
-            addAt(pointsLayer, 7, 11);
+            addAt(pointsLayer, progressBar.width() * 2 / 5, progressBar.height() / 2);
         }
 
         private Image createTintedCoverPage() {
