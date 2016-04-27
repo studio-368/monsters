@@ -28,7 +28,7 @@ import java.io.IOException;
 
 public class Editor extends Application {
 
-    private EditorStageController controller = new EditorStageController();
+    private EditorStageController controller;
 
     public static void main(String[] args) {
         launch(args);
@@ -36,6 +36,7 @@ public class Editor extends Application {
 
     @Override
     public void start(Stage editorStage) throws Exception {
+        controller = new EditorStageController(editorStage);
         configure(editorStage);
         editorStage.show();
     }

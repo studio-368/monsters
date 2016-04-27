@@ -30,6 +30,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Window;
 import react.Slot;
 import react.Value;
 
@@ -55,6 +56,11 @@ public class EditorStageController implements Initializable {
 
     private final GsonParser parser = new GsonParser();
     private final Value<Narrative> narrative = Value.create(null);
+    private final FilePrompt filePrompt;
+
+    public EditorStageController(Window window) {
+        filePrompt = new FilePrompt(window);
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -80,14 +86,19 @@ public class EditorStageController implements Initializable {
     }
 
     private void configureNoDocument() {
-
+        textSaveMenuItem.setDisable(true);
+        fileSaveMenuItem.setDisable(true);
+        editScrollBar.setContent(emptyDocumentPane);
+        editScrollBar.setFitToHeight(true);
     }
 
     private void configureDocumentOpened() {
         clear();
-        editArea.getChildren().clear();
+        editScrollBar.setContent(editArea);
         add(new NarrativeEditPane(narrative.get(), this));
         textSaveMenuItem.setDisable(false);
+        fileSaveMenuItem.setDisable(false);
+        editScrollBar.setFitToHeight(false);
     }
 
     public void editRegion(Region region) {
@@ -115,9 +126,22 @@ public class EditorStageController implements Initializable {
     }
 
     @FXML
+    public void openFromFile() {
+        String jsonString = filePrompt.open();
+        if (jsonString == null) return;
+        narrative.update(parser.parse(jsonString));
+    }
+
+    @FXML
     public void displayJsonText() {
         String jsonString = parser.convertToJson(narrative.get());
         JsonPromptStage.display(jsonString);
+    }
+
+    @FXML
+    public void saveFile() {
+        String jsonString = parser.convertToJson(narrative.get());
+        filePrompt.save(jsonString);
     }
 
     public void refresh() {
