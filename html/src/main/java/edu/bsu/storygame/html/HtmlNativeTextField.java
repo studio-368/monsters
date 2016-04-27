@@ -31,12 +31,13 @@ import tripleplay.ui.Field;
 
 import java.util.Map;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 public class HtmlNativeTextField implements NativeTextField {
 
     private final static Map<Integer, HtmlNativeTextField> map = Maps.newHashMap();
     private static final float FONT_SIZE_PERCENT_OF_FIELD_HEIGHT = 0.75f;
+    private static final int MAX_NAME_LENGTH = 9;
 
     private static int nextId = 0;
     private final Field.Native field;
@@ -59,6 +60,7 @@ public class HtmlNativeTextField implements NativeTextField {
         this.element = DOM.createElement("input");
         this.element.setAttribute("type", "text");
         this.element.setAttribute("oninput", "onTextChange(" + id + ")");
+        this.element.setAttribute("maxlength", String.valueOf(MAX_NAME_LENGTH));
         this.element.getStyle().setPosition(Style.Position.ABSOLUTE);
         this.element.getStyle().setProperty("font-family", FontConstants.HANDWRITING_NAME);
         this.element.getStyle().setFontSize(field.field().size().height() * FONT_SIZE_PERCENT_OF_FIELD_HEIGHT, Style.Unit.PX);
