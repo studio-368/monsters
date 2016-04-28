@@ -23,6 +23,8 @@ import com.sun.javafx.collections.ObservableListWrapper;
 import edu.bsu.storygame.editor.EditorStageController;
 import edu.bsu.storygame.editor.model.Reaction;
 import edu.bsu.storygame.editor.model.Story;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -70,6 +72,14 @@ public class ReactionEditPane extends EditPane {
     private void configure() {
         configureSelectionListener();
         storyListView.setItems(new ObservableListWrapper<>(reaction.stories));
+        reactionNameTextField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                reaction.name = newValue;
+                reactionNameLabel.setText(newValue + " reaction");
+                parent.refresh();
+            }
+        });
         refresh();
     }
 

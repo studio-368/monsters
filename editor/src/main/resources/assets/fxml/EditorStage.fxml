@@ -19,40 +19,38 @@
   ~ along with monsters.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
+<?import java.lang.*?>
+<?import javafx.scene.input.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.BorderPane?>
-<BorderPane fx:id="rootNode" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="500.0"
-            prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+
+<BorderPane fx:id="rootNode" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="500.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
     <top>
         <MenuBar BorderPane.alignment="CENTER">
             <menus>
                 <Menu text="_File">
                     <items>
-                        <MenuItem disable="true" text="_Open from file...">
+                        <MenuItem onAction="#openFromFile" text="_Open from file...">
                             <accelerator>
-                                <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP"
-                                                    shortcut="UP"/>
+                                <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                             </accelerator>
                         </MenuItem>
                         <MenuItem onAction="#openFromText" text="Open from JSON _text...">
                             <accelerator>
-                                <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="DOWN"
-                                                    shortcut="UP"/>
+                                <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
                             </accelerator>
                         </MenuItem>
-                        <SeparatorMenuItem mnemonicParsing="false"/>
-                        <MenuItem fx:id="fileSaveMenuItem" disable="true" text="_Save file...">
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem fx:id="fileSaveMenuItem" disable="true" onAction="#saveFile" text="_Save file...">
                             <accelerator>
-                                <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP"
-                                                    shortcut="UP"/>
+                                <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                             </accelerator>
                         </MenuItem>
-                        <MenuItem fx:id="textSaveMenuItem" disable="true" onAction="#displayJsonText"
-                                  text="View _JSON...">
+                        <MenuItem fx:id="textSaveMenuItem" disable="true" onAction="#displayJsonText" text="View _JSON...">
                             <accelerator>
-                                <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="DOWN"
-                                                    shortcut="UP"/>
+                                <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
                             </accelerator>
                         </MenuItem>
                     </items>

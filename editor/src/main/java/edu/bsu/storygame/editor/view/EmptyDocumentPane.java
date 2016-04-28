@@ -23,7 +23,6 @@ import edu.bsu.storygame.editor.EditorStageController;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.layout.VBox;
@@ -32,7 +31,9 @@ import javafx.scene.paint.Color;
 public class EmptyDocumentPane extends VBox {
 
     private final EditorStageController controller;
-    private final Group links = new Group();
+    private final VBox links = new VBox(); {
+        links.setAlignment(Pos.CENTER);
+    }
 
     public EmptyDocumentPane(EditorStageController controller) {
         super();
@@ -41,12 +42,14 @@ public class EmptyDocumentPane extends VBox {
         setEffect(new InnerShadow(10.0, 2.0, 2.0, Color.BLACK));
         setAlignment(Pos.CENTER);
         setSpacing(14.0);
+        setFillWidth(true);
         getChildren().add(links);
-        addOpenFromTextHyperlink();
+        addOpenHyperlinks();
     }
 
-    private void addOpenFromTextHyperlink() {
+    private void addOpenHyperlinks() {
         addHyperlink("Open from JSON text...", event -> controller.openFromText());
+        addHyperlink("Open file...", event -> controller.openFromFile());
     }
 
     private void addHyperlink(String text, EventHandler<ActionEvent> onAction) {
