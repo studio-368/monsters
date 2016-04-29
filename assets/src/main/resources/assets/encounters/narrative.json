@@ -128,7 +128,7 @@
       },
       {
         "name": "Eloko",
-        "image": "",
+        "image": "eloko",
         "reactions": [
           {
             "name": "EXPLORE",
@@ -665,7 +665,7 @@
       },
       {
         "name": "Naga",
-        "image": "",
+        "image": "naga",
         "reactions": [
           {
             "name": "DISCOVER",
@@ -1056,7 +1056,7 @@
       },
       {
         "name": "Yowie",
-        "image": "yomie",
+        "image": "yowie",
         "reactions": [
           {
             "name": "OBSERVE",
@@ -1954,7 +1954,7 @@
       },
       {
         "name": "Ijiraq",
-        "image": "",
+        "image": "ijiraq",
         "reactions": [
           {
             "name": "HUNT",
@@ -2229,8 +2229,8 @@
         ]
       },
       {
-        "name": "Huallepen",
-        "image": "",
+        "name": "Huallapen",
+        "image": "huallapen",
         "reactions": [
           {
             "name": "TRAP",
@@ -2321,7 +2321,7 @@
       },
       {
         "name": "Madremonte",
-        "image": "",
+        "image": "madremonte",
         "reactions": [
           {
             "name": "AID",
