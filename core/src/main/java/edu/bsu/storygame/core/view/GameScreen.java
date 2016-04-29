@@ -116,7 +116,7 @@ public final class GameScreen extends BoundedUIScreen {
                         SlideShow winShow = new SlideShow(context.game,
                                 SlideData.text("Congratulations, " + context.currentPlayer.get().name + "!"),
                                 SlideData.text("You sure did find a lot of cool stories. I'll bet your new book will be amazing!")
-                                        .imageKey(ImageCache.Key.MISSING_IMAGE)
+                                        .imageKey(ImageCache.Key.INTRO_SCENE_7)
                         );
                         winShow.startOn(context.game.screenStack).onComplete(new SignalView.Listener<Try<Void>>() {
                             @Override
