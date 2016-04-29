@@ -158,20 +158,25 @@ public final class NotebookLayer extends GroupLayer {
                     new SkillGroup().addStyles(Style.HALIGN.center),
                     new Shim(0, 0).setConstraint(AxisLayout.stretched()));
             addAt(progressBar, this.width() * 1 / 25, this.height() * 1 / 25);
+            addAt(createTextLabel(context.game, "Points", 0xFF000000), progressBar.width() * 2/5, progressBar.height() / 2);
             add(pointsLayer = new ImageLayer());
             setPointLayer(context.game, 0xFF000000, 0);
         }
 
         private void setPointLayer(MonsterGame game, int color, int points) {
             remove(pointsLayer);
+            pointsLayer = createTextLabel(game, ""+points, color);
+            addAt(pointsLayer, progressBar.width() * 2 / 3, progressBar.height() * 2 / 3);
+        }
+
+        private ImageLayer createTextLabel(MonsterGame game, String text, int color) {
             Graphics gfx = context.game.plat.graphics();
-            Font font = Typeface.GAME_TEXT.font;
+            Font font = Typeface.GAME_TEXT.in(game).atSize(.03f);
             TextFormat format = new TextFormat(font);
-            TextLayout textLayout = gfx.layoutText("Points: \n" + points, format);
+            TextLayout textLayout = gfx.layoutText(text, format);
             Canvas canvas = game.plat.graphics().createCanvas(textLayout.size);
             canvas.setFillColor(color).fillText(textLayout, 0, 0);
-            pointsLayer = new ImageLayer(canvas.toTexture());
-            addAt(pointsLayer, progressBar.width() * 2 / 5, progressBar.height() / 2);
+            return new ImageLayer(canvas.toTexture());
         }
 
         private Image createTintedCoverPage() {
