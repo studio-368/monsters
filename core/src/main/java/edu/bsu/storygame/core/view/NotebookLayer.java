@@ -345,7 +345,6 @@ public final class NotebookLayer extends GroupLayer {
                         @Override
                         public void onEmit(Button button) {
                             context.reaction.update(reaction);
-                            context.story.update(reaction.stories.chooseOne());
                             context.phase.update(Phase.HANDOFF);
                         }
                     });
