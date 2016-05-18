@@ -702,7 +702,7 @@
                   {
                     "skill": "Magic",
                     "conclusion": {
-                      "text": "There is something scary about the man. You cast a spell that let’s you see him for what he really is: a naga! His real form scares you off.",
+                      "text": "There is something scary about the man. You cast a spell that lets you see him for what he really is: a naga! His real form scares you off.",
                       "points": 10
                     }
                   }
@@ -756,7 +756,7 @@
             "name": "REST",
             "stories": [
               {
-                "text": "You come to a temple, seeking water and shelter from the sun. The monks let you rest but have no water to spare, due to a drought caused by the naga.",
+                "text": "You come to a temple, seeking water and shelter from the sun. The monks lets you rest but have no water to spare, due to a drought caused by the naga.",
                 "triggers": [
                   {
                     "conclusion": {
