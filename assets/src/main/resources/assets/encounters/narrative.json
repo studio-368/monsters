@@ -756,7 +756,7 @@
             "name": "REST",
             "stories": [
               {
-                "text": "You come to a temple, seeking water and shelter from the sun. The monks lets you rest but have no water to spare, due to a drought caused by the naga.",
+                "text": "You come to a temple, seeking water and shelter from the sun. The monks let you rest but have no water to spare, due to a drought caused by the naga.",
                 "triggers": [
                   {
                     "conclusion": {
