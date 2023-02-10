@@ -90,9 +90,4 @@ public final class PlayerCreationScreen extends BoundedUIScreen {
                 .build();
         return new GameContext(game, p1, p2);
     }
-
-    @Override
-    public Game game() {
-        return game;
-    }
 }

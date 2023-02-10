@@ -222,11 +222,6 @@ public final class GameScreen extends BoundedUIScreen {
                 .easeOut();
     }
 
-    @Override
-    public Game game() {
-        return context.game;
-    }
-
     private final class NotebookOpener implements SignalView.Listener<Phase> {
 
         private final NotebookLayer notebook;

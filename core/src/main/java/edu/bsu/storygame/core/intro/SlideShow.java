@@ -196,11 +196,6 @@ public final class SlideShow {
                                 Style.FONT.is(Typeface.HANDWRITING.in(game).atSize(0.1f))));
                 return popup;
             }
-
-            @Override
-            public Game game() {
-                return game;
-            }
         }
     }
 

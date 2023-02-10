@@ -28,6 +28,7 @@ import edu.bsu.storygame.core.view.StartScreen;
 import playn.core.Game;
 import playn.core.Image;
 import playn.core.Sound;
+import pythagoras.f.IDimension;
 import react.Function;
 import react.RFuture;
 import react.Slot;
@@ -54,7 +55,7 @@ public class LoadingScreen extends ScreenStack.UIScreen {
     private ProgressBar progressBar;
 
     public LoadingScreen(final MonsterGame game, final ScreenStack screenStack) {
-        super(game.plat);
+        super(game);
         this.game = checkNotNull(game);
 
         configureProgressBar();
@@ -148,10 +149,5 @@ public class LoadingScreen extends ScreenStack.UIScreen {
                 progressBar.increment(1);
             }
         });
-    }
-
-    @Override
-    public Game game() {
-        return game;
     }
 }

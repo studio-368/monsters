@@ -99,11 +99,6 @@ public class PlayerNameScreen extends BoundedUIScreen {
     }
 
     @Override
-    public Game game() {
-        return game;
-    }
-
-    @Override
     public void showTransitionCompleted() {
         nameFieldOne.setVisible(true);
         nameFieldTwo.setVisible(true);

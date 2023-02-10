@@ -28,7 +28,7 @@ public abstract class BoundedUIScreen extends ScreenStack.UIScreen {
     protected final GroupLayer content;
 
     protected BoundedUIScreen(MonsterGame game) {
-        super(game.plat);
+        super(game);
         this.content = new GroupLayer(game.bounds.width(), game.bounds.height());
         this.layer.addCenterAt(content, game.plat.graphics().viewSize.width() / 2, game.plat.graphics().viewSize.height() / 2);
     }

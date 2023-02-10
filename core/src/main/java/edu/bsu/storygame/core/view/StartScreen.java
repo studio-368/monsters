@@ -53,11 +53,6 @@ public final class StartScreen extends BoundedUIScreen {
                         new StartButton());
     }
 
-    @Override
-    public Game game() {
-        return game;
-    }
-
     final class StartButton extends Button {
         private StartButton() {
             super("Begin Our Adventure!");

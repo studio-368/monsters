@@ -90,9 +90,4 @@ public class PlayAgainScreen extends BoundedUIScreen {
         super.wasShown();
         game.onGameEnd.emit();
     }
-
-    @Override
-    public Game game() {
-        return game;
-    }
 }
