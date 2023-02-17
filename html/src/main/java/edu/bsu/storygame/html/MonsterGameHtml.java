@@ -32,28 +32,6 @@ public class MonsterGameHtml implements EntryPoint {
 
     private HtmlPlatform plat;
 
-    private final UnitSlot trackGameStartEvent = new UnitSlot() {
-        @Override
-        public void onEmit() {
-            sendTrackingEvent("start");
-        }
-    };
-
-    private final UnitSlot trackGameEndEvent = new UnitSlot() {
-        @Override
-        public void onEmit() {
-            sendTrackingEvent("end");
-        }
-    };
-
-    private static native void sendTrackingEvent(String action) /*-{
-           $wnd.ga('send', {
-              hitType: 'event',
-              eventCategory: 'game',
-              eventAction:  action
-            });
-        }-*/;
-
     @Override
     public void onModuleLoad() {
         HtmlPlatform.Config platConf = new HtmlPlatform.Config();
@@ -70,9 +48,6 @@ public class MonsterGameHtml implements EntryPoint {
         };
 
         MonsterGame game = new MonsterGame(gameConf);
-        game.onGameStart.connect(trackGameStartEvent);
-        game.onGameEnd.connect(trackGameEndEvent);
-
 
         plat.start();
     }
