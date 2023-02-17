@@ -3,10 +3,20 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/assets" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/assets/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/assets/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/core" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/core/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/core/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/editor" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/editor/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/editor/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/html" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/java/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/java/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>
